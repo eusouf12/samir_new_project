@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import '../../../../utils/app_colors/app_colors.dart';
+import '../../../components/custom_text/custom_text.dart';
 
 class InfReferralsScreen extends StatelessWidget {
   const InfReferralsScreen({super.key});
 
   void _handleCopy(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
-
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Colors.transparent,
@@ -36,7 +38,7 @@ class InfReferralsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String profileLink = "https://hostinflux.com/profile/sarah_lifestyle";
+    const String referralLink = "https://app.example.com/join?ref=_JH6K82X";
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
@@ -48,63 +50,40 @@ class InfReferralsScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          "Share Profile",
+          "Referrals",
           style: TextStyle(color: Color(0xFF1F2937), fontWeight: FontWeight.bold, fontSize: 18),
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // হেডার টেক্সট
-            const Text(
-              "Your Public Bio Link",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF111827)),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              "Share your Hostinflux profile with your audience\nacross all platforms",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Color(0xFF6B7280), fontSize: 14, height: 1.5),
-            ),
-            const SizedBox(height: 40),
-
-            // প্রোফাইল লিঙ্ক কার্ড
-            _buildInfoCard(
+            // Referral Link Card
+            _buildCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Your Profile Link",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: Color(0xFF374151)),
-                  ),
-                  const SizedBox(height: 15),
+                  const CustomText(text: "Your Referral Link", fontWeight: FontWeight.bold, fontSize: 16),
+                  const CustomText(text: "Share this link to earn rewards", fontSize: 13, color: Colors.grey, top: 4, bottom: 12),
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF3F4F6),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Text(
-                      profileLink,
-                      style: TextStyle(color: Color(0xFF4B5563), fontSize: 14),
-                    ),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(color: const Color(0xFFF3F4F6), borderRadius: BorderRadius.circular(8)),
+                    child: const Text(referralLink, style: TextStyle(color: Colors.blue, fontSize: 13)),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
-                    height: 54,
+                    height: 48,
                     child: ElevatedButton.icon(
-                      onPressed: () => _handleCopy(context, profileLink),
-                      icon: const Icon(Icons.copy, size: 18, color: Colors.white),
-                      label: const Text("Copy Link", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      onPressed: () => _handleCopy(context, referralLink),
+                      icon: const Icon(Icons.copy, size: 16, color: Colors.white),
+                      label: const Text("Copy Link", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFF8674),
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                     ),
                   ),
@@ -112,33 +91,48 @@ class InfReferralsScreen extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
 
-            // কিউআর কোড কার্ড
-            _buildInfoCard(
+            // QR Code Card
+            _buildCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "QR Code",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: Color(0xFF374151)),
-                  ),
-                  const SizedBox(height: 20),
+                  const CustomText(text: "QR Code", fontWeight: FontWeight.bold, fontSize: 16, bottom: 12),
                   Center(
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF3F4F6),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: QrImageView(
-                        data: profileLink,
-                        version: QrVersions.auto,
-                        size: 200.0,
-                      ),
-                    ),
+                    child: QrImageView(data: referralLink, version: QrVersions.auto, size: 180.0),
                   ),
                 ],
+              ),
+            ),
+
+            // Your Stats Section
+            const CustomText(text: "Your Stats", fontSize: 18, fontWeight: FontWeight.bold, top: 24, bottom: 12),
+            _buildStatTile("Total Referrals", "24", Icons.people_outline, const Color(0xFFE0E7FF), const Color(0xFF4F46E5)),
+            _buildStatTile("Successful Sign-ups", "18", Icons.person_add_alt_1_outlined, const Color(0xFFDCFCE7), const Color(0xFF16A34A)),
+
+            // Recent Referrals Section
+            const CustomText(text: "Recent Referrals", fontSize: 18, fontWeight: FontWeight.bold, top: 24, bottom: 12),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFE5E7EB)),
+              ),
+              child: ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 5,
+                separatorBuilder: (context, index) => const Divider(height: 1),
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: const CircleAvatar(
+                      backgroundImage: NetworkImage("https://via.placeholder.com/150"),
+                    ),
+                    title: const Text("User Name", style: TextStyle(fontWeight: FontWeight.w600)),
+                    subtitle: const Text("Nov 15, 2024", style: TextStyle(fontSize: 12, color: Colors.grey)),
+                  );
+                },
               ),
             ),
           ],
@@ -147,24 +141,42 @@ class InfReferralsScreen extends StatelessWidget {
     );
   }
 
-  // কার্ডের জন্য কমন স্টাইল
-  Widget _buildInfoCard({required Widget child}) {
+  // Card Helper
+  Widget _buildCard({required Widget child}) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: const Color(0xFFE5E7EB)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
       ),
       child: child,
+    );
+  }
+
+  // Stat Tile Helper
+  Widget _buildStatTile(String title, String count, IconData icon, Color bgColor, Color iconColor) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(8)),
+            child: Icon(icon, color: iconColor),
+          ),
+          const SizedBox(width: 12),
+          CustomText(text: title, fontWeight: FontWeight.w500, fontSize: 14),
+          const Spacer(),
+          CustomText(text: count, fontWeight: FontWeight.bold, fontSize: 18),
+        ],
+      ),
     );
   }
 }
