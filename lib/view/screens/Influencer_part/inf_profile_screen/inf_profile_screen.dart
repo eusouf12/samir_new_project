@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:samir_flutter_app/view/components/custom_nav_bar/vendor_navbar.dart';
+import 'package:samir_flutter_app/view/screens/Influencer_part/inf_profile_screen/share_your_profile.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../../utils/app_const/app_const.dart';
@@ -25,6 +26,7 @@ class InfProfileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // profile image and name
               Row(
                 children: [
                   CustomNetworkImage(
@@ -75,6 +77,7 @@ class InfProfileScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              //title
               CustomText(
                 text: "Profile information",
                 fontSize: 18,
@@ -82,6 +85,7 @@ class InfProfileScreen extends StatelessWidget {
                 top: 20,
                 bottom: 16,
               ),
+              //Edit profile
               CustomProfileCard(
                 nameTitle: "Edit Profile",
                 icons: AppIcons.editIcon,
@@ -89,12 +93,14 @@ class InfProfileScreen extends StatelessWidget {
                 onTap: (){
                   Get.toNamed(AppRoutes.infEditProfileScreen);
                 },
-              ),CustomProfileCard(
+              ),
+              //Share your profile
+              CustomProfileCard(
                 nameTitle: "Share your profile",
                 icons: AppIcons.mdi_share,
                 color: AppColors.primary2,
                 onTap: (){
-                  //Get.toNamed(AppRoutes.hostEditProfileScreen);
+                  Get.to(ShareProfileScreen());
                 },
               ),
               CustomProfileCard(
