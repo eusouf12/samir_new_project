@@ -147,6 +147,7 @@ class HostDealsScreen extends StatelessWidget {
               },
             )
 
+
           ],
         ),
       ),
