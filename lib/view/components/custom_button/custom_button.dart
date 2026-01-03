@@ -14,8 +14,8 @@ class CustomButton extends StatelessWidget {
     this.title = '',
     this.marginVertical = 0,
     this.marginHorizontal = 0,
-    this.fillColor = AppColors.white,
-    this.textColor = AppColors.black,
+    this.fillColor = AppColors.primary,
+    this.textColor = AppColors.primary,
     this.isBorder = false,
     this.fontSize,
     this.borderWidth,
@@ -24,6 +24,8 @@ class CustomButton extends StatelessWidget {
     this.showSocialButton = false,
     this.imageSrc,
     this.fontWeight,
+    this.icon
+    //required bool isLoading,
   });
 
   final double height;
@@ -41,6 +43,7 @@ class CustomButton extends StatelessWidget {
   final double? borderRadius;
   final bool showSocialButton;
   final String? imageSrc;
+  final Icon? icon;
   final FontWeight? fontWeight;
 
   @override
@@ -55,17 +58,16 @@ class CustomButton extends StatelessWidget {
         height: height,
         width: width,
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [AppColors.black, Color(0xff1F2937), Color(0xff4B5563)]),
           border: isBorder
               ? Border.all(color: borderColor, width: borderWidth ?? .05)
               : null,
-          borderRadius: BorderRadius.circular(borderRadius ?? 50),
+          borderRadius: BorderRadius.circular(borderRadius ?? 12),
           color: fillColor,
         ),
         child: showSocialButton ? Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomImage(imageSrc: imageSrc ?? "",imageColor: AppColors.white,),
+            CustomImage(imageSrc: imageSrc ?? ""),
             CustomText(
               left: 8,
               fontSize: fontSize ?? 16.sp,
@@ -76,13 +78,25 @@ class CustomButton extends StatelessWidget {
 
             ),
           ],
-        ) : CustomText(
-          fontSize: fontSize ?? 18.sp,
-          fontWeight: FontWeight.w700,
-          color: textColor,
-          textAlign: TextAlign.center,
-          text: title,
+        ) : Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon != null
+                ? Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: icon, // Display icon if provided
+            )
+                : SizedBox.shrink(),
+            CustomText(
+              fontSize: fontSize ?? 18.sp,
+              fontWeight: FontWeight.w700,
+              color: textColor,
+              textAlign: TextAlign.center,
+              text: title,
+            ),
+          ],
         ),
+
       ),
     );
   }

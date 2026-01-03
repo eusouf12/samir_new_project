@@ -1,5 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../utils/app_colors/app_colors.dart';
 import '../custom_image/custom_image.dart';
@@ -8,79 +8,66 @@ import '../custom_text/custom_text.dart';
 class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String? titleName;
   final String? rightIcon;
-  final void Function()? rightOnTap;
-  final bool leftIcon;
-  final bool? showRightIcon;
   final Color? color;
+  final Color? leftIconColor;
+  //final void Function()? leftOnTap;
+  final void Function()? rightOnTap;
+  final bool? leftIcon;
+  final bool? centerTitleEnable;
 
   const CustomRoyelAppbar({
     super.key,
     this.titleName,
-    this.showRightIcon = false,
-    this.rightOnTap,
     this.color,
+    this.leftIconColor,
+    // this.leftOnTap,
     this.rightIcon,
-    required this.leftIcon,
+    this.rightOnTap,
+    this.leftIcon = false,
+    this.centerTitleEnable = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: 60,
-      elevation: 0,
-      centerTitle: true,
-      scrolledUnderElevation: 0,
-      backgroundColor: Colors.transparent,
-      automaticallyImplyLeading: false,  // ADD THIS LINE
-      systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-      ),
-      actions: showRightIcon == true
-          ? [
-        IconButton(
-          onPressed: () {
-            rightOnTap?.call();
-          },
-          icon: rightIcon == null
-              ? const SizedBox()
-              : CustomImage(imageSrc: rightIcon!, height: 32, width: 32),
-        ),
-        SizedBox(width: 20.w),
-      ]
-          : null,
-      leading: leftIcon
-          ? GestureDetector(
-        onTap: () => Navigator.of(context).pop(),
-        child: /*Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: CircleAvatar(
-            backgroundColor: AppColors.white,
-            child: BackButton(color: AppColors.black_80,),
-          ),
-        )*/
+        toolbarHeight: 80,
+        elevation: 0,
+        foregroundColor: Colors.transparent,
+        centerTitle: centerTitleEnable,
+        scrolledUnderElevation: 0,
+        actions: [
+          IconButton(
+              onPressed: () {
+                rightOnTap!();
+              },
+              icon: rightIcon == null
+                  ? SizedBox()
+                  : CustomImage(
+                imageSrc: rightIcon!,
+                height: 24,
+                width: 24,
+                imageColor: AppColors.black,
+              )),
+        ],
+        backgroundColor: Colors.transparent,
+        leading: leftIcon == true ? BackButton(color: leftIconColor ?? Colors.black,) : SizedBox.shrink(),
+        leadingWidth: leftIcon == true ? kToolbarHeight : 0,
 
-        Container(
-          margin: EdgeInsets.only(left: 10.w),
-        //  padding: EdgeInsets.all(8),
-          color: Colors.transparent,
-          child: CircleAvatar(
-            backgroundColor: AppColors.white,
-            child: BackButton(color: AppColors.black_80,),
-          ),
+      title: Align(
+        alignment: centerTitleEnable == true
+            ? Alignment.center
+            : Alignment.centerLeft,
+        child: CustomText(
+          text: titleName ?? "",
+          fontSize: 20.w,
+          fontWeight: FontWeight.w600,
+          color: color ?? AppColors.black,
         ),
-      )
-          : null,
-      title: CustomText(
-        text: titleName ?? "",
-        fontSize: 20.w,
-        fontWeight: FontWeight.w500,
-        color: color ?? AppColors.black,
       ),
     );
   }
 
   @override
+  // TO DO: implement preferredSize
   Size get preferredSize => const Size.fromHeight(60);
 }

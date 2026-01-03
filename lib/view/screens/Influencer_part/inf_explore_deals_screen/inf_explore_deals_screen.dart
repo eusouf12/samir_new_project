@@ -7,8 +7,8 @@ import 'package:samir_flutter_app/view/components/custom_netwrok_image/custom_ne
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_field.dart';
-import '../../../components/custom_nav_bar/vendor_navbar.dart';
 
+import '../../../components/custom_nav_bar/vendor_navbar.dart';
 class InfExploreDealsScreen extends StatelessWidget {
   const InfExploreDealsScreen({super.key});
 

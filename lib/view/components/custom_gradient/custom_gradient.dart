@@ -1,4 +1,3 @@
-/*
 import 'package:flutter/material.dart';
 
 import '../../../utils/app_images/app_images.dart';
@@ -8,11 +7,12 @@ class CustomGradient extends StatelessWidget {
   final Color color1;
   final Color color2;
 
-  const CustomGradient({
+   const CustomGradient({
     super.key,
     required this.child,
-    this.color1 = const Color(0xFFD0F2D3),
-    this.color2 = const Color(0xFF5BCDA4),
+    this.color1 = Colors.white,
+    // this.color2 = const Color(0xFF2DBE60),
+     this.color2 =  Colors.white,
   });
 
   @override
@@ -21,13 +21,20 @@ class CustomGradient extends StatelessWidget {
        height: double.infinity,
        width: double.infinity,
        decoration: BoxDecoration(
-         image: DecorationImage(
-           image: AssetImage(AppImages.backG),
-           fit: BoxFit.cover, // makes it fill entire screen
+         gradient: LinearGradient(
+           begin: Alignment.topRight,
+           end: Alignment.bottomCenter,
+           colors: [
+             color1,
+             color2
+           ],
          ),
        ),
-       child: SafeArea(child: child),
+       child: SafeArea(
+         bottom: true,
+           top: false,
+           child: child,
+       ),
      );
   }
 }
-*/

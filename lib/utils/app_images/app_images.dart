@@ -2,6 +2,7 @@ class AppImages {
   static const String basePath = "assets/images";
   static const String logo = "$basePath/logo.svg";
   static const String noImage = "$basePath/No_image_available.svg.png";
+  static const String accountReady = "$basePath/accountReady.svg";
 
   ///====================== SplashScreen =========================
   static const String splashScreenImage = "$basePath/spalsh_image.png";

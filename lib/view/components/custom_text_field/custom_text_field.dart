@@ -26,17 +26,18 @@ class CustomTextField extends StatefulWidget {
     this.suffixIcon,
     this.suffixIconColor,
     this.fieldBorderRadius = 16,
-    this.fieldBorderColor = Colors.transparent, //const Color(0xffB5D8EE),
+    this.fieldBorderColor = Colors.transparent,
     this.isPassword = false,
     this.isPrefixIcon = true,
     this.readOnly = false,
     this.maxLength,
     this.prefixIcon,
     this.onTap,
-    this.isDens = false,
+    this.isDens = false, this.enabled = true,
   });
 
   final TextEditingController? textEditingController;
+  final bool? enabled;
   final FocusNode? focusNode;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
@@ -74,6 +75,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: widget.enabled,
       onTap: widget.onTap,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: widget.inputFormatters,
@@ -86,10 +88,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       textInputAction: widget.textInputAction,
       cursorColor: widget.cursorColor,
       style: widget.inputTextStyle ??
-          GoogleFonts.roboto(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: AppColors.black_03),
+          GoogleFonts.roboto(fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.black),
       onChanged: widget.onChanged,
       maxLines: widget.maxLines,
       obscureText: widget.isPassword ? obscureText : false,
@@ -100,11 +99,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         isDense: widget.isDens,
         errorMaxLines: 2,
         hintText: widget.hintText,
-        hintStyle: widget.hintStyle ??
-            GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: AppColors.white),
+        hintStyle: widget.hintStyle ?? GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.white),
         fillColor: widget.fillColor,
         filled: true,
         prefixIcon: widget.prefixIcon,
@@ -113,7 +108,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 onTap: toggle,
                 child: Padding(
                   padding: const EdgeInsets.all(16),
-                  child: Icon(obscureText ? Icons.visibility_off : Icons.visibility, color: Colors.grey,),
+                  child: Icon(obscureText ? Icons.visibility_off : Icons.visibility, color: AppColors.grey_02,),
 
                   /*SvgPicture.asset(
                     obscureText ? AppIcons.eyeOff : AppIcons.eye,
@@ -132,7 +127,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.fieldBorderRadius),
-          borderSide: BorderSide(color: widget.fieldBorderColor, width: 1),
+          borderSide: BorderSide(color: AppColors.primary, width: 1),
           gapPadding: 0,
         ),
         enabledBorder: OutlineInputBorder(

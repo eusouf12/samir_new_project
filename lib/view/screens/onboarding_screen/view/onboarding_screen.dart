@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
-import '../../../../core/app_routes/app_routes.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../../utils/app_images/app_images.dart';
-import '../../../../utils/app_strings/app_strings.dart';
-import '../../../components/custom_button/custom_button.dart';
+import '../../../components/custom_button/custom_button_two.dart';
 import '../../../components/custom_image/custom_image.dart';
 import '../../../components/custom_text/custom_text.dart';
 import '../controller/onboarding_controller.dart';
@@ -116,30 +113,6 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const CustomText(
-                        text: "Already have an account?",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.textClr,
-                      ),
-                      SizedBox(width: 6),
-                      GestureDetector(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.loginScreen);
-                        },
-                        child: const CustomText(
-                          text: AppStrings.login,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 30),
                 ],
               ),
             ),

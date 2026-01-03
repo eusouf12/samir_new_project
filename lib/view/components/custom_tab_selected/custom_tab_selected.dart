@@ -74,8 +74,8 @@ class CustomTabSelector extends StatelessWidget {
                           color: selectedIndex == index
                               ? selectedColor
                               : isTextColorActive!
-                                  ? textColor
-                                  : unselectedColor,
+                              ? textColor
+                              : unselectedColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),

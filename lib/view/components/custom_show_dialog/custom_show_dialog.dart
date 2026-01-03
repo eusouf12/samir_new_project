@@ -2,8 +2,8 @@
 // ignore_for_file: sort_child_properties_last
 
 import 'package:counta_flutter_app/utils/app_colors/app_colors.dart';
-import 'package:counta_flutter_app/view/components/custom_button/custom_button.dart';
-import 'package:counta_flutter_app/view/components/custom_text/custom_text.dart';
+import 'package:counta_flutter_app/consultant_dashboard_screen/components/custom_button/custom_button.dart';
+import 'package:counta_flutter_app/consultant_dashboard_screen/components/custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

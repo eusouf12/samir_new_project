@@ -45,14 +45,14 @@ class _UserNavBarState extends State<HostNavbar> {
           topRight: Radius.circular(17.r),
         ),
         // border: Border.all(color: AppColors.grey_03, width: .2),
-       boxShadow: [
-         BoxShadow(
+        boxShadow: [
+          BoxShadow(
             color: AppColors.white_50,
-          spreadRadius: 1,
-         blurRadius: 4,
-         offset: const Offset(3, 0),
-         ),
-      ],
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(3, 0),
+          ),
+        ],
       ),
       height: 80.h,
       width: MediaQuery.of(context).size.width,

@@ -7,8 +7,11 @@ import '../custom_text/custom_text.dart';
 import '../custom_text_field/custom_text_field.dart';
 
 class CustomFormCard extends StatelessWidget {
+
   final String title;
   final String? hintText;
+  final Color? inputTextColor;
+  final Color? curserColor;
   final TextEditingController controller;
   final bool isPassword;
   final bool? hasSuffixIcon;
@@ -20,7 +23,10 @@ class CustomFormCard extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final int? maxLine;
+  final double? fillBorderRadius;
+  final Color? fieldBorderColor;
   final double? fontSize;
+  final bool? enabled;
   final Color? titleColor;
   final void Function(String)? onChanged;
   final TextInputType? keyboardType;
@@ -38,10 +44,15 @@ class CustomFormCard extends StatelessWidget {
     this.validator,
     this.hintText,
     this.suffixIcon,
-    this.maxLine,
+    this.maxLine=1,
     this.fontSize,
     this.titleColor,
-    this.prefixIcon, this.keyboardType, this.onChanged,
+    this.prefixIcon,
+    this.keyboardType,
+    this.onChanged,
+    this.enabled,
+    this.fillBorderRadius,
+    this.fieldBorderColor, this.inputTextColor, this.curserColor
   });
 
   @override
@@ -51,7 +62,7 @@ class CustomFormCard extends StatelessWidget {
       children: [
         CustomText(
           text: title,
-          color: titleColor ?? AppColors.black,
+          color: titleColor ?? AppColors.white,
           fontWeight: FontWeight.w500,
           fontSize: fontSize ?? 16.w,
           bottom: 8.h,
@@ -59,26 +70,24 @@ class CustomFormCard extends StatelessWidget {
         ),
         CustomTextField(
           isDens: true,
+          enabled: enabled,
           onChanged: onChanged,
           prefixIcon: prefixIcon,
           validator: validator,
           readOnly: readOnly,
           hintText: hintText,
-          cursorColor: AppColors.black,
-          hintStyle: GoogleFonts.alata(
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-              color: AppColors.black_02),
+          cursorColor: curserColor ?? AppColors.white,
+          hintStyle: GoogleFonts.roboto(fontWeight: FontWeight.w400, fontSize: 14, color: AppColors.grey_02),
           suffixIcon: suffixIcon,
           isPassword: isPassword,
           textEditingController: controller,
-          inputTextStyle: GoogleFonts.poppins(color: AppColors.black, fontSize: 18.sp),
+          inputTextStyle: GoogleFonts.poppins(color: inputTextColor ?? AppColors.white, fontSize: 18.sp),
           fillColor: hasBackgroundColor ? Colors.transparent : Colors.transparent,
-          fieldBorderColor: AppColors.greyLight,
+          fieldBorderColor:fieldBorderColor ?? AppColors.grey_02,
           keyboardType: keyboardType ?? (isPassword ? TextInputType.visiblePassword : TextInputType.text),
           onTap: onTap,
           maxLines: isPassword ? 1 : maxLine,
-          fieldBorderRadius: 13,
+          fieldBorderRadius: fillBorderRadius ?? 50,
         ),
         SizedBox(height: 15.h),
       ],

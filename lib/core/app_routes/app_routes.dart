@@ -7,20 +7,20 @@ import '../../view/screens/Influencer_part/inf_home_screen/inf_earnings_screen.d
 import '../../view/screens/Influencer_part/inf_home_screen/inf_home_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/inf_night_credits_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/inf_total_deals_screen.dart';
-import '../../view/screens/Influencer_part/inf_profile_screen/inf_about_screen.dart';
+import '../../view/screens/Influencer_part/inf_profile_screen/about_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_account_settings.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_change_password_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_edit_profile_screen.dart';
-import '../../view/screens/Influencer_part/inf_profile_screen/inf_privacy_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_profile_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_referrals_screen.dart';
-import '../../view/screens/Influencer_part/inf_profile_screen/inf_terms_screen.dart';
-import '../../view/screens/authentication/forgot_password/forgot_pass_screen.dart';
-import '../../view/screens/authentication/login/login_screen.dart';
-import '../../view/screens/authentication/register/registration_screen.dart';
-import '../../view/screens/authentication/update_password/update_pass_screen.dart';
-import '../../view/screens/authentication/verify_otp/verify_otp_screen.dart';
-import '../../view/screens/choose_role/view/choose_role.dart';
+import '../../view/screens/Influencer_part/inf_profile_screen/privacy_screen.dart';
+import '../../view/screens/Influencer_part/inf_profile_screen/terms_services_screen‎.dart';
+import '../../view/screens/authentication/views/auth_screen/forgot_screen/forgot_screen.dart';
+import '../../view/screens/authentication/views/auth_screen/login_screen/login_screen.dart';
+import '../../view/screens/authentication/views/auth_screen/otp_screen/otp_screen.dart';
+import '../../view/screens/authentication/views/auth_screen/set_new_password/set_new_password.dart';
+import '../../view/screens/authentication/views/auth_screen/sign_up_screen/sign_up_screen.dart';
+import '../../view/screens/choose_role/view/role_screen.dart';
 import '../../view/screens/host_part/host_active_influe/host_active_influe.dart';
 import '../../view/screens/host_part/host_active_influe/host_active_view_profile_screen.dart';
 import '../../view/screens/host_part/host_active_influe/host_send_collaboaration_screen.dart';
@@ -47,18 +47,33 @@ import '../../view/screens/host_part/host_profile_screen/host_peferrals_screen.d
 import '../../view/screens/host_part/host_profile_screen/host_privacy_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_profile_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_terms_screen.dart';
+import '../../view/screens/onboarding_screen/account_ready_screen/account_ready _screen.dart';
 import '../../view/screens/onboarding_screen/view/onboarding_screen.dart';
 import '../../view/screens/splash_screen/splash_screen.dart';
 class AppRoutes {
 
   ///===========================Authentication Part=========================
- static const String loginScreen = "/LoginScreen";
+  static const String loginScreen = "/LoginScreen";
+  static const String signUpScreen = "/SignUpScreen";
+  static const String otpScreen = "/otpScreen";
+  static const String verifyPicCodeScreen = "/verify_otp";
+  static const String recoverySetupScreen = '/recovery_setup_1';
+  static const String finalRecoveryScreen = '/final_recovery';
+  static const String subscriptionScreen = '/subscription';
+  static const String settingScreen = "/SettingScreen";
+  static const String forgotScreen = "/ForgotScreen";
+  static const String privacyScreen = "/PrivacyScreen";
+  static const String aboutScreen = "/AboutScreen";
+  static const String termsServicesScreen = "/TermsServicesScreen";
+  static const String setNewPassword = "/SetNewPassword";
+
  static const String registrationScreen = "/RegistrationScreen";
  static const String forgotPassScreen = "/ForgotPassScreen";
  static const String verifyOtpScreen = "/VerifyOtpScreen";
  static const String updatePassScreen = "/UpdatePassScreen";
  static const String onboardingScreen = "/OnboardingScreen";
  static const String chooseRole = "/ChooseRole";
+ static const String accountReadyScreen = "/AccountReadyScreen";
 
   ///===========================Host  Part ==========================
  static const String splashScreen = "/SplashScreen";
@@ -110,13 +125,24 @@ class AppRoutes {
 
   static List<GetPage> routes = [
     ///===========================Authentication Part========================
+    GetPage(name: splashScreen, page: () => const SplashScreen()),
+    GetPage(name: onboardingScreen, page: () => const OnboardingScreen()),
     GetPage(name: loginScreen, page: () => LoginScreen()),
-    GetPage(name: registrationScreen, page: () => RegistrationScreen()),
-    GetPage(name: forgotPassScreen, page: () => ForgotPassScreen()),
-    GetPage(name: verifyOtpScreen, page: () => VerifyOtpScreen()),
-    GetPage(name: updatePassScreen, page: () => UpdatePassScreen()),
+    GetPage(name: otpScreen, page: () => OtpScreen()),
+    GetPage(name: signUpScreen, page: () => SignUpScreen()),
+    GetPage(name: forgotScreen, page: () => ForgotScreen()),
+    GetPage(name: privacyScreen, page: () => PrivacyScreen()),
+    GetPage(name: aboutScreen, page: () => AboutScreen()),
+    GetPage(name: termsServicesScreen, page: () => TermsServicesScreen()),
+    GetPage(name: setNewPassword, page: () => SetNewPassword()),
     GetPage(name: onboardingScreen, page: () => OnboardingScreen()),
     GetPage(name: chooseRole, page: () => ChooseRole()),
+    GetPage(name: accountReadyScreen, page: () => AccountReadyScreen()),
+    // GetPage(name: subscriptionScreen, page: () => const SubscriptionScreenOne(),),
+
+
+
+
 
 
     ///===========================Host Part==========================
@@ -157,9 +183,6 @@ class AppRoutes {
     GetPage(name: infAccountSettings, page: () => InfAccountSettings()),
     GetPage(name: infReferralsScreen, page: () => InfReferralsScreen()),
     GetPage(name: infChangePasswordScreen, page: () => InfChangePasswordScreen()),
-    GetPage(name: infTermsScreen, page: () => InfTermsScreen()),
-    GetPage(name: infPrivacyScreen, page: () => InfPrivacyScreen()),
-    GetPage(name: infAboutScreen, page: () => InfAboutScreen()),
     GetPage(name: infExploreDealsScreen, page: () => InfExploreDealsScreen()),
     GetPage(name: infNightCreditsScreen, page: () => InfNightCreditsScreen()),
     GetPage(name: infEarningsScreen, page: () => InfEarningsScreen()),

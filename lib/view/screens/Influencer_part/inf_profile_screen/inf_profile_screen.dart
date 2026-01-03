@@ -4,16 +4,21 @@ import 'package:get/get.dart';
 import 'package:samir_flutter_app/view/components/custom_nav_bar/vendor_navbar.dart';
 import 'package:samir_flutter_app/view/screens/Influencer_part/inf_profile_screen/share_your_profile.dart';
 import '../../../../core/app_routes/app_routes.dart';
+import '../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../../utils/app_const/app_const.dart';
 import '../../../../utils/app_icons/app_icons.dart';
 import '../../../components/custom_image/custom_image.dart';
 import '../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../../../components/custom_show_popup/custom_show_popup.dart';
 import '../../../components/custom_text/custom_text.dart';
+import '../../authentication/controller/auth_controller.dart';
 import '../../host_part/host_profile_screen/widgets/custom_profile_card.dart';
+
 class InfProfileScreen extends StatelessWidget {
-  const InfProfileScreen({super.key});
+  InfProfileScreen({super.key});
+  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +115,8 @@ class InfProfileScreen extends StatelessWidget {
                 onTap: (){
                   Get.toNamed(AppRoutes.infReferralsScreen);
                 },
-              ),   CustomProfileCard(
+              ),
+              CustomProfileCard(
                 nameTitle: "Payment Settings",
                 icons: AppIcons.infpaymentIcon,
                 color: AppColors.primary2,
@@ -132,13 +138,37 @@ class InfProfileScreen extends StatelessWidget {
                // icons: AppIcons.subscriptionIcon,
               ),
               CustomProfileCard(
-                onTap: (){
-                  Get.toNamed(AppRoutes.chooseRole);
-                },
-                nameTitle: "Logout",
-                color: AppColors.primary2,
-                icons: AppIcons.logoutIcon,
-              ),
+                  nameTitle: "Log Out",
+                  color: AppColors.primary2,
+                 onTap: () {
+                  showDialog(
+                    context: context,
+                    builder:
+                        (ctx) =>
+                        AlertDialog(
+                          backgroundColor: AppColors.white,
+                          insetPadding: EdgeInsets.all(8),
+                          contentPadding: EdgeInsets.all(8),
+                          content: SizedBox(
+                            width: MediaQuery.sizeOf(context).width,
+                            child: CustomShowDialog(
+                              textColor: AppColors.black,
+                              title: "Logout Your Account",
+                              discription: "Are You Sure Logout",
+                              showColumnButton: true,
+                              showCloseButton: true,
+                              rightOnTap: () {
+                                Get.back();
+                              },
+                              leftOnTap: () async {
+                                await SharePrefsHelper.clearAll();
+                                Get.offAllNamed(AppRoutes.loginScreen);
+                              },
+                            ),
+                          ),
+                        ),
+                  );
+                })
             ],
           ),
         ),
