@@ -8,6 +8,7 @@ class CustomRole extends StatelessWidget {
   final String title;
   final String description;
   final VoidCallback onTap;
+  final bool isSelected;
 
   const CustomRole({
     super.key,
@@ -15,6 +16,7 @@ class CustomRole extends StatelessWidget {
     required this.title,
     required this.description,
     required this.onTap,
+    required this.isSelected,
   });
 
   @override
@@ -24,8 +26,8 @@ class CustomRole extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppColors.white,
-          border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
+          color: isSelected ? AppColors.primary : Colors.white,
+          border: Border.all(color: isSelected ? AppColors.primary : Color(0xFFE5E7EB), width: 1),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -44,6 +46,7 @@ class CustomRole extends StatelessWidget {
               height: 24,
               width: 24,
               imageSrc: icon,
+              imageColor: isSelected ? AppColors.white :AppColors.primary,
             ),
             const SizedBox(width: 16),
 

@@ -2,6 +2,7 @@ import '../../../../../components/custom_gradient/custom_gradient.dart';
 import '../../../../../components/custom_loader/custom_loader.dart';
 import '../../../../../components/custom_text/custom_text.dart';
 import '../../../../../components/custom_text_field/custom_text_field.dart';
+import '../../../../choose_role/view/role_screen.dart';
 import '../../../controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -160,7 +161,12 @@ class SignUpScreen extends StatelessWidget {
                         fieldBorderColor: const Color(0xFFE5E7EB),
                         fieldBorderRadius: 12,
                         keyboardType: TextInputType.emailAddress,
-
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Enter Your name';
+                            }
+                            return null;
+                          }
                       ),
                       // userName
                       CustomText(
@@ -180,6 +186,12 @@ class SignUpScreen extends StatelessWidget {
                         fieldBorderColor: const Color(0xFFE5E7EB),
                         fieldBorderRadius: 12,
                         keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Enter Your User Name';
+                            }
+                            return null;
+                          }
 
                       ),
                       SizedBox(height: 10),
@@ -203,6 +215,12 @@ class SignUpScreen extends StatelessWidget {
                         fieldBorderColor: const Color(0xFFE5E7EB),
                         fieldBorderRadius: 12,
                         keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Enter Your email';
+                            }
+                            return null;
+                          }
 
                       ),
                       //Location
@@ -224,6 +242,12 @@ class SignUpScreen extends StatelessWidget {
                         fieldBorderColor: const Color(0xFFE5E7EB),
                         fieldBorderRadius: 12,
                         keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Enter Your location';
+                            }
+                            return null;
+                          }
 
                       ),
                       // Password Field
@@ -247,6 +271,20 @@ class SignUpScreen extends StatelessWidget {
                         fillColor: AppColors.white,
                         fieldBorderColor: const Color(0xFFE5E7EB),
                         fieldBorderRadius: 12,
+                        onChanged: (value) {
+                          authController.validatePasswordLive(value);
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter Your Password';
+                          }
+
+                          if (authController.passwordError.value.isNotEmpty) {
+                            return authController.passwordError.value;
+                          }
+
+                          return null;
+                        },
                       ),
                       SizedBox(height: 10),
                       // confirmPassword
@@ -270,18 +308,28 @@ class SignUpScreen extends StatelessWidget {
                         fillColor: AppColors.white,
                         fieldBorderColor: const Color(0xFFE5E7EB),
                         fieldBorderRadius: 12,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Confirm Password';
+                          } else if (value !=
+                              authController.passwordController.value.text) {
+                            return 'Password not Match';
+
+                          }
+                          return null;
+                        },
                       ),
                     ],
                   ),
                 ),
                 SizedBox(height: 20),
                 //  Create Account Button
-                Obx((){
-                  return authController.signUpLoading.value
-                      ? CustomLoader()
-                      : CustomButton(
+                 CustomButton(
                     onTap: () {
-                         authController.signUp();
+                      if(formKey.currentState!.validate())
+                        {
+                          Get.to(() =>  ChooseRole());
+                        }
                     },
                     borderRadius: 12,
                     textColor: AppColors.white,
@@ -289,8 +337,7 @@ class SignUpScreen extends StatelessWidget {
                     fillColor: AppColors.primary,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                  );
-                }),
+                  ),
 
                 SizedBox(height: 30),
               ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../choose_role/view/role_screen.dart';
+import '../../../../core/app_routes/app_routes.dart';
 
 class OnboardingController extends GetxController {
   final PageController pageController = PageController();
@@ -18,12 +18,13 @@ class OnboardingController extends GetxController {
       );
     } else {
       // Navigate to Choose Role screen when onboarding is complete
-      Get.to(() =>  ChooseRole());
+      Get.toNamed(AppRoutes.signUpScreen);
+
     }
   }
 
   void skipOnboarding() {
-    Get.to(() =>  ChooseRole());
+    Get.toNamed(AppRoutes.signUpScreen);
   }
 
   @override

@@ -5,12 +5,26 @@ import '../../../../core/app_routes/app_routes.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../../utils/app_images/app_images.dart';
 import '../../../../utils/local_storage/local_storage.dart';
+import '../../../components/custom_button/custom_button.dart';
+import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_text/custom_text.dart';
 import '../../authentication/controller/auth_controller.dart';
 import '../custom_role/custom_role.dart';
 
+class RoleController extends GetxController {
+  RxString selectedRole = ''.obs;
+
+  void selectRole(String role) {
+    selectedRole.value = role;
+  }
+
+  bool get isSelected => selectedRole.isNotEmpty;
+}
+
+
 class ChooseRole extends StatelessWidget {
   final authController = Get.put(AuthController());
+  final roleController = Get.put(RoleController());
   ChooseRole({super.key});
 
   @override
@@ -54,17 +68,16 @@ class ChooseRole extends StatelessWidget {
               const SizedBox(height: 25),
               SizedBox(height: 80),
               Expanded(
-                child: ListView(
+                child:Obx(()=> ListView(
                   children: [
                     CustomRole(
                       icon: AppImages.home,
                       title: "Host",
                       description: "List your property and collaborate with influencers",
+                      isSelected: roleController.selectedRole.value == "host",
                       onTap: () {
-                        StorageService().write("role", "host");
-                        final role = StorageService().read<String>("role");
-                        debugPrint("Chose Role host========================================${role}");
-                         Get.toNamed(AppRoutes.signUpScreen);
+                        roleController.selectRole("host");
+                        debugPrint("Chose Role host========================================${roleController.selectedRole.value}");
                       },
                     ),
                     const SizedBox(height: 16),
@@ -72,16 +85,34 @@ class ChooseRole extends StatelessWidget {
                       icon: AppImages.camara,
                       title: "Influencer",
                       description: "Promote listings and earn through collaborations",
+                      isSelected: roleController.selectedRole.value == "influencer",
                       onTap: () {
-                        StorageService().write("role", "influencer");
-                        final role = StorageService().read<String>("role");
-                        debugPrint("Chose Role influencer========================================${role}");
-                         Get.toNamed(AppRoutes.signUpScreen);
+                        roleController.selectRole("influencer");
+                        debugPrint("Chose Role host========================================${roleController.selectedRole.value}");
                       },
                     ),
                   ],
-                ),
+                ),)
               ),
+              Obx((){
+                return authController.signUpLoading.value
+                    ? CustomLoader()
+                    : CustomButton(
+                  onTap: () {
+                    StorageService().write("role", roleController.selectedRole.value);
+                    final role = StorageService().read<String>("role");
+                    debugPrint("Chose Role host========================================${role}");
+                    authController.signUp();
+                  },
+                  borderRadius: 12,
+                  textColor:roleController.isSelected? AppColors.white : AppColors.black,
+                  title: "Create Account",
+                  fillColor: roleController.isSelected ? AppColors.primary : Colors.grey.shade400,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                );
+              }),
+              SizedBox(height: 20,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
