@@ -26,33 +26,36 @@ class OtpScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      backgroundColor: AppColors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 20.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 40.h),
-              CustomImage(
-                imageSrc: AppImages.splashScreenImage,
-                height: 50.h,
-                width: 50.h,
+              const SizedBox(height: 40),
+              const Center(
+                child: CustomText(
+                  text: "HOSTINFLU",
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primary,
+                ),
               ),
               SizedBox(height: 80.h),
 
               CustomText(
-                text: 'Two-Factor Authentication',
+                text: 'VERIFY OTP',
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
-                color: Colors.white,
               ),
               SizedBox(height: 12.h),
               CustomText(
-                text: 'Check your email/SMS for the code.',
+                text: 'Enter the 4-digit code sent to your email or phone number.',
                 fontSize: 14.sp,
+                maxLines: 2,
                 fontWeight: FontWeight.w400,
-                color: Colors.white.withOpacity(0.7),
+                color: Colors.grey,
               ),
               SizedBox(height: 40.h),
 
@@ -92,10 +95,7 @@ class OtpScreen extends StatelessWidget {
                         "Field Can't Be Empty", isError: true,);
                       return;
                     }
-                    userModel.screenName == "Sign up"
-                        ? authController.verifyOtp(
-                      screenName: userModel.screenName,)
-                        : authController.verifyOtpForgetPass();
+                    authController.verifyOtpForgetPass();
                   },
                   borderRadius: 12,
                   textColor: AppColors.white,
@@ -146,7 +146,7 @@ class OtpScreen extends StatelessWidget {
                 child: CustomText(
                   text: 'Back to Login',
                   fontSize: 14.sp,
-                  color: const Color(0xFF2DD4BF),
+                  color: AppColors.primary,
                   fontWeight: FontWeight.w600,
                 ),
               ),

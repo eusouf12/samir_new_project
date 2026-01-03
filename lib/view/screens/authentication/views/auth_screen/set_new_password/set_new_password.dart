@@ -27,12 +27,14 @@ class SetNewPassword extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 40),
-                //image
-                CustomImage(
-                  imageSrc: AppImages.splashScreenImage,
-                  height: 50.h,
-                  width: 50.w,
+                const SizedBox(height: 80),
+                const Center(
+                  child: CustomText(
+                    text: "HOSTINFLU",
+                    fontSize: 30,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primary,
+                  ),
                 ),
                 const SizedBox(height: 30),
 
@@ -120,26 +122,11 @@ class SetNewPassword extends StatelessWidget {
                       borderRadius: 12,
                       textColor: AppColors.white,
                       title: "Update Password",
-                      fillColor:  AppColors.lightGreen,
+                      fillColor:  AppColors.primary,
                       fontSize: 16,
                     ),
                   );
                 }),
-                const SizedBox(height: 24),
-                // Back to Login
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.loginScreen);
-                    },
-                    child: const CustomText(
-                        text: "Back to Login",
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xFFFDD835)
-                    ),
-                  ),
-                ),
-
               ],
             ),
           ),

@@ -7,13 +7,13 @@ class ApiUrl {
 
   ///========================= Authentication =========================
    static const String signIn = "/api/v1/auth/login";
-  static const String signUp = "/api/v1/auth/create-user";
+   static const String signUp = "/api/v1/auth/create-user";
+   static const String forgotPassword = "/api/v1/auth/forgot-password";
+   static const String verificationOtpForgetPass = "/api/v1/auth/verify-reset-otp";
+   static const String newPassword = "/api/v1/auth/reset-password";
+
   static const String refreshToken = "/api/v1/auth/refresh-token";
-  static const String verificationOtp = "/api/v1/user/user_verification";
   static String recentOtp({required String email})=> "/api/v1/user/resend_verification_otp/$email";
-  static const String verificationOtpForgetPass = "/api/v1/user/verification_forgot_user";
-  static const String forgotPassword = "/api/v1/user/forgot_password";
-  static const String newPassword = "/api/v1/user/reset_password";
   static const String updateProfile = "/api/v1/auth/update_my_profile";
   static const String myProfile = "/api/v1/auth/myprofile";
   static const String termsCondition = "/api/v1/setting/find_by_terms_conditions";
