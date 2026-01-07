@@ -22,20 +22,14 @@ class ApiUrl {
   static const String helpSupport = "/api/v1/help_support/recorded_help_support";
   static const String changePassword = "/api/v1/user/change_password";
   static const String googleAuth = "/api/v1/user/google_auth";
+   static String getGalleryPostFilter({required  int page, required String filter})=> "/api/v1/memories_event/find_my_upload_memories_event?contentType=$filter&page=$page&limit=10";
 
 
-  ///========================= User =========================
-  static const String recentDocument = "/api/v1/test/find_my_ocr_list";
-  static String allDocument({required int page}) => "/api/v1/test/find_my_ocr_list?page=$page&limit=10";
-  static String allDocumentFilter({required int page, required String filter}) => "/api/v1/test/find_my_ocr_list?ocrType=$filter&page=$page&limit=10";
-  static  String  singleDocument({required String docId})=> "/api/v1/test/find_by_specific_ocr/$docId";
-  static  String  deleteOcrById({required String deleteId})=> "/api/v1/test/delete_ocr/$deleteId";
-  static const String postAllTypeDoc = "/api/v1/test/ocr";
-  static const String subscriptionExist = "/api/v1/current_subscription/is_subscription_exist";
-  static const String buySubscription = "/api/v1/current_subscription/buy_current_subscription";
 
+   ///========================= Host =========================createListing
+   static const String createListing = "/api/v1/listing/create-listing";
+   static String getListing({required String page})=> "/api/v1/listing/my-listings?currentPage=$page&limit=10";
 
-  static String getGalleryPostFilter({required  int page, required String filter})=> "/api/v1/memories_event/find_my_upload_memories_event?contentType=$filter&page=$page&limit=10";
 
   //share post
 

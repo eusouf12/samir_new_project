@@ -141,185 +141,191 @@ class SignUpScreen extends StatelessWidget {
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: "Full Name",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 10),
-                      CustomTextField(
-                        textEditingController: authController.nameController.value,
-                        hintText: "Enter your name",
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                        prefixIcon: const Icon(Icons.person_outlined, color: Color(0xFF9CA3AF), size: 20,),
-                        fillColor: AppColors.white,
-                        fieldBorderColor: const Color(0xFFE5E7EB),
-                        fieldBorderRadius: 12,
-                        keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter Your name';
-                            }
-                            return null;
-                          }
-                      ),
-                      // userName
-                      CustomText(
-                        text: "User Name",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                        top: 10,
-                      ),
-                      SizedBox(height: 10),
-                      CustomTextField(
-                        textEditingController: authController.usernameController.value,
-                        hintText: "Enter your user name",
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                        prefixIcon: const Icon(Icons.person_outlined, color: Color(0xFF9CA3AF), size: 20,),
-                        fillColor: AppColors.white,
-                        fieldBorderColor: const Color(0xFFE5E7EB),
-                        fieldBorderRadius: 12,
-                        keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter Your User Name';
-                            }
-                            return null;
-                          }
+                  child: Form(
+                      key: formKey,
+                    child: Obx(()=>
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: "Full Name",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                            SizedBox(height: 10),
+                            CustomTextField(
+                                textEditingController: authController.nameController.value,
+                                hintText: "Enter your name",
+                                hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                prefixIcon: const Icon(Icons.person_outlined, color: Color(0xFF9CA3AF), size: 20,),
+                                fillColor: AppColors.white,
+                                fieldBorderColor: const Color(0xFFE5E7EB),
+                                fieldBorderRadius: 12,
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Enter Your name';
+                                  }
+                                  return null;
+                                }
+                            ),
+                            // userName
+                            CustomText(
+                              text: "User Name",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                              top: 10,
+                            ),
+                            SizedBox(height: 10),
+                            CustomTextField(
+                                textEditingController: authController.usernameController.value,
+                                hintText: "Enter your user name",
+                                hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                prefixIcon: const Icon(Icons.person_outlined, color: Color(0xFF9CA3AF), size: 20,),
+                                fillColor: AppColors.white,
+                                fieldBorderColor: const Color(0xFFE5E7EB),
+                                fieldBorderRadius: 12,
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Enter Your User Name';
+                                  }
+                                  return null;
+                                }
 
-                      ),
-                      SizedBox(height: 10),
-                      //Email
-                      CustomText(
-                        text: AppStrings.email,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 10),
-                      CustomTextField(
-                        textEditingController: authController.emailController.value,
-                        hintText: AppStrings.enterYourEmail,
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                        prefixIcon: const Icon(
-                          Icons.email_outlined,
-                          color: Color(0xFF9CA3AF),
-                          size: 20,),
-                        fillColor: AppColors.white,
-                        fieldBorderColor: const Color(0xFFE5E7EB),
-                        fieldBorderRadius: 12,
-                        keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter Your email';
-                            }
-                            return null;
-                          }
+                            ),
+                            SizedBox(height: 10),
+                            //Email
+                            CustomText(
+                              text: AppStrings.email,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                            SizedBox(height: 10),
+                            CustomTextField(
+                                textEditingController: authController.emailController.value,
+                                hintText: AppStrings.enterYourEmail,
+                                hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                prefixIcon: const Icon(
+                                  Icons.email_outlined,
+                                  color: Color(0xFF9CA3AF),
+                                  size: 20,),
+                                fillColor: AppColors.white,
+                                fieldBorderColor: const Color(0xFFE5E7EB),
+                                fieldBorderRadius: 12,
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Enter Your email';
+                                  }
+                                  return null;
+                                }
 
-                      ),
-                      //Location
-                      CustomText(
-                        text: "Location",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 10),
-                      CustomTextField(
-                        textEditingController: authController.locationController.value,
-                        hintText: "Enter your location",
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                        prefixIcon: Icon(Icons.location_on_outlined,
-                          color: Color(0xFF9CA3AF),
-                          size: 20,),
-                        fillColor: AppColors.white,
-                        fieldBorderColor: const Color(0xFFE5E7EB),
-                        fieldBorderRadius: 12,
-                        keyboardType: TextInputType.emailAddress,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter Your location';
-                            }
-                            return null;
-                          }
+                            ),
+                            //Location
+                            CustomText(
+                              text: "Location",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                            SizedBox(height: 10),
+                            CustomTextField(
+                                textEditingController: authController.locationController.value,
+                                hintText: "Enter your location",
+                                hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                                prefixIcon: Icon(Icons.location_on_outlined,
+                                  color: Color(0xFF9CA3AF),
+                                  size: 20,),
+                                fillColor: AppColors.white,
+                                fieldBorderColor: const Color(0xFFE5E7EB),
+                                fieldBorderRadius: 12,
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Enter Your location';
+                                  }
+                                  return null;
+                                }
 
-                      ),
-                      // Password Field
-                      CustomText(
-                        text: AppStrings.password,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 10),
-                      CustomTextField(
-                        textEditingController: authController.passwordController.value,
-                        hintText: "Create a strong password",
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                        prefixIcon: const Icon(
-                          Icons.lock_outline,
-                          color: Color(0xFF9CA3AF),
-                          size: 22,
-                        ),
-                        isPassword: true,
-                        fillColor: AppColors.white,
-                        fieldBorderColor: const Color(0xFFE5E7EB),
-                        fieldBorderRadius: 12,
-                        onChanged: (value) {
-                          authController.validatePasswordLive(value);
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Enter Your Password';
-                          }
+                            ),
+                            // Password Field
+                            CustomText(
+                              text: AppStrings.password,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                            SizedBox(height: 10),
+                            CustomTextField(
+                              textEditingController: authController.passwordController.value,
+                              hintText: "Create a strong password",
+                              hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                              prefixIcon: const Icon(
+                                Icons.lock_outline,
+                                color: Color(0xFF9CA3AF),
+                                size: 22,
+                              ),
+                              isPassword: true,
+                              fillColor: AppColors.white,
+                              fieldBorderColor: const Color(0xFFE5E7EB),
+                              fieldBorderRadius: 12,
+                              onChanged: (value) {
+                                authController.validatePasswordLive(value);
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Enter Your Password';
+                                }
 
-                          if (authController.passwordError.value.isNotEmpty) {
-                            return authController.passwordError.value;
-                          }
+                                if (authController.passwordError.value.isNotEmpty) {
+                                  return authController.passwordError.value;
+                                }
 
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      // confirmPassword
-                      CustomText(
-                        text: AppStrings.changePassword,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                      SizedBox(height: 10),
-                      CustomTextField(
-                        textEditingController:  authController.confirmPasswordController.value,
-                        hintText: "Retype password",
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                        prefixIcon: const Icon(
-                          Icons.lock_outline,
-                          color: Color(0xFF9CA3AF),
-                          size: 22,
-                        ),
-                        isPassword: true,
-                        fillColor: AppColors.white,
-                        fieldBorderColor: const Color(0xFFE5E7EB),
-                        fieldBorderRadius: 12,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Confirm Password';
-                          } else if (value !=
-                              authController.passwordController.value.text) {
-                            return 'Password not Match';
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            // confirmPassword
+                            CustomText(
+                              text: AppStrings.changePassword,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                            ),
+                            SizedBox(height: 10),
+                            CustomTextField(
+                              textEditingController:  authController.confirmPasswordController.value,
+                              hintText: "Retype password",
+                              hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                              prefixIcon: const Icon(
+                                Icons.lock_outline,
+                                color: Color(0xFF9CA3AF),
+                                size: 22,
+                              ),
+                              isPassword: true,
+                              fillColor: AppColors.white,
+                              fieldBorderColor: const Color(0xFFE5E7EB),
+                              fieldBorderRadius: 12,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Confirm Password';
+                                } else if (value !=
+                                    authController.passwordController.value.text) {
+                                  return 'Password not Match';
 
-                          }
-                          return null;
-                        },
-                      ),
-                    ],
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        )
+                    )
+
                   ),
                 ),
                 SizedBox(height: 20),

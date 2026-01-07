@@ -27,8 +27,8 @@ class AuthController extends GetxController {
   Rx<TextEditingController> phoneNumberController = TextEditingController().obs;
   Rx<TextEditingController> dateOfBirthController = TextEditingController().obs;
   Rx<TextEditingController> passwordController = TextEditingController().obs;
-  Rx<TextEditingController> confirmPasswordController = TextEditingController()
-      .obs;
+  Rx<TextEditingController> confirmPasswordController = TextEditingController().obs;
+
   RxString passwordError = "".obs;
   var completePhoneNumber = ''.obs;
   var countryCode = ''.obs;
@@ -53,13 +53,11 @@ class AuthController extends GetxController {
       passwordError.value = "";
     }
   }
-
   bool isEmailValidate(String input) {
     return RegExp(
       r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$",
     ).hasMatch(input);
   }
-
 
   ///=============== Date Formate Function ================
   Future<void> pickDate(BuildContext context) async {
@@ -114,13 +112,25 @@ class AuthController extends GetxController {
 
         // Clear signup data
         clearSignUpData();
-      } else {
+      }
+      else {
         signUpLoading.value = false;
         refresh();
 
         if (response.statusText == ApiClient.somethingWentWrong) {
           showCustomSnackBar(AppStrings.checknetworkconnection, isError: true);
         } else {
+          Map<String, dynamic> jsonResponse;
+
+          (response.body is String) ?
+          jsonResponse = jsonDecode(response.body) : jsonResponse =
+          response.body as Map<String, dynamic>;
+
+
+          showCustomSnackBar(jsonResponse['message']?.toString() ??
+              "Registration fail your email.",
+              isError: true);
+
           ApiChecker.checkApi(response);
         }
       }
@@ -156,9 +166,9 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loginEmailController.value.text = "fdafdfda";
-    // loginEmailController.value.text = "hasan1@gmail.com" ;
-    loginPasswordController.value.text = "123456";
+    //loginEmailController.value.text = "fdafdfda";
+     loginEmailController.value.text = "eusouf12" ;
+    loginPasswordController.value.text = "Aa123#";
   }
 
   RxBool loginUserLoading = false.obs;
@@ -194,7 +204,9 @@ class AuthController extends GetxController {
 
         // Access Token
         String accessToken = jsonResponse['accessToken'].toString();
-        await SharePrefsHelper.setString(AppConstants.bearerToken, accessToken);
+        final sendToken ="Bearer $accessToken" ;
+        debugPrint("Bearer Token: $sendToken");
+        await SharePrefsHelper.setString(AppConstants.bearerToken, sendToken);
 
         // Decode token
         Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken);

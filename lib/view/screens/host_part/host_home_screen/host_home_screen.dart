@@ -122,7 +122,7 @@ class HostHomeScreen extends StatelessWidget {
             SizedBox(height: 16),
             CustomButtonTwo(
               onTap: () {
-                Get.toNamed(AppRoutes.hostAddListingScreen);
+                Get.toNamed(AppRoutes.hostAddNewListingScreen);
               },
               title: "Add Listing",
               borderRadius: 10,

@@ -130,7 +130,7 @@ class ApiClient extends GetxService {
   }
 
 
-  static Future<Response> postMultipartData(String uri, dynamic body, {List<MultipartBody>? multipartBody, Map<String, String>? headers}) async {
+  static Future<Response> postMultipartData(String uri, dynamic body, {List<MultipartBody>? multipartBody, Map<String, dynamic>? headers}) async {
     try {
       bearerToken = await SharePrefsHelper.getString(AppConstants.bearerToken);
 

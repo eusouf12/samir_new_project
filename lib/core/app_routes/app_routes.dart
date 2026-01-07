@@ -24,7 +24,7 @@ import '../../view/screens/choose_role/view/role_screen.dart';
 import '../../view/screens/host_part/host_active_influe/host_active_influe.dart';
 import '../../view/screens/host_part/host_active_influe/host_active_view_profile_screen.dart';
 import '../../view/screens/host_part/host_active_influe/host_send_collaboaration_screen.dart';
-import '../../view/screens/host_part/host_home_screen/host_add_listing_screen.dart';
+import '../../view/screens/host_part/host_listing_screen/my_listing.dart';
 import '../../view/screens/host_part/host_home_screen/host_collaboration_screen.dart';
 import '../../view/screens/host_part/host_home_screen/host_collaboration_view_details_screen.dart';
 import '../../view/screens/host_part/host_home_screen/host_create_deal_screen.dart';
@@ -99,7 +99,7 @@ class AppRoutes {
  static const String hostCreateDealThreeScreen = "/HostCreateDealThreeScreen";
  static const String hostReviewConfirmScreen = "/HostReviewConfirmScreen";
  static const String hostNotificationScreen = "/HostNotificationScreen";
- static const String hostAddListingScreen = "/HostAddListingScreen";
+ static const String myListing = "/MyListing";
  static const String hostCollaborationScreen = "/HostCollaborationScreen";
  static const String hostCollaborationViewDetailsScreen = "/HostCollaborationViewDetailsScreen";
  static const String hostRedeemRequestScreen = "/HostRedeemRequestScreen";
@@ -169,7 +169,6 @@ class AppRoutes {
     GetPage(name: hostCreateDealThreeScreen, page: () => HostCreateDealThreeScreen()),
     GetPage(name: hostReviewConfirmScreen, page: () => HostReviewConfirmScreen()),
     GetPage(name: hostNotificationScreen, page: () => HostNotificationScreen()),
-    GetPage(name: hostAddListingScreen, page: () => HostAddListingScreen()),
     GetPage(name: hostCollaborationScreen, page: () => HostCollaborationScreen()),
     GetPage(name: hostCollaborationViewDetailsScreen, page: () => HostCollaborationViewDetailsScreen()),
     GetPage(name: hostRedeemRequestScreen, page: () => HostRedeemRequestScreen()),

@@ -99,7 +99,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         isDense: widget.isDens,
         errorMaxLines: 2,
         hintText: widget.hintText,
-        hintStyle: widget.hintStyle ?? GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.white),
+        hintStyle: widget.hintStyle ?? GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.black),
         fillColor: widget.fillColor,
         filled: true,
         prefixIcon: widget.prefixIcon,

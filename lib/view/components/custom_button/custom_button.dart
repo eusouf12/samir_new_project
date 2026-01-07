@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
     this.marginVertical = 0,
     this.marginHorizontal = 0,
     this.fillColor = AppColors.primary,
-    this.textColor = AppColors.primary,
+    this.textColor = AppColors.white,
     this.isBorder = false,
     this.fontSize,
     this.borderWidth,
