@@ -4,10 +4,10 @@ import 'package:samir_flutter_app/view/components/custom_button/custom_button_tw
 import 'package:samir_flutter_app/view/components/custom_image/custom_image.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 
-import '../../../../utils/app_colors/app_colors.dart';
-import '../../../../utils/app_const/app_const.dart';
-import '../../../components/custom_netwrok_image/custom_network_image.dart';
-import '../../../components/custom_text/custom_text.dart';
+import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../utils/app_const/app_const.dart';
+import '../../../../components/custom_netwrok_image/custom_network_image.dart';
+import '../../../../components/custom_text/custom_text.dart';
 class HostCollaborationViewDetailsScreen extends StatelessWidget {
   const HostCollaborationViewDetailsScreen({super.key});
 

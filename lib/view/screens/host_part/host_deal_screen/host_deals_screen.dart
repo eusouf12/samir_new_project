@@ -8,7 +8,7 @@ import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_
 import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_deals_container.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../components/custom_tab_selected/custom_tab_selected.dart';
-import 'controller/host_home_controller.dart';
+import '../host_home_screen/controller/host_home_controller.dart';
 
 class HostDealsScreen extends StatelessWidget {
   HostDealsScreen({super.key});

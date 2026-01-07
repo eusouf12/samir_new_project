@@ -115,29 +115,29 @@ class ChooseRole extends StatelessWidget {
                   );
                 }),
                 SizedBox(height: 20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomText(
-                      text: 'Already have an account ?  ',
-                      fontSize: 16.w,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.black_02,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        authController.loginLoading.value = true;
-                        Get.toNamed(AppRoutes.loginScreen);
-                      },
-                      child: CustomText(
-                        text: 'Log in',
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
-                        fontSize: 16.w,
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     CustomText(
+                //       text: 'Already have an account ?  ',
+                //       fontSize: 16.w,
+                //       fontWeight: FontWeight.w400,
+                //       color: AppColors.black_02,
+                //     ),
+                //     GestureDetector(
+                //       onTap: () {
+                //         authController.loginLoading.value = true;
+                //         Get.toNamed(AppRoutes.loginScreen);
+                //       },
+                //       child: CustomText(
+                //         text: 'Log in',
+                //         fontWeight: FontWeight.w700,
+                //         color: AppColors.primary,
+                //         fontSize: 16.w,
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),

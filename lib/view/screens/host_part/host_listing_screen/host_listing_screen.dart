@@ -52,7 +52,6 @@ class HostListingScreen extends StatelessWidget {
                 if (controller.listingList.isEmpty) {
                   return Center(child: CustomText(text: "No listings found", fontSize: 16,),);
                 }
-
                 return ListView.builder(
                   controller: scrollController,
                   itemCount: controller.listingList.length + (controller.isLoadMoreLoading.value ? 1 : 0),

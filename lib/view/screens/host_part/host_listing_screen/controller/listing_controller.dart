@@ -169,11 +169,11 @@ class ListingController extends GetxController {
         setListingStatus(Status.completed);
       } else {
         setListingStatus(Status.error);
-        Get.snackbar("Error", "Failed to load listings");
+        showCustomSnackBar( "Error , Failed to load listings", isError: true,);
       }
     } catch (e) {
       setListingStatus(Status.error);
-      Get.snackbar("Error", e.toString());
+      showCustomSnackBar( "Error , ${e.toString()}", isError: true,);
     } finally {
       isListingLoading.value = false;
       isLoadMoreLoading.value = false;

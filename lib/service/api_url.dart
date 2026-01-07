@@ -3,7 +3,6 @@ class ApiUrl {
    // static const String baseUrl = "https://washington-unsigned-maintain-catalyst.trycloudflare.com";
   static const String imageUrl = baseUrl;
   static String socketUrl = baseUrl;
-  static String mapKey = "AIzaSyD96BSj2VcHpAfuy2LE1p7NTO7becR44RE";
 
   ///========================= Authentication =========================
    static const String signIn = "/api/v1/auth/login";
@@ -12,10 +11,13 @@ class ApiUrl {
    static const String verificationOtpForgetPass = "/api/v1/auth/verify-reset-otp";
    static const String newPassword = "/api/v1/auth/reset-password";
 
+   ///========================= My Profile =========================
+   static const String myProfile = "/api/v1/auth/my-profile";
+
+
   static const String refreshToken = "/api/v1/auth/refresh-token";
   static String recentOtp({required String email})=> "/api/v1/user/resend_verification_otp/$email";
   static const String updateProfile = "/api/v1/auth/update_my_profile";
-  static const String myProfile = "/api/v1/auth/myprofile";
   static const String termsCondition = "/api/v1/setting/find_by_terms_conditions";
   static const String aboutUs = "/api/v1/setting/find_by_about_us";
   static const String privacyPolicy = "/api/v1/setting/find_by_privacy_policys";

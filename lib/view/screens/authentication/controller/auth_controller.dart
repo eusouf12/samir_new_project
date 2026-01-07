@@ -160,8 +160,7 @@ class AuthController extends GetxController {
 
   //======================LOGIN CONTROLLER=====================
   Rx<TextEditingController> loginEmailController = TextEditingController().obs;
-  Rx<TextEditingController> loginPasswordController = TextEditingController()
-      .obs;
+  Rx<TextEditingController> loginPasswordController = TextEditingController().obs;
 
   @override
   void onInit() {
@@ -198,9 +197,7 @@ class AuthController extends GetxController {
           jsonResponse = response.body as Map<String, dynamic>;
         }
 
-        showCustomSnackBar(
-          jsonResponse['message']?.toString() ?? "Login successful",
-          isError: false,);
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Login successful", isError: false,);
 
         // Access Token
         String accessToken = jsonResponse['accessToken'].toString();
@@ -241,10 +238,7 @@ class AuthController extends GetxController {
             isError: true,
           );
         } else {
-          showCustomSnackBar(
-            errorResponse['message']?.toString() ?? "Login failed",
-            isError: true,
-          );
+          showCustomSnackBar(errorResponse['message']?.toString() ?? "Login failed", isError: true);
         }
       }
     } catch (e) {
