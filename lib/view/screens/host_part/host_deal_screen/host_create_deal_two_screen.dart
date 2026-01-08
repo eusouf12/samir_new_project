@@ -1,284 +1,123 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-
+import 'package:get/get.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../components/custom_button/custom_button_two.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../components/custom_text/custom_text.dart';
-class HostCreateDealTwoScreen extends StatefulWidget {
-  const HostCreateDealTwoScreen({super.key});
+import 'controller/deals_controller.dart';
 
-  @override
-  State<HostCreateDealTwoScreen> createState() => _HostCreateDealTwoScreenState();
-}
+class HostCreateDealTwoScreen extends StatelessWidget {
+  HostCreateDealTwoScreen({super.key});
 
-class _HostCreateDealTwoScreenState extends State<HostCreateDealTwoScreen> {
+  final DealsController controller = Get.put(DealsController());
 
-  String selectedPlatform = "TikTok";
-  int postCount = 4;
-
-  final List<Map<String, dynamic>> platforms = [
-    {
-      "name": "TikTok",
-      "icon": Icons.play_arrow, // Replace with proper asset
-      "color": Colors.black,
-    },
-    {
-      "name": "Instagram",
-      "icon": Icons.camera_alt,
-      "color": Colors.pink,
-    },
-    {
-      "name": "YouTube",
-      "icon": Icons.video_collection,
-      "color": Colors.red,
-    },
-  ];
-
-  final List<Map<String, dynamic>> contentTypes = [
-    {
-      "title": "Post",
-      "subtitle": "Feed post with image/video",
-      "icon": Icons.image,
-      "selected": false,
-    },
-    {
-      "title": "Reels",
-      "subtitle": "Short video content",
-      "icon": Icons.movie_creation_outlined,
-      "selected": false,
-    },
-    {
-      "title": "Story",
-      "subtitle": "24-hour story content",
-      "icon": Icons.timelapse,
-      "selected": false,
-    }
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Create Deal"),
+      backgroundColor: Colors.white,
+      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Create Deal"),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              width: MediaQuery.sizeOf(context).width,
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Color(0xffeff9f8),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    text: "Step 2 of 4",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.primary,
-                    bottom: 6,
-                  ),
-                  CustomText(
-                    text: "Deliverables",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    bottom: 6,
-                  ),
-                  LinearProgressIndicator(
-                    value: 0.50,
-                    minHeight: 8,
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primary,
-                    backgroundColor: AppColors.greyLight,
-                  )
-                ],
-              ),
-            ),
+            _buildHeader(),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
               child: Column(
-                children: [
-                  CustomText(
-                    text: "Define what the influencer will create for your brand",
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textClr,
-                    maxLines: 2,
-                    bottom: 6,
-                    textAlign: TextAlign.start,
-                  ),
-
-
-
-              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Select Platform(s)",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 12),
+                  const CustomText(text: "Select Platform", fontSize: 14, fontWeight: FontWeight.w500, bottom: 8),
 
-                  /// PLATFORM BUTTONS
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(children: controller.platformNames.map((p) => _buildChoiceChip(p)).toList(),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  const CustomText(text: "Content Type", fontSize: 14, fontWeight: FontWeight.w500, bottom: 8),
+                  _buildDropdown(),
+
+                  const SizedBox(height: 20),
+
+                  const CustomText(text: "How many contents should they create?", fontSize: 14, fontWeight: FontWeight.w500, bottom: 8),
                   Row(
-                    children: platforms.map((p) {
-                      final bool active = p["name"] == selectedPlatform;
-                      return Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedPlatform = p["name"];
-                            });
-                          },
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            margin: const EdgeInsets.symmetric(horizontal: 6),
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            decoration: BoxDecoration(
-                              color: active
-                                  ? Colors.teal.shade200
-                                  : Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(
-                                color: active
-                                    ? Colors.teal
-                                    : Colors.grey.shade300,
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Icon(p["icon"], color: p["color"], size: 30),
-                                const SizedBox(height: 6),
-                                Text(
-                                  p["name"],
-                                  style: TextStyle(
-                                    fontWeight:
-                                    active ? FontWeight.bold : FontWeight.normal,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                    children: [
+                      _stepButton(Icons.remove, () => controller.decrement()),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Obx(() => CustomText(text: "${controller.quantity.value}", fontSize: 18, fontWeight: FontWeight.bold)),
+                      ),
+                      _stepButton(Icons.add, () => controller.increment()),
+                      const Spacer(),
+
+                      ElevatedButton(
+                        onPressed: () => controller.addDeliverable(),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xffa8e3d0),
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
-                      );
-                    }).toList(),
+                        child: const Text("Add Deliverable"),
+                      ),
+                    ],
                   ),
 
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 30),
+                  const Divider(),
+                  const CustomText(text: "Added Deliverables", fontSize: 16, fontWeight: FontWeight.bold, top: 10, bottom: 12),
 
-                  /// CONTENT TYPE CARDS
-                  Column(
-                    children: contentTypes.map((ct) {
+                  Obx(() => ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: controller.deliverables.length,
+                    itemBuilder: (context, index) {
+                      final item = controller.deliverables[index];
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        padding: const EdgeInsets.all(16),
+                        margin: const EdgeInsets.only(bottom: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: Colors.grey.shade300),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 6,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey.shade200),
                         ),
                         child: Row(
                           children: [
+                            CustomText(text: "${item['platform']}  •  ${item['contentType']}", fontSize: 15, fontWeight: FontWeight.w500),
+                            const SizedBox(width: 8),
                             Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.blue.shade50,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Icon(ct["icon"], color: Colors.blue, size: 28),
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(4)),
+                              child: Text("x${item['quantity']}", style: const TextStyle(fontSize: 12)),
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    ct["title"],
-                                    style: const TextStyle(
-                                        fontSize: 16, fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    ct["subtitle"],
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.grey.shade700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Checkbox(
-                              value: ct["selected"],
-                              onChanged: (value) {
-                                setState(() => ct["selected"] = value);
-                              },
+                            const Spacer(),
+                            IconButton(
+                              onPressed: () => controller.removeDeliverable(index),
+                              icon: const Icon(Icons.remove_circle_outline, color: Colors.redAccent, size: 22),
                             )
                           ],
                         ),
                       );
-                    }).toList(),
+                    },
+                  )),
+
+                  const SizedBox(height: 40),
+                  CustomButtonTwo(
+                    onTap: () {
+                      debugPrint("==== SELECTED DELIVERABLES ====");
+
+                      for (var item in controller.deliverables) {
+                        debugPrint(item.toString());
+                      }
+
+                      Get.toNamed(AppRoutes.hostCreateDealThreeScreen);
+                    },
+                    title: "Next →",
                   ),
 
-                  const SizedBox(height: 24),
 
-                  /// POST COUNT STEPPER
-                  const Text(
-                    "Post Count",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: Colors.grey.shade400),
-                    ),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (postCount > 1) postCount--;
-                            });
-                          },
-                          child: _stepButton("-"),
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              "$postCount",
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() => postCount++);
-                          },
-                          child: _stepButton("+"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-
-                  SizedBox(height: 50,),
-                  CustomButtonTwo(onTap: (){
-                    Get.toNamed(AppRoutes.hostCreateDealThreeScreen);
-                  },title: "Next →",)
+                  const SizedBox(height: 20),
                 ],
               ),
             )
@@ -288,19 +127,90 @@ class _HostCreateDealTwoScreenState extends State<HostCreateDealTwoScreen> {
     );
   }
 
-  Widget _stepButton(String text) {
+  Widget _buildHeader() {
     return Container(
-      width: 36,
-      height: 36,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.grey.shade200,
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: const BoxDecoration(color: Color(0xffeff9f8)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const CustomText(text: "Step 2 of 4", fontSize: 14, color: AppColors.primary, bottom: 6),
+          const CustomText(text: "Deliverables", fontSize: 16, fontWeight: FontWeight.w700, bottom: 6),
+          LinearProgressIndicator(
+            value: 0.50,
+            minHeight: 8,
+            borderRadius: BorderRadius.circular(10),
+            color: AppColors.primary,
+            backgroundColor: AppColors.greyLight,
+          )
+        ],
       ),
-      child: Center(
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    );
+  }
+
+  Widget _buildChoiceChip(String label) {
+    return Obx(() {
+      final bool isActive = label == controller.selectedPlatform.value;
+
+      final Color iconColor =
+          controller.platformColors[label] ?? Colors.grey;
+
+      return GestureDetector(
+        onTap: () => controller.selectedPlatform.value = label,
+        child: Container(
+          margin: const EdgeInsets.only(right: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: isActive ? AppColors.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: isActive ? AppColors.primary : Colors.grey.shade300,),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                controller.platformIcons[label], size: 32, color: iconColor,
+              ),
+              const SizedBox(height: 6),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isActive
+                      ? Colors.white
+                      : Colors.black54,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ),
+      );
+    });
+  }
+
+  Widget _buildDropdown() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: Colors.grey.shade300)),
+      child: DropdownButtonHideUnderline(
+        child: Obx(() => DropdownButton<String>(
+          value: controller.selectedContentType.value,
+          isExpanded: true,
+          onChanged: (val) => controller.selectedContentType.value = val!,
+          items: controller.contentTypes.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+        )),
+      ),
+    );
+  }
+
+  Widget _stepButton(IconData icon, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(color: const Color(0xff48C192), borderRadius: BorderRadius.circular(6)),
+        child: Icon(icon, color: Colors.white, size: 18),
       ),
     );
   }

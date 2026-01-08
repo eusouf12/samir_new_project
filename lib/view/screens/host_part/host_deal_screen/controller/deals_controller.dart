@@ -1,12 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../service/api_client.dart';
+import '../../../../../service/api_url.dart';
+import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../host_listing_screen/model/listing_model.dart';
 
 class DealsController extends GetxController {
   RxList<ListingItem> listingList = <ListingItem>[].obs;
   RxString selectedTitle = ''.obs;
+  RxString selectedId = ''.obs;
   Rx<TextEditingController> titleDescriptionController = TextEditingController().obs;
   // CHECK IN
   Rx<TimeOfDay?> checkInTime = Rx<TimeOfDay?>(null);
@@ -48,6 +55,200 @@ class DealsController extends GetxController {
       } else {
         checkOutDate.value = picked;
       }
+    }
+  }
+
+  //=============== selected page 2===========
+  // current selection
+  var selectedPlatform = "Instagram".obs;
+  var selectedContentType = "Post".obs;
+  var quantity = 1.obs;
+
+  // final list (API payload)
+  RxList<Map<String, dynamic>> deliverables = <Map<String, dynamic>>[].obs;
+
+  // platform config
+  final List<String> platformNames = [
+    "Instagram",
+    "TikTok",
+    "YouTube",
+    "Facebook",
+    "X (Twitter)"
+  ];
+
+  final Map<String, Color> platformColors = {
+    "Instagram": const Color(0xFFE1306C),
+    "TikTok": Colors.black,
+    "YouTube": Colors.red,
+    "Facebook": const Color(0xFF1877F2),
+    "X (Twitter)": Colors.black,
+  };
+
+  final Map<String, IconData> platformIcons = {
+    "Instagram": Icons.camera_alt,
+    "TikTok": Icons.music_note,
+    "YouTube": Icons.play_circle_fill,
+    "Facebook": Icons.facebook,
+    "X (Twitter)": Icons.alternate_email,
+  };
+
+  final List<String> contentTypes = [
+    "Post",
+    "Reel",
+    "Story",
+    "Video"
+  ];
+
+  // ✅ Add or Update deliverable
+  void addDeliverable() {
+    final index = deliverables.indexWhere(
+          (e) =>
+      e["platform"] == selectedPlatform.value &&
+          e["contentType"] == selectedContentType.value,
+    );
+
+    if (index != -1) {
+      // update existing quantity
+      deliverables[index]["quantity"] += quantity.value;
+      deliverables.refresh();
+    } else {
+      // add new entry
+      deliverables.add({
+        "platform": selectedPlatform.value,
+        "contentType": selectedContentType.value,
+        "quantity": quantity.value,
+      });
+    }
+
+    // reset quantity
+    quantity.value = 1;
+  }
+
+  // ❌ Remove by index
+  void removeDeliverable(int index) {
+    deliverables.removeAt(index);
+  }
+
+  // 🔁 Update quantity directly (optional use in list)
+  void updateQuantity(int index, int newQty) {
+    if (newQty <= 0) {
+      deliverables.removeAt(index);
+    } else {
+      deliverables[index]["quantity"] = newQty;
+      deliverables.refresh();
+    }
+  }
+
+  // ➕➖ Quantity control (selection time)
+  void increment() => quantity.value++;
+
+  void decrement() {
+    if (quantity.value > 1) quantity.value--;
+  }
+
+
+  // ============= create deals 3rd page ========
+
+  // Compensation Type Selection
+  // Compensation Type Selection
+  var isNightCredits = false.obs;
+  var isDirectPayment = false.obs;
+
+  // Night Credits
+  var totalNights = 0.obs; // default nights
+
+  // Direct Payment
+  var paymentAmount = 0.0.obs;
+  // Guest Count
+  var guestCount = 0.obs;
+
+  // TextEditingController for TextField
+  late TextEditingController paymentController;
+
+  @override
+  void onInit() {
+    super.onInit();
+    paymentController = TextEditingController(text: "0.00");
+
+    // listen to TextField changes
+    paymentController.addListener(() {
+      final text = paymentController.text;
+      paymentAmount.value = double.tryParse(text) ?? 0.0;
+    });
+  }
+
+  // Toggle Compensation Type
+  void toggleNightCredits() => isNightCredits.value = !isNightCredits.value;
+  void toggleDirectPayment() => isDirectPayment.value = !isDirectPayment.value;
+
+  // Nights Stepper
+  void incrementNights() => totalNights.value++;
+  void decrementNights() {
+    if (totalNights.value > 1) totalNights.value--;
+  }
+  // Guest count stepper
+  void incrementGuest() => guestCount.value++;
+  void decrementGuest() {
+    if (guestCount.value > 1) guestCount.value--;
+  }
+
+  // ================ create deals screen ==============
+  var isCreatingDeal = false.obs;
+  Future<void> createDeal() async {
+    final body = {
+      "title": selectedTitle.value,
+      "description": titleDescriptionController.value.text,
+      "addAirbnbLink": "abc.com",
+      "inTimeAndDate": checkInDate.value != null && checkInTime.value != null
+          ? DateTime(
+        checkInDate.value!.year,
+        checkInDate.value!.month,
+        checkInDate.value!.day,
+        checkInTime.value!.hour,
+        checkInTime.value!.minute,
+      ).toUtc().toIso8601String()
+          : null,
+      "outTimeAndDate": checkOutDate.value != null && checkOutTime.value != null
+          ? DateTime(
+        checkOutDate.value!.year,
+        checkOutDate.value!.month,
+        checkOutDate.value!.day,
+        checkOutTime.value!.hour,
+        checkOutTime.value!.minute,
+      ).toUtc().toIso8601String()
+          : null,
+      "compensation": {
+        "nightCredits": isNightCredits.value,
+        "numberOfNights": totalNights.value,
+        "directPayment": isDirectPayment.value,
+        "paymentAmount": paymentAmount.value,
+      },
+      "deliverables": deliverables.map((e) => e).toList(),
+      "guestCount": guestCount.value,
+    };
+
+    try {
+      isCreatingDeal.value = true;
+      final response = await ApiClient.postData(
+        ApiUrl.createDeal,
+        jsonEncode(body),
+      );
+
+      var jsonResponse = response.body is String ? jsonDecode(response.body) : response.body;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Deal created successfully", isError: false,);
+        Get.toNamed(AppRoutes.hostHomeScreen);
+      } else {
+        showCustomSnackBar(
+          jsonResponse['error']?.toString() ?? "Failed to create deal",
+          isError: true,
+        );
+      }
+    } catch (e) {
+      showCustomSnackBar("Something went wrong. Try again.", isError: true,);
+      isCreatingDeal.value = false;
+      debugPrint("Create deal error: $e");
     }
   }
 }

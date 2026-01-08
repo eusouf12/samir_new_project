@@ -14,16 +14,19 @@ import '../../../../core/app_routes/app_routes.dart';
 import '../../../../utils/app_const/app_const.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_nav_bar/navbar.dart';
+import '../host_listing_screen/controller/listing_controller.dart';
 import '../host_profile_screen/controller/host_profile_controller.dart';
 
 class HostHomeScreen extends StatelessWidget {
   HostHomeScreen({super.key});
   final HostProfileController hostProfileController = Get.put(HostProfileController());
+  final ListingController listingController = Get.put(ListingController());
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       hostProfileController.getUserProfile();
+      listingController.getListings(loadMore: false);
     });
     return CustomGradient(
       child: Scaffold(

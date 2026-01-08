@@ -59,34 +59,47 @@ class HostCreateDealScreen extends StatelessWidget {
                   //  Title
                   const CustomText(text: "Title", fontSize: 14, fontWeight: FontWeight.w600, bottom: 8),
                   Obx(() {
-                  final listings = listingController.listingList;
-                  return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        hint: const Text("Select property type"),
-                        value: dealsController.selectedTitle.value.isEmpty ? null : dealsController.selectedTitle.value,
-                        dropdownColor: Colors.white,
-                        items: listings.map((listing) {
-                          return DropdownMenuItem<String>(
-                            value: listing.title,
-                            child: Text(listing.title),
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-                          dealsController.selectedTitle.value = newValue ?? '';
-                          debugPrint("Selected title: ${dealsController.selectedTitle.value}");
-                        },
+                    // listingList reactive variable
+                    final listings = listingController.listingList;
+
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey.shade300),
                       ),
-                    ),
-                  );
-                }),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          hint: const Text("Select property type"),
+                          value: dealsController.selectedId.value.isEmpty
+                              ? null
+                              : dealsController.selectedId.value,
+                          dropdownColor: Colors.white,
+                          items: listings.map((listing) {
+                            return DropdownMenuItem<String>(
+                              value: listing.id,
+                              child: Text(listing.title),
+                            );
+                          }).toList(),
+                          onChanged: (newId) {
+                            if (newId != null) {
+                              dealsController.selectedId.value = newId;
+
+                              // find the title corresponding to selected id
+                              final selectedListing = listings.firstWhere((listing) => listing.id == newId);
+                              dealsController.selectedTitle.value = selectedListing.title;
+
+                              debugPrint("Selected ID: ${dealsController.selectedId.value}");
+                              debugPrint("Selected Title: ${dealsController.selectedTitle.value}");
+                            }
+                          },
+                        ),
+                      ),
+                    );
+                  }),
+
                   SizedBox(height: 16),
                   //  Description
                   CustomFormCard(
