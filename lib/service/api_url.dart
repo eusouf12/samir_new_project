@@ -14,7 +14,6 @@ class ApiUrl {
    ///========================= My Profile =========================
    static const String myProfile = "/api/v1/auth/my-profile";
 
-
   static const String refreshToken = "/api/v1/auth/refresh-token";
   static String recentOtp({required String email})=> "/api/v1/user/resend_verification_otp/$email";
   static const String updateProfile = "/api/v1/auth/update_my_profile";

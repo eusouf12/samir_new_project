@@ -42,7 +42,8 @@ class ListingCard extends StatelessWidget {
         children: [
           // ============= Image =============
           CustomNetworkImage(
-            imageUrl: listing.images.isNotEmpty ? ApiUrl.baseUrl + listing.images.first : AppConstants.banner,
+            //imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4HYh7tBrM3zJVaOCV2u1jqEDMvrh4WSklYA&s",
+             imageUrl: listing.images.isNotEmpty ? ApiUrl.baseUrl + listing.images.first : "",
             height: 220,
             width: MediaQuery.sizeOf(context).width,
             borderRadius: const BorderRadius.all(Radius.circular(16)),

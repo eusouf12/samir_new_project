@@ -5,6 +5,7 @@ import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_roy
 import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_field.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_listing_screen/widgets/listin_custom_card.dart';
 import '../../../../core/app_routes/app_routes.dart';
+import '../../../../service/api_url.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_text/custom_text.dart';
 import 'controller/listing_controller.dart';
@@ -41,7 +42,7 @@ class HostListingScreen extends StatelessWidget {
                 color: AppColors.textClr,
               ),
               onChanged: (value) {
-                // TODO: add search logic if needed
+
               },
             ),
             const SizedBox(height: 16),
@@ -61,14 +62,14 @@ class HostListingScreen extends StatelessWidget {
                       return ListingCard(
                         listing: listing,
                         onTapAirbnb: () {
+                          debugPrint("=========${ApiUrl.baseUrl + listing.images.first}");
                           print("Open Airbnb for ${listing.title}");
                         },
                       );
                     }
+                    // Show load more loader
                     else {
-                      // Show load more loader
-                      return const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
+                      return const Padding(padding: EdgeInsets.symmetric(vertical: 16),
                         child: Center(child: CustomLoader()),
                       );
                     }
@@ -80,10 +81,10 @@ class HostListingScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primary,
         onPressed: () {
           Get.toNamed(AppRoutes.hostAddNewListingScreen);
         },
+        backgroundColor: AppColors.primary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
