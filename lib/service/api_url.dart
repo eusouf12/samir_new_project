@@ -13,15 +13,15 @@ class ApiUrl {
 
    ///========================= My Profile =========================
    static const String myProfile = "/api/v1/auth/my-profile";
+   static const String updateProfile = "/api/v1/auth/setup-profile";
+   static const String termsCondition = "/api/v1/legalDoc/get-doc/termsAndCondition";
+   static const String aboutUs = "/api/v1/legalDoc/get-doc/aboutUs";
+   static const String privacyPolicy = "/api/v1/legalDoc/get-doc/privacyPolicy";
 
 
   static const String refreshToken = "/api/v1/auth/refresh-token";
   static String recentOtp({required String email})=> "/api/v1/user/resend_verification_otp/$email";
-  static const String updateProfile = "/api/v1/auth/update_my_profile";
-  static const String termsCondition = "/api/v1/setting/find_by_terms_conditions";
-  static const String aboutUs = "/api/v1/setting/find_by_about_us";
-  static const String privacyPolicy = "/api/v1/setting/find_by_privacy_policys";
-  static const String helpSupport = "/api/v1/help_support/recorded_help_support";
+  static const String helpSupport = "/api/v1/legalDoc/get-doc/aboutUs";
   static const String changePassword = "/api/v1/user/change_password";
   static const String googleAuth = "/api/v1/user/google_auth";
    static String getGalleryPostFilter({required  int page, required String filter})=> "/api/v1/memories_event/find_my_upload_memories_event?contentType=$filter&page=$page&limit=10";

@@ -7,115 +7,223 @@ import 'package:samir_flutter_app/view/components/custom_netwrok_image/custom_ne
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_profile_screen/widgets/custom_profile_card.dart';
 import '../../../../core/app_routes/app_routes.dart';
+import '../../../../helper/shared_prefe/shared_prefe.dart';
+import '../../../../service/api_url.dart';
 import '../../../../utils/app_icons/app_icons.dart';
 import '../../../components/custom_image/custom_image.dart';
+import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_nav_bar/navbar.dart';
+import '../../../components/custom_show_popup/custom_show_popup.dart';
 import '../../../components/custom_text/custom_text.dart';
+import 'controller/host_profile_controller.dart';
 
 class HostProfileScreen extends StatelessWidget {
-  const HostProfileScreen({super.key});
+   HostProfileScreen({super.key});
+   final HostProfileController hostProfileController = Get.put(HostProfileController());
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      hostProfileController.getUserProfile();
+    });
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: false, titleName: "My Profile"),
       bottomNavigationBar: HostNavbar(currentIndex: 2),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      body: SingleChildScrollView(
+        child: Obx((){
+          if (hostProfileController.rxUserStatus.value == Status.loading) {
+            return const Center(child: CustomLoader());
+          }
+        
+          if (hostProfileController.userData.value == null) {
+            return const Center(child: CustomText(text: "Profile not found", fontSize: 16,),);
+          }
+          final userData = hostProfileController.userData.value!;
+        
+          return  Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomNetworkImage(
-                  imageUrl: AppConstants.girlsPhoto,
-                  height: 96.w,
-                  width: 96.w,
-                  boxShape: BoxShape.circle,
-                ),
-                SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    CustomText(
-                      text: "Mehedi Bin Ab. Salam",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      bottom: 8,
+                    CustomNetworkImage(
+                      imageUrl: userData.image.isNotEmpty ? ApiUrl.baseUrl + userData.image : AppConstants.profileImage2,
+                      height: 96.w,
+                      width: 96.w,
+                      boxShape: BoxShape.circle,
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xffFACC15),
-                            Color(0xffEAB308),
-                            Color(0xffCA8A04),
-                          ],
+                    SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: "${userData.name}",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          bottom: 8,
                         ),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Row(
-                        children: [
-                          CustomImage(imageSrc: AppIcons.king),
-                          CustomText(
-                            left: 6,
-                            text: "Founder Member",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.white,
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
                           ),
-                        ],
-                      ),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xffFACC15),
+                                Color(0xffEAB308),
+                                Color(0xffCA8A04),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Row(
+                            children: [
+                              CustomImage(imageSrc: AppIcons.king),
+                              CustomText(
+                                left: 6,
+                                text: "Founder Member",
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
+                CustomText(
+                  text: "Profile information",
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  top: 20,
+                  bottom: 16,
+                ),
+                CustomProfileCard(
+                  nameTitle: "Edit Profile",
+                  icons: AppIcons.editIcon,
+                  onTap: (){
+                    Get.toNamed(AppRoutes.hostEditProfileScreen);
+                  },
+                ),
+                CustomProfileCard(
+                  nameTitle: "Referrals",
+                  icons: AppIcons.giftIcon,
+                  onTap: (){
+                    Get.toNamed(AppRoutes.hostPeferralsScreen);
+                  },
+                ),
+                //Change Password
+                CustomProfileCard(
+                  nameTitle: "Change Password",
+                  icons: AppIcons.changePass,
+                  onTap: (){
+                    Get.toNamed(AppRoutes.hostChangePasswordScreen);
+                  },
+                ),
+                //Terms of services
+                CustomProfileCard(
+                  nameTitle: "Terms of services",
+                  icons: AppIcons.terms,
+                  onTap: (){
+                    Get.toNamed(AppRoutes.hostTermsScreen);
+                  },
+                ),
+                //Privacy Policy
+                CustomProfileCard(
+                  nameTitle: "Privacy Policy",
+                  icons: AppIcons.privacyPolicy,
+                  onTap: (){
+                    Get.toNamed(AppRoutes.hostPrivacyScreen);
+                  },
+                ),
+                //About us
+                CustomProfileCard(
+                  nameTitle: "About us",
+                  icons: AppIcons.aboutUs,
+                  onTap: (){
+                    Get.toNamed(AppRoutes.hostAboutScreen);
+                  },
+                ),
+                CustomProfileCard(
+                  nameTitle: "Subscription",
+                  icons: AppIcons.subscriptionIcon,
+                ),
+                //delete account
+                CustomProfileCard(
+                    nameTitle: "Delete Account",
+                    icons: AppIcons.logoutIcon,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder:
+                            (ctx) =>
+                            AlertDialog(
+                              backgroundColor: AppColors.white,
+                              insetPadding: EdgeInsets.all(8),
+                              contentPadding: EdgeInsets.all(8),
+                              content: SizedBox(
+                                width: MediaQuery.sizeOf(context).width,
+                                child: CustomShowDialog(
+                                  textColor: AppColors.black,
+                                  title: "Delete Your Account",
+                                  discription: "Are You Sure Delete Your Account",
+                                  showColumnButton: true,
+                                  showCloseButton: true,
+                                  rightOnTap: () {
+                                    Get.back();
+                                  },
+                                  leftOnTap: () async {
+                                    await SharePrefsHelper.clearAll();
+                                    Get.offAllNamed(AppRoutes.loginScreen);
+                                  },
+                                ),
+                              ),
+                            ),
+                      );
+                    }
+                ),
+                //logOut
+                CustomProfileCard(
+                    nameTitle: "Log Out",
+                    icons: AppIcons.logoutIcon,
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder:
+                            (ctx) =>
+                            AlertDialog(
+                              backgroundColor: AppColors.white,
+                              insetPadding: EdgeInsets.all(8),
+                              contentPadding: EdgeInsets.all(8),
+                              content: SizedBox(
+                                width: MediaQuery.sizeOf(context).width,
+                                child: CustomShowDialog(
+                                  textColor: AppColors.black,
+                                  title: "Logout Your Account",
+                                  discription: "Are You Sure Logout",
+                                  showColumnButton: true,
+                                  showCloseButton: true,
+                                  rightOnTap: () {
+                                    Get.back();
+                                  },
+                                  leftOnTap: () async {
+                                    await SharePrefsHelper.clearAll();
+                                    Get.offAllNamed(AppRoutes.loginScreen);
+                                  },
+                                ),
+                              ),
+                            ),
+                      );
+                    }
+                ),
               ],
             ),
-            CustomText(
-              text: "Profile information",
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              top: 20,
-              bottom: 16,
-            ),
-            CustomProfileCard(
-              nameTitle: "Edit Profile",
-              icons: AppIcons.editIcon,
-              onTap: (){
-                Get.toNamed(AppRoutes.hostEditProfileScreen);
-              },
-            ),
-            CustomProfileCard(
-              nameTitle: "Referrals",
-              icons: AppIcons.giftIcon,
-              onTap: (){
-                Get.toNamed(AppRoutes.hostPeferralsScreen);
-              },
-            ),
-            CustomProfileCard(
-              nameTitle: "Account Settings",
-              icons: AppIcons.settingIcon,
-              onTap: (){
-                Get.toNamed(AppRoutes.hostAccountSettings);
-              },
-            ),
-            CustomProfileCard(
-              nameTitle: "Subscription",
-              icons: AppIcons.subscriptionIcon,
-            ),
-            CustomProfileCard(
-              onTap: (){
-                Get.toNamed(AppRoutes.chooseRole);
-              },
-              nameTitle: "Logout",
-              icons: AppIcons.logoutIcon,
-            ),
-          ],
-        ),
+          );
+        }),
       ),
     );
   }

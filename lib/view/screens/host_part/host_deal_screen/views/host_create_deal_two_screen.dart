@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../core/app_routes/app_routes.dart';
-import '../../../../utils/app_colors/app_colors.dart';
-import '../../../components/custom_button/custom_button_two.dart';
-import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
-import '../../../components/custom_text/custom_text.dart';
-import 'controller/deals_controller.dart';
+import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../components/custom_button/custom_button_two.dart';
+import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../../../../components/custom_text/custom_text.dart';
+import '../controller/deals_controller.dart';
 
 class HostCreateDealTwoScreen extends StatelessWidget {
   HostCreateDealTwoScreen({super.key});

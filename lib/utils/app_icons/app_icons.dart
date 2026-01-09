@@ -37,6 +37,10 @@ class AppIcons {
   static const String newAddIcon = "$basePath/newAddIcon.svg";
   static const String starCircular = "$basePath/starCircular.svg";
   static const String mdi_share = "$basePath/mdi_share.svg";
+  static const String changePass = "$basePath/changePass.svg";
+  static const String aboutUs = "$basePath/aboutUs.svg";
+  static const String terms = "$basePath/terms.svg";
+  static const String privacyPolicy = "$basePath/privacyPolicy.svg";
   static const String infpaymentIcon = "$basePath/infpaymentIcon.svg";
 
 }

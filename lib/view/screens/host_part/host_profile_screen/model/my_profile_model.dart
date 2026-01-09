@@ -35,6 +35,8 @@ class UserData {
   final int listingsTotal;
   final List<dynamic> nicheTags;
   final int responseRate;
+  final String fullAddress;
+  final String image;
 
   UserData({
     required this.id,
@@ -57,6 +59,8 @@ class UserData {
     required this.listingsTotal,
     required this.nicheTags,
     required this.responseRate,
+    required this.fullAddress,
+    required this.image,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -81,6 +85,8 @@ class UserData {
       listingsTotal: json['listingsTotal'] ?? 0,
       nicheTags: List<dynamic>.from(json['nicheTags'] ?? []),
       responseRate: json['responseRate'] ?? 0,
+      fullAddress: json['fullAddress'] ?? '',
+      image: json['image'] ?? '',
     );
   }
 }

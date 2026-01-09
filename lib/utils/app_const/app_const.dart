@@ -37,6 +37,7 @@ class AppConstants {
   static String allSportsImage2 = 'https://images.pexels.com/photos/5586400/pexels-photo-5586400.jpeg';
   static String resturentImage = 'https://images.pexels.com/photos/941861/pexels-photo-941861.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
   static String banner = 'https://www.conwaymedicalcenter.com/wp-content/uploads/2020/12/ten-reasons-you-must-have-a-primary-care-doctor.jpg';
+  static String profileImage2 = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
 }
 
 enum Status { loading, error, completed, internetError }
