@@ -18,7 +18,6 @@ class ApiUrl {
    static const String aboutUs = "/api/v1/legalDoc/get-doc/aboutUs";
    static const String privacyPolicy = "/api/v1/legalDoc/get-doc/privacyPolicy";
 
-
   static const String refreshToken = "/api/v1/auth/refresh-token";
   static String recentOtp({required String email})=> "/api/v1/user/resend_verification_otp/$email";
   static const String helpSupport = "/api/v1/legalDoc/get-doc/aboutUs";
