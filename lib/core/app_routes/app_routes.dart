@@ -65,6 +65,7 @@ class AppRoutes {
   static const String termsServicesScreen = "/TermsServicesScreen";
   static const String setNewPassword = "/SetNewPassword";
 
+
  static const String registrationScreen = "/RegistrationScreen";
  static const String forgotPassScreen = "/ForgotPassScreen";
  static const String verifyOtpScreen = "/VerifyOtpScreen";
