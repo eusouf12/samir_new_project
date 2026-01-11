@@ -148,10 +148,10 @@ class HostProfileScreen extends StatelessWidget {
                     Get.toNamed(AppRoutes.hostAboutScreen);
                   },
                 ),
-                CustomProfileCard(
-                  nameTitle: "Subscription",
-                  icons: AppIcons.subscriptionIcon,
-                ),
+                // CustomProfileCard(
+                //   nameTitle: "Subscription",
+                //   icons: AppIcons.subscriptionIcon,
+                // ),
                 //delete account
                 CustomProfileCard(
                     nameTitle: "Delete Account",

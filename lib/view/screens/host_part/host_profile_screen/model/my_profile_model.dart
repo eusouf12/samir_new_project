@@ -19,7 +19,10 @@ class UserData {
   final String name;
   final String email;
   final String userName;
+  final String dateOfBirth;
+  final String phone;
   final String role;
+  final String gender;
   final DateTime createdAt;
   final DateTime updatedAt;
   final int v;
@@ -43,7 +46,10 @@ class UserData {
     required this.name,
     required this.email,
     required this.userName,
+    required this.phone,
+    required this.dateOfBirth,
     required this.role,
+    required this.gender,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
@@ -69,6 +75,9 @@ class UserData {
       name: json['name'] ?? '',
       email: json['email'] ?? '',
       userName: json['userName'] ?? '',
+      phone: json['phone'] ?? '',
+      dateOfBirth: json['dateOfBirth'] ?? '',
+      gender: json['gender'] ?? '',
       role: json['role'] ?? '',
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),

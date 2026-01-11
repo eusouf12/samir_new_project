@@ -64,17 +64,9 @@ class HostListingScreen extends StatelessWidget {
                         listing: listing,
                         onTapAirbnb: () async {
                           final link = listing.addAirbnbLink;
-
                           if (  link.isEmpty) return;
-
-                          final Uri uri = Uri.parse(
-                            link.startsWith('http') ? link : 'https://$link',
-                          );
-
-                          await launchUrl(
-                            uri,
-                            mode: LaunchMode.externalApplication,
-                          );
+                          final Uri uri = Uri.parse(link.startsWith('http') ? link : 'https://$link',);
+                          await launchUrl(uri, mode: LaunchMode.externalApplication,);
                         },
 
 

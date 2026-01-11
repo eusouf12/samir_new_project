@@ -24,7 +24,7 @@ class HostEditProfileScreen extends StatelessWidget {
       color1: Color(0xFF0C7A43),
 
       child: Scaffold(
-          appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'Edit Profile', color: AppColors.white,),
+          appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'Edit Profile', color: AppColors.black,),
           body:Obx((){
             if (profileController.rxUserStatus.value == Status.loading) {
               return const Center(child: CustomLoader());
@@ -89,6 +89,13 @@ class HostEditProfileScreen extends StatelessWidget {
                       hintText: 'Enter Your Name',
                       controller: profileController.nameController.value,
                     )),
+                    //user name
+                    Obx(() => CustomFormCard(
+                      title: 'User Name',
+                      fontSize: 16,
+                      hintText: 'Enter Your UserName',
+                      controller: profileController.userNameController.value,
+                    )),
                     // Email
                     Obx(() => CustomFormCard(
                       title: 'Email',
@@ -102,12 +109,19 @@ class HostEditProfileScreen extends StatelessWidget {
                       hintText: 'DD-MM-YYYY',
                       controller: profileController.dateOfBirthController.value,
                     )),
+                    //gender
+                    Obx(() => CustomFormCard(
+                      title: 'Gender',
+                      hintText: 'Male/Female',
+                      controller: profileController.genderController.value,
+                    )),
                     //country
                     Obx(() => CustomFormCard(
                       title: 'Country',
                       hintText: 'United State',
                       controller: profileController.countryController.value,
                     )),
+                    //phone
                     Obx(() => CustomFormCard(
                       title: 'Phone Number',
                       hintText: 'Enter Your Phone Number',

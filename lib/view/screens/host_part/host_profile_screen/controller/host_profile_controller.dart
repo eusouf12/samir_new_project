@@ -60,10 +60,18 @@ class HostProfileController extends GetxController {
         }
         emailController.value.text = userData.value?.email ??"";
 
-        // if (dateOfBirthController.value.text.isEmpty) {
-        //   dateOfBirthController.value.text = userData.value.dateOfBirth;
-        // }
-
+        if (dateOfBirthController.value.text.isEmpty) {
+          dateOfBirthController.value.text = userData.value?.dateOfBirth ?? "";
+        }
+        if (phoneNumberController.value.text.isEmpty) {
+          phoneNumberController.value.text = userData.value?.phone ?? "";
+        }
+        if (userNameController.value.text.isEmpty) {
+          userNameController.value.text = userData.value?.userName ?? "";
+        }
+        if (genderController.value.text.isEmpty) {
+          genderController.value.text = userData.value?.gender ?? "";
+        }
 
         setUserStatus(Status.completed);
       }
@@ -81,27 +89,27 @@ class HostProfileController extends GetxController {
 
   // Text controllers
   Rx<TextEditingController> nameController = TextEditingController().obs;
+  Rx<TextEditingController> userNameController = TextEditingController().obs;
   Rx<TextEditingController> emailController = TextEditingController().obs;
   Rx<TextEditingController> countryController = TextEditingController().obs;
-
   Rx<TextEditingController> phoneNumberController = TextEditingController().obs;
   Rx<TextEditingController> dateOfBirthController = TextEditingController().obs;
-
-
-  RxBool updateProfileLoading = false.obs;
+  Rx<TextEditingController> genderController = TextEditingController().obs;
 
   //========== Update Profile ==========
+  RxBool updateProfileLoading = false.obs;
   Future<void> updateProfile() async {
     updateProfileLoading.value = true;
     refresh();
 
     try {
       Map<String, String> body = {
-        "fullName":userData.value?.name?? "",
-        "location": userData.value?.fullAddress ?? "",
-        // "nicheTags":  "",
-        // "bio":  "",
-
+        "name":nameController.value.text,
+        "userName": userNameController.value.text,
+        "phone": phoneNumberController.value.text,
+        "dateOfBirth": dateOfBirthController.value.text,
+        "fullAddress":countryController.value.text,
+        "gender": genderController.value.text,
       };
 
       dynamic response;
@@ -123,10 +131,7 @@ class HostProfileController extends GetxController {
           : response.body as Map<String, dynamic>;
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        showCustomSnackBar(
-          jsonResponse['message']?.toString() ?? "Profile updated successfully!",
-          isError: false,
-        );
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Profile updated successfully!", isError: false,);
         getUserProfile();
         Get.back();
       } else {
