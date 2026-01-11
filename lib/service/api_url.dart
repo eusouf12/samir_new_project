@@ -10,6 +10,7 @@ class ApiUrl {
    static const String forgotPassword = "/api/v1/auth/forgot-password";
    static const String verificationOtpForgetPass = "/api/v1/auth/verify-reset-otp";
    static const String newPassword = "/api/v1/auth/reset-password";
+   static const String changePassword = "/api/v1/auth/change-password";
 
    ///========================= My Profile =========================
    static const String myProfile = "/api/v1/auth/my-profile";
@@ -21,7 +22,6 @@ class ApiUrl {
   static const String refreshToken = "/api/v1/auth/refresh-token";
   static String recentOtp({required String email})=> "/api/v1/user/resend_verification_otp/$email";
   static const String helpSupport = "/api/v1/legalDoc/get-doc/aboutUs";
-  static const String changePassword = "/api/v1/user/change_password";
   static const String googleAuth = "/api/v1/user/google_auth";
    static String getGalleryPostFilter({required  int page, required String filter})=> "/api/v1/memories_event/find_my_upload_memories_event?contentType=$filter&page=$page&limit=10";
 

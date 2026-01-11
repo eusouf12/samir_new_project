@@ -37,10 +37,8 @@ class HostDealsScreen extends StatelessWidget {
               hintStyle: TextStyle(color: AppColors.textClr),
             ),
             SizedBox(height: 16),
-            Obx(
-                  () => CustomTabSelector(
+            Obx( () => CustomTabSelector(
                 tabs: hostHomeController.tabNames,
-                countNum: "5",
                 selectedIndex: hostHomeController.selectedTab.value,
                 selectedColor: AppColors.primary,
                 unselectedColor: Colors.black,
@@ -52,8 +50,8 @@ class HostDealsScreen extends StatelessWidget {
             Obx(
                   () {
                 int tab = hostHomeController.selectedTab.value;
+                // All Tab
                 if (tab == 0) {
-                  // All Tab
                   return Expanded(
                     child: ListView(
                       children: List.generate(10, (index) => CustomDealsContainer(
@@ -72,8 +70,9 @@ class HostDealsScreen extends StatelessWidget {
                       )),
                     ),
                   );
-                } else if (tab == 1) {
-                  // Active Tab
+                }
+                // Active Tab
+                else if (tab == 1) {
                   return Expanded(
                     child: ListView(
                       children: List.generate(5, (index) => CustomDealsContainer(
@@ -90,8 +89,9 @@ class HostDealsScreen extends StatelessWidget {
                       )),
                     ),
                   );
-                } else if (tab == 2) {
-                  // Pending Tab
+                }
+                // Pending Tab
+                else if (tab == 2) {
                   return Expanded(
                     child: ListView(
                       children: List.generate(3, (index) => CustomDealsContainer(
@@ -108,8 +108,9 @@ class HostDealsScreen extends StatelessWidget {
                       )),
                     ),
                   );
-                } else if (tab == 3) {
-                  // Completed Tab
+                }
+                // Completed Tab
+                else if (tab == 3) {
                   return Expanded(
                     child: ListView(
                       children: List.generate(12, (index) => CustomDealsContainer(
@@ -126,8 +127,9 @@ class HostDealsScreen extends StatelessWidget {
                       )),
                     ),
                   );
-                } else {
-                  // Request Tab
+                }
+                // Request Tab
+                else {
                   return Expanded(
                     child: ListView(
                       children: List.generate(10, (index) => CustomDealsContainer(

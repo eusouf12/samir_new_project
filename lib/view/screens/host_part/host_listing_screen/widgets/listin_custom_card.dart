@@ -42,7 +42,6 @@ class ListingCard extends StatelessWidget {
         children: [
           // ============= Image =============
           CustomNetworkImage(
-            //imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4HYh7tBrM3zJVaOCV2u1jqEDMvrh4WSklYA&s",
              imageUrl: listing.images.isNotEmpty ? ApiUrl.baseUrl + listing.images.first : "",
             height: 220,
             width: MediaQuery.sizeOf(context).width,
@@ -61,27 +60,38 @@ class ListingCard extends StatelessWidget {
                     Expanded(
                       child: CustomText(
                         text: listing.title,
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.w600,
                         textAlign: TextAlign.start,
                       ),
                     ),
-                    if (listing.status.toLowerCase() == "verified" ||
-                        listing.status.toLowerCase() == "active")
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
+                    listing.status == "Pending"
+                        ? Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: const Color(0xff10B981),
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: const CustomText(
-                          text: "Verified",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.white,
-                        ),
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(30),
                       ),
+                      child: const CustomText(
+                        text: "pending",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.white,
+                      ),
+                    )
+                        :Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xffFFEDD5),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: const CustomText(
+                        text: "Verified",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.red,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -112,14 +122,11 @@ class ListingCard extends StatelessWidget {
                 ),
 
                 // ============= Default Amenities ===========
-                // ============= Default Amenities (Obx সরিয়ে দেওয়া হয়েছে) ===========
                 Wrap(
                   spacing: 12,
                   runSpacing: 8,
-                  children: listing.amenities.entries
-                      .where((e) => e.value) // শুধুমাত্র যেগুলো true
-                      .map(
-                        (e) => Container(
+                  children: listing.amenities.entries.where((e) => e.value).map((e) =>
+                      Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                       decoration: BoxDecoration(
                         color: const Color(0xffE5E7EB),

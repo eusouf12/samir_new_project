@@ -24,6 +24,5 @@ class HostHomeController extends GetxController {
 
   RxInt currentIndex = 0.obs;
   ///============= Collaboration Tab List ==========
-  RxList<String> collaborationTabList =
-      <String>['All', 'Pending', 'Approved','Declined'].obs;
+  RxList<String> collaborationTabList = <String>['All', 'Pending', 'Approved','Declined'].obs;
 }

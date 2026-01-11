@@ -6,7 +6,6 @@ import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_
 import 'package:samir_flutter_app/view/screens/host_part/host_listing_screen/widgets/listin_custom_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/app_routes/app_routes.dart';
-import '../../../../service/api_url.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_text/custom_text.dart';
 import 'controller/listing_controller.dart';

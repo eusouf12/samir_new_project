@@ -80,18 +80,6 @@ class CustomTabSelector extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text(
-                        "(${countNum})"?? "",
-                        style: GoogleFonts.poppins(
-                          color: selectedIndex == index
-                              ? selectedColor
-                              : isTextColorActive!
-                              ? textColor
-                              : unselectedColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
                     ],
                   ),
                 ),

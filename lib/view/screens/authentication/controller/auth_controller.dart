@@ -167,7 +167,7 @@ class AuthController extends GetxController {
     super.onInit();
     //loginEmailController.value.text = "fdafdfda";
      loginEmailController.value.text = "eusouf12" ;
-    loginPasswordController.value.text = "Aa123#";
+    loginPasswordController.value.text = "123456";
   }
 
   RxBool loginUserLoading = false.obs;

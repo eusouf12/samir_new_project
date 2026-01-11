@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
@@ -151,10 +152,71 @@ class HostProfileController extends GetxController {
     }
   }
 
-  //CHANGE PASS
+  //=================== CHANGE PASS===================
   Rx<TextEditingController> newPasswordController = TextEditingController().obs;
   Rx<TextEditingController> confirmPasswordController = TextEditingController().obs;
   Rx<TextEditingController> oldPasswordController = TextEditingController().obs;
+  RxBool changePassLoading = false.obs;
+
+  Future<void> changePassword() async {
+    changePassLoading.value = true;
+    refresh();
+
+    try {
+      Map<String, String> body = {
+        "currentPassword": oldPasswordController.value.text.trim(),
+        "newPassword": newPasswordController.value.text.trim(),
+        "confirmPassword": confirmPasswordController.value.text.trim(),
+      };
+
+      dynamic response = await ApiClient.postData(ApiUrl.changePassword, jsonEncode(body),);
+      changePassLoading.value = false;
+      refresh();
+
+      Map<String, dynamic> jsonResponse = response.body is String
+          ? jsonDecode(response.body)
+          : response.body as Map<String, dynamic>;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Change password successfully!", isError: false,);
+
+        String? userRole = await SharePrefsHelper.getString(AppConstants.role);
+        resetPasswordFields();
+        Get.back();
+
+      }
+      else if (response.statusCode == 404 || response.statusCode == 400 || response.statusCode == 422) {
+        // Handle validation errors
+        Map<String, dynamic> jsonResponse = response.body is String
+            ? jsonDecode(response.body)
+            : response.body as Map<String, dynamic>;
+
+        if (jsonResponse.containsKey('errorSources') && jsonResponse['errorSources'] is List) {
+          List<dynamic> errorSources = jsonResponse['errorSources'];
+
+          // Show all error messages
+          for (var error in errorSources) {
+            if (error is Map<String, dynamic> && error.containsKey('message')) {
+              showCustomSnackBar(error['message'].toString(), isError: true);
+              break;
+            }
+          }
+        } else if (jsonResponse.containsKey('message')) {
+          showCustomSnackBar(jsonResponse['message'].toString(), isError: true);
+        } else {
+          showCustomSnackBar("Invalid data provided", isError: true);
+        }
+      }
+      else {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Change password failed", isError: true,);
+      }
+    } catch (e) {
+      changePassLoading.value = false;
+      refresh();
+      showCustomSnackBar("An error occurred. Please try again.", isError: true,);
+      debugPrint("Password update error: $e");
+    }
+  }
 
   void resetPasswordFields() {
     oldPasswordController.value.clear();
