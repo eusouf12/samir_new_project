@@ -2,14 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
+import '../../host_profile_screen/controller/host_profile_controller.dart';
 import '../model/listing_model.dart';
 
 class ListingController extends GetxController {
+
+  final HostProfileController hostProfileController = Get.put(HostProfileController());
 
   RxList<File> selectedImages = <File>[].obs;
   void addImage(File file) {
@@ -78,7 +80,7 @@ class ListingController extends GetxController {
         "title": titleController.value.text.trim(),
         "description": titleDescriptionController.value.text.trim(),
         "location": locationController.value.text.trim(),
-        "airbnbLink": airbnbController.value.text.trim(),
+        "addAirbnbLink": airbnbController.value.text.trim(),
         "amenities": jsonEncode(amenities.map((k, v) => MapEntry(k, v))),
         "propertyType": selectedPropertyType.value,
         "customAmenities": customAmenities.join(","),
@@ -88,9 +90,7 @@ class ListingController extends GetxController {
       List<MultipartBody> multipartImages = [];
 
       for (int i = 0; i < selectedImages.length; i++) {
-        multipartImages.add(MultipartBody(
-            "images",selectedImages[i],
-          ),);
+        multipartImages.add(MultipartBody("images",selectedImages[i]),);
       }
       debugPrint("body = $body");
 
@@ -102,7 +102,10 @@ class ListingController extends GetxController {
         createListingLoading.value = false;
         refresh();
         showCustomSnackBar(jsonResponse["message"] ?? "Listing created successfully", isError: false,);
+        clearFormData();
         await getListings(loadMore: false);
+        hostProfileController.getUserProfile();
+        refresh();
         Get.back();
       } else {
         createListingLoading.value = false;
@@ -112,15 +115,27 @@ class ListingController extends GetxController {
     } catch (e) {
       createListingLoading.value = false;
       refresh();
-      showCustomSnackBar(
-        "Something went wrong. Try again.",
-        isError: true,
-      );
+      showCustomSnackBar("Something went wrong. Try again.", isError: true,);
       debugPrint("Create listing error: $e");
     }
   }
+  //============== clear Function===================
+  void clearFormData() {
+    titleController.value.clear();
+    titleDescriptionController.value.clear();
+    locationController.value.clear();
+    airbnbController.value.clear();
+    amenities.updateAll((key, value) => false);
+    selectedPropertyType.value = "";
+    customAmenities.clear();
+    selectedImages.clear();
+  }
 
-//============== post create Listing Controller===================
+//==============searchQuery===================
+
+
+
+// ==============Get Listing Controller===================
   RxList<ListingItem> listingList = <ListingItem>[].obs;
 
   final isListingLoading = false.obs;
@@ -131,12 +146,11 @@ class ListingController extends GetxController {
 
   int currentPage = 1;
   int totalPages = 1;
+  final int limit = 3;
 
   Future<void> getListings({bool loadMore = false}) async {
     if (loadMore) {
-      if (isLoadMoreLoading.value) return;
-      if (currentPage >= totalPages) return;
-
+      if (isLoadMoreLoading.value || currentPage >= totalPages) return;
       isLoadMoreLoading.value = true;
       currentPage++;
     } else {
@@ -147,7 +161,9 @@ class ListingController extends GetxController {
     }
 
     try {
-      final response = await ApiClient.getData(ApiUrl.getListing(page: currentPage.toString()),);
+      final response = await ApiClient.getData(
+        ApiUrl.getListing(page: currentPage.toString()),
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> jsonResponse =
@@ -157,28 +173,27 @@ class ListingController extends GetxController {
 
         totalPages = model.totalPages;
 
-        // DUPLICATION CHECK HERE
+        // Add new items if not duplicate
         final existingIds = listingList.map((e) => e.id).toSet();
-
         for (final item in model.data.listings) {
           if (!existingIds.contains(item.id)) {
             listingList.add(item);
           }
         }
 
+
         setListingStatus(Status.completed);
       } else {
         setListingStatus(Status.error);
-        showCustomSnackBar( "Error , Failed to load listings", isError: true,);
+        showCustomSnackBar("Failed to load listings", isError: true);
       }
     } catch (e) {
       setListingStatus(Status.error);
-      showCustomSnackBar( "Error , ${e.toString()}", isError: true,);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
     } finally {
       isListingLoading.value = false;
       isLoadMoreLoading.value = false;
     }
   }
-
 
 }

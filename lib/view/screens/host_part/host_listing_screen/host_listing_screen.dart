@@ -4,6 +4,7 @@ import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_field.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_listing_screen/widgets/listin_custom_card.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../service/api_url.dart';
 import '../../../components/custom_loader/custom_loader.dart';
@@ -61,10 +62,22 @@ class HostListingScreen extends StatelessWidget {
                       final listing = controller.listingList[index];
                       return ListingCard(
                         listing: listing,
-                        onTapAirbnb: () {
-                          debugPrint("=========${ApiUrl.baseUrl + listing.images.first}");
-                          print("Open Airbnb for ${listing.title}");
+                        onTapAirbnb: () async {
+                          final link = listing.addAirbnbLink;
+
+                          if (  link.isEmpty) return;
+
+                          final Uri uri = Uri.parse(
+                            link.startsWith('http') ? link : 'https://$link',
+                          );
+
+                          await launchUrl(
+                            uri,
+                            mode: LaunchMode.externalApplication,
+                          );
                         },
+
+
                       );
                     }
                     // Show load more loader

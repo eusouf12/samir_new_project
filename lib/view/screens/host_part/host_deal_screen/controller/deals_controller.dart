@@ -14,11 +14,12 @@ class DealsController extends GetxController {
   RxList<ListingItem> listingList = <ListingItem>[].obs;
   RxString selectedTitle = ''.obs;
   RxString selectedId = ''.obs;
+  RxString selectedAirbnbLink = ''.obs;
+
   Rx<TextEditingController> titleDescriptionController = TextEditingController().obs;
   // CHECK IN
   Rx<TimeOfDay?> checkInTime = Rx<TimeOfDay?>(null);
   Rx<DateTime?> checkInDate = Rx<DateTime?>(null);
-
   // CHECK OUT
   Rx<TimeOfDay?> checkOutTime = Rx<TimeOfDay?>(null);
   Rx<DateTime?> checkOutDate = Rx<DateTime?>(null);
@@ -68,14 +69,7 @@ class DealsController extends GetxController {
   RxList<Map<String, dynamic>> deliverables = <Map<String, dynamic>>[].obs;
 
   // platform config
-  final List<String> platformNames = [
-    "Instagram",
-    "TikTok",
-    "YouTube",
-    "Facebook",
-    "X (Twitter)"
-  ];
-
+  final List<String> platformNames = ["Instagram", "TikTok", "YouTube", "Facebook", "X (Twitter)"];
   final Map<String, Color> platformColors = {
     "Instagram": const Color(0xFFE1306C),
     "TikTok": Colors.black,
@@ -83,7 +77,6 @@ class DealsController extends GetxController {
     "Facebook": const Color(0xFF1877F2),
     "X (Twitter)": Colors.black,
   };
-
   final Map<String, IconData> platformIcons = {
     "Instagram": Icons.camera_alt,
     "TikTok": Icons.music_note,
@@ -99,7 +92,7 @@ class DealsController extends GetxController {
     "Video"
   ];
 
-  // ✅ Add or Update deliverable
+  // Add or Update deliverable
   void addDeliverable() {
     final index = deliverables.indexWhere(
           (e) =>
@@ -124,12 +117,12 @@ class DealsController extends GetxController {
     quantity.value = 1;
   }
 
-  // ❌ Remove by index
+  //  Remove by index
   void removeDeliverable(int index) {
     deliverables.removeAt(index);
   }
 
-  // 🔁 Update quantity directly (optional use in list)
+  // Update quantity directly (optional use in list)
   void updateQuantity(int index, int newQty) {
     if (newQty <= 0) {
       deliverables.removeAt(index);
@@ -139,7 +132,7 @@ class DealsController extends GetxController {
     }
   }
 
-  // ➕➖ Quantity control (selection time)
+  // Quantity control (selection time)
   void increment() => quantity.value++;
 
   void decrement() {
@@ -148,18 +141,10 @@ class DealsController extends GetxController {
 
 
   // ============= create deals 3rd page ========
-
-  // Compensation Type Selection
-  // Compensation Type Selection
   var isNightCredits = false.obs;
   var isDirectPayment = false.obs;
-
-  // Night Credits
-  var totalNights = 0.obs; // default nights
-
-  // Direct Payment
+  var totalNights = 0.obs;
   var paymentAmount = 0.0.obs;
-  // Guest Count
   var guestCount = 0.obs;
 
   // TextEditingController for TextField
@@ -198,7 +183,7 @@ class DealsController extends GetxController {
     final body = {
       "title": selectedTitle.value,
       "description": titleDescriptionController.value.text,
-      "addAirbnbLink": "abc.com",
+      "addAirbnbLink": selectedAirbnbLink.value,
       "inTimeAndDate": checkInDate.value != null && checkInTime.value != null
           ? DateTime(
         checkInDate.value!.year,

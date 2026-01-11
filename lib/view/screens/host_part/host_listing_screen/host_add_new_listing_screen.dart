@@ -15,7 +15,7 @@ import 'controller/listing_controller.dart';
 class HostAddNewListingScreen extends StatelessWidget {
   HostAddNewListingScreen({super.key});
 
-  final ListingController listingController = Get.put(ListingController());
+  final ListingController listingController = Get.find();
   final ImagePickerController imagePickerController =
   Get.put(ImagePickerController());
 
@@ -204,6 +204,7 @@ class HostAddNewListingScreen extends StatelessWidget {
                 }
       
                 return CustomButton(onTap: (){
+                  debugPrint("createListing ========{listingController.airbnbController.value}");
                   listingController.createListing();
                 },
                   title: "Create Listing",

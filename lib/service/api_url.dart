@@ -30,7 +30,7 @@ class ApiUrl {
    ///========================= Host =========================createListing
    static const String createListing = "/api/v1/listing/create-listing";
    static const String createDeal = "/api/v1/deal/create-deal";
-   static String getListing({required String page})=> "/api/v1/listing/my-listings?currentPage=$page&limit=10";
+   static String getListing({required String page})=> "/api/v1/listing/my-listings?currentPage=$page&limit=3";
 
 
   //share post

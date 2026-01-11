@@ -86,13 +86,14 @@ class HostCreateDealScreen extends StatelessWidget {
                           onChanged: (newId) {
                             if (newId != null) {
                               dealsController.selectedId.value = newId;
-
                               // find the title corresponding to selected id
                               final selectedListing = listings.firstWhere((listing) => listing.id == newId);
                               dealsController.selectedTitle.value = selectedListing.title;
+                              dealsController.selectedAirbnbLink.value = selectedListing.addAirbnbLink ;
 
                               debugPrint("Selected ID: ${dealsController.selectedId.value}");
                               debugPrint("Selected Title: ${dealsController.selectedTitle.value}");
+                              debugPrint("Selected Title: ${dealsController.selectedAirbnbLink.value}");
                             }
                           },
                         ),

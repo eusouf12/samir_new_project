@@ -53,6 +53,7 @@ class ListingItem {
   final String id;
   final String title;
   final String description;
+  final String addAirbnbLink;
   final String location;
   final String propertyType;
   final Map<String, bool> amenities;
@@ -67,6 +68,7 @@ class ListingItem {
     required this.id,
     required this.title,
     required this.description,
+    required this.addAirbnbLink,
     required this.location,
     required this.propertyType,
     required this.amenities,
@@ -83,6 +85,7 @@ class ListingItem {
       id: json['_id'] ?? '',
       title: json['title'] ?? '',
       description: json['description'] ?? '',
+      addAirbnbLink: json['addAirbnbLink'] ?? '',
       location: json['location'] ?? '',
       propertyType: json['propertyType'] ?? '',
       amenities: Map<String, bool>.from(json['amenities'] ?? {}),
