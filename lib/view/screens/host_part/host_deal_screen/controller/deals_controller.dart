@@ -8,7 +8,9 @@ import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
+import '../../../../../utils/app_const/app_const.dart';
 import '../../host_listing_screen/model/listing_model.dart';
+import '../deal_model/deal_model.dart';
 
 class DealsController extends GetxController {
   RxList<ListingItem> listingList = <ListingItem>[].obs;
@@ -177,11 +179,11 @@ class DealsController extends GetxController {
     if (guestCount.value > 1) guestCount.value--;
   }
 
-  // ================ create deals screen ==============
+  // ================ create deals Controller ==============
   var isCreatingDeal = false.obs;
   Future<void> createDeal() async {
     final body = {
-      "title": selectedTitle.value,
+      "title": selectedId.value,
       "description": titleDescriptionController.value.text,
       "addAirbnbLink": selectedAirbnbLink.value,
       "inTimeAndDate": checkInDate.value != null && checkInTime.value != null
@@ -236,4 +238,62 @@ class DealsController extends GetxController {
       debugPrint("Create deal error: $e");
     }
   }
+
+// ================ Get deals Controller ==============
+  RxList<Deal> dealList = <Deal>[].obs;
+
+  final isDealLoading = false.obs;
+  final isDealLoadMore = false.obs;
+
+  final rxDealStatus = Status.loading.obs;
+  void setDealStatus(Status status) => rxDealStatus.value = status;
+
+  int currentPage = 1;
+  int totalPages = 1;
+
+  Future<void> getDeals({bool loadMore = false}) async {
+    if (loadMore) {
+      if (isDealLoadMore.value || currentPage >= totalPages) return;
+      isDealLoadMore.value = true;
+      currentPage++;
+    } else {
+      isDealLoading.value = true;
+      setDealStatus(Status.loading);
+      currentPage = 1;
+      dealList.clear();
+    }
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.getDeals(page: currentPage.toString()),);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> jsonResponse =
+        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final DealResponse model = DealResponse.fromJson(jsonResponse);
+
+        totalPages = model.totalPages;
+
+        // Add new items if not duplicate
+        final existingIds = dealList.map((e) => e.id).toSet();
+        for (final item in model.deals) {
+          if (!existingIds.contains(item.id)) {
+            dealList.add(item);
+          }
+        }
+
+        setDealStatus(Status.completed);
+      } else {
+        setDealStatus(Status.error);
+        showCustomSnackBar("Failed to load deals", isError: true);
+      }
+    } catch (e) {
+      setDealStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+    } finally {
+      isDealLoading.value = false;
+      isDealLoadMore.value = false;
+    }
+  }
+
 }

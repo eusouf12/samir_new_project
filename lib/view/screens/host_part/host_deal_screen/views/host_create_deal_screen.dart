@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
 import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
 import 'package:samir_flutter_app/view/components/custom_from_card/custom_from_card.dart';
+import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_listing_screen/controller/listing_controller.dart';
 import '../../../../../core/app_routes/app_routes.dart';
@@ -58,48 +59,87 @@ class HostCreateDealScreen extends StatelessWidget {
                 children: [
                   //  Title
                   const CustomText(text: "Title", fontSize: 14, fontWeight: FontWeight.w600, bottom: 8),
-                  Obx(() {
-                    // listingList reactive variable
-                    final listings = listingController.listingList;
-
-                    return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                  Obx(() => GestureDetector(
+                    onTap: () {
+                      if (listingController.listingList.isEmpty) {
+                        listingController.getListings();
+                      }
+                      _openListingDropdown(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.grey.shade300),
                       ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          hint: const Text("Select property type"),
-                          value: dealsController.selectedId.value.isEmpty
-                              ? null
-                              : dealsController.selectedId.value,
-                          dropdownColor: Colors.white,
-                          items: listings.map((listing) {
-                            return DropdownMenuItem<String>(
-                              value: listing.id,
-                              child: Text(listing.title),
-                            );
-                          }).toList(),
-                          onChanged: (newId) {
-                            if (newId != null) {
-                              dealsController.selectedId.value = newId;
-                              // find the title corresponding to selected id
-                              final selectedListing = listings.firstWhere((listing) => listing.id == newId);
-                              dealsController.selectedTitle.value = selectedListing.title;
-                              dealsController.selectedAirbnbLink.value = selectedListing.addAirbnbLink ;
-
-                              debugPrint("Selected ID: ${dealsController.selectedId.value}");
-                              debugPrint("Selected Title: ${dealsController.selectedTitle.value}");
-                              debugPrint("Selected Title: ${dealsController.selectedAirbnbLink.value}");
-                            }
-                          },
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              dealsController.selectedTitle.value.isEmpty
+                                  ? "Select property type"
+                                  : dealsController.selectedTitle.value,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: dealsController.selectedTitle.value.isEmpty
+                                    ? Colors.grey.shade600
+                                    : Colors.black,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Icon(Icons.arrow_drop_down, color: Colors.grey.shade700),
+                        ],
                       ),
-                    );
-                  }),
+                    ),
+                  )),
+
+
+
+                  // Obx(() {
+                  //   // listingList reactive variable
+                  //   final listings = listingController.listingList;
+                  //
+                  //   return Container(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 12),
+                  //     decoration: BoxDecoration(
+                  //       color: Colors.white,
+                  //       borderRadius: BorderRadius.circular(10),
+                  //       border: Border.all(color: Colors.grey.shade300),
+                  //     ),
+                  //     child: DropdownButtonHideUnderline(
+                  //       child: DropdownButton<String>(
+                  //         isExpanded: true,
+                  //         hint: const Text("Select property type"),
+                  //         value: dealsController.selectedId.value.isEmpty
+                  //             ? null
+                  //             : dealsController.selectedId.value,
+                  //         dropdownColor: Colors.white,
+                  //         items: listings.map((listing) {
+                  //           return DropdownMenuItem<String>(
+                  //             value: listing.id,
+                  //             child: Text(listing.title),
+                  //           );
+                  //         }).toList(),
+                  //         onChanged: (newId) {
+                  //           if (newId != null) {
+                  //             dealsController.selectedId.value = newId;
+                  //             // find the title corresponding to selected id
+                  //             final selectedListing = listings.firstWhere((listing) => listing.id == newId);
+                  //             dealsController.selectedTitle.value = selectedListing.title;
+                  //             dealsController.selectedAirbnbLink.value = selectedListing.addAirbnbLink ;
+                  //
+                  //             debugPrint("Selected ID: ${dealsController.selectedId.value}");
+                  //             debugPrint("Selected Title: ${dealsController.selectedTitle.value}");
+                  //             debugPrint("Selected Title: ${dealsController.selectedAirbnbLink.value}");
+                  //           }
+                  //         },
+                  //       ),
+                  //     ),
+                  //   );
+                  // }),
 
                   SizedBox(height: 16),
                   //  Description
@@ -250,6 +290,80 @@ class HostCreateDealScreen extends StatelessWidget {
       ],
     );
   }
+
+  void _openListingDropdown(BuildContext context) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: "Listing Dropdown",
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (context, anim1, anim2) {
+        return Center(
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.85,
+              height: MediaQuery.of(context).size.height * 0.4,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Obx(() {
+                      if (listingController.listingList.isEmpty && listingController.isListingLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      return NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !listingController.isLoadMoreLoading.value) {
+                            listingController.getListings(loadMore: true);
+                          }
+                          return false;
+                        },
+                        child: ListView.separated(
+                          padding: EdgeInsets.zero,
+                          itemCount: listingController.listingList.length + (listingController.isLoadMoreLoading.value ? 1 : 0),
+                          separatorBuilder: (context, index) => Divider(height: 1, color: Colors.white),
+                          itemBuilder: (context, index) {
+                            if (index == listingController.listingList.length) {
+                              return const Padding(padding: EdgeInsets.all(10),
+                                child: Center(child: CustomLoader()),
+                              );
+                            }
+
+                            final item = listingController.listingList[index];
+                            return ListTile(
+                              title: Text(item.title, style: const TextStyle(fontSize: 15)),
+                              onTap: () {
+                                dealsController.selectedId.value = item.id;
+                                dealsController.selectedTitle.value = item.title;
+                                dealsController.selectedAirbnbLink.value = item.addAirbnbLink;
+                                debugPrint("Selected ID: ${dealsController.selectedId.value}");
+                                debugPrint("Selected Title: ${dealsController.selectedTitle.value}");
+                                debugPrint("Selected Title: ${dealsController.selectedAirbnbLink.value}");
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        ),
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
+
 
 
 }

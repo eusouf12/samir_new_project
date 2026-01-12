@@ -54,7 +54,7 @@ class HostCreateDealTwoScreen extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () => controller.addDeliverable(),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xffa8e3d0),
+                          backgroundColor: AppColors.primary,
                           foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -209,7 +209,7 @@ class HostCreateDealTwoScreen extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(color: const Color(0xff48C192), borderRadius: BorderRadius.circular(6)),
+        decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(6)),
         child: Icon(icon, color: Colors.white, size: 18),
       ),
     );

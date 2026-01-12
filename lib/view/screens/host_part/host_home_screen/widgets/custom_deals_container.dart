@@ -14,9 +14,10 @@ class CustomDealsContainer extends StatelessWidget {
   final String? paymentText;
   final String? progressText;
   final String? durationText;
+  final String? status;
   final void Function()? viewDetailsButton;
   final void Function()? messageButton;
-  const CustomDealsContainer({super.key, this.profileImg, this.fullName, this.userName, this.userImg, this.deliverablesText, this.paymentText, this.progressText, this.durationText, this.viewDetailsButton, this.messageButton});
+  const CustomDealsContainer({super.key, this.profileImg,this.status, this.fullName, this.userName, this.userImg, this.deliverablesText, this.paymentText, this.progressText, this.durationText, this.viewDetailsButton, this.messageButton});
 
   @override
   Widget build(BuildContext context) {
@@ -39,69 +40,66 @@ class CustomDealsContainer extends StatelessWidget {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    CustomNetworkImage(
-                      imageUrl: profileImg?? AppConstants.girlsPhoto,
-                      height: 50,
-                      width: 50,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: fullName?? "",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          bottom: 2,
-                        ),
-                        Row(
-                          children: [
-                            CustomNetworkImage(
-                              imageUrl:userImg?? AppConstants.girlsPhoto,
-                              height: 20,
-                              width: 20,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            CustomText(
-                              left: 6,
-                              text: userName?? "",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textClr,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                CustomNetworkImage(
+                  imageUrl: profileImg ?? AppConstants.girlsPhoto,
+                  height: 50,
+                  width: 50,
+                  borderRadius: BorderRadius.circular(10),
                 ),
+                SizedBox(width: 10),
+                // left content
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: fullName ?? "",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        bottom: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                      ),
+                      Row(
+                        children: [
+                          CustomNetworkImage(
+                            imageUrl: userImg ?? AppConstants.girlsPhoto,
+                            height: 25,
+                            width: 25,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          CustomText(
+                            left: 6,
+                            text: userName ?? "",
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textClr,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                // RIGHT STATUS COLUMN
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        color: Color(0xffDCFCE7),
+                        color: status == "pending" ? Color(0xffFFEDD5) : Color(0xffDCFCE7),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.circle,
-                            color: AppColors.green,
-                            size: 10,
-                          ),
+                          Icon(Icons.circle, size: 10, color: status == "pending" ? AppColors.red : AppColors.green,),
                           CustomText(
                             left: 2,
-                            text: "Active",
+                            text: status == "pending" ? "Pending" : "Active",
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.green,
+                            color: status == "pending" ? AppColors.red : AppColors.green,
                           ),
                         ],
                       ),
@@ -125,6 +123,7 @@ class CustomDealsContainer extends StatelessWidget {
                 ),
               ],
             ),
+
             SizedBox(height: 16),
             Container(
               padding: EdgeInsets.all(10),
@@ -136,6 +135,7 @@ class CustomDealsContainer extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
                         text: "Deliverables",
@@ -143,19 +143,26 @@ class CustomDealsContainer extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         color: AppColors.textClr,
                       ),
-                      CustomText(
-                        text: durationText?? "",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                      SizedBox(width: 15),
+                      Expanded(
+                        child: CustomText(
+                          text: deliverablesText?? "",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          maxLines: 10,
+                          overflow: TextOverflow.visible,
+                          textAlign: TextAlign.end,
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(height: 6),
+                  //Payment
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        text: "Deliverables",
+                        text: "Payment",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textClr,
@@ -168,11 +175,12 @@ class CustomDealsContainer extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 6),
+                  //Progress
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        text: "Deliverables",
+                        text: "Progress",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textClr,
@@ -185,11 +193,12 @@ class CustomDealsContainer extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 6),
+                  //Duration
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                        text: "Deliverables",
+                        text: "Duration",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textClr,
@@ -241,4 +250,33 @@ class CustomDealsContainer extends StatelessWidget {
       ),
     );
   }
+}
+
+
+String getPlatformShort(String platform) {
+  switch (platform.toLowerCase()) {
+    case 'instagram':
+      return 'IG';
+    case 'tiktok':
+      return 'TT';
+    case 'facebook':
+      return 'FB';
+    case 'youtube':
+      return 'YT';
+    default:
+      return '';
+  }
+}
+
+String buildDeliverablesText(List deliverables) {
+  final List<String> items = [];
+
+  for (var d in deliverables) {
+    final short = getPlatformShort(d['platform'] ?? '');
+    if (short.isEmpty) continue;
+
+    items.add('${d['quantity']} $short ${d['contentType']}');
+  }
+
+  return items.join(', ');
 }
