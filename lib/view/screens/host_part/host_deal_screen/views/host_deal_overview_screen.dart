@@ -53,6 +53,7 @@ class HostDealOverviewScreen extends StatelessWidget {
               if (dealsController.singleDealList.isEmpty) {
                 return const Center(child: Text("No deals available"));
               }
+              final deal = dealsController.singleDealList.first;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,6 +87,90 @@ class HostDealOverviewScreen extends StatelessWidget {
 
                   }),
                   SizedBox(height: 20),
+                  // payment and night count
+                  Container(
+                    width: MediaQuery.sizeOf(context).width,
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Color(0xffeff4ff),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.black.withValues(alpha: 0.1),
+                          blurRadius: 2,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: "Night Stay : ",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              bottom: 16,
+                            ),
+                            CustomText(
+                              text: "${deal.compensation.numberOfNights} ${deal.compensation.numberOfNights > 1 ? "Days" : "Day"}",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              bottom: 16,
+                            ),
+
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        //Direct Payment
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: "Direct Payment : ",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              bottom: 16,
+                            ),
+                            CustomText(
+                              text: "${deal.compensation.directPayment == true?"Yes":"No"}",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              bottom: 16,
+                            ),
+
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: "Total Payment : ",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              bottom: 16,
+                            ),
+                            CustomText(
+                              text: "\$${deal.compensation.paymentAmount}",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              bottom: 16,
+                            ),
+
+                          ],
+                        ),
+
+                      ],
+                    ),
+                  ),
+                  SizedBox(height:20),
+                  //assign content
                   Container(
                     width: MediaQuery.sizeOf(context).width,
                     padding: EdgeInsets.all(12),
@@ -139,141 +224,7 @@ class HostDealOverviewScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Container(
-                    width: MediaQuery.sizeOf(context).width,
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.black.withValues(alpha: 0.1),
-                          blurRadius: 2,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: "Timeline & Status",
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          bottom: 16,
-                        ),
-                        CustomTimelineStatus(
-                          title: "Deal Created",
-                          subtitle: "Jan 15, 2025",
-                        ),
-                        CustomTimelineStatus(
-                          title: "Content Submitted",
-                          subtitle: "2 / 3 Submitted",
-                        ),
-                        CustomTimelineStatus(
-                          title: "Payment Released",
-                          subtitle: "Pending",
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    width: MediaQuery.sizeOf(context).width,
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Color(0xffeff4ff),
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.black.withValues(alpha: 0.1),
-                          blurRadius: 2,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              text: "Payment Details",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              bottom: 16,
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                color: Color(0xffFFEDD5),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: CustomText(
-                                left: 2,
-                                text: "🟡 Pending",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xffC2410C),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: AppColors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(
-                                text: "Total Amount",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              CustomText(
-                                text: "\$250",
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: Icon(
-                                Icons.info,
-                                size: 24,
-                                color: AppColors.blue,
-                              ),
-                            ),
-                            Flexible(
-                              flex: 4,
-                              child: CustomText(
-                                left: 6,
-                                text:
-                                "Payment released automatically after Host approval of all deliverables.",
-                                fontSize: 12,
-                                maxLines: 2,
-                                fontWeight: FontWeight.w600,
-                                textAlign: TextAlign.start,
-                                color: Color(0xff1E3A8A),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20,),
-                  CustomButtonTwo(onTap: (){},title: "Release Payment",)
+
                 ],
               );
 
