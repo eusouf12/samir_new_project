@@ -296,4 +296,38 @@ class DealsController extends GetxController {
     }
   }
 
+// ================ Get Single deals function ==============
+  RxList<Deal> singleDealList = <Deal>[].obs;
+
+  final rxSingleDealStatus = Status.loading.obs;
+  void setSingleDealStatus(Status status) => rxSingleDealStatus.value = status;
+
+  Future<void> singleGetDeal({required String id}) async {
+    setSingleDealStatus(Status.loading);
+    singleDealList.clear();
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.getSingleDeal(id: id));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> jsonResponse =
+        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final List dealsJson = jsonResponse['data']['deal'];
+
+        singleDealList.assignAll(
+          dealsJson.map((e) => Deal.fromJson(e)).toList(),
+        );
+
+        setSingleDealStatus(Status.completed);
+      } else {
+        setSingleDealStatus(Status.error);
+        showCustomSnackBar("Failed to load deal", isError: true);
+      }
+    } catch (e) {
+      setSingleDealStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+    }
+  }
+
 }

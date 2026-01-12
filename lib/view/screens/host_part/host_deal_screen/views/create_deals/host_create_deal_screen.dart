@@ -7,9 +7,9 @@ import 'package:samir_flutter_app/view/components/custom_from_card/custom_from_c
 import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_listing_screen/controller/listing_controller.dart';
-import '../../../../../core/app_routes/app_routes.dart';
-import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
-import '../controller/deals_controller.dart';
+import '../../../../../../core/app_routes/app_routes.dart';
+import '../../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../../controller/deals_controller.dart';
 
 class HostCreateDealScreen extends StatelessWidget {
   HostCreateDealScreen({super.key});

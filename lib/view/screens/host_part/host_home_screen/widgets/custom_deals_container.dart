@@ -85,25 +85,25 @@ class CustomDealsContainer extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: status == "pending" ? Color(0xffFFEDD5) : Color(0xffDCFCE7),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.circle, size: 10, color: status == "pending" ? AppColors.red : AppColors.green,),
-                          CustomText(
-                            left: 2,
-                            text: status == "pending" ? "Pending" : "Active",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: status == "pending" ? AppColors.red : AppColors.green,
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   padding: EdgeInsets.all(5),
+                    //   decoration: BoxDecoration(
+                    //     color: status == "pending" ? Color(0xffFFEDD5) : Color(0xffDCFCE7),
+                    //     borderRadius: BorderRadius.circular(10),
+                    //   ),
+                    //   child: Row(
+                    //     children: [
+                    //       Icon(Icons.circle, size: 10, color: status == "pending" ? AppColors.red : AppColors.green,),
+                    //       CustomText(
+                    //         left: 2,
+                    //         text: status == "pending" ? "Pending" : "Active",
+                    //         fontSize: 12,
+                    //         fontWeight: FontWeight.w600,
+                    //         color: status == "pending" ? AppColors.red : AppColors.green,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(height: 8),
                     Container(
                       padding: EdgeInsets.all(5),
@@ -113,7 +113,7 @@ class CustomDealsContainer extends StatelessWidget {
                       ),
                       child: CustomText(
                         left: 2,
-                        text: "Influencer",
+                        text: "Host",
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: Color(0xff1D4ED8),
@@ -133,26 +133,21 @@ class CustomDealsContainer extends StatelessWidget {
               ),
               child: Column(
                 children: [
+                  //Duration
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Deliverables",
+                        text: "Duration",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textClr,
                       ),
-                      SizedBox(width: 15),
-                      Expanded(
-                        child: CustomText(
-                          text: deliverablesText?? "",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          maxLines: 10,
-                          overflow: TextOverflow.visible,
-                          textAlign: TextAlign.end,
-                        ),
+                      CustomText(
+                        text: durationText ??"",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black,
                       ),
                     ],
                   ),
@@ -175,39 +170,26 @@ class CustomDealsContainer extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 6),
-                  //Progress
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Progress",
+                        text: "Deliverables",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textClr,
                       ),
-                      CustomText(
-                        text: progressText?? "",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 6),
-                  //Duration
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomText(
-                        text: "Duration",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.textClr,
-                      ),
-                      CustomText(
-                        text: durationText ??"",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.textClr,
+                      SizedBox(width: 15),
+                      Expanded(
+                        child: CustomText(
+                          text: deliverablesText?? "",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          maxLines: 10,
+                          overflow: TextOverflow.visible,
+                          textAlign: TextAlign.end,
+                        ),
                       ),
                     ],
                   ),

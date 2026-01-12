@@ -140,10 +140,8 @@ class ListingController extends GetxController {
 
   final isListingLoading = false.obs;
   final isLoadMoreLoading = false.obs;
-
   final rxListingStatus = Status.loading.obs;
   void setListingStatus(Status status) => rxListingStatus.value = status;
-
   int currentPage = 1;
   int totalPages = 1;
   final int limit = 3;
@@ -195,5 +193,45 @@ class ListingController extends GetxController {
       isLoadMoreLoading.value = false;
     }
   }
+
+  // ================= Single Get Listing =================
+  RxList<ListingItem> singleListingList = <ListingItem>[].obs;
+  final rxSingleListingStatus = Status.loading.obs;
+  void setSingleListingStatus(Status status) => rxSingleListingStatus.value = status;
+
+  Future<void> singleGetListing({required String id}) async {
+    setSingleListingStatus(Status.loading);
+    singleListingList.clear();
+
+    try {
+      final response =
+      await ApiClient.getData(ApiUrl.getSingleListing(id: id));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> jsonResponse =
+        response.body is String
+            ? jsonDecode(response.body)
+            : Map<String, dynamic>.from(response.body);
+
+        // 👇 API structure অনুযায়ী adjust করো
+        final List listingsJson = jsonResponse['data']['listing'];
+
+        singleListingList.assignAll(
+          listingsJson
+              .map((e) => ListingItem.fromJson(e))
+              .toList(),
+        );
+
+        setSingleListingStatus(Status.completed);
+      } else {
+        setSingleListingStatus(Status.error);
+        showCustomSnackBar("Failed to load listing", isError: true);
+      }
+    } catch (e) {
+      setSingleListingStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+    }
+  }
+
 
 }

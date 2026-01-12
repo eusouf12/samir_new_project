@@ -16,8 +16,8 @@ import '../../host_home_screen/controller/host_home_controller.dart';
 
 class HostDealsScreen extends StatelessWidget {
   HostDealsScreen({super.key});
-  final HostHomeController hostHomeController = Get.find<HostHomeController>();
-  final DealsController dealsController = Get.find<DealsController>();
+  final HostHomeController hostHomeController = Get.put(HostHomeController());
+  final DealsController dealsController = Get.put(DealsController());
 
   @override
   Widget build(BuildContext context) {
@@ -86,14 +86,10 @@ class HostDealsScreen extends StatelessWidget {
                               }
 
                               final deal = dealsController.dealList[index];
-
                               final order = ['IG', 'TT', 'FB', 'YT'];
-
                               final deliverablesText = deal.deliverables.map((d) => {'platform': getPlatformShort(d.platform ?? ''), 'text': "${d.quantity} ${getPlatformShort(d.platform ?? '')} ${d.contentType}"})
                                   .where((e) => e['platform']!.isNotEmpty).toList()..sort((a, b) => order.indexOf(a['platform']!).compareTo(order.indexOf(b['platform']!)));
-
                               final text = deliverablesText.map((e) => e['text']).join(', ');
-
 
                               // payment text
                               String paymentText = "";
@@ -121,7 +117,13 @@ class HostDealsScreen extends StatelessWidget {
                                 progressText: progressText,
                                 durationText: durationText,
                                 viewDetailsButton: () {
-                                  Get.toNamed(AppRoutes.hostDealOverviewScreen, arguments: deal);
+                                  Get.toNamed(AppRoutes.hostDealOverviewScreen,
+                                    arguments: {
+                                      'dealId': deal.id,
+                                      'titleId': deal.title.id,
+                                      'status': deal.status,
+                                    },
+                                  );
                                 },
                                 messageButton: () {
                                   // message action

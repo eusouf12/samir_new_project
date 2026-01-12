@@ -7,14 +7,14 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:samir_flutter_app/utils/app_const/app_const.dart';
 import 'package:samir_flutter_app/view/components/custom_netwrok_image/custom_network_image.dart';
 
-import '../../../../../core/app_routes/app_routes.dart';
-import '../../../../../utils/app_colors/app_colors.dart';
-import '../../../../components/custom_button/custom_button.dart';
-import '../../../../components/custom_button/custom_button_two.dart';
-import '../../../../components/custom_loader/custom_loader.dart';
-import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
-import '../../../../components/custom_text/custom_text.dart';
-import '../controller/deals_controller.dart';
+import '../../../../../../core/app_routes/app_routes.dart';
+import '../../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../components/custom_button/custom_button.dart';
+import '../../../../../components/custom_button/custom_button_two.dart';
+import '../../../../../components/custom_loader/custom_loader.dart';
+import '../../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../../../../../components/custom_text/custom_text.dart';
+import '../../controller/deals_controller.dart';
 
 class HostReviewConfirmScreen extends StatelessWidget {
   HostReviewConfirmScreen({super.key});

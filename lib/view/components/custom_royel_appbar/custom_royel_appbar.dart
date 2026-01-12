@@ -53,10 +53,7 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
         leading: leftIcon == true ? BackButton(color: leftIconColor ?? Colors.black,) : SizedBox.shrink(),
         leadingWidth: leftIcon == true ? kToolbarHeight : 0,
 
-      title: Align(
-        alignment: centerTitleEnable == true
-            ? Alignment.center
-            : Alignment.centerLeft,
+      title: Align( alignment: centerTitleEnable == true ? Alignment.center : Alignment.centerLeft,
         child: CustomText(
           text: titleName ?? "",
           fontSize: 20.w,
