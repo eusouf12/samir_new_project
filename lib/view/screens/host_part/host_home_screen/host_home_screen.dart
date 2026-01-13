@@ -20,7 +20,7 @@ import '../host_profile_screen/controller/host_profile_controller.dart';
 class HostHomeScreen extends StatelessWidget {
   HostHomeScreen({super.key});
   final HostProfileController hostProfileController = Get.put(HostProfileController());
-  final ListingController listingController = Get.find();
+  final ListingController listingController = Get.put(ListingController());
 
   @override
   Widget build(BuildContext context) {
