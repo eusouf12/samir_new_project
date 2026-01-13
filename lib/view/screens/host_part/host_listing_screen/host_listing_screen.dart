@@ -6,6 +6,7 @@ import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_
 import 'package:samir_flutter_app/view/screens/host_part/host_listing_screen/widgets/listin_custom_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/app_routes/app_routes.dart';
+import '../../../../utils/app_const/app_const.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_text/custom_text.dart';
 import 'controller/listing_controller.dart';
@@ -31,49 +32,67 @@ class HostListingScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
           children: [
+            //search
             CustomTextField(
               isDens: true,
               fillColor: const Color(0xffF5F5F5),
               hintText: "Search",
               hintStyle: TextStyle(color: AppColors.textClr),
-              prefixIcon: Icon(
-                Icons.search_rounded,
-                size: 18,
-                color: AppColors.textClr,
-              ),
+              prefixIcon: Icon(Icons.search_rounded, size: 18, color: AppColors.textClr),
               onChanged: (value) {
+                controller.searchQuery.value = value;
 
+                if (value.trim().isEmpty) {
+                  controller.searchListingList.clear();
+                  controller.setSearchListingStatus(Status.completed);
+                } else {
+                  controller.searchMyListing(query: value);
+                }
               },
             ),
             const SizedBox(height: 16),
             Expanded(
               child: Obx(() {
-                if (controller.isListingLoading.value && controller.listingList.isEmpty) {return  Center(child: CustomLoader());}
+                final bool isSearching = controller.searchQuery.value.isNotEmpty;
 
-                if (controller.listingList.isEmpty) {
-                  return Center(child: CustomText(text: "No listings found", fontSize: 16,),);
+                // ========= Loader =========
+                if (!isSearching && controller.rxListingStatus.value == Status.loading) {
+                  return const Center(child: CustomLoader());
                 }
+
+                if (isSearching && controller.rxSearchListingStatus.value == Status.loading) {
+                  return const Center(child: CustomLoader());
+                }
+
+                // ========= Decide list =========
+                final listToShow = isSearching ? controller.searchListingList : controller.listingList;
+
+                if (listToShow.isEmpty) {
+                  return const Center(
+                    child: CustomText(text: "No listings found", fontSize: 16),
+                  );
+                }
+
                 return ListView.builder(
-                  controller: scrollController,
-                  itemCount: controller.listingList.length + (controller.isLoadMoreLoading.value ? 1 : 0),
+                  controller: isSearching ? null : scrollController,
+                  itemCount: listToShow.length +
+                      (!isSearching && controller.isLoadMoreLoading.value ? 1 : 0),
                   itemBuilder: (context, index) {
-                    if (index < controller.listingList.length) {
-                      final listing = controller.listingList[index];
+                    if (index < listToShow.length) {
+                      final listing = listToShow[index];
                       return ListingCard(
                         listing: listing,
                         onTapAirbnb: () async {
                           final link = listing.addAirbnbLink;
-                          if (  link.isEmpty) return;
-                          final Uri uri = Uri.parse(link.startsWith('http') ? link : 'https://$link',);
+                          if (link.isEmpty) return;
+
+                          final uri = Uri.parse(link.startsWith('http') ? link : 'https://$link',);
                           await launchUrl(uri, mode: LaunchMode.externalApplication,);
                         },
-
-
                       );
-                    }
-                    // Show load more loader
-                    else {
-                      return const Padding(padding: EdgeInsets.symmetric(vertical: 16),
+                    } else {
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
                         child: Center(child: CustomLoader()),
                       );
                     }
@@ -81,6 +100,9 @@ class HostListingScreen extends StatelessWidget {
                 );
               }),
             ),
+
+
+
           ],
         ),
       ),

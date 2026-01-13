@@ -132,6 +132,42 @@ class ListingController extends GetxController {
   }
 
 //==============searchQuery===================
+  RxString searchQuery = ''.obs;
+  RxList<ListingItem> searchListingList = <ListingItem>[].obs;
+
+  final rxSearchListingStatus = Status.loading.obs;
+  void setSearchListingStatus(Status status) => rxSearchListingStatus.value = status;
+
+  Future<void> searchMyListing({required String query}) async {
+    setSearchListingStatus(Status.loading);
+    searchListingList.clear();
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.listingSearch(listSearch: query));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> jsonResponse =
+        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final ListingsResponse model = ListingsResponse.fromJson(jsonResponse);
+
+        // Filter by query
+        final filteredListings = model.data.listings.where((listing) {
+          return listing.title.toLowerCase().contains(query.toLowerCase());
+        }).toList();
+
+        searchListingList.assignAll(filteredListings);
+
+        setSearchListingStatus(Status.completed);
+      } else {
+        setSearchListingStatus(Status.error);
+        showCustomSnackBar("Failed to search listings", isError: true);
+      }
+    } catch (e) {
+      setSearchListingStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+    }
+  }
 
 
 
@@ -144,7 +180,6 @@ class ListingController extends GetxController {
   void setListingStatus(Status status) => rxListingStatus.value = status;
   int currentPage = 1;
   int totalPages = 1;
-  final int limit = 3;
 
   Future<void> getListings({bool loadMore = false}) async {
     if (loadMore) {
@@ -155,13 +190,10 @@ class ListingController extends GetxController {
       isListingLoading.value = true;
       setListingStatus(Status.loading);
       currentPage = 1;
-      listingList.clear();
     }
 
     try {
-      final response = await ApiClient.getData(
-        ApiUrl.getListing(page: currentPage.toString()),
-      );
+      final response = await ApiClient.getData(ApiUrl.getListing(page: currentPage.toString()),);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> jsonResponse =

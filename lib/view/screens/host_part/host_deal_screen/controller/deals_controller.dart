@@ -239,6 +239,39 @@ class DealsController extends GetxController {
     }
   }
 
+  // ================ Search Deals =================
+  RxList<Deal> searchDealList = <Deal>[].obs;
+  RxString searchQuery = ''.obs;
+
+  final rxSearchDealStatus = Status.completed.obs;
+  void setSearchDealStatus(Status status) => rxSearchDealStatus.value = status;
+
+  Future<void> searchDeals({required String query}) async {
+    setSearchDealStatus(Status.loading);
+    searchDealList.clear();
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.dealSearch(listSearch: query));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> jsonResponse =
+        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final DealResponse model = DealResponse.fromJson(jsonResponse);
+
+        searchDealList.assignAll(model.deals);
+        setSearchDealStatus(Status.completed);
+      } else {
+        setSearchDealStatus(Status.error);
+        showCustomSnackBar("Failed to search deals", isError: true);
+      }
+    } catch (e) {
+      setSearchDealStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+    }
+  }
+
+
 // ================ Get deals Controller ==============
   RxList<Deal> dealList = <Deal>[].obs;
 

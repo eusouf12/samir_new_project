@@ -54,6 +54,7 @@ class HostDealOverviewScreen extends StatelessWidget {
                 return const Center(child: Text("No deals available"));
               }
               final deal = dealsController.singleDealList.first;
+              final int totalDeliverables = deal.deliverables.length;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,30 +197,50 @@ class HostDealOverviewScreen extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                             ),
                             CustomText(
-                              text: "2 / 3 Submitted",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
+                              text: "${totalDeliverables}",
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
                               color: AppColors.blue,
                             ),
                           ],
                         ),
                         SizedBox(height: 20),
-                        CustomAssignedCard(
-                          image: AppIcons.cameraIcon,
-                          title:
-                          "1 Instagram Reel showcasing the property exterior",
-                          subtitle: "Pending",
-                        ),
-                        CustomAssignedCard(
-                          image: AppIcons.videoIcon,
-                          title: "1 TikTok video highlighting guest experience",
-                          subtitle: "Pending",
-                        ),
-                        CustomAssignedCard(
-                          image: AppIcons.editIcons,
-                          title: "Tag @HostProfile and use #HostinfluCollab",
-                          subtitle: "Pending",
-                        ),
+                        Column(
+                          children: deal.deliverables.map((deliverable) {
+                            String titleText = "${deliverable.quantity} ${deliverable.platform} ${deliverable.contentType} showcasing the property";
+                            IconData icon;
+                            Color iconColor;
+
+                            switch (deliverable.platform.toLowerCase()) {
+                              case "instagram":
+                                icon = Icons.camera_alt;
+                                iconColor = Color(0xFFE1306C);
+                                break;
+                              case "tiktok":
+                                icon = Icons.video_collection;
+                                iconColor = Color(0xFF69C9D0);
+                                break;
+                              case "facebook":
+                                icon = Icons.facebook;
+                                iconColor = Color(0xFF1877F2);
+                                break;
+                              case "youtube":
+                                icon = Icons.video_library;
+                                iconColor = Color(0xFFFF0000);
+                                break;
+                              default:
+                                icon = Icons.edit;
+                                iconColor = Colors.grey;
+                            }
+
+                            return CustomAssignedCard(
+                              icon: icon,
+                              iconColor: iconColor,
+                              title: titleText,
+                            );
+                          }).toList(),
+                        )
+
                       ],
                     ),
                   ),

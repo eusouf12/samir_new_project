@@ -9,17 +9,7 @@ class HostHomeController extends GetxController {
     selectedTabName.value = tabNames[index];
     debugPrint("Selected Tab: ${selectedTabName.value}");
   }
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   // fetchInitialEvents(tabNames[currentIndex.value]);
-  // }
-  // void onTabSelected(int index) {
-  //   if (currentIndex.value != index) {
-  //     currentIndex.value = index;
-  //     // fetchInitialEvents(tabNames[index]);
-  //   }
-  // }
+
 
 
   RxInt currentIndex = 0.obs;

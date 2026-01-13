@@ -10,7 +10,6 @@ import 'package:samir_flutter_app/view/screens/host_part/host_deal_screen/contro
 import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_deals_container.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../service/api_url.dart';
-import '../../../../components/custom_tab_selected/custom_tab_selected.dart';
 import '../../host_home_screen/controller/host_home_controller.dart';
 
 
@@ -32,187 +31,123 @@ class HostDealsScreen extends StatelessWidget {
           children: [
             // search field
             CustomTextField(
-              fieldBorderColor: AppColors.primary,
-              fillColor: AppColors.white,
               isDens: true,
+              fillColor: const Color(0xffF5F5F5),
               hintText: "Search deals by name or partner",
-              prefixIcon: Icon(
-                Icons.search,
-                size: 24,
-                color: AppColors.textClr,
-              ),
               hintStyle: TextStyle(color: AppColors.textClr),
-            ),
-            SizedBox(height: 16),
-            Obx( () => CustomTabSelector(
-                tabs: hostHomeController.tabNames,
-                selectedIndex: hostHomeController.selectedTab.value,
-                selectedColor: AppColors.primary,
-                unselectedColor: Colors.black,
-                onTabSelected: hostHomeController.changeTab,
-              ),
-            ),
-            SizedBox(height: 10.h),
-            // deals list
-            Obx(() {
-                int tab = hostHomeController.selectedTab.value;
+              prefixIcon: Icon(Icons.search_rounded, size: 18, color: AppColors.textClr),
+              onChanged: (value) {
+                dealsController.searchQuery.value = value;
 
-                // All Tab
-                if (tab == 0) {
-                  return
-                    Expanded(
-                      child: Obx(() {
-                        if (dealsController.isDealLoading.value && dealsController.dealList.isEmpty) {
-                          return const Center(child: CustomLoader());
-                        }
-                        else if (dealsController.dealList.isEmpty) {
-                          return const Center(child: Text("No deals available"));
-                        }
-
-                        return NotificationListener<ScrollNotification>(
-                          onNotification: (scrollInfo) {
-                            if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !dealsController.isDealLoadMore.value) {
-                              dealsController.getDeals(loadMore: true);
-                            }
-                            return false;
-                          },
-                          child: ListView.builder(
-                            itemCount: dealsController.dealList.length + (dealsController.isDealLoadMore.value ? 1 : 0),
-                            itemBuilder: (context, index) {
-                              if (index == dealsController.dealList.length) {
-                                return const Padding(padding: EdgeInsets.all(12),
-                                  child: Center(child: CustomLoader()),
-                                );
-                              }
-
-                              final deal = dealsController.dealList[index];
-                              final order = ['IG', 'TT', 'FB', 'YT'];
-                              final deliverablesText = deal.deliverables.map((d) => {'platform': getPlatformShort(d.platform ?? ''), 'text': "${d.quantity} ${getPlatformShort(d.platform ?? '')} ${d.contentType}"})
-                                  .where((e) => e['platform']!.isNotEmpty).toList()..sort((a, b) => order.indexOf(a['platform']!).compareTo(order.indexOf(b['platform']!)));
-                              final text = deliverablesText.map((e) => e['text']).join(', ');
-
-                              // payment text
-                              String paymentText = "";
-                              if (deal.compensation.directPayment) {
-                                paymentText = "\$${deal.compensation.paymentAmount ?? '0'} via Direct Payment";
-                              }
-                              else if (deal.compensation.nightCredits) {paymentText = "${deal.compensation.numberOfNights} night credits";}
-
-                              // duration text
-                              final inDate = "${deal.inTimeAndDate.day}-${deal.inTimeAndDate.month}-${deal.inTimeAndDate.year}";
-                              final outDate = "${deal.outTimeAndDate.day}-${deal.outTimeAndDate.month}-${deal.outTimeAndDate.year}";
-                              final durationText = "$inDate – $outDate";
-
-                              // progress text (optional)
-                              final progressText = "Tasks info here";
-
-                              return CustomDealsContainer(
-                                profileImg: deal.userId.id.isNotEmpty ?ApiUrl.baseUrl + deal.title.images.first : AppConstants.profileImage2,
-                                userImg: deal.title.images.isNotEmpty ? ApiUrl.baseUrl+deal.userId.image : AppConstants.profileImage2,
-                                fullName: deal.title.title,
-                                userName: "${deal.userId.name}",
-                                status: deal.status,
-                                deliverablesText: text,
-                                paymentText: paymentText,
-                                progressText: progressText,
-                                durationText: durationText,
-                                viewDetailsButton: () {
-                                  Get.toNamed(AppRoutes.hostDealOverviewScreen,
-                                    arguments: {
-                                      'dealId': deal.id,
-                                      'titleId': deal.title.id,
-                                      'status': deal.status,
-                                    },
-                                  );
-                                },
-                                messageButton: () {
-                                  // message action
-                                },
-                              );
-                            },
-                          ),
-                        );
-                      }),
-                    );
-                }
-                // Active Tab
-                else if (tab == 1) {
-                  return Expanded(
-                    child: ListView(
-                      children: List.generate(5, (index) => CustomDealsContainer(
-                        profileImg: AppConstants.girlsPhoto,
-                        userImg: AppConstants.girlsPhoto2,
-                        fullName: "Active Deal $index",
-                        userName: "@activeuser$index",
-                        deliverablesText: "1 IG Reel",
-                        paymentText: "\$150 via Stripe",
-                        progressText: "1 / 1 tasks done",
-                        durationText: "Oct 12 – Oct 15, 2025",
-                        viewDetailsButton: () {},
-                        messageButton: () {},
-                      )),
-                    ),
-                  );
-                }
-                // Pending Tab
-                else if (tab == 2) {
-                  return Expanded(
-                    child: ListView(
-                      children: List.generate(3, (index) => CustomDealsContainer(
-                        profileImg: AppConstants.girlsPhoto,
-                        userImg: AppConstants.girlsPhoto2,
-                        fullName: "Pending Deal $index",
-                        userName: "@pendinguser$index",
-                        deliverablesText: "2 TikTok videos",
-                        paymentText: "\$200 via Stripe",
-                        progressText: "0 / 2 tasks done",
-                        durationText: "Oct 12 – Oct 15, 2025",
-                        viewDetailsButton: () {},
-                        messageButton: () {},
-                      )),
-                    ),
-                  );
-                }
-                // Completed Tab
-                else if (tab == 3) {
-                  return Expanded(
-                    child: ListView(
-                      children: List.generate(12, (index) => CustomDealsContainer(
-                        profileImg: AppConstants.girlsPhoto,
-                        userImg: AppConstants.girlsPhoto2,
-                        fullName: "Completed Deal $index",
-                        userName: "@completeduser$index",
-                        deliverablesText: "3 IG Reels",
-                        paymentText: "\$300 via Stripe",
-                        progressText: "3 / 3 tasks done",
-                        durationText: "Oct 12 – Oct 15, 2025",
-                        viewDetailsButton: () {},
-                        messageButton: () {},
-                      )),
-                    ),
-                  );
-                }
-                // Request Tab
-                else {
-                  return Expanded(
-                    child: ListView(
-                      children: List.generate(10, (index) => CustomDealsContainer(
-                        profileImg: AppConstants.girlsPhoto,
-                        userImg: AppConstants.girlsPhoto2,
-                        fullName: "Request Deal $index",
-                        userName: "@requestuser$index",
-                        deliverablesText: "1 IG Reel",
-                        paymentText: "\$100 via Stripe",
-                        progressText: "0 / 1 tasks done",
-                        durationText: "Oct 12 – Oct 15, 2025",
-                        viewDetailsButton: () {},
-                        messageButton: () {},
-                      )),
-                    ),
-                  );
+                if (value.trim().isEmpty) {
+                  dealsController.searchDealList.clear();
+                  dealsController.setSearchDealStatus(Status.completed);
+                } else {
+                  dealsController.searchDeals(query: value);
                 }
               },
-            )
+            ),
+            SizedBox(height: 16),
+            SizedBox(height: 10.h),
+            // deals list
+            Expanded(
+              child: Obx(() {
+                final bool isSearching =
+                    dealsController.searchQuery.value.isNotEmpty;
+
+                // ========= Loader =========
+                if (!isSearching &&
+                    dealsController.rxDealStatus.value == Status.loading) {
+                  return const Center(child: CustomLoader());
+                }
+
+                if (isSearching &&
+                    dealsController.rxSearchDealStatus.value == Status.loading) {
+                  return const Center(child: CustomLoader());
+                }
+
+                // ========= Decide list =========
+                final listToShow =
+                isSearching ? dealsController.searchDealList : dealsController.dealList;
+
+                if (listToShow.isEmpty) {
+                  return const Center(child: Text("No deals available"));
+                }
+
+                return NotificationListener<ScrollNotification>(
+                  onNotification: (scrollInfo) {
+                    if (!isSearching &&
+                        scrollInfo.metrics.pixels ==
+                            scrollInfo.metrics.maxScrollExtent &&
+                        !dealsController.isDealLoadMore.value) {
+                      dealsController.getDeals(loadMore: true);
+                    }
+                    return false;
+                  },
+                  child: ListView.builder(
+                    itemCount: listToShow.length +
+                        (!isSearching && dealsController.isDealLoadMore.value ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index < listToShow.length) {
+                        final deal = listToShow[index];
+                        final order = ['IG', 'TT', 'FB', 'YT'];
+                        final deliverablesText = deal.deliverables.map((d) => {'platform': getPlatformShort(d.platform ?? ''), 'text': "${d.quantity} ${getPlatformShort(d.platform ?? '')} ${d.contentType}"})
+                            .where((e) => e['platform']!.isNotEmpty).toList()..sort((a, b) => order.indexOf(a['platform']!).compareTo(order.indexOf(b['platform']!)));
+                        final text = deliverablesText.map((e) => e['text']).join(', ');
+
+                        // payment text
+                        String paymentText = "";
+                        if (deal.compensation.directPayment) {
+                          paymentText = "\$${deal.compensation.paymentAmount ?? '0'} via Direct Payment";
+                        }
+                        else if (deal.compensation.nightCredits) {paymentText = "${deal.compensation.numberOfNights} night credits";}
+
+                        // duration text
+                        final inDate = "${deal.inTimeAndDate.day}-${deal.inTimeAndDate.month}-${deal.inTimeAndDate.year}";
+                        final outDate = "${deal.outTimeAndDate.day}-${deal.outTimeAndDate.month}-${deal.outTimeAndDate.year}";
+                        final durationText = "$inDate – $outDate";
+
+                        // progress text (optional)
+                        final progressText = "Tasks info here";
+
+                        return CustomDealsContainer(
+                          profileImg: deal.title.images.isNotEmpty ?ApiUrl.baseUrl + deal.title.images.first : AppConstants.profileImage2,
+                          userImg:  deal.userId.image.isNotEmpty ? ApiUrl.baseUrl+deal.userId.image : AppConstants.profileImage2,
+                          fullName: deal.title.title,
+                          userName: "${deal.userId.name}",
+                          status: deal.status,
+                          deliverablesText: text,
+                          paymentText: paymentText,
+                          progressText: progressText,
+                          durationText: durationText,
+                          viewDetailsButton: () {
+                            Get.toNamed(AppRoutes.hostDealOverviewScreen,
+                              arguments: {
+                                'dealId': deal.id,
+                                'titleId': deal.title.id,
+                                'status': deal.status,
+                              },
+                            );
+                          },
+                          messageButton: () {
+                            // message action
+                          },
+                        );
+                      }
+                      else {
+                        // pagination loader
+                        return const Padding(
+                          padding: EdgeInsets.all(12),
+                          child: Center(child: CustomLoader()),
+                        );
+                      }
+                    },
+                  ),
+                );
+              }),
+            ),
+
+
           ],
         ),
       ),

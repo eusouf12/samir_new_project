@@ -30,10 +30,12 @@ class ApiUrl {
    ///========================= Host =========================createListing
    static const String createListing = "/api/v1/listing/create-listing";
    static const String createDeal = "/api/v1/deal/create-deal";
-   static String getListing({required String page})=> "/api/v1/listing/my-listings?currentPage=$page&limit=10";
+   static String getListing({required String page})=> "/api/v1/listing/my-listings?currentPage=$page&limit=3";
    static String getSingleListing({required String id})=> "/api/v1/listing/single-listing/$id";
    static String getDeals({required String page})=> "/api/v1/deal/my-all-deals?currentPage=$page&limit=10";
    static String getSingleDeal({required String id})=> "/api/v1/deal/get-single-deal/$id";
+   static String listingSearch({required String listSearch})=> "/api/v1/search/specific?query=listings&searchType=$listSearch";
+   static String dealSearch({required String listSearch})=> "/api/v1/search/specific?query=deals&searchType=$listSearch";
 
 
   //share post

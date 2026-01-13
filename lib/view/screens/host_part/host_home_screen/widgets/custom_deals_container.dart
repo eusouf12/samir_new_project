@@ -42,7 +42,7 @@ class CustomDealsContainer extends StatelessWidget {
             Row(
               children: [
                 CustomNetworkImage(
-                  imageUrl: profileImg ?? AppConstants.girlsPhoto,
+                  imageUrl: profileImg ?? "",
                   height: 50,
                   width: 50,
                   borderRadius: BorderRadius.circular(10),

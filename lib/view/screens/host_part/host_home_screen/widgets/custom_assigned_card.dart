@@ -4,10 +4,11 @@ import '../../../../../utils/app_icons/app_icons.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
 class CustomAssignedCard extends StatelessWidget {
-  final String? image;
+  final IconData? icon;
   final String? title;
   final String? subtitle;
-  const CustomAssignedCard({super.key, this.image, this.title, this.subtitle});
+  final Color? iconColor;
+  const CustomAssignedCard({super.key, this.icon,this.iconColor, this.title, this.subtitle});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,8 @@ class CustomAssignedCard extends StatelessWidget {
           children: [
             Flexible(
                 flex: 1,
-                child: CustomImage(imageSrc:image?? AppIcons.cameraIcon)),
+                child: Icon(icon ?? Icons.camera_alt, size: 30, color: iconColor,),
+            ),
             Flexible(
               flex: 4,
               child: Column(
@@ -40,15 +42,6 @@ class CustomAssignedCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                     maxLines: 4,
                     textAlign: TextAlign.start,
-                  ),
-                  CustomText(
-                    top: 6,
-                    left: 10,
-                    text:
-                    "Pending",
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textClr,
                   ),
                 ],
               ),
