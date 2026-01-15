@@ -20,9 +20,9 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      authController.toggleTab(true);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   authController.toggleTab(true);
+    // });
     return CustomGradient(
         child: Scaffold(
           backgroundColor: Colors.transparent,
@@ -71,9 +71,9 @@ class LoginScreen extends StatelessWidget {
                                 child: Container(
                                   margin: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    color: authController.loginLoading.value ? AppColors.primary : Colors.transparent,
+                                    color: authController.isLoginTab.value ? AppColors.primary : Colors.transparent,
                                     borderRadius: BorderRadius.circular(8),
-                                    boxShadow:authController.loginLoading.value
+                                    boxShadow:authController.isLoginTab.value
                                         ? [
                                       BoxShadow(
                                         color: Colors.black.withOpacity(0.05),
@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                                     child: CustomText(
                                       text: "Sign In",
                                       fontWeight: FontWeight.w500,
-                                      color: authController.loginLoading.value
+                                      color: authController.isLoginTab.value
                                           ? AppColors.white
                                           : AppColors.primary,
                                     ),
@@ -105,9 +105,9 @@ class LoginScreen extends StatelessWidget {
                                 child: Container(
                                   margin: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    color: !authController.loginLoading.value ? AppColors.primary : Colors.transparent,
+                                    color: !authController.isLoginTab.value ? AppColors.primary : Colors.transparent,
                                     borderRadius: BorderRadius.circular(12),
-                                    boxShadow: !authController.loginLoading.value
+                                    boxShadow: !authController.isLoginTab.value
                                         ? [
                                       BoxShadow(
                                         color: Colors.black.withOpacity(0.05),
@@ -121,7 +121,7 @@ class LoginScreen extends StatelessWidget {
                                     child: CustomText(
                                       text: "Create Account",
                                       fontWeight: FontWeight.w500,
-                                      color:  !authController.loginLoading.value
+                                      color:  !authController.isLoginTab.value
                                           ? AppColors.white
                                           : AppColors.primary,
                                     ),

@@ -40,6 +40,7 @@ class CustomDealsContainer extends StatelessWidget {
         child: Column(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CustomNetworkImage(
                   imageUrl: profileImg ?? "",
@@ -47,7 +48,7 @@ class CustomDealsContainer extends StatelessWidget {
                   width: 50,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 20),
                 // left content
                 Expanded(
                   child: Column(
@@ -61,66 +62,66 @@ class CustomDealsContainer extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
                       ),
-                      Row(
-                        children: [
-                          CustomNetworkImage(
-                            imageUrl: userImg ?? AppConstants.girlsPhoto,
-                            height: 25,
-                            width: 25,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          CustomText(
-                            left: 6,
-                            text: userName ?? "",
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.textClr,
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     CustomNetworkImage(
+                      //       imageUrl: userImg ?? AppConstants.girlsPhoto,
+                      //       height: 25,
+                      //       width: 25,
+                      //       borderRadius: BorderRadius.circular(50),
+                      //     ),
+                      //     CustomText(
+                      //       left: 6,
+                      //       text: userName ?? "",
+                      //       fontSize: 12,
+                      //       fontWeight: FontWeight.w400,
+                      //       color: AppColors.textClr,
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
                 ),
                 // RIGHT STATUS COLUMN
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    // Container(
-                    //   padding: EdgeInsets.all(5),
-                    //   decoration: BoxDecoration(
-                    //     color: status == "pending" ? Color(0xffFFEDD5) : Color(0xffDCFCE7),
-                    //     borderRadius: BorderRadius.circular(10),
-                    //   ),
-                    //   child: Row(
-                    //     children: [
-                    //       Icon(Icons.circle, size: 10, color: status == "pending" ? AppColors.red : AppColors.green,),
-                    //       CustomText(
-                    //         left: 2,
-                    //         text: status == "pending" ? "Pending" : "Active",
-                    //         fontSize: 12,
-                    //         fontWeight: FontWeight.w600,
-                    //         color: status == "pending" ? AppColors.red : AppColors.green,
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    SizedBox(height: 8),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        color: Color(0xffDBEAFE),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: CustomText(
-                        left: 2,
-                        text: "Host",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff1D4ED8),
-                      ),
-                    ),
-                  ],
-                ),
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.end,
+                //   children: [
+                //     // Container(
+                //     //   padding: EdgeInsets.all(5),
+                //     //   decoration: BoxDecoration(
+                //     //     color: status == "pending" ? Color(0xffFFEDD5) : Color(0xffDCFCE7),
+                //     //     borderRadius: BorderRadius.circular(10),
+                //     //   ),
+                //     //   child: Row(
+                //     //     children: [
+                //     //       Icon(Icons.circle, size: 10, color: status == "pending" ? AppColors.red : AppColors.green,),
+                //     //       CustomText(
+                //     //         left: 2,
+                //     //         text: status == "pending" ? "Pending" : "Active",
+                //     //         fontSize: 12,
+                //     //         fontWeight: FontWeight.w600,
+                //     //         color: status == "pending" ? AppColors.red : AppColors.green,
+                //     //       ),
+                //     //     ],
+                //     //   ),
+                //     // ),
+                //     SizedBox(height: 8),
+                //     Container(
+                //       padding: EdgeInsets.all(5),
+                //       decoration: BoxDecoration(
+                //         color: Color(0xffDBEAFE),
+                //         borderRadius: BorderRadius.circular(10),
+                //       ),
+                //       child: CustomText(
+                //         left: 2,
+                //         text: "Host",
+                //         fontSize: 12,
+                //         fontWeight: FontWeight.w600,
+                //         color: Color(0xff1D4ED8),
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
 

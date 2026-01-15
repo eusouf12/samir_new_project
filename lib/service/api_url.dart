@@ -36,6 +36,8 @@ class ApiUrl {
    static String getSingleDeal({required String id})=> "/api/v1/deal/get-single-deal/$id";
    static String listingSearch({required String listSearch})=> "/api/v1/search/specific?query=listings&searchType=$listSearch";
    static String dealSearch({required String listSearch})=> "/api/v1/search/specific?query=deals&searchType=$listSearch";
+   static String getChatList({required String page})=> "/api/v1/message/get-all-conversations?page=$page&limit=10";
+   static String getChatMessages({required String id, required String page})=> "/api/v1/message/get-chat-list/$id?page=$page&limit=10";
 
 
   //share post

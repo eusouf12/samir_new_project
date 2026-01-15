@@ -6,7 +6,6 @@ import '../../../../choose_role/view/role_screen.dart';
 import '../../../controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../../core/app_routes/app_routes.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_strings/app_strings.dart';
 import '../../../../../components/custom_button/custom_button.dart';
@@ -72,9 +71,9 @@ class SignUpScreen extends StatelessWidget {
                               child: Container(
                                 margin: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(
-                                  color: authController.loginLoading.value ? AppColors.primary : Colors.transparent,
+                                  color: authController.isLoginTab.value ? AppColors.primary : Colors.transparent,
                                   borderRadius: BorderRadius.circular(8),
-                                  boxShadow:authController.loginLoading.value
+                                  boxShadow:authController.isLoginTab.value
                                       ? [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.05),
@@ -88,7 +87,7 @@ class SignUpScreen extends StatelessWidget {
                                   child: CustomText(
                                     text: "Sign In",
                                     fontWeight: FontWeight.w500,
-                                    color: authController.loginLoading.value
+                                    color: authController.isLoginTab.value
                                         ? AppColors.white
                                         : AppColors.primary,
                                   ),
@@ -105,9 +104,9 @@ class SignUpScreen extends StatelessWidget {
                               child: Container(
                                 margin: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(
-                                  color: !authController.loginLoading.value ? AppColors.primary : Colors.transparent,
+                                  color: !authController.isLoginTab.value ? AppColors.primary : Colors.transparent,
                                   borderRadius: BorderRadius.circular(12),
-                                  boxShadow: !authController.loginLoading.value
+                                  boxShadow: !authController.isLoginTab.value
                                       ? [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.05),
@@ -121,7 +120,7 @@ class SignUpScreen extends StatelessWidget {
                                   child: CustomText(
                                     text: "Create Account",
                                     fontWeight: FontWeight.w500,
-                                    color:  !authController.loginLoading.value
+                                    color:  !authController.isLoginTab.value
                                         ? AppColors.white
                                         : AppColors.primary,
                                   ),

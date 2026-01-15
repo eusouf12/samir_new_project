@@ -154,9 +154,9 @@ class AuthController extends GetxController {
   }
 
   //=====================LOGIN METHOD=====================
-  RxBool loginLoading = false.obs;
+  RxBool isLoginTab = true.obs;
 
-  void toggleTab(bool isLogin) => loginLoading.value = isLogin;
+  void toggleTab(bool isLogin) => isLoginTab.value = isLogin;
 
   //======================LOGIN CONTROLLER=====================
   Rx<TextEditingController> loginEmailController = TextEditingController().obs;
@@ -173,7 +173,6 @@ class AuthController extends GetxController {
   RxBool loginUserLoading = false.obs;
 
   Future<void> loginUser() async {
-    loginLoading.value = true;
     loginUserLoading.value = true;
 
     Map<String, String> body = {
@@ -185,7 +184,6 @@ class AuthController extends GetxController {
       var response = await ApiClient.postData(ApiUrl.signIn, jsonEncode(body));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        loginLoading.value = false;
         loginUserLoading.value = false;
         refresh();
 
@@ -217,11 +215,9 @@ class AuthController extends GetxController {
         debugPrint("Reset Token: $resetToken");
 
 
-        userRole.toLowerCase() == "influencer" ? Get.offAllNamed(
-            AppRoutes.infHomeScreen) : Get.offAllNamed(AppRoutes.hostHomeScreen);
+        userRole.toLowerCase() == "influencer" ? Get.offAllNamed(AppRoutes.infHomeScreen) : Get.offAllNamed(AppRoutes.hostHomeScreen);
       }
       else {
-        loginLoading.value = false;
         loginUserLoading.value = false;
         refresh();
 
@@ -242,7 +238,6 @@ class AuthController extends GetxController {
         }
       }
     } catch (e) {
-      loginLoading.value = false;
       loginUserLoading.value = false;
       refresh();
       showCustomSnackBar("An error occurred. Please try again.", isError: true);
