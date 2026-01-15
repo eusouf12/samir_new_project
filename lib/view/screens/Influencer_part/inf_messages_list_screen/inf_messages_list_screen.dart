@@ -10,18 +10,13 @@ import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_messages_list_screen/widgets/custom_message_card.dart';
 
 import '../../../components/custom_nav_bar/navbar.dart';
+import '../../host_part/host_messages_list_screen/host_messages_list_screen.dart';
 
 class InfMessagesListScreen extends StatelessWidget {
   const InfMessagesListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Messages"),
-      body: ListView(
-        children: List.generate(10, (value){return CustomMessageCard();})
-      ),
-      bottomNavigationBar: InfNavbar(currentIndex: 2),
-    );
+    return HostMessagesListScreen();
   }
 }

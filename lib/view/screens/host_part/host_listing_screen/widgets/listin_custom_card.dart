@@ -65,33 +65,33 @@ class ListingCard extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                     ),
-                    listing.status == "Pending"
-                        ? Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: const CustomText(
-                        text: "pending",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.white,
-                      ),
-                    )
-                        :Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffFFEDD5),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: const CustomText(
-                        text: "Verified",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.red,
-                      ),
-                    ),
+                    // listing.status == "Pending"
+                    //     ? Container(
+                    //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    //     decoration: BoxDecoration(
+                    //     color: AppColors.primary,
+                    //     borderRadius: BorderRadius.circular(30),
+                    //   ),
+                    //   child: const CustomText(
+                    //     text: "pending",
+                    //     fontSize: 12,
+                    //     fontWeight: FontWeight.w500,
+                    //     color: AppColors.white,
+                    //   ),
+                    // )
+                    //     :Container(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    //   decoration: BoxDecoration(
+                    //     color: const Color(0xffFFEDD5),
+                    //     borderRadius: BorderRadius.circular(30),
+                    //   ),
+                    //   child: const CustomText(
+                    //     text: "Verified",
+                    //     fontSize: 12,
+                    //     fontWeight: FontWeight.w500,
+                    //     color: AppColors.red,
+                    //   ),
+                    // ),
                   ],
                 ),
                 const SizedBox(height: 8),
