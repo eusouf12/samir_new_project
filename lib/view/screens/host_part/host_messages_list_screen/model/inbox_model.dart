@@ -39,7 +39,7 @@ class MessageModel {
   final String id;
   final String text;
   final List<String> imageUrl;
-  final String audioUrl;
+  final String? audioUrl;
   final bool seen;
   final UserModel msgByUser;
   final String conversationId;
@@ -50,7 +50,7 @@ class MessageModel {
     required this.id,
     required this.text,
     required this.imageUrl,
-    required this.audioUrl,
+    this.audioUrl,
     required this.seen,
     required this.msgByUser,
     required this.conversationId,
@@ -62,16 +62,21 @@ class MessageModel {
     return MessageModel(
       id: json['_id'] ?? '',
       text: json['text'] ?? '',
-      imageUrl: List<String>.from(json['imageUrl'] ?? []),
-      audioUrl: json['audioUrl'] ?? '',
+      imageUrl: (json['imageUrl'] as List<dynamic>? ?? [])
+          .map((e) => e.toString())
+          .toList(),
+      audioUrl: json['audioUrl'],
       seen: json['seen'] ?? false,
       msgByUser: UserModel.fromJson(json['msgByUserId'] ?? {}),
       conversationId: json['conversationId'] ?? '',
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt:
+      DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
+      updatedAt:
+      DateTime.tryParse(json['updatedAt'] ?? '') ?? DateTime.now(),
     );
   }
 }
+
 class UserModel {
   final String id;
   final String name;
@@ -90,10 +95,11 @@ class UserModel {
       id: json['_id'] ?? '',
       name: json['name'] ?? '',
       email: json['email'] ?? '',
-      image: json['image'],
+      image: json['image']??'',
     );
   }
 }
+
 class Pagination {
   final int currentPage;
   final int totalPages;

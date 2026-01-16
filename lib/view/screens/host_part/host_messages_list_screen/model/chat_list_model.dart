@@ -90,7 +90,7 @@ class Participant {
       id: json['_id'] ?? '',
       name: json['name'] ?? '',
       email: json['email'] ?? '',
-      image: json['image'],
+      image: json['image'] ?? '',
     );
   }
 }
