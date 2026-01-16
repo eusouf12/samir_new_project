@@ -12,7 +12,7 @@ class ChatListController extends GetxController {
   int currentPage = 1;
   int totalPages = 1;
 
-  /// 🔥 Get Conversation List API
+  // Get Conversation List API
   Future<void> getConversations({bool loadMore = false}) async {
     if (loadMore) {
       if (currentPage >= totalPages) return;
