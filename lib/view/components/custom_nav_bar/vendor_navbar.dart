@@ -9,7 +9,7 @@ import '../../../utils/app_colors/app_colors.dart';
 import '../../screens/Influencer_part/inf_explore_deals_screen/inf_explore_deals_screen.dart';
 import '../../screens/Influencer_part/inf_home_screen/inf_home_screen.dart';
 import '../../screens/Influencer_part/inf_messages_list_screen/inf_messages_list_screen.dart';
-import '../../screens/host_part/host_messages_list_screen/host_messages_list_screen.dart';
+import '../../screens/host_part/host_messages_list_screen/view/host_messages_list_screen.dart';
 import '../../screens/host_part/host_profile_screen/host_profile_screen.dart';
 class InfNavbar extends StatefulWidget {
   final int currentIndex;

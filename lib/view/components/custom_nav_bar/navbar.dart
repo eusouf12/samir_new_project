@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:samir_flutter_app/utils/app_icons/app_icons.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/host_home_screen.dart';
 import '../../../utils/app_colors/app_colors.dart';
-import '../../screens/host_part/host_messages_list_screen/host_messages_list_screen.dart';
+import '../../screens/host_part/host_messages_list_screen/view/host_messages_list_screen.dart';
 import '../../screens/host_part/host_profile_screen/host_profile_screen.dart';
 
 

@@ -37,7 +37,7 @@ import '../../view/screens/host_part/host_home_screen/host_redeem_request_screen
 import '../../view/screens/host_part/host_deal_screen/views/create_deals/host_review_confirm_screen.dart';
 import '../../view/screens/host_part/host_listing_screen/host_add_new_listing_screen.dart';
 import '../../view/screens/host_part/host_listing_screen/host_listing_screen.dart';
-import '../../view/screens/host_part/host_messages_list_screen/host_messages_list_screen.dart';
+import '../../view/screens/host_part/host_messages_list_screen/view/host_messages_list_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_about_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_change_password_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_edit_profile_screen.dart';
