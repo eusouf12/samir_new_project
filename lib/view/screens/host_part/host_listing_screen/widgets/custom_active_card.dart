@@ -2,16 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
-import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_button/custom_button_two.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
+
 class CustomActiveCard extends StatelessWidget {
-  const CustomActiveCard({super.key});
+  final String name;
+  final String username;
+  final String imageUrl;
+  final List<String> tags;
+
+  const CustomActiveCard({
+    super.key,
+    required this.name,
+    required this.username,
+    required this.imageUrl,
+    this.tags = const [],
+  });
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Container(
         decoration: BoxDecoration(
@@ -29,25 +40,26 @@ class CustomActiveCard extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
+              /// ===== Profile Row =====
               Row(
                 children: [
                   CustomNetworkImage(
-                    imageUrl: AppConstants.girlsPhoto,
+                    imageUrl: imageUrl,
                     height: 64,
                     width: 64,
                     boxShape: BoxShape.circle,
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Sarah Anderson",
+                        text: name,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
                       CustomText(
-                        text: "@sarahtravels",
+                        text: "@$username",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                       ),
@@ -55,31 +67,37 @@ class CustomActiveCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
-              Row(
-                children: List.generate(3, (value) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
+
+              /// ===== Tags =====
+              if (tags.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: tags.map((tag) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: Color(0xffECFEFF),
+                        color: const Color(0xffECFEFF),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: CustomText(
-                        text: "Travel",
+                        text: tag,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: AppColors.primary,
                       ),
-                    ),
-                  );
-                }),
-              ),
-              SizedBox(height: 10,),
+                    );
+                  }).toList(),
+                ),
+              ],
+
+              const SizedBox(height: 12),
+
+              /// ===== Buttons =====
               Row(
                 children: [
                   Flexible(
@@ -98,7 +116,7 @@ class CustomActiveCard extends StatelessWidget {
                       borderColor: AppColors.primary,
                     ),
                   ),
-                  SizedBox(width: 8,),
+                  const SizedBox(width: 8),
                   Flexible(
                     child: CustomButtonTwo(
                       height: 40,
