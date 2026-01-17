@@ -6,6 +6,7 @@ import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradien
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_messages_list_screen/widgets/custom_message_card.dart';
+import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_nav_bar/navbar.dart';
 import '../controller/chat_list_controller.dart';
@@ -52,13 +53,24 @@ class HostMessagesListScreen extends StatelessWidget {
                     final user = conversation.participants[1];
                     return GestureDetector(
                       onTap: (){
-                        Get.to(ChatScreen());
+                        debugPrint("${conversation.id}");
+                        debugPrint("${user.name}");
+                        debugPrint("${user.image}");
+                        debugPrint("${user.id}");
+                        Get.toNamed(AppRoutes.chatScreen,
+                          arguments: {
+                            'conversationId': conversation.id,
+                            'userName': user.name,
+                            'userImage': user.image,
+                            'receiverId': user.id,
+                          },
+                        );
                       },
                       child: CustomMessageCard(
                         profileImage: ApiUrl.baseUrl + "${user.image}" ?? '',
                         name: user.name ?? '',
                         lastMessage: conversation.lastMessage?.text ?? '',
-                        time: "",
+                        time: conversation.createdAt,
                       ),
                     );
                   }

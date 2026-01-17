@@ -77,10 +77,6 @@ class SocketApi {
 
   static bool get isConnected => socket?.connected ?? false;
 
-  // static void disconnect() {
-  //   socket?.disconnect();
-  // }
-
   static void dispose() {
     socket?.dispose();
     socket = null;
