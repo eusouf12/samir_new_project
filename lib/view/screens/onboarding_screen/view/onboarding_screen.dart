@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../../utils/app_images/app_images.dart';
@@ -19,15 +20,19 @@ class OnboardingScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            TextButton(
-              onPressed: controller.skipOnboarding,
-              child: CustomText(
-                text: "Skip",
-                color: AppColors.primary,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                left: 300,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: controller.skipOnboarding,
+                  child: CustomText(
+                    text: "Skip",
+                    color: AppColors.primary,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
             Expanded(
               child: PageView(
@@ -100,8 +105,8 @@ class OnboardingScreen extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(
-                    width: 306,
-                    height: 46,
+                    width: 306.w,
+                    height: 46.h,
                     child: CustomButtonTwo(
                       onTap: () {
                         controller.nextPage();
@@ -136,8 +141,8 @@ class OnboardingPage1 extends StatelessWidget {
             child: Center(
               child: CustomImage(
                 imageSrc: AppImages.onboarding1,
-                height: 288,
-                width: 288,
+                height: 288.h,
+                width: 288.w,
               ),
             ),
           ),
@@ -160,8 +165,8 @@ class OnboardingPage2 extends StatelessWidget {
           Center(
             child: CustomImage(
               imageSrc: AppImages.onboarding2,
-              height: 313,
-              width: 288,
+              height: 288.h,
+              width: 288.w,
             ),
           ),
         ],
@@ -184,8 +189,8 @@ class OnboardingPage3 extends StatelessWidget {
             child: Center(
               child: CustomImage(
                 imageSrc: AppImages.onboarding3,
-                height: 250,
-                width: 250,
+                height: 288.h,
+                width: 288.w,
               ),
             ),
           ),

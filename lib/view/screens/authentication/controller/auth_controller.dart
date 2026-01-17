@@ -10,6 +10,7 @@ import '../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../service/api_check.dart';
 import '../../../../service/api_client.dart';
 import '../../../../service/api_url.dart';
+import '../../../../service/socket_service.dart';
 import '../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../utils/app_const/app_const.dart';
 import '../../../../utils/app_strings/app_strings.dart';
@@ -32,6 +33,7 @@ class AuthController extends GetxController {
   RxString passwordError = "".obs;
   var completePhoneNumber = ''.obs;
   var countryCode = ''.obs;
+
 
   /// ---------- STATES ---------- ///
   RxBool isSignupLoading = false.obs;
@@ -205,14 +207,24 @@ class AuthController extends GetxController {
 
         // Decode token
         Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken);
-        String userId = decodedToken['id'].toString();
+        String userId = decodedToken['_id'].toString();
         String userRole = decodedToken['role'].toString();
+        debugPrint("userId==========: $userId");
 
         await SharePrefsHelper.setString(AppConstants.userId, userId);
         String id = await SharePrefsHelper.getString(AppConstants.userId);
         await SharePrefsHelper.setString(AppConstants.role, userRole);
         String resetToken = await SharePrefsHelper.getString("resetToken");
         debugPrint("Reset Token: $resetToken");
+
+
+        //Socket initialization
+        try {
+          SocketApi.init(ApiUrl.socketUrl, userId);
+          debugPrint("🔁 Reconnected Socket with new user ======================= : $userId");
+        } catch (e) {
+          debugPrint("⚠️ Socket re-init failed after login: $e");
+        }
 
 
         userRole.toLowerCase() == "influencer" ? Get.offAllNamed(AppRoutes.infHomeScreen) : Get.offAllNamed(AppRoutes.hostHomeScreen);

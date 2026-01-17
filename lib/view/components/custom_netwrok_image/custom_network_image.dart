@@ -4,70 +4,72 @@ import 'package:shimmer/shimmer.dart';
 
 class CustomNetworkImage extends StatelessWidget {
   final String imageUrl;
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
   final Border? border;
   final BorderRadius? borderRadius;
   final BoxShape boxShape;
   final Color? backgroundColor;
-  final Widget? child;
-  final ColorFilter? colorFilter;
-  const CustomNetworkImage(
-      {super.key,
-      this.child,
-      this.colorFilter,
-      required this.imageUrl,
-      this.backgroundColor,
-      required this.height,
-      required this.width,
-      this.border,
-      this.borderRadius,
-      this.boxShape = BoxShape.rectangle});
+  final BoxFit? fit;
+
+  const CustomNetworkImage({
+    super.key,
+    required this.imageUrl,
+    this.height,
+    this.width,
+    this.border,
+    this.borderRadius,
+    this.boxShape = BoxShape.rectangle,
+    this.backgroundColor,
+    this.fit,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      imageBuilder: (context, imageProvider) => Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          border: border,
-          borderRadius: borderRadius,
-          shape: boxShape,
-          color: backgroundColor,
-          image: DecorationImage(
-            image: imageProvider,
-            fit: BoxFit.cover,
-            colorFilter: colorFilter,
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        border: border,
+        shape: boxShape,
+        color: backgroundColor,
+        borderRadius: boxShape == BoxShape.circle ? null : borderRadius,
+      ),
+      child: boxShape == BoxShape.circle
+          ? ClipOval(child: CachedNetworkImage(
+        imageUrl: imageUrl,
+        fit: fit ?? (boxShape == BoxShape.circle ? BoxFit.cover : BoxFit.fitWidth),
+        placeholder: (context, url) => Container(
+          color: Colors.grey[200],
+          child: const SizedBox.shrink(),
+        ),
+        errorWidget: (context, url, error) => Container(
+          height: 200,
+          width: double.infinity,
+          color: Colors.grey[400],
+          child: const Center(
+            child: Icon(Icons.error, color: Colors.black, size: 20),
           ),
         ),
-        child: child,
-      ),
-      placeholder: (context, url) => Shimmer.fromColors(
-          baseColor: Colors.grey.withValues(alpha: 0.6),
-          highlightColor: Colors.grey.withValues(alpha: 0.3),
-          child: Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(
-              border: border,
-              color: Colors.grey.withValues(alpha: 0.6),
-              borderRadius: borderRadius,
-              shape: boxShape,
+      ))
+          : ClipRRect(
+        borderRadius: borderRadius ?? BorderRadius.zero,
+        child:  CachedNetworkImage(
+          imageUrl: imageUrl,
+          fit: fit ?? (boxShape == BoxShape.circle ? BoxFit.cover : BoxFit.fitWidth),
+          placeholder: (context, url) => Container(
+            color: Colors.grey[200],
+            child: const SizedBox.shrink(),
+          ),
+          errorWidget: (context, url, error) => Container(
+            height: 200,
+            width: double.infinity,
+            color: Colors.grey[400],
+            child: const Center(
+              child: Icon(Icons.error, color: Colors.black, size: 20),
             ),
-            child: child,
-          )),
-      errorWidget: (context, url, error) => Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          border: border,
-          color: Colors.grey.withValues(alpha: 0.6),
-          borderRadius: borderRadius,
-          shape: boxShape,
+          ),
         ),
-        child: const Icon(Icons.error),
       ),
     );
   }

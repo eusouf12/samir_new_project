@@ -37,6 +37,7 @@ import '../../view/screens/host_part/host_home_screen/host_redeem_request_screen
 import '../../view/screens/host_part/host_deal_screen/views/create_deals/host_review_confirm_screen.dart';
 import '../../view/screens/host_part/host_listing_screen/host_add_new_listing_screen.dart';
 import '../../view/screens/host_part/host_listing_screen/host_listing_screen.dart';
+import '../../view/screens/host_part/host_messages_list_screen/view/chat_inbox_screen.dart';
 import '../../view/screens/host_part/host_messages_list_screen/view/host_messages_list_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_about_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_change_password_screen.dart';
@@ -102,6 +103,7 @@ class AppRoutes {
  static const String hostCollaborationScreen = "/HostCollaborationScreen";
  static const String hostCollaborationViewDetailsScreen = "/HostCollaborationViewDetailsScreen";
  static const String hostRedeemRequestScreen = "/HostRedeemRequestScreen";
+ static const String chatScreen = "/ChatScreen";
 
 
  ///===========================Influencer Part========================
@@ -170,6 +172,7 @@ class AppRoutes {
     GetPage(name: hostCollaborationScreen, page: () => HostCollaborationScreen()),
     GetPage(name: hostCollaborationViewDetailsScreen, page: () => HostCollaborationViewDetailsScreen()),
     GetPage(name: hostRedeemRequestScreen, page: () => HostRedeemRequestScreen()),
+    GetPage(name: chatScreen, page: () => ChatScreen()),
 
 
 

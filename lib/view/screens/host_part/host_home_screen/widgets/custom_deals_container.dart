@@ -46,6 +46,7 @@ class CustomDealsContainer extends StatelessWidget {
                   imageUrl: profileImg ?? "",
                   height: 50,
                   width: 50,
+                  fit: BoxFit.cover,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 SizedBox(width: 20),

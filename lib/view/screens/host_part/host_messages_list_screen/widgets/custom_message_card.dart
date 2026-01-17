@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
-import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
 
@@ -9,14 +8,14 @@ class CustomMessageCard extends StatelessWidget {
   final String profileImage;
   final String name;
   final String lastMessage;
-  final String time;
+  final DateTime? time;
 
   const CustomMessageCard({
     super.key,
     required this.profileImage,
     required this.name,
     required this.lastMessage,
-    required this.time,
+    this.time,
   });
 
   @override
@@ -86,7 +85,7 @@ class CustomMessageCard extends StatelessWidget {
               ),
 
               CustomText(
-                    text: time,
+                    text: formatChatTime(time),
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textClr,
@@ -100,4 +99,10 @@ class CustomMessageCard extends StatelessWidget {
       ),
     );
   }
+}
+String formatChatTime(DateTime? dateTime) {
+  if (dateTime == null) return '';
+
+  final localTime = dateTime.toLocal();
+  return DateFormat('hh:mm a').format(localTime);
 }

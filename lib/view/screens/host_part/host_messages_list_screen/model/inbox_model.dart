@@ -62,9 +62,7 @@ class MessageModel {
     return MessageModel(
       id: json['_id'] ?? '',
       text: json['text'] ?? '',
-      imageUrl: (json['imageUrl'] as List<dynamic>? ?? [])
-          .map((e) => e.toString())
-          .toList(),
+      imageUrl: (json['imageUrl'] as List<dynamic>? ?? []).map((e) => e.toString()).toList(),
       audioUrl: json['audioUrl'],
       seen: json['seen'] ?? false,
       msgByUser: UserModel.fromJson(json['msgByUserId'] ?? {}),

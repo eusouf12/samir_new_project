@@ -41,10 +41,7 @@ class ListingCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ============= Image =============
-          CustomNetworkImage(
-             imageUrl: listing.images.isNotEmpty ? ApiUrl.baseUrl + listing.images.first : "",
-            height: 220,
-            width: MediaQuery.sizeOf(context).width,
+          CustomNetworkImage(imageUrl: listing.images.isNotEmpty ? ApiUrl.baseUrl + listing.images.first : "",
             borderRadius: const BorderRadius.all(Radius.circular(16)),
           ),
           const SizedBox(height: 16),
