@@ -96,51 +96,6 @@ class HostCreateDealScreen extends StatelessWidget {
                     ),
                   )),
 
-
-
-                  // Obx(() {
-                  //   // listingList reactive variable
-                  //   final listings = listingController.listingList;
-                  //
-                  //   return Container(
-                  //     padding: const EdgeInsets.symmetric(horizontal: 12),
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.white,
-                  //       borderRadius: BorderRadius.circular(10),
-                  //       border: Border.all(color: Colors.grey.shade300),
-                  //     ),
-                  //     child: DropdownButtonHideUnderline(
-                  //       child: DropdownButton<String>(
-                  //         isExpanded: true,
-                  //         hint: const Text("Select property type"),
-                  //         value: dealsController.selectedId.value.isEmpty
-                  //             ? null
-                  //             : dealsController.selectedId.value,
-                  //         dropdownColor: Colors.white,
-                  //         items: listings.map((listing) {
-                  //           return DropdownMenuItem<String>(
-                  //             value: listing.id,
-                  //             child: Text(listing.title),
-                  //           );
-                  //         }).toList(),
-                  //         onChanged: (newId) {
-                  //           if (newId != null) {
-                  //             dealsController.selectedId.value = newId;
-                  //             // find the title corresponding to selected id
-                  //             final selectedListing = listings.firstWhere((listing) => listing.id == newId);
-                  //             dealsController.selectedTitle.value = selectedListing.title;
-                  //             dealsController.selectedAirbnbLink.value = selectedListing.addAirbnbLink ;
-                  //
-                  //             debugPrint("Selected ID: ${dealsController.selectedId.value}");
-                  //             debugPrint("Selected Title: ${dealsController.selectedTitle.value}");
-                  //             debugPrint("Selected Title: ${dealsController.selectedAirbnbLink.value}");
-                  //           }
-                  //         },
-                  //       ),
-                  //     ),
-                  //   );
-                  // }),
-
                   SizedBox(height: 16),
                   //  Description
                   CustomFormCard(
@@ -360,10 +315,5 @@ class HostCreateDealScreen extends StatelessWidget {
       },
     );
   }
-
-
-
-
-
 
 }

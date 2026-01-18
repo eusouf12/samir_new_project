@@ -1,66 +1,122 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
+import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
+import '../../../../core/app_routes/app_routes.dart';
+import '../../../../service/api_url.dart';
 import '../../../../utils/app_const/app_const.dart';
+import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_text_field/custom_text_field.dart';
 import '../host_listing_screen/widgets/custom_active_card.dart';
+import 'controller/influencer_list_host_controller.dart';
 
 class HostActiveInflue extends StatelessWidget {
-  const HostActiveInflue({super.key});
+  HostActiveInflue({super.key});
+  final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Active Influencers"),
-      body: Column(
-        children: [
-          //search
-          Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [const Color(0xffEEF2FF), const Color(0xffECFEFF)],
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      influencerListHostController.getInfluencers();
+    });
+    return CustomGradient(
+      child: Scaffold(
+        appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Active Influencers"),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              CustomTextField(
+                isDens: true,
+                fillColor: const Color(0xffF5F5F5),
+                hintText: "Search influencer by name ",
+                hintStyle: TextStyle(color: AppColors.textClr),
+                prefixIcon: Icon(Icons.search_rounded, size: 18, color: AppColors.textClr),
+                onChanged: (value) {
+                  influencerListHostController.searchQuery.value = value;
+
+                  if (value.trim().isEmpty) {
+                    influencerListHostController.searchInfluencerList.clear();
+                    influencerListHostController.setSearchInfluencerStatus(Status.completed);
+                  } else {
+                    influencerListHostController.searchInfluencer(query: value);
+                  }
+                },
               ),
-            ),
-            child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: CustomTextField(
-                    isDens: true,
-                    fillColor: AppColors.white,
-                    hintText: "Search",
-                    hintStyle: TextStyle(color: AppColors.textClr),
-                    prefixIcon: Icon(
-                      Icons.search_rounded,
-                      size: 18,
-                      color: AppColors.textClr,
+              SizedBox(height: 20),
+              Expanded(
+                child: Obx(() {
+                  final bool isSearching = influencerListHostController.searchQuery.value.isNotEmpty;
+
+                  if (!isSearching && influencerListHostController.rxStatus.value == Status.loading) {
+                    return const Center(child: CustomLoader());
+                  }
+
+                  if (isSearching && influencerListHostController.rxSearchInfluencerStatus.value == Status.loading) {
+                    return const Center(child: CustomLoader());
+                  }
+
+                  final listToShow = isSearching ? influencerListHostController.searchInfluencerList : influencerListHostController.influencerList;
+
+                  if (listToShow.isEmpty) {
+                    return const Center(child: Text("No influencers found"),
+                    );
+                  }
+
+                  return NotificationListener<ScrollNotification>(
+                    onNotification: (scrollInfo) {
+                      if (!isSearching && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !influencerListHostController.isLoadMore.value) {
+                        influencerListHostController.getInfluencers(loadMore: true);
+                      }
+                      return false;
+                    },
+                    child: ListView.builder(
+                      itemCount: listToShow.length + (!isSearching && influencerListHostController.isLoadMore.value ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (!isSearching && index == listToShow.length) {
+                          return const Padding(padding: EdgeInsets.all(12),
+                            child: Center(child: CustomLoader()),
+                          );
+                        }
+
+                        final user = listToShow[index];
+
+                        return CustomActiveCard(
+                          name: user.name,
+                          username: user.userName ?? '',
+                          imageUrl: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
+                          tags: user.nicheTags,
+                          onSendRequest: () {
+                            Get.toNamed(AppRoutes.hostSendCollaboarationScreen,
+                              arguments: {
+                                "id": user.id,
+                                "name": user.name,
+                                "image": user.image,
+                              },
+                            );
+                          },
+                          onViewProfile: () {
+                            Get.toNamed(AppRoutes.hostActiveViewProfileScreen,
+                              arguments: {
+                                "id": user.id,
+                                "name": user.name,
+                                "userName": user.userName,
+                                "image": user.image,
+                                "followers": "125 K",
+                                "founderMember": true,
+                              },
+                            );
+                          },
+                        );
+                      },
                     ),
-                  ),
-                ),
+                  );
+                }),
+              ),
+            ],
           ),
-          SizedBox(height: 20),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                CustomActiveCard(
-                  name: "Sarah ",
-                  username: "sarahtravels",
-                  imageUrl: AppConstants.girlsPhoto,
-                  tags: ["Travel", "Vlog", "Lifestyle"],
-                ),
-                CustomActiveCard(
-                  name: " Anderson",
-                  username: "sarahtravels123",
-                  imageUrl: AppConstants.girlsPhoto,
-                  tags: ["Travel", "Vlog", "Lifestyle"],
-                ),
-
-
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

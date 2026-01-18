@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
-import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
 class CustomPastDealsCard extends StatelessWidget {
-  const CustomPastDealsCard({super.key});
+  final String? title;
+  final String? hostName;
+  final String? imageUrl;
+  final DateTime? date;
+
+  const CustomPastDealsCard({
+    super.key,
+    this.title,
+    this.hostName,
+    this.imageUrl,
+    this.date,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +41,10 @@ class CustomPastDealsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomNetworkImage(
-                imageUrl: AppConstants.allSportsImage,
+                imageUrl: imageUrl ?? "",
                 height: 64,
                 width: 64,
+                fit: BoxFit.cover,
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
               SizedBox(width: 12),
@@ -41,12 +52,12 @@ class CustomPastDealsCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Downtown Loft",
+                    text: title ?? "",
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                   CustomText(
-                    text: "by Michael Chen",
+                    text: hostName ??"",
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textClr,
@@ -73,7 +84,7 @@ class CustomPastDealsCard extends StatelessWidget {
                       ),
                       CustomText(
                         left: 20,
-                        text: "Dec 15, 2023",
+                        text: formatDateFromDateTime(date),
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textClr,
@@ -98,3 +109,11 @@ class CustomPastDealsCard extends StatelessWidget {
     );
   }
 }
+
+
+String formatDateFromDateTime(DateTime? date) {
+  if (date == null) return '';
+
+  return DateFormat('d MMM yyyy').format(date.toLocal());
+}
+

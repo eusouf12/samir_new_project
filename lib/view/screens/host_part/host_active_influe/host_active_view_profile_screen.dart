@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
 import 'package:samir_flutter_app/utils/app_const/app_const.dart';
 import 'package:samir_flutter_app/utils/app_icons/app_icons.dart';
@@ -7,20 +7,36 @@ import 'package:samir_flutter_app/view/components/custom_image/custom_image.dart
 import 'package:samir_flutter_app/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_active_influe/widgets/custom_past_deals_card.dart';
+import '../../../../service/api_url.dart';
+import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'controller/influencer_list_host_controller.dart';
 
 class HostActiveViewProfileScreen extends StatelessWidget {
-  const HostActiveViewProfileScreen({super.key});
+  HostActiveViewProfileScreen({super.key});
+  final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
+  final Map<String, dynamic> args = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    final String userId = args['id'];
+    final String name = args['name']?? "";
+    final String userName = args['userName'] ??"";
+    final String image = args['image'] ??"";
+    final String followers = args['followers']??"";
+    final bool founderMember = args['founderMember']??false;
+    final String date = "2026-12-24T21:43:46.978Z";
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      influencerListHostController.getMyCollaborations();
+    });
+
     return Scaffold(
-      appBar: CustomRoyelAppbar(
-        leftIcon: true,
-        titleName: "Influencer Profile",
-      ),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Influencer Profile",),
+
       body: Column(
         children: [
+          //influencer profile info
           Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
@@ -44,328 +60,168 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      //image
                       Stack(
                         children: [
                           CustomNetworkImage(
-                            imageUrl: AppConstants.girlsPhoto,
+                            imageUrl: ApiUrl.baseUrl + image,
                             height: 100,
                             width: 100,
                             boxShape: BoxShape.circle,
                           ),
-                          Positioned(
+                          founderMember?Positioned(
                             bottom: 5,
                             right: 4,
                             child: CustomImage(imageSrc: AppIcons.kingIcon),
-                          ),
+                          ): SizedBox.shrink(),
                         ],
                       ),
-                      SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      SizedBox(width: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomText(
-                            text: "Tasnim Ruhi",
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              //name
                               CustomText(
-                                text: "@tasnimruhi",
+                                text: name,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              //user name founder name
+                              CustomText(
+                                text: userName,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 right: 20,
                               ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Color(0xffFACC15),
-                                      Color(0xffEAB308),
-                                      Color(0xffCA8A04),
+                              SizedBox(height: 4),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  //followers
+                                  Column(
+                                    children: [
+                                      CustomText(
+                                        text: followers,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color(0xffFD8270),
+                                      ),
+                                      CustomText(
+                                        text: "Followers",
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.textClr,
+                                      ),
                                     ],
                                   ),
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: Row(
-                                  children: [
-                                    CustomImage(imageSrc: AppIcons.king),
-                                    CustomText(
-                                      left: 6,
-                                      text: "Founder Member",
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.white,
-                                    ),
-                                  ],
-                                ),
+
+                                ],
                               ),
                             ],
                           ),
-                          SizedBox(height: 4),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                children: [
-                                  CustomText(
-                                    text: "125K",
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xffFD8270),
-                                  ),
-                                  CustomText(
-                                    text: "Followers",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.textClr,
-                                  ),
+                          SizedBox(width: 15),
+                          //founder member
+                          founderMember?Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(0xffFACC15),
+                                  Color(0xffEAB308),
+                                  Color(0xffCA8A04),
                                 ],
                               ),
-                              SizedBox(width: 20),
-                              Column(
-                                children: [
-                                  CustomText(
-                                    text: "8.5%",
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xff16A34A),
-                                  ),
-                                  CustomText(
-                                    text: "Followers",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.textClr,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 20),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Color(0xfffff2f1),
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                child: CustomText(
-                                  text: "Influencer",
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Row(
+                              children: [
+                                CustomImage(imageSrc: AppIcons.king),
+                                CustomText(
+                                  left: 6,
+                                  text: "Founder Member",
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
-                                  color: Color(0xffFD8270),
+                                  color: AppColors.white,
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
+                          )
+                              : SizedBox.shrink(),
                         ],
-                      ),
+                      )
                     ],
                   ),
                 ],
               ),
             ),
           ),
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                      text: "Past Deals",
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    CustomText(
-                      text: "12 completed",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.textClr,
-                    ),
+          //past deals
+          // ================= PAST DEALS =================
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            child: Obx(() {
+              // loader
+              if (influencerListHostController.rxCollaborationStatus.value == Status.loading) {
+                 return const Center(child: CustomLoader());
+              }
+
+              final completedDeals = influencerListHostController.collaborationList.where((e) => e.status == 'completed').toList();
+
+              if (completedDeals.isEmpty) {
+                return Column(
+                  children: const [
+                    SizedBox(height: 30),
+                    CustomText(text: "No past deals found", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textClr,),
                   ],
-                ),
-                SizedBox(height: 20),
-                CustomPastDealsCard(),
-                CustomPastDealsCard(),
-                CustomPastDealsCard(),
-                SizedBox(height: 20,),
-                CustomText(
-                  textAlign: TextAlign.start,
-                  text: "Performance Analytics",
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  bottom: 8,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width/2.3,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.black.withValues(alpha: 0.1),
-                            offset: const Offset(0, 2),
-                            blurRadius: 4,
-                          ),
-                        ],
+                );
+              }
+
+              return Column(
+                children: [
+                  // Past Deals total
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CustomText(
+                        text: "Past Deals",
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.remove_red_eye,color: AppColors.blue,size: 18,),
-                                CustomText(
-                                  left: 6,
-                                  text: "Views",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ],
-                            ),
-                            CustomText(
-                              top: 4,
-                              text: "47.2K",
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              bottom: 4,
-                            ),
-                            CustomText(
-                              text: "Manual entry",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textClr,
-                            ),
-                          ],
-                        ),
+                      CustomText(
+                        text: "${completedDeals.length} completed",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.textClr,
                       ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width/2.3,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.black.withValues(alpha: 0.1),
-                            offset: const Offset(0, 2),
-                            blurRadius: 4,
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Icons.ads_click,color: AppColors.green,size: 18,),
-                                CustomText(
-                                  left: 6,
-                                  text: "Clicks",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ],
-                            ),
-                            CustomText(
-                              top: 4,
-                              text: "3.8K",
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              bottom: 4,
-                            ),
-                            CustomText(
-                              text: "Auto-tracked",
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.textClr,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-            SizedBox(height: 20,),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.black.withValues(alpha: 0.1),
-                    offset: const Offset(0, 2),
-                    blurRadius: 4,
+                    ],
+                  ),
+
+                  /// list
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    itemCount: completedDeals.length,
+                    itemBuilder: (context, index) {final deal = completedDeals[index];
+
+                      return CustomPastDealsCard(
+                        imageUrl: AppConstants.allSportsImage,
+                        title: deal.selectDeal.description,
+                        hostName: deal.userId.name,
+                        date: deal.createdAt,
+                      );
+                    },
                   ),
                 ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                       Row(
-                         children: [
-                           CustomImage(imageSrc: AppIcons.grapicon),
-                           CustomText(
-                             left: 6,
-                             text: "Click-Through Rate",
-                             fontSize: 14,
-                             fontWeight: FontWeight.w500,
-                             color: AppColors.textClr,
-                           ),
-                         ],
-                       ),
-                        CustomText(
-                          text: "8.05%",
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primary,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    LinearProgressIndicator(
-                      value: 0.8,
-                      minHeight: 8,
-                      borderRadius: BorderRadius.circular(15),
-                      color: AppColors.primary,
-                      backgroundColor: AppColors.greyLight,
-                    ),
-                    CustomText(
-                      top: 6,
-                      text: "Formula: (Clicks ÷ Views) × 100",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.textClr,
-                    ),
-                  ],
-                ),
-              ),
-            )],
-            ),
+              );
+            }),
           ),
         ],
       ),

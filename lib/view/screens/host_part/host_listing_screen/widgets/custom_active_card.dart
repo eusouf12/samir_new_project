@@ -11,6 +11,8 @@ class CustomActiveCard extends StatelessWidget {
   final String username;
   final String imageUrl;
   final List<String> tags;
+  final VoidCallback onViewProfile;
+  final VoidCallback onSendRequest;
 
   const CustomActiveCard({
     super.key,
@@ -18,6 +20,8 @@ class CustomActiveCard extends StatelessWidget {
     required this.username,
     required this.imageUrl,
     this.tags = const [],
+    required this.onViewProfile,
+    required this.onSendRequest,
   });
 
   @override
@@ -103,9 +107,7 @@ class CustomActiveCard extends StatelessWidget {
                   Flexible(
                     child: CustomButtonTwo(
                       height: 40,
-                      onTap: () {
-                        Get.toNamed(AppRoutes.hostActiveViewProfileScreen);
-                      },
+                      onTap: onViewProfile,
                       title: "View Profile",
                       fontSize: 12,
                       borderRadius: 10,
@@ -120,9 +122,7 @@ class CustomActiveCard extends StatelessWidget {
                   Flexible(
                     child: CustomButtonTwo(
                       height: 40,
-                      onTap: () {
-                        Get.toNamed(AppRoutes.hostSendCollaboarationScreen);
-                      },
+                      onTap: onSendRequest,
                       title: "Send Request",
                       fontSize: 12,
                       borderRadius: 10,

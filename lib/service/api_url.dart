@@ -30,6 +30,7 @@ class ApiUrl {
    ///========================= Host =========================createListing
    static const String createListing = "/api/v1/listing/create-listing";
    static const String createDeal = "/api/v1/deal/create-deal";
+   static const String createCollaboration = "/api/v1/collaboration/create-collaboration";
    static String getListing({required String page})=> "/api/v1/listing/my-listings?currentPage=$page&limit=3";
    static String getSingleListing({required String id})=> "/api/v1/listing/single-listing/$id";
    static String getDeals({required String page})=> "/api/v1/deal/my-all-deals?currentPage=$page&limit=10";
@@ -38,7 +39,9 @@ class ApiUrl {
    static String dealSearch({required String listSearch})=> "/api/v1/search/specific?query=deals&searchType=$listSearch";
    static String getChatList({required String page})=> "/api/v1/message/get-all-conversations?page=$page&limit=10";
    static String getChatMessages({required String id, required String page})=> "/api/v1/message/get-chat-list/$id?page=$page&limit=10";
-
+   static  String  influencerCompleteDeal({required String page})=>"/api/v1/collaboration/get-my-all-collaborations?status=completed&page=$page&limit=10";
+   static  String  influencerList({required String page})=>"/api/v1/user/all-users?role=influencer&page=$page&limit=10";
+   static String influencerSearch({required String query})=> "/api/v1/search/specific?query=users&searchType=$query";
 
   //share post
 
