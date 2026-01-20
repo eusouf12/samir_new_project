@@ -9,9 +9,6 @@ class HostHomeController extends GetxController {
     selectedTabName.value = tabNames[index];
     debugPrint("Selected Tab: ${selectedTabName.value}");
   }
-
-
-
   RxInt currentIndex = 0.obs;
   ///============= Collaboration Tab List ==========
   RxList<String> collaborationTabList = <String>['All', 'Pending', 'Approved','Declined'].obs;

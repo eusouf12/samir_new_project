@@ -7,7 +7,6 @@ import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../../host_deal_screen/deal_model/deal_model.dart';
 import '../model/all_user_model.dart';
-import '../model/influencer_model.dart';
 
 class InfluencerListHostController extends GetxController {
 
@@ -139,71 +138,6 @@ class InfluencerListHostController extends GetxController {
   }
 
   // ================= GET MY COLLABORATIONS =================
-
-  RxList<CollaborationModel> collaborationList = <CollaborationModel>[].obs;
-
-// loaders
-  final isCollaborationLoading = false.obs;
-  final isCollaborationLoadMore = false.obs;
-
-// screen status
-  final rxCollaborationStatus = Status.loading.obs;
-  void setCollaborationStatus(Status status) =>
-      rxCollaborationStatus.value = status;
-
-// pagination
-  int currentCollaborationPage = 1;
-  int totalCollaborationPages = 1;
-
-  Future<void> getMyCollaborations({bool loadMore = false}) async {
-    if (loadMore) {
-      if (isCollaborationLoadMore.value || currentCollaborationPage >= totalCollaborationPages) return;
-
-      isCollaborationLoadMore.value = true;
-      currentCollaborationPage++;
-    }
-    else {
-      collaborationList.clear();
-      currentCollaborationPage = 1;
-      isCollaborationLoading.value = true;
-      setCollaborationStatus(Status.loading);
-    }
-
-    try {
-      final response = await ApiClient.getData(ApiUrl.influencerCompleteDeal(page: currentCollaborationPage.toString()));
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
-
-        final model = MyCollaborationsResponse.fromJson(jsonResponse);
-
-        // pagination info
-        totalCollaborationPages = model.totalPages;
-
-        // duplicate avoid
-        final existingIds = collaborationList.map((e) => e.id).toSet();
-
-        final newItems = model.data.collaborations.where((e) => !existingIds.contains(e.id)).toList();
-
-        collaborationList.addAll(newItems);
-
-        setCollaborationStatus(Status.completed);
-      }
-      else {
-        setCollaborationStatus(Status.error);
-        showCustomSnackBar("Failed to load collaborations", isError: true,);
-      }
-    } catch (e) {
-      setCollaborationStatus(Status.error);
-      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
-    } finally {
-      isCollaborationLoading.value = false;
-      isCollaborationLoadMore.value = false;
-    }
-  }
-
-
-
 
 }
 

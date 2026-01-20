@@ -1,7 +1,7 @@
 class AllUsersResponse {
   final bool success;
   final String message;
-  final Pagination pagination;
+  final AllUserPagination pagination;
   final List<AllUserModel> data;
 
   AllUsersResponse({
@@ -15,29 +15,27 @@ class AllUsersResponse {
     return AllUsersResponse(
       success: json['success'] ?? false,
       message: json['message'] ?? '',
-      pagination: Pagination.fromJson(json['pagination'] ?? {}),
-      data: (json['data'] as List<dynamic>? ?? [])
-          .map((e) => AllUserModel.fromJson(e))
-          .toList(),
+      pagination: AllUserPagination.fromJson(json['pagination'] ?? {}),
+      data: (json['data'] as List<dynamic>? ?? []).map((e) => AllUserModel.fromJson(e)).toList(),
     );
   }
 }
 
-class Pagination {
+class AllUserPagination {
   final int currentPage;
   final int totalPages;
   final int totalUsers;
   final int limit;
 
-  Pagination({
+  AllUserPagination({
     required this.currentPage,
     required this.totalPages,
     required this.totalUsers,
     required this.limit,
   });
 
-  factory Pagination.fromJson(Map<String, dynamic> json) {
-    return Pagination(
+  factory AllUserPagination.fromJson(Map<String, dynamic> json) {
+    return AllUserPagination(
       currentPage: json['currentPage'] ?? 1,
       totalPages: json['totalPages'] ?? 1,
       totalUsers: json['totalUsers'] ?? 0,
@@ -64,14 +62,12 @@ class AllUserModel {
   final String? phone;
   final String? gender;
   final String? dateOfBirth;
-
   final bool airbnbAccountLinked;
-
+  final bool? isFounderMember;
   final int responseRate;
   final int avgResponseTime;
   final int totalReviews;
   final int referralCount;
-
   final List<String> nicheTags;
   final List<String> collaborations;
   final List<String> deals;
@@ -111,6 +107,7 @@ class AllUserModel {
     this.phone,
     this.gender,
     this.dateOfBirth,
+    this.isFounderMember,
   });
 
   factory AllUserModel.fromJson(Map<String, dynamic> json) {
@@ -134,8 +131,8 @@ class AllUserModel {
       phone: json['phone'],
       gender: json['gender'],
       dateOfBirth: json['dateOfBirth'],
-
       airbnbAccountLinked: json['airbnbAccountLinked'] ?? false,
+      isFounderMember: json['isFounderMember'] ?? false,
       responseRate: json['responseRate'] ?? 0,
       avgResponseTime: json['avgResponseTime'] ?? 0,
       totalReviews: json['totalReviews'] ?? 0,

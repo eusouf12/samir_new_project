@@ -30,7 +30,7 @@ class CustomTabBar extends StatelessWidget {
         children: List.generate(tabs.length, (index) {
           bool isSelected = index == selectedIndex;
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 0.0),
             child: GestureDetector(
               onTap: () => onTabSelected(index),
               child: Container(

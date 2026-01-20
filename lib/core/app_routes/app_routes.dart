@@ -21,12 +21,12 @@ import '../../view/screens/authentication/views/auth_screen/otp_screen/otp_scree
 import '../../view/screens/authentication/views/auth_screen/set_new_password/set_new_password.dart';
 import '../../view/screens/authentication/views/auth_screen/sign_up_screen/sign_up_screen.dart';
 import '../../view/screens/choose_role/view/role_screen.dart';
+import '../../view/screens/host_part/collaboration_screen/views/host_collaboration_screen.dart';
+import '../../view/screens/host_part/collaboration_screen/views/host_collaboration_view_details_screen.dart';
 import '../../view/screens/host_part/host_active_influe/host_active_influe.dart';
 import '../../view/screens/host_part/host_active_influe/host_active_view_profile_screen.dart';
 import '../../view/screens/host_part/host_active_influe/host_send_collaboaration_screen.dart';
 import '../../view/screens/host_part/host_deal_screen/views/host_deals_screen.dart';
-import '../../view/screens/host_part/host_home_screen/collaboration_screen/host_collaboration_screen.dart';
-import '../../view/screens/host_part/host_home_screen/collaboration_screen/host_collaboration_view_details_screen.dart';
 import '../../view/screens/host_part/host_deal_screen/views/create_deals/host_create_deal_screen.dart';
 import '../../view/screens/host_part/host_deal_screen/views/create_deals/host_create_deal_three_screen.dart';
 import '../../view/screens/host_part/host_deal_screen/views/create_deals/host_create_deal_two_screen.dart';

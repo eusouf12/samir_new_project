@@ -97,6 +97,8 @@ class HostActiveInflue extends StatelessWidget {
                             );
                           },
                           onViewProfile: () {
+                            debugPrint("user.userName, === ${user.image}");
+                            debugPrint("user.isFounderMember === ${user.isFounderMember}");
                             Get.toNamed(AppRoutes.hostActiveViewProfileScreen,
                               arguments: {
                                 "id": user.id,
@@ -104,7 +106,7 @@ class HostActiveInflue extends StatelessWidget {
                                 "userName": user.userName,
                                 "image": user.image,
                                 "followers": "125 K",
-                                "founderMember": true,
+                                "founderMember": user.isFounderMember,
                               },
                             );
                           },

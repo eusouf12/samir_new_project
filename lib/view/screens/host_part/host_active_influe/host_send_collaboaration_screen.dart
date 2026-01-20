@@ -28,8 +28,8 @@ class HostSendCollaboarationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String influencerId = args['id'];
-    final String name = args['name'];
-    final String image = args['image'];
+    final String name = args['name']??"";
+    final String image = args['image']??"";
     return CustomGradient(
       child: Scaffold(
         appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Send Collaboration",),

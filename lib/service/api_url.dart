@@ -39,11 +39,12 @@ class ApiUrl {
    static String dealSearch({required String listSearch})=> "/api/v1/search/specific?query=deals&searchType=$listSearch";
    static String getChatList({required String page})=> "/api/v1/message/get-all-conversations?page=$page&limit=10";
    static String getChatMessages({required String id, required String page})=> "/api/v1/message/get-chat-list/$id?page=$page&limit=10";
-   static  String  influencerCompleteDeal({required String page})=>"/api/v1/collaboration/get-my-all-collaborations?status=completed&page=$page&limit=10";
    static  String  influencerList({required String page})=>"/api/v1/user/all-users?role=influencer&page=$page&limit=10";
    static String influencerSearch({required String query})=> "/api/v1/search/specific?query=users&searchType=$query";
+   static  String  myCollaborations({required String page})=>"/api/v1/collaboration/get-my-all-collaborations?page=$page&limit=10";
+   static  String  myCollaborationsFilter({required String filter,required String page})=>"/api/v1/collaboration/get-my-all-collaborations?status=$filter&page=$page&limit=10";
 
-  //share post
+//share post myCollaborations
 
 
 }

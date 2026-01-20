@@ -14,6 +14,7 @@ import '../../../../core/app_routes/app_routes.dart';
 import '../../../../utils/app_const/app_const.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_nav_bar/navbar.dart';
+import '../host_active_influe/controller/influencer_list_host_controller.dart';
 import '../host_listing_screen/controller/listing_controller.dart';
 import '../host_profile_screen/controller/host_profile_controller.dart';
 
@@ -21,12 +22,14 @@ class HostHomeScreen extends StatelessWidget {
   HostHomeScreen({super.key});
   final HostProfileController hostProfileController = Get.put(HostProfileController());
   final ListingController listingController = Get.put(ListingController());
+  final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       hostProfileController.getUserProfile();
       listingController.getListings(loadMore: false);
+      influencerListHostController.getInfluencers();
     });
     return CustomGradient(
       child: Scaffold(
@@ -108,7 +111,7 @@ class HostHomeScreen extends StatelessWidget {
                         title: "Active\nInfluencer",
                         color: AppColors.white,
                         textColor: AppColors.black,
-                        number: "642",
+                        number: influencerListHostController.influencerList.length.toString(),
                       ),
                       SizedBox(width: 16),
                       //Redeem Requests
@@ -124,7 +127,7 @@ class HostHomeScreen extends StatelessWidget {
                       SizedBox(width: 16),
                       CustomContainerCard(
                         onTap: () {
-                          Get.toNamed(AppRoutes.hostActiveInflue);
+                          Get.toNamed(AppRoutes.hostCollaborationScreen);
                         },
                         title: "Collaboration\n Requests",
                         color: AppColors.white,
