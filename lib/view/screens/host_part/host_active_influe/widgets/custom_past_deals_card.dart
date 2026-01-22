@@ -37,7 +37,7 @@ class CustomPastDealsCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomNetworkImage(
@@ -47,7 +47,7 @@ class CustomPastDealsCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
-              SizedBox(width: 12),
+              SizedBox(width: 40),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -93,15 +93,15 @@ class CustomPastDealsCard extends StatelessWidget {
                   ),
                 ],
               ),
-              IconButton(
-                color: AppColors.primary,
-                focusColor: AppColors.primary,
-                onPressed: () {},
-                icon: Icon(
-                  Icons.play_arrow,
-                  color: AppColors.primary,
-                ),
-              ),
+              // IconButton(
+              //   color: AppColors.primary,
+              //   focusColor: AppColors.primary,
+              //   onPressed: () {},
+              //   icon: Icon(
+              //     Icons.play_arrow,
+              //     color: AppColors.primary,
+              //   ),
+              // ),
             ],
           ),
         ),

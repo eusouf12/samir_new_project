@@ -10,11 +10,13 @@ import 'package:samir_flutter_app/view/screens/host_part/host_active_influe/widg
 import '../../../../service/api_url.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../collaboration_screen/controller/collabration_controller.dart';
 import 'controller/influencer_list_host_controller.dart';
 
 class HostActiveViewProfileScreen extends StatelessWidget {
   HostActiveViewProfileScreen({super.key});
   final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
+  final CollaborationController collaborationController = Get.put(CollaborationController());
   final Map<String, dynamic> args = Get.arguments;
 
   @override
@@ -28,7 +30,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
     final String date = "2026-12-24T21:43:46.978Z";
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // influencerListHostController.getMyCollaborations();
+       collaborationController.getSingleUserCollaboration(id: userId);
     });
 
     return Scaffold(
@@ -77,83 +79,77 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(width: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          //name
+                          CustomText(
+                            text: name,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          //user name founder name
+                          CustomText(
+                            text: userName,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            right: 20,
+                          ),
+                          SizedBox(height: 4),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              //name
-                              CustomText(
-                                text: name,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              //user name founder name
-                              CustomText(
-                                text: userName,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                right: 20,
-                              ),
-                              SizedBox(height: 4),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              //followers
+                              Column(
                                 children: [
-                                  //followers
-                                  Column(
-                                    children: [
-                                      CustomText(
-                                        text: followers,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700,
-                                        color: Color(0xffFD8270),
-                                      ),
-                                      CustomText(
-                                        text: "Followers",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.textClr,
-                                      ),
+                                  CustomText(
+                                    text: followers,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xffFD8270),
+                                  ),
+                                  CustomText(
+                                    text: "Followers",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.textClr,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 40),
+                              //founder member
+                              founderMember==true?Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color(0xffFACC15),
+                                      Color(0xffEAB308),
+                                      Color(0xffCA8A04),
                                     ],
                                   ),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Row(
+                                  children: [
+                                    CustomImage(imageSrc: AppIcons.king),
+                                    CustomText(
+                                      left: 6,
+                                      text: "Founder Member",
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.white,
+                                    ),
+                                  ],
+                                ),
+                              )
+                                  : SizedBox.shrink(),
 
-                                ],
-                              ),
                             ],
                           ),
-                          SizedBox(width: 15),
-                          //founder member
-                          founderMember==true?Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Color(0xffFACC15),
-                                  Color(0xffEAB308),
-                                  Color(0xffCA8A04),
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Row(
-                              children: [
-                                CustomImage(imageSrc: AppIcons.king),
-                                CustomText(
-                                  left: 6,
-                                  text: "Founder Member",
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.white,
-                                ),
-                              ],
-                            ),
-                          )
-                              : SizedBox.shrink(),
                         ],
                       )
                     ],
@@ -168,20 +164,20 @@ class HostActiveViewProfileScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: Obx(() {
               // loader
-              // if (influencerListHostController.rxCollaborationStatus.value == Status.loading) {
-              //    return const Center(child: CustomLoader());
-              // }
+              if (collaborationController.singleUserCollaborationStatus.value == Status.loading) {
+                 return const Center(child: CustomLoader());
+              }
 
-             // final completedDeals = influencerListHostController.collaborationList.where((e) => e.status == 'completed').toList();
+              final completedDeals = collaborationController.singleUserCollaborationList.where((e) => e.status == 'completed').toList();
 
-              // if (completedDeals.isEmpty) {
-              //   return Column(
-              //     children: const [
-              //       SizedBox(height: 30),
-              //       CustomText(text: "No past deals found", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textClr,),
-              //     ],
-              //   );
-              // }
+              if (completedDeals.isEmpty) {
+                return Column(
+                  children: const [
+                    SizedBox(height: 30),
+                    CustomText(text: "No past deals found", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textClr,),
+                  ],
+                );
+              }
 
               return Column(
                 children: [
@@ -194,31 +190,34 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
-                      // CustomText(
-                      //   text: "${completedDeals.length} completed",
-                      //   fontSize: 14,
-                      //   fontWeight: FontWeight.w400,
-                      //   color: AppColors.textClr,
-                      // ),
+                      CustomText(
+                        text: "${completedDeals.length} completed",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.textClr,
+                      ),
                     ],
                   ),
 
                   /// list
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   physics: const NeverScrollableScrollPhysics(),
-                  //   padding: const EdgeInsets.symmetric(vertical: 10),
-                  //   itemCount: completedDeals.length,
-                  //   itemBuilder: (context, index) {final deal = completedDeals[index];
-                  //
-                  //     return CustomPastDealsCard(
-                  //       imageUrl: AppConstants.allSportsImage,
-                  //       title: deal.selectDeal.description,
-                  //       hostName: deal.userId.name,
-                  //       date: deal.createdAt,
-                  //     );
-                  //   },
-                  // ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    itemCount: completedDeals.length,
+                    itemBuilder: (context, index) {
+                      final deal = completedDeals[index];
+                      return CustomPastDealsCard(
+                        imageUrl: (deal.selectDeal?.selectListing?.images?.isNotEmpty ?? false)
+                            ? ApiUrl.baseUrl + deal.selectDeal!.selectListing!.images!.first
+                            : "",
+
+                        title: deal.selectDeal?.selectListing?.title,
+                        hostName: deal.userId?.name,
+                        //date: deal.createdAt,
+                      );
+                    },
+                  ),
                 ],
               );
             }),

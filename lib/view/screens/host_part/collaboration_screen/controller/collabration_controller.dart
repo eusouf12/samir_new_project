@@ -6,12 +6,12 @@ import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../model/collaboration_model.dart';
+import '../model/collaboration_single_model.dart';
 
 
 class CollaborationController extends GetxController {
   RxList<String> collaborationTabList = <String>['All','Pending','Approved','Declined'].obs;
   RxInt currentIndex = 0.obs;
-
 
   // Function to call based on tab index
   void onTabSelected(int index) {
@@ -31,8 +31,6 @@ class CollaborationController extends GetxController {
         break;
     }
   }
-
-
 
   // =========== get my collaborations ===========
     RxList<CollaborationModel> collaborationList = <CollaborationModel>[].obs;
@@ -83,4 +81,41 @@ class CollaborationController extends GetxController {
         isCollaborationLoadMore.value = false;
       }
     }
+
+    // ============ get single user collaboration =====================
+  RxList<SingleUserCollaborationData> singleUserCollaborationList = <SingleUserCollaborationData>[].obs;
+  final singleUserCollaborationIsLoading = false.obs;
+
+  final singleUserCollaborationStatus = Status.loading.obs;
+  void setSingleUserCollaborationStatus(Status status) => singleUserCollaborationStatus.value = status;
+
+  Future<void> getSingleUserCollaboration({required String id}) async {
+    singleUserCollaborationIsLoading.value = true;
+    setSingleUserCollaborationStatus(Status.loading);
+    singleUserCollaborationList.clear();
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.singleInfluencerCollaborations(id: id),);
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse =
+        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final model = SingleUserCollaborationResponse.fromJson(jsonResponse);
+
+        singleUserCollaborationList.assignAll(model.data ?? []);
+
+        setSingleUserCollaborationStatus(Status.completed);
+      } else {
+        setSingleUserCollaborationStatus(Status.error);
+        showCustomSnackBar("Failed to load collaborations", isError: true,);
+      }
+    } catch (e) {
+      setSingleUserCollaborationStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+    } finally {
+      singleUserCollaborationIsLoading.value = false;
+    }
+  }
+
 }

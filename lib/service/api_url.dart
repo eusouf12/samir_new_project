@@ -41,6 +41,7 @@ class ApiUrl {
    static String getChatMessages({required String id, required String page})=> "/api/v1/message/get-chat-list/$id?page=$page&limit=10";
    static  String  influencerList({required String page})=>"/api/v1/user/all-users?role=influencer&page=$page&limit=10";
    static String influencerSearch({required String query})=> "/api/v1/search/specific?query=users&searchType=$query";
+   static  String  singleInfluencerCollaborations({required String id})=>"/api/v1/collaboration/get-collaboration-user/$id?status=completed";
    static  String  myCollaborations({required String page})=>"/api/v1/collaboration/get-my-all-collaborations?page=$page&limit=10";
    static  String  myCollaborationsFilter({required String filter,required String page})=>"/api/v1/collaboration/get-my-all-collaborations?status=$filter&page=$page&limit=10";
 

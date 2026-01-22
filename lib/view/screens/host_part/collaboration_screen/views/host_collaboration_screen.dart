@@ -9,7 +9,6 @@ import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_tab_selected/custom_tab_bar.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../controller/collabration_controller.dart';
-import '../model/collaboration_model.dart';
 import '../widget/custom_collaboration_card.dart';
 
 class HostCollaborationScreen extends StatelessWidget {
