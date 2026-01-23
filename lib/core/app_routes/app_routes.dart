@@ -7,12 +7,7 @@ import '../../view/screens/Influencer_part/inf_home_screen/inf_earnings_screen.d
 import '../../view/screens/Influencer_part/inf_home_screen/inf_home_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/inf_night_credits_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/inf_total_deals_screen.dart';
-import '../../view/screens/Influencer_part/inf_profile_screen/about_screen.dart';
-import '../../view/screens/Influencer_part/inf_profile_screen/inf_account_settings.dart';
-import '../../view/screens/Influencer_part/inf_profile_screen/inf_change_password_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_profile_screen.dart';
-import '../../view/screens/Influencer_part/inf_profile_screen/privacy_screen.dart';
-import '../../view/screens/Influencer_part/inf_profile_screen/terms_services_screen‎.dart';
 import '../../view/screens/authentication/views/auth_screen/forgot_screen/forgot_screen.dart';
 import '../../view/screens/authentication/views/auth_screen/login_screen/login_screen.dart';
 import '../../view/screens/authentication/views/auth_screen/otp_screen/otp_screen.dart';
@@ -59,9 +54,6 @@ class AppRoutes {
   static const String subscriptionScreen = '/subscription';
   static const String settingScreen = "/SettingScreen";
   static const String forgotScreen = "/ForgotScreen";
-  static const String privacyScreen = "/PrivacyScreen";
-  static const String aboutScreen = "/AboutScreen";
-  static const String termsServicesScreen = "/TermsServicesScreen";
   static const String setNewPassword = "/SetNewPassword";
 
 
@@ -110,8 +102,6 @@ class AppRoutes {
  static const String infAccountSettings = "/InfAccountSettings";
  static const String infChangePasswordScreen = "/InfChangePasswordScreen";
  static const String infTermsScreen = "/InfTermsScreen";
- static const String infPrivacyScreen = "/InfPrivacyScreen";
- static const String infAboutScreen = "/InfAboutScreen";
  static const String infExploreDealsScreen = "/InfExploreDealsScreen";
  static const String infNightCreditsScreen = "/InfNightCreditsScreen";
  static const String infEarningsScreen = "/InfEarningsScreen";
@@ -128,9 +118,6 @@ class AppRoutes {
     GetPage(name: otpScreen, page: () => OtpScreen()),
     GetPage(name: signUpScreen, page: () => SignUpScreen()),
     GetPage(name: forgotScreen, page: () => ForgotScreen()),
-    GetPage(name: privacyScreen, page: () => PrivacyScreen()),
-    GetPage(name: aboutScreen, page: () => AboutScreen()),
-    GetPage(name: termsServicesScreen, page: () => TermsServicesScreen()),
     GetPage(name: setNewPassword, page: () => SetNewPassword()),
     GetPage(name: onboardingScreen, page: () => OnboardingScreen()),
     GetPage(name: chooseRole, page: () => ChooseRole()),
@@ -175,8 +162,6 @@ class AppRoutes {
     ///===========================Influencer Part========================
     GetPage(name: infHomeScreen, page: () => InfHomeScreen()),
     GetPage(name: infProfileScreen, page: () => InfProfileScreen()),
-    GetPage(name: infAccountSettings, page: () => InfAccountSettings()),
-    GetPage(name: infChangePasswordScreen, page: () => InfChangePasswordScreen()),
     GetPage(name: infExploreDealsScreen, page: () => InfExploreDealsScreen()),
     GetPage(name: infNightCreditsScreen, page: () => InfNightCreditsScreen()),
     GetPage(name: infEarningsScreen, page: () => InfEarningsScreen()),
