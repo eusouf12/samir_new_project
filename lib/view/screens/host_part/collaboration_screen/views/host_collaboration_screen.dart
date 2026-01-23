@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:samir_flutter_app/service/api_url.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_tab_selected/custom_tab_bar.dart';
@@ -19,8 +21,10 @@ class HostCollaborationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.getMyCollaborations();
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      String id = await SharePrefsHelper.getString(AppConstants.userId);
+      controller.getSingleUserCollaboration(id: id);
+      controller.getSingleUser(userId: id);
     });
 
     return CustomGradient(
@@ -47,13 +51,22 @@ class HostCollaborationScreen extends StatelessWidget {
                 maxLines: 3,
                 bottom: 20,
               ),
-              Row(
+            Obx(() {
+              final userData = controller.singleUserProfile;
+
+              // Null safety check
+              final total = userData.value?.collaborationStats?.total ?? 0;
+              final pending = userData.value?.collaborationStats?.pending?.count ?? 0;
+              final approved = userData.value?.collaborationStats?.ongoing?.count ?? 0;
+              final declined = userData.value?.collaborationStats?.rejected?.count ?? 0;
+
+              return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     children: [
                       CustomText(
-                        text: "15",
+                        text: "$total",
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                       ),
@@ -67,7 +80,7 @@ class HostCollaborationScreen extends StatelessWidget {
                   Column(
                     children: [
                       CustomText(
-                        text: "3",
+                        text: "$pending",
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: Color(0xffEAB308),
@@ -82,7 +95,7 @@ class HostCollaborationScreen extends StatelessWidget {
                   Column(
                     children: [
                       CustomText(
-                        text: "9",
+                        text: "$approved",
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: Color(0xff22C55E),
@@ -97,7 +110,7 @@ class HostCollaborationScreen extends StatelessWidget {
                   Column(
                     children: [
                       CustomText(
-                        text: "9",
+                        text: "$declined",
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: Color(0xffEF4444),
@@ -110,8 +123,11 @@ class HostCollaborationScreen extends StatelessWidget {
                     ],
                   ),
                 ],
-              ),
-              SizedBox(height: 20.h),
+              );
+            }),
+
+
+            SizedBox(height: 20.h),
               // ========== Custom TabBar ==========
               Obx(() => CustomTabBar(
                 tabs: controller.collaborationTabList,
@@ -125,58 +141,63 @@ class HostCollaborationScreen extends StatelessWidget {
               // ========== Collaboration List ==========
               Expanded(
                 child: Obx(() {
-                  if (controller.rxCollaborationStatus.value == Status.loading && controller.collaborationList.isEmpty) {
+                  if (controller.singleUserCollaborationStatus.value == Status.loading ) {
                     return const Center(child: CustomLoader());
                   }
-                  if (controller.rxCollaborationStatus.value == Status.error && controller.collaborationList.isEmpty) {
+                  if (controller.singleUserCollaborationStatus.value == Status.error) {
                     return Center(
                       child: Text("Failed to load collaborations", style: TextStyle(fontSize: 16.sp, color: Colors.black),
                       ),
                     );
                   }
-
+                  if (controller.singleUserCollaborationList.isEmpty) {
+                    return Center(child: Text("No collaborations found", style: TextStyle(fontSize: 16.sp),),);
+                  }
+                  final userData = controller.singleUserProfile;
                   return NotificationListener<ScrollNotification>(
-                    onNotification: (scrollInfo) {
-                      if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !controller.isCollaborationLoadMore.value) {
-                        controller.getMyCollaborations(loadMore: true);
-                      }
-                      return false;
-                    },
-                    child: ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: controller.collaborationList.length,
-                  itemBuilder: (context, index) {
-                  final collaboration = controller.collaborationList[index];
+                    // onNotification: (scrollInfo) {
+                    //   if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !controller.isCollaborationLoadMore.value) {
+                    //     controller.getMyCollaborations(loadMore: true);
+                    //   }
+                    //   return false;
+                    // },
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(16),
+                        itemCount: controller.singleUserCollaborationList.length,
+                        itemBuilder: (context, index) {
+                          final collaboration = controller.singleUserCollaborationList[index];
 
-                  return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: CustomCollaborationCard(
-                  profileImage: AppConstants.girlsPhoto,
-                  userName: collaboration.deal.id ?? "Unknown",
-                  userHandle:  "@unknown",
-                  //tags: collaboration. ?? ["General"],
-                  location:  "Unknown Location",
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: CustomCollaborationCard(
+                              profileImage: (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false)
+                                  ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image!
+                                  : "",
+                              userName: collaboration.selectInfluencerOrHost?.name,
+                              userHandle:  collaboration.selectInfluencerOrHost?.userName,
+                              //tags: collaboration. ?? ["General"],
+                              location: collaboration.selectDeal?.selectListing?.title ?? "",
 
-                  // ===== Dynamic Callbacks =====
-                  onViewDetailsTap: () {
-                 // print("View Details tapped for ${collaboration.userName}");
-                  // Example: Navigate to detail screen
-                  // Get.toNamed(AppRoutes.collaborationDetails, arguments: collaboration);
-                  },
-                  onApproveTap: () {
-                 //; print("Approve tapped for ${collaboration.userName}");
-                  // Example: Call approve API
-                  // controller.approveCollaboration(collaboration.id);
-                  },
-                  onDeclineTap: () {
-                 // print("Decline tapped for ${collaboration.userName}");
-                  // Example: Call decline API
-                  // controller.declineCollaboration(collaboration.id);
-                  },
-                  ),
-                  );
-                  },
-                  )
+                              // ===== Dynamic Callbacks =====
+                              onViewDetailsTap: () {
+                                // print("View Details tapped for ${collaboration.userName}");
+                                // Example: Navigate to detail screen
+                                // Get.toNamed(AppRoutes.collaborationDetails, arguments: collaboration);
+                              },
+                              onApproveTap: () {
+                                //; print("Approve tapped for ${collaboration.userName}");
+                                // Example: Call approve API
+                                // controller.approveCollaboration(collaboration.id);
+                              },
+                              onDeclineTap: () {
+                                // print("Decline tapped for ${collaboration.userName}");
+                                // Example: Call decline API
+                                // controller.declineCollaboration(collaboration.id);
+                              },
+                            ),
+                          );
+                        },
+                      )
                   );
                 }),
               ),

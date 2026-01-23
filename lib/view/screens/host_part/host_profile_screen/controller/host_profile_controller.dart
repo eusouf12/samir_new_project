@@ -73,7 +73,6 @@ class HostProfileController extends GetxController {
         if (genderController.value.text.isEmpty) {
           genderController.value.text = userData.value?.gender ?? "";
         }
-
         setUserStatus(Status.completed);
       }
       else {

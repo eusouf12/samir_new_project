@@ -80,21 +80,27 @@ class SingleUserCollaborationData {
 
 class SingleUserInfo {
   final String? id;
+  final String? image;
   final String? name;
+  final String? userName;
   final String? email;
   final String? role;
 
   SingleUserInfo({
     this.id,
+    this.image,
     this.name,
+    this.userName,
     this.email,
     this.role,
   });
 
   factory SingleUserInfo.fromJson(Map<String, dynamic> json) {
     return SingleUserInfo(
-      id: json['_id'],
-      name: json['name'],
+      id: json['_id'] ?? "",
+      name: json['name'] ??"",
+      userName: json['userName'] ??"",
+      image: json['image'] ?? "",
       email: json['email'],
       role: json['role'],
     );

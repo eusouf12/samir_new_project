@@ -7,41 +7,48 @@ import 'package:samir_flutter_app/view/components/custom_button/custom_button_tw
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_image/custom_image.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
+import 'package:samir_flutter_app/view/screens/authentication/controller/auth_controller.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_activity_card.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_container_card.dart';
 
 import '../../../../core/app_routes/app_routes.dart';
+import '../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../utils/app_const/app_const.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_nav_bar/navbar.dart';
+import '../collaboration_screen/controller/collabration_controller.dart';
 import '../host_active_influe/controller/influencer_list_host_controller.dart';
 import '../host_listing_screen/controller/listing_controller.dart';
 import '../host_profile_screen/controller/host_profile_controller.dart';
 
 class HostHomeScreen extends StatelessWidget {
   HostHomeScreen({super.key});
-  final HostProfileController hostProfileController = Get.put(HostProfileController());
+ // final HostProfileController hostProfileController = Get.put(HostProfileController());
+  final CollaborationController collaborationController = Get.put(CollaborationController());
   final ListingController listingController = Get.put(ListingController());
   final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      hostProfileController.getUserProfile();
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      String id = await SharePrefsHelper.getString(AppConstants.userId);
+     // hostProfileController.getUserProfile();
+      collaborationController.getSingleUser(userId: id);
       listingController.getListings(loadMore: false);
       influencerListHostController.getInfluencers();
     });
     return CustomGradient(
       child: Scaffold(
-        body:Obx((){
-          if (hostProfileController.rxUserStatus.value == Status.loading) {
+        body:
+        Obx((){
+          if (collaborationController.rxGetSingleUserStatus.value == Status.loading) {
             return const Center(child: CustomLoader());
           }
 
-          if (hostProfileController.userData.value == null) {
+          if (collaborationController.singleUserProfile == null) {
             return const Center(child: CustomText(text: "Profile not found", fontSize: 16,),);
           }
-          final userData = hostProfileController.userData.value!;
+          final userData = collaborationController.singleUserProfile;
           return Padding(
             padding: const EdgeInsets.only(top: 60, right: 20.0, left: 20),
             child: Column(
@@ -54,7 +61,7 @@ class HostHomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          text: "Welcome! ${userData.name}",
+                          text: "Welcome! ${userData.value?.name}",
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                         ),
@@ -86,7 +93,7 @@ class HostHomeScreen extends StatelessWidget {
                         title: "Deals",
                         color: AppColors.white,
                         textColor: AppColors.black,
-                        number: "${userData.dealsTotal}",
+                        number: "${userData.value?.dealsTotal}",
                         onTap: () {
                           Get.toNamed(AppRoutes.hostDealsScreen);
                         },
@@ -97,7 +104,7 @@ class HostHomeScreen extends StatelessWidget {
                         title: "My\nListings",
                         color: AppColors.white,
                         textColor: AppColors.black,
-                        number: "${userData.listingsTotal}",
+                        number: "${userData.value?.listingsTotal}",
                         onTap: () {
                           Get.toNamed(AppRoutes.hostListingScreen);
                         },
@@ -119,7 +126,7 @@ class HostHomeScreen extends StatelessWidget {
                         title: "Redeem\n Requests",
                         color: AppColors.white,
                         textColor: AppColors.black,
-                        number: "12",
+                        number: "0",
                         onTap: () {
                           Get.toNamed(AppRoutes.hostListingScreen);
                         },
@@ -132,7 +139,7 @@ class HostHomeScreen extends StatelessWidget {
                         title: "Collaboration\n Requests",
                         color: AppColors.white,
                         textColor: AppColors.black,
-                        number: "10",
+                        number: "${userData.value?.collaborationsTotal}",
                       ),
                     ],
                   ),

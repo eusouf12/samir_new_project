@@ -8,6 +8,7 @@ class CustomCollaborationCard extends StatelessWidget {
   final String? profileImage;
   final String? userName;
   final String? userHandle;
+  final String? status;
   final List<String>? tags;
   final String? location;
   final VoidCallback? onViewDetailsTap;
@@ -18,6 +19,7 @@ class CustomCollaborationCard extends StatelessWidget {
     super.key,
     this.profileImage,
     this.userName,
+    this.status,
     this.userHandle,
     this.tags,
     this.location,
@@ -135,8 +137,9 @@ class CustomCollaborationCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-
-                Expanded(
+                (status == "ongoing" || status == "rejected")?
+                SizedBox.shrink()
+                    : Expanded(
                   flex: 2,
                   child: CustomButtonTwo(
                     height: 40,
@@ -147,8 +150,9 @@ class CustomCollaborationCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-
-                Expanded(
+                (status == "ongoing" || status == "rejected")?
+                  SizedBox.shrink()
+                    : Expanded(
                   flex: 1,
                   child: CustomButtonTwo(
                     height: 40,

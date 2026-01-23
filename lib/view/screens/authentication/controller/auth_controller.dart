@@ -173,7 +173,7 @@ class AuthController extends GetxController {
   }
 
   RxBool loginUserLoading = false.obs;
-
+  String myId = '';
   Future<void> loginUser() async {
     loginUserLoading.value = true;
 
@@ -214,8 +214,6 @@ class AuthController extends GetxController {
         await SharePrefsHelper.setString(AppConstants.userId, userId);
         String id = await SharePrefsHelper.getString(AppConstants.userId);
         await SharePrefsHelper.setString(AppConstants.role, userRole);
-        String resetToken = await SharePrefsHelper.getString("resetToken");
-        debugPrint("Reset Token: $resetToken");
 
 
         //Socket initialization
