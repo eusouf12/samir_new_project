@@ -5,6 +5,7 @@ import 'package:samir_flutter_app/service/api_url.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../utils/app_const/app_const.dart';
@@ -180,18 +181,33 @@ class HostCollaborationScreen extends StatelessWidget {
 
                               // ===== Dynamic Callbacks =====
                               onViewDetailsTap: () {
-                                // print("View Details tapped for ${collaboration.userName}");
-                                // Example: Navigate to detail screen
-                                // Get.toNamed(AppRoutes.collaborationDetails, arguments: collaboration);
+                                Get.toNamed(AppRoutes.hostCollaborationViewDetailsScreen,
+                                    arguments: {
+                                      "image": (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false)
+                                          ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image!
+                                          : "image",
+                                      "name": collaboration.selectInfluencerOrHost?.name ?? "name",
+                                      "userName": collaboration.selectInfluencerOrHost?.userName ?? "userName",
+                                      "listingName":  collaboration.selectDeal?.selectListing?.title ?? "listingName",
+                                      "listingImage":
+                                      (collaboration.selectDeal?.selectListing?.images?.isNotEmpty ?? false)
+                                          ? ApiUrl.baseUrl + (collaboration.selectDeal!.selectListing!.images!.first)
+                                          : "",
+                                      "payment":  collaboration.selectDeal?.compensation?.paymentAmount ?? "payment",
+                                      "nightStay":  collaboration.selectDeal?.compensation?.numberOfNights ?? "nightStay",
+                                      "inTimeAndDate": collaboration.selectDeal?.inTimeAndDate ?? "inTimeAndDate",
+                                      "outTimeAndDate": collaboration.selectDeal?.outTimeAndDate ?? "outTimeAndDate",
+                                      "amenities": collaboration.selectDeal?.selectListing?.amenities ?? {},
+                                      "deliverables": collaboration.selectDeal?.deliverables ?? [],
+                                    }
+                                );
                               },
                               onApproveTap: () {
-                                //; print("Approve tapped for ${collaboration.userName}");
-                                // Example: Call approve API
+
                                 // controller.approveCollaboration(collaboration.id);
                               },
                               onDeclineTap: () {
-                                // print("Decline tapped for ${collaboration.userName}");
-                                // Example: Call decline API
+
                                 // controller.declineCollaboration(collaboration.id);
                               },
                             ),

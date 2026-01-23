@@ -17,6 +17,7 @@ import 'controller/host_profile_controller.dart';
 class HostEditProfileScreen extends StatelessWidget {
   HostEditProfileScreen({super.key});
   final HostProfileController profileController = Get.put(HostProfileController());
+  final page = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class HostEditProfileScreen extends StatelessWidget {
             final userData = profileController.userData.value!;
             return SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                 child: Column(
                   children: [
                     Stack(
@@ -72,7 +73,7 @@ class HostEditProfileScreen extends StatelessWidget {
                               height: 35,
                               width: 35,
                               decoration: BoxDecoration(
-                                color: AppColors.green,
+                                color: page == "host" ? AppColors.green : AppColors.primary2,
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(Icons.edit, size: 15, color: AppColors.white,),
@@ -140,7 +141,7 @@ class HostEditProfileScreen extends StatelessWidget {
                         title: 'Save',
                         textColor: AppColors.white,
                         borderRadius: 50,
-                        fillColor: AppColors.primary,
+                        fillColor:page == "host" ? AppColors.primary : AppColors.primary2
                       );
                     })
 

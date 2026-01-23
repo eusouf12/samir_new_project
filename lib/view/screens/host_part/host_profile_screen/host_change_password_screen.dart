@@ -11,6 +11,7 @@ import 'controller/host_profile_controller.dart';
 class HostChangePasswordScreen extends StatelessWidget {
    HostChangePasswordScreen({super.key});
   final HostProfileController profileController = Get.put(HostProfileController());
+   final page = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,7 @@ class HostChangePasswordScreen extends StatelessWidget {
                 },
                 title: "UPDATE PASSWORD",
                 textColor: AppColors.white,
+                fillColor: page == "host" ? AppColors.primary : AppColors.primary2,
               );
             })
 

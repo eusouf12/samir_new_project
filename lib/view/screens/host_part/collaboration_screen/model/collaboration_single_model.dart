@@ -155,6 +155,7 @@ class SingleUserDealInfo {
 }
 
 class SingleUserListingInfo {
+  final SingleUserAmenities? amenities;
   final String? id;
   final String? title;
   final String? description;
@@ -163,6 +164,7 @@ class SingleUserListingInfo {
   final List<String>? images;
 
   SingleUserListingInfo({
+    this.amenities,
     this.id,
     this.title,
     this.description,
@@ -173,6 +175,9 @@ class SingleUserListingInfo {
 
   factory SingleUserListingInfo.fromJson(Map<String, dynamic> json) {
     return SingleUserListingInfo(
+      amenities: json['amenities'] != null
+          ? SingleUserAmenities.fromJson(json['amenities'])
+          : null,
       id: json['_id'],
       title: json['title'],
       description: json['description'],
@@ -248,6 +253,44 @@ class SingleUserSocialMediaLinks {
       twitter: json['twitter'],
       youtube: json['youtube'],
       tiktok: json['tiktok'],
+    );
+  }
+}
+
+class SingleUserAmenities {
+  final bool kitchen;
+  final bool airConditioning;
+  final bool gym;
+  final bool parking;
+  final bool petFriendly;
+  final bool hotTub;
+  final bool wifi;
+  final bool tv;
+  final bool pool;
+
+  SingleUserAmenities({
+    required this.kitchen,
+    required this.airConditioning,
+    required this.gym,
+    required this.parking,
+    required this.petFriendly,
+    required this.hotTub,
+    required this.wifi,
+    required this.tv,
+    required this.pool,
+  });
+
+  factory SingleUserAmenities.fromJson(Map<String, dynamic> json) {
+    return SingleUserAmenities(
+      kitchen: json['kitchen'] ?? false,
+      airConditioning: json['airConditioning'] ?? false,
+      gym: json['gym'] ?? false,
+      parking: json['parking'] ?? false,
+      petFriendly: json['petFriendly'] ?? false,
+      hotTub: json['hotTub'] ?? false,
+      wifi: json['wifi'] ?? false,
+      tv: json['tv'] ?? false,
+      pool: json['pool'] ?? false,
     );
   }
 }

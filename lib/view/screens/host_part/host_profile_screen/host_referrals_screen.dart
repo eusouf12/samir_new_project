@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../components/custom_text/custom_text.dart';
 
-class InfReferralsScreen extends StatelessWidget {
-  const InfReferralsScreen({super.key});
+class HostReferralsScreen extends StatelessWidget {
+   HostReferralsScreen({super.key});
+   final page = Get.arguments;
 
   void _handleCopy(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
@@ -82,7 +84,7 @@ class InfReferralsScreen extends StatelessWidget {
                       icon: const Icon(Icons.copy, size: 16, color: Colors.white),
                       label: const Text("Copy Link", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFF8674),
+                        backgroundColor: page == "host" ? AppColors.primary : AppColors.primary2,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       ),
                     ),

@@ -10,9 +10,7 @@ import '../../view/screens/Influencer_part/inf_home_screen/inf_total_deals_scree
 import '../../view/screens/Influencer_part/inf_profile_screen/about_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_account_settings.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_change_password_screen.dart';
-import '../../view/screens/Influencer_part/inf_profile_screen/inf_edit_profile_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_profile_screen.dart';
-import '../../view/screens/Influencer_part/inf_profile_screen/inf_referrals_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/privacy_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/terms_services_screen‎.dart';
 import '../../view/screens/authentication/views/auth_screen/forgot_screen/forgot_screen.dart';
@@ -42,7 +40,7 @@ import '../../view/screens/host_part/host_messages_list_screen/view/host_message
 import '../../view/screens/host_part/host_profile_screen/host_about_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_change_password_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_edit_profile_screen.dart';
-import '../../view/screens/host_part/host_profile_screen/host_peferrals_screen.dart';
+import '../../view/screens/host_part/host_profile_screen/host_referrals_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_privacy_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_profile_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_terms_screen.dart';
@@ -93,7 +91,7 @@ class AppRoutes {
  static const String hostActiveViewProfileScreen = "/HostActiveViewProfileScreen";
  static const String hostSendCollaboarationScreen = "/HostSendCollaboarationScreen";
  static const String hostMessagesListScreen = "/HostMessagesListScreen";
- static const String hostPeferralsScreen = "/HostPeferralsScreen";
+ static const String hostReferralsScreen = "/HostReferralsScreen";
  static const String hostCreateDealScreen = "/HostCreateDealScreen";
  static const String hostCreateDealTwoScreen = "/HostCreateDealTwoScreen";
  static const String hostCreateDealThreeScreen = "/HostCreateDealThreeScreen";
@@ -109,9 +107,7 @@ class AppRoutes {
  ///===========================Influencer Part========================
  static const String infHomeScreen = "/InfHomeScreen";
  static const String infProfileScreen = "/InfProfileScreen";
- static const String infEditProfileScreen = "/InfEditProfileScreen";
  static const String infAccountSettings = "/InfAccountSettings";
- static const String infReferralsScreen = "/InfReferralsScreen";
  static const String infChangePasswordScreen = "/InfChangePasswordScreen";
  static const String infTermsScreen = "/InfTermsScreen";
  static const String infPrivacyScreen = "/InfPrivacyScreen";
@@ -163,7 +159,7 @@ class AppRoutes {
     GetPage(name: hostActiveViewProfileScreen, page: () => HostActiveViewProfileScreen()),
     GetPage(name: hostSendCollaboarationScreen, page: () => HostSendCollaboarationScreen()),
     GetPage(name: hostMessagesListScreen, page: () => HostMessagesListScreen()),
-    GetPage(name: hostPeferralsScreen, page: () => HostPeferralsScreen()),
+    GetPage(name: hostReferralsScreen, page: () => HostReferralsScreen()),
     GetPage(name: hostCreateDealScreen, page: () => HostCreateDealScreen()),
     GetPage(name: hostCreateDealTwoScreen, page: () => HostCreateDealTwoScreen()),
     GetPage(name: hostCreateDealThreeScreen, page: () => HostCreateDealThreeScreen()),
@@ -179,9 +175,7 @@ class AppRoutes {
     ///===========================Influencer Part========================
     GetPage(name: infHomeScreen, page: () => InfHomeScreen()),
     GetPage(name: infProfileScreen, page: () => InfProfileScreen()),
-    GetPage(name: infEditProfileScreen, page: () => InfEditProfileScreen()),
     GetPage(name: infAccountSettings, page: () => InfAccountSettings()),
-    GetPage(name: infReferralsScreen, page: () => InfReferralsScreen()),
     GetPage(name: infChangePasswordScreen, page: () => InfChangePasswordScreen()),
     GetPage(name: infExploreDealsScreen, page: () => InfExploreDealsScreen()),
     GetPage(name: infNightCreditsScreen, page: () => InfNightCreditsScreen()),

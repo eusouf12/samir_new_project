@@ -104,18 +104,20 @@ class HostProfileScreen extends StatelessWidget {
                     top: 20,
                     bottom: 16,
                   ),
+                  //Edit Profile
                   CustomProfileCard(
                     nameTitle: "Edit Profile",
                     icons: AppIcons.editIcon,
                     onTap: (){
-                      Get.toNamed(AppRoutes.hostEditProfileScreen);
+                      Get.toNamed(AppRoutes.hostEditProfileScreen,arguments: "host");
                     },
                   ),
+                  //Referrals
                   CustomProfileCard(
                     nameTitle: "Referrals",
                     icons: AppIcons.giftIcon,
                     onTap: (){
-                      Get.toNamed(AppRoutes.hostPeferralsScreen);
+                      Get.toNamed(AppRoutes.hostReferralsScreen,arguments: "host");
                     },
                   ),
                   //Change Password
@@ -123,7 +125,7 @@ class HostProfileScreen extends StatelessWidget {
                     nameTitle: "Change Password",
                     icons: AppIcons.changePass,
                     onTap: (){
-                      Get.toNamed(AppRoutes.hostChangePasswordScreen);
+                      Get.toNamed(AppRoutes.hostChangePasswordScreen,arguments: "host");
                     },
                   ),
                   //Terms of services
@@ -131,7 +133,7 @@ class HostProfileScreen extends StatelessWidget {
                     nameTitle: "Terms of services",
                     icons: AppIcons.terms,
                     onTap: (){
-                      Get.toNamed(AppRoutes.hostTermsScreen);
+                      Get.toNamed(AppRoutes.hostTermsScreen,arguments: "host");
                     },
                   ),
                   //Privacy Policy
@@ -139,7 +141,7 @@ class HostProfileScreen extends StatelessWidget {
                     nameTitle: "Privacy Policy",
                     icons: AppIcons.privacyPolicy,
                     onTap: (){
-                      Get.toNamed(AppRoutes.hostPrivacyScreen);
+                      Get.toNamed(AppRoutes.hostPrivacyScreen,arguments: "host");
                     },
                   ),
                   //About us
@@ -147,13 +149,9 @@ class HostProfileScreen extends StatelessWidget {
                     nameTitle: "About us",
                     icons: AppIcons.aboutUs,
                     onTap: (){
-                      Get.toNamed(AppRoutes.hostAboutScreen);
+                      Get.toNamed(AppRoutes.hostAboutScreen,arguments: "host");
                     },
                   ),
-                  // CustomProfileCard(
-                  //   nameTitle: "Subscription",
-                  //   icons: AppIcons.subscriptionIcon,
-                  // ),
                   //delete account
                   CustomProfileCard(
                       nameTitle: "Delete Account",
