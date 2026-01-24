@@ -10,12 +10,11 @@ import 'package:samir_flutter_app/view/screens/host_part/host_deal_screen/contro
 import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_deals_container.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../service/api_url.dart';
-import '../../host_home_screen/controller/host_home_controller.dart';
 
 
 class HostDealsScreen extends StatelessWidget {
   HostDealsScreen({super.key});
-  final HostHomeController hostHomeController = Get.put(HostHomeController());
+  //final HostHomeController hostHomeController = Get.put(HostHomeController());
   final DealsController dealsController = Get.put(DealsController());
 
   @override

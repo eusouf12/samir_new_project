@@ -1,175 +1,171 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
 import 'package:samir_flutter_app/utils/app_const/app_const.dart';
-import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
-import 'package:samir_flutter_app/view/components/custom_netwrok_image/custom_network_image.dart';
+import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
+import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_field.dart';
-
+import 'package:samir_flutter_app/view/screens/Influencer_part/inf_explore_deals_screen/widget/inf_deal_card.dart';
+import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_deals_container.dart';
+import '../../../../core/app_routes/app_routes.dart';
+import '../../../../service/api_url.dart';
 import '../../../components/custom_nav_bar/vendor_navbar.dart';
+import 'controller/all_deal_controller.dart';
+
+
 class InfExploreDealsScreen extends StatelessWidget {
-  const InfExploreDealsScreen({super.key});
+  InfExploreDealsScreen({super.key});
+  //final HostHomeController hostHomeController = Get.put(HostHomeController());
+  final AllDealController dealsController = Get.put(AllDealController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Explore Deals"),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            CustomTextField(
-              isDens: true,
-              fillColor: AppColors.white,
-              fieldBorderColor: AppColors.primary2,
-              hintText: "Search your location",
-              hintStyle: TextStyle(color: AppColors.textClr),
-              prefixIcon: Icon(Icons.search,size: 24,color: AppColors.textClr,),
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      dealsController.getAllDeals(loadMore: false);
+    });
+    return CustomGradient(
+      child: Scaffold(
+        appBar: CustomRoyelAppbar(leftIcon: false, titleName: "Explore Deals"),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            children: [
+              // search field
+              CustomTextField(
+                isDens: true,
+                fieldBorderColor: AppColors.primary2,
+                fillColor: const Color(0xffF5F5F5),
+                hintText: "Explore Deals by Name",
+                hintStyle: TextStyle(color: AppColors.textClr),
+                prefixIcon: Icon(Icons.search_rounded, size: 18, color: AppColors.textClr),
+                onChanged: (value) {
+                  dealsController.searchQuery.value = value;
+      
+                  if (value.trim().isEmpty) {
+                    dealsController.searchDealList.clear();
+                    dealsController.setSearchDealStatus(Status.completed);
+                  } else {
+                    dealsController.searchDeals(query: value);
+                  }
+                },
+              ),
+              SizedBox(height: 16),
+              SizedBox(height: 10.h),
+              // deals list
+              Expanded(
+                child: Obx(() {
+                  final bool isSearching = dealsController.searchQuery.value.isNotEmpty;
+      
+                  // ========= Loader =========
+                  if (!isSearching && dealsController.rxDealStatus.value == Status.loading) {
+                    return const Center(child: CustomLoader());
+                  }
+      
+                  if (isSearching &&
+                      dealsController.rxSearchDealStatus.value == Status.loading) {
+                    return const Center(child: CustomLoader());
+                  }
+      
+                  // ========= Decide list =========
+                  final listToShow = isSearching ? dealsController.searchDealList : dealsController.dealList;
+      
+                  if (listToShow.isEmpty) {
+                    return const Center(child: Text("No deals available"));
+                  }
+      
+                  return NotificationListener<ScrollNotification>(
+                    onNotification: (scrollInfo) {
+                      if (!isSearching && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !dealsController.isDealLoadMore.value) {
+                        dealsController.getAllDeals(loadMore: true);
+                      }
+                      return false;
+                    },
+                    child: ListView.builder(
+                      itemCount: listToShow.length + (!isSearching && dealsController.isDealLoadMore.value ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (index < listToShow.length) {
+                          final deal = listToShow[index];
+                          final order = ['IG', 'TT', 'FB', 'YT'];
+                          final deliverablesText = deal.deliverables.map((d) => {'platform': getPlatformShort(d.platform ?? ''), 'text': "${d.quantity} ${getPlatformShort(d.platform ?? '')} ${d.contentType}"})
+                              .where((e) => e['platform']!.isNotEmpty).toList()..sort((a, b) => order.indexOf(a['platform']!).compareTo(order.indexOf(b['platform']!)));
+                          final text = deliverablesText.map((e) => e['text']).join(', ');
+      
+                          // payment text
+                          String paymentText = "";
+                          if (deal.compensation.directPayment) {
+                            paymentText = "\$${deal.compensation.paymentAmount ?? '0'} via Direct Payment";
+                          }
+                          else if (deal.compensation.nightCredits) {paymentText = "${deal.compensation.numberOfNights} night credits";}
+      
+                          // duration text
+                          final inDate = "${deal.inTimeAndDate.day}-${deal.inTimeAndDate.month}-${deal.inTimeAndDate.year}";
+                          final outDate = "${deal.outTimeAndDate.day}-${deal.outTimeAndDate.month}-${deal.outTimeAndDate.year}";
+                          final durationText = "$inDate – $outDate";
+      
+                          // progress text (optional)
+                          final progressText = "Tasks info here";
+      
+                          // return CustomDealsContainer(
+                          //   profileImg: deal.title.images.isNotEmpty ?ApiUrl.baseUrl + deal.title.images.first : AppConstants.profileImage2,
+                          //   userImg:  deal.userId.image.isNotEmpty ? ApiUrl.baseUrl+deal.userId.image : AppConstants.profileImage2,
+                          //   fullName: deal.title.title,
+                          //   userName: "${deal.userId.name}",
+                          //   status: deal.status,
+                          //   deliverablesText: text,
+                          //   paymentText: paymentText,
+                          //   progressText: progressText,
+                          //   durationText: durationText,
 
-            ),
-            SizedBox(height: 20,),
-            Container(
-              width: MediaQuery.sizeOf(context).width,
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.white_50,
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomNetworkImage(
-                    imageUrl: AppConstants.banner,
-                    height: 190.h,
-                    width: MediaQuery.sizeOf(context).width,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(13.r),
-                      topRight: Radius.circular(13.r),
+                          //   messageButton: () {
+                          //     // message action
+                          //   },
+                          // );
+
+                          return CampaignCard(
+                            bannerImage: deal.title.images.isNotEmpty ?ApiUrl.baseUrl + deal.title.images.first : "",
+                            profileImage: deal.userId.image.isNotEmpty ? ApiUrl.baseUrl+deal.userId.image : AppConstants.profileImage2,
+                            hostName: deal.userId.name,
+                            //isVerified: true,
+                            // DealName: deal.title.title,
+                            rewardTitle: "${deal.compensation.numberOfNights.toString()} Night Credits",
+                            campaignTitle: deal.title.title,
+                            location: deal.title.location,
+                              onViewDetails: () {
+                                Get.toNamed(AppRoutes.hostDealOverviewScreen,
+                                  arguments: {
+                                    'dealId': deal.id,
+                                    'titleId': deal.title.id,
+                                    'status': deal.status,
+                                  },
+                                );
+                              },
+                            onPrimaryAction: () {
+                              print("Apply Now");
+                            },
+                          );
+
+                        }
+                        else {
+                          // pagination loader
+                          return const Padding(
+                            padding: EdgeInsets.all(12),
+                            child: Center(child: CustomLoader()),
+                          );
+                        }
+                      },
                     ),
-                  ),
-                  SizedBox(height: 16.h),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            CustomNetworkImage(
-                              imageUrl: AppConstants.girlsPhoto,
-                              height: 46,
-                              width: 46,
-                              boxShape: BoxShape.circle,
-                            ),
-                            SizedBox(width: 16),
-                            Column(
-                              children: [
-                                CustomText(
-                                  text: "Mike Rodriguez",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  bottom: 6,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xffDCFCE7),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(30.r),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check_circle,
-                                        color: AppColors.green,
-                                      ),
-                                      CustomText(
-                                        left: 6,
-                                        text: "Verified Host",
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.green,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 16.h),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.card_giftcard,
-                              color: AppColors.primary2,
-                              size: 24,
-                            ),
-                            CustomText(
-                              text: "2 Night Credits",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.primary2,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        CustomText(
-                          text: "TikTok Video • Mountain Cottage",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textClr,
-                          bottom: 4,
-                        ),
-                        CustomText(
-                          text: "📍 Aspen, Colorado",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textClr,
-                          bottom: 12,
-                        ),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: CustomButtonTwo(
-                                onTap: () {},
-                                title: "View Details",
-                                textColor: AppColors.black_02,
-                                fillColor: Color(0xffF3F4F6),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Flexible(
-                              child: CustomButtonTwo(
-                                onTap: () {},
-                                title: "View Details",
-                                fillColor: AppColors.primary2,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                  );
+                }),
               ),
-            ),
-          ],
+      
+      
+            ],
+          ),
         ),
+        bottomNavigationBar: InfNavbar(currentIndex: 1),
       ),
-      bottomNavigationBar: InfNavbar(currentIndex: 1),
     );
   }
 }

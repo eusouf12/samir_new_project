@@ -62,12 +62,12 @@ class CollaborationController extends GetxController {
   //       if (response.statusCode == 200) {
   //         final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
   //
-  //         final model = MyCollaborationsResponse.fromJson(jsonResponse);
+  //         final widget = MyCollaborationsResponse.fromJson(jsonResponse);
   //
-  //         totalPages = model.totalPages;
+  //         totalPages = widget.totalPages;
   //         final existingIds = collaborationList.map((e) => e.id).toSet();
   //
-  //         collaborationList.addAll(model.data.collaborations.where((e) => !existingIds.contains(e.id)),);
+  //         collaborationList.addAll(widget.data.collaborations.where((e) => !existingIds.contains(e.id)),);
   //
   //         setCollaborationStatus(Status.completed);
   //       } else {
