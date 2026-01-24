@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:get/get.dart';
 import '../../view/screens/Influencer_part/inf_explore_deals_screen/inf_explore_deals_screen.dart';
-import '../../view/screens/Influencer_part/inf_home_screen/inf_active_host_profile_screen.dart';
-import '../../view/screens/Influencer_part/inf_home_screen/inf_active_hosts_screen.dart';
+import '../../view/screens/Influencer_part/inf_active_host_screen/view/inf_active_host_profile_screen.dart';
+import '../../view/screens/Influencer_part/inf_active_host_screen/view/inf_active_hosts_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/inf_earnings_screen.dart';
-import '../../view/screens/Influencer_part/inf_home_screen/inf_home_screen.dart';
+import '../../view/screens/Influencer_part/inf_home_screen/views/inf_home_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/inf_night_credits_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/inf_total_deals_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_profile_screen.dart';

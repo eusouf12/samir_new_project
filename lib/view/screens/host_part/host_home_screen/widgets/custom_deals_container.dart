@@ -146,7 +146,7 @@ class CustomDealsContainer extends StatelessWidget {
             Row(
               children: [
                 Flexible(
-                  flex: 3,
+                  flex: 1,
                   child: CustomButtonTwo(
                     height: 34.h,
                     onTap: viewDetailsButton,
@@ -156,21 +156,21 @@ class CustomDealsContainer extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 12,),
-                Flexible(
-                  flex: 1,
-                  child: CustomButtonTwo(
-                    height: 34.h,
-                    onTap: messageButton,
-                    title: "Message",
-                    borderRadius: 8,
-                    fontSize: 12,
-                    fillColor: AppColors.white,
-                    isBorder: true,
-                    borderColor: AppColors.textClr.withValues(alpha: 0.2),
-                    borderWidth: 1,
-                    textColor: AppColors.textClr,
-                  ),
-                ),
+                // Flexible(
+                //   flex: 1,
+                //   child: CustomButtonTwo(
+                //     height: 34.h,
+                //     onTap: messageButton,
+                //     title: "Message",
+                //     borderRadius: 8,
+                //     fontSize: 12,
+                //     fillColor: AppColors.white,
+                //     isBorder: true,
+                //     borderColor: AppColors.textClr.withValues(alpha: 0.2),
+                //     borderWidth: 1,
+                //     textColor: AppColors.textClr,
+                //   ),
+                // ),
               ],
             ),
           ],

@@ -156,10 +156,12 @@ class UserInfo {
   final String name;
   final String email;
   final String image;
+  final String? username;
 
   UserInfo({
     required this.id,
     required this.name,
+    this.username,
     required this.email,
     required this.image,
   });
@@ -168,6 +170,7 @@ class UserInfo {
     return UserInfo(
       id: json['_id'] ?? "",
       name: json['name'] ?? "",
+      username: json['username'] ?? "",
       email: json['email'] ?? "",
       image: json['image'] ?? "",
     );

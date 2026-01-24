@@ -10,11 +10,11 @@ class CampaignCard extends StatelessWidget {
   final String? bannerImage;
   final String? profileImage;
   final String? hostName;
+  final String? userName;
   final bool? isVerified;
   final String? rewardTitle;
   final String? campaignTitle;
   final String? location;
-
   final VoidCallback? messageButton;
   final VoidCallback? onViewDetails;
   final VoidCallback? onPrimaryAction;
@@ -24,6 +24,7 @@ class CampaignCard extends StatelessWidget {
      this.bannerImage,
      this.profileImage,
      this.hostName,
+     this.userName,
      this.isVerified = false,
      this.rewardTitle,
      this.campaignTitle,
@@ -37,6 +38,7 @@ class CampaignCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.sizeOf(context).width,
+      padding: EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         color: AppColors.white,
         boxShadow: [
@@ -52,10 +54,10 @@ class CampaignCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Banner
+          // Banner
           CustomNetworkImage(
             imageUrl: bannerImage ?? "",
-            height: 190.h,
+            height: 160.h,
             width: MediaQuery.sizeOf(context).width,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(13.r),
@@ -85,6 +87,12 @@ class CampaignCard extends StatelessWidget {
                       children: [
                         CustomText(
                           text: hostName ?? "",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          bottom: 6,
+                        ),
+                        CustomText(
+                          text: userName ?? "",
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           bottom: 6,
@@ -124,7 +132,6 @@ class CampaignCard extends StatelessWidget {
                 ),
 
                 SizedBox(height: 16.h),
-
                 //Night Stay
                 Row(
                   children: [
@@ -142,9 +149,8 @@ class CampaignCard extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 SizedBox(height: 10),
-
+                //title
                 CustomText(
                   text: campaignTitle ??"",
                   fontSize: 14,
@@ -152,7 +158,7 @@ class CampaignCard extends StatelessWidget {
                   color: AppColors.textClr,
                   bottom: 4,
                 ),
-
+                //location
                 CustomText(
                   text: "📍 $location",
                   fontSize: 12,
@@ -163,7 +169,7 @@ class CampaignCard extends StatelessWidget {
                 Row(
                   children: [
                     Flexible(
-                      flex: 3,
+                      flex: 1,
                       child: CustomButtonTwo(
                         height: 34.h,
                         onTap: onViewDetails,
@@ -201,7 +207,7 @@ class CampaignCard extends StatelessWidget {
                       isBorder: true,
                       borderColor: AppColors.textClr.withValues(alpha: 0.2),
                       borderWidth: 1,
-                      textColor: AppColors.textClr,
+                      textColor: AppColors.white,
                     ),
 
 

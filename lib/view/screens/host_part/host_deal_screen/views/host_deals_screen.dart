@@ -128,9 +128,6 @@ class HostDealsScreen extends StatelessWidget {
                               },
                             );
                           },
-                          messageButton: () {
-                            // message action
-                          },
                         );
                       }
                       else {

@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
 
-import '../../../../utils/app_colors/app_colors.dart';
-import '../../../../utils/app_const/app_const.dart';
-import '../../../../utils/app_icons/app_icons.dart';
-import '../../../components/custom_image/custom_image.dart';
-import '../../../components/custom_netwrok_image/custom_network_image.dart';
-import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
-import '../../../components/custom_text/custom_text.dart';
+import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../utils/app_const/app_const.dart';
+import '../../../../../utils/app_icons/app_icons.dart';
+import '../../../../components/custom_image/custom_image.dart';
+import '../../../../components/custom_netwrok_image/custom_network_image.dart';
+import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
+import '../../../../components/custom_text/custom_text.dart';
+import '../../../host_part/collaboration_screen/controller/collabration_controller.dart';
 
 class InfActiveHostProfileScreen extends StatelessWidget {
-  const InfActiveHostProfileScreen({super.key});
+  InfActiveHostProfileScreen({super.key});
+  final CollaborationController collaborationController = Get.put(CollaborationController());
+  final Map<String, dynamic> args = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
+    final String userId = args['id'];
+    final String name = args['name']?? "";
+    final String userName = args['userName'] ??"";
+    final String image = args['image'] ??"";
+    final String followers = args['followers']??"";
+    final bool founderMember = args['founderMember']??false;
+    final String date = "2026-12-24T21:43:46.978Z";
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+    //  collaborationController.getSingleUserCollaboration(id: userId);
+    });
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Host Profile"),
       body: Padding(

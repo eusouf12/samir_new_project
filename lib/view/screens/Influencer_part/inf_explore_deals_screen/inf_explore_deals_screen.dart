@@ -42,7 +42,7 @@ class InfExploreDealsScreen extends StatelessWidget {
                 prefixIcon: Icon(Icons.search_rounded, size: 18, color: AppColors.textClr),
                 onChanged: (value) {
                   dealsController.searchQuery.value = value;
-      
+
                   if (value.trim().isEmpty) {
                     dealsController.searchDealList.clear();
                     dealsController.setSearchDealStatus(Status.completed);
@@ -57,24 +57,24 @@ class InfExploreDealsScreen extends StatelessWidget {
               Expanded(
                 child: Obx(() {
                   final bool isSearching = dealsController.searchQuery.value.isNotEmpty;
-      
+
                   // ========= Loader =========
                   if (!isSearching && dealsController.rxDealStatus.value == Status.loading) {
                     return const Center(child: CustomLoader());
                   }
-      
+
                   if (isSearching &&
                       dealsController.rxSearchDealStatus.value == Status.loading) {
                     return const Center(child: CustomLoader());
                   }
-      
+
                   // ========= Decide list =========
                   final listToShow = isSearching ? dealsController.searchDealList : dealsController.dealList;
-      
+
                   if (listToShow.isEmpty) {
                     return const Center(child: Text("No deals available"));
                   }
-      
+
                   return NotificationListener<ScrollNotification>(
                     onNotification: (scrollInfo) {
                       if (!isSearching && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !dealsController.isDealLoadMore.value) {
@@ -87,52 +87,15 @@ class InfExploreDealsScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         if (index < listToShow.length) {
                           final deal = listToShow[index];
-                          final order = ['IG', 'TT', 'FB', 'YT'];
-                          final deliverablesText = deal.deliverables.map((d) => {'platform': getPlatformShort(d.platform ?? ''), 'text': "${d.quantity} ${getPlatformShort(d.platform ?? '')} ${d.contentType}"})
-                              .where((e) => e['platform']!.isNotEmpty).toList()..sort((a, b) => order.indexOf(a['platform']!).compareTo(order.indexOf(b['platform']!)));
-                          final text = deliverablesText.map((e) => e['text']).join(', ');
-      
-                          // payment text
-                          String paymentText = "";
-                          if (deal.compensation.directPayment) {
-                            paymentText = "\$${deal.compensation.paymentAmount ?? '0'} via Direct Payment";
-                          }
-                          else if (deal.compensation.nightCredits) {paymentText = "${deal.compensation.numberOfNights} night credits";}
-      
-                          // duration text
-                          final inDate = "${deal.inTimeAndDate.day}-${deal.inTimeAndDate.month}-${deal.inTimeAndDate.year}";
-                          final outDate = "${deal.outTimeAndDate.day}-${deal.outTimeAndDate.month}-${deal.outTimeAndDate.year}";
-                          final durationText = "$inDate – $outDate";
-      
-                          // progress text (optional)
-                          final progressText = "Tasks info here";
-      
-                          // return CustomDealsContainer(
-                          //   profileImg: deal.title.images.isNotEmpty ?ApiUrl.baseUrl + deal.title.images.first : AppConstants.profileImage2,
-                          //   userImg:  deal.userId.image.isNotEmpty ? ApiUrl.baseUrl+deal.userId.image : AppConstants.profileImage2,
-                          //   fullName: deal.title.title,
-                          //   userName: "${deal.userId.name}",
-                          //   status: deal.status,
-                          //   deliverablesText: text,
-                          //   paymentText: paymentText,
-                          //   progressText: progressText,
-                          //   durationText: durationText,
-
-                          //   messageButton: () {
-                          //     // message action
-                          //   },
-                          // );
-
                           return CampaignCard(
                             bannerImage: deal.title.images.isNotEmpty ?ApiUrl.baseUrl + deal.title.images.first : "",
                             profileImage: deal.userId.image.isNotEmpty ? ApiUrl.baseUrl+deal.userId.image : AppConstants.profileImage2,
                             hostName: deal.userId.name,
-                            //isVerified: true,
-                            // DealName: deal.title.title,
+                            userName: deal.userId.username,
                             rewardTitle: "${deal.compensation.numberOfNights.toString()} Night Credits",
                             campaignTitle: deal.title.title,
                             location: deal.title.location,
-                              onViewDetails: () {
+                            onViewDetails: () {
                                 Get.toNamed(AppRoutes.hostDealOverviewScreen,
                                   arguments: {
                                     'dealId': deal.id,
@@ -144,13 +107,22 @@ class InfExploreDealsScreen extends StatelessWidget {
                             onPrimaryAction: () {
                               print("Apply Now");
                             },
+                            messageButton: (){
+                              Get.toNamed(AppRoutes.chatScreen,
+                                arguments: {
+                                  'conversationId':"", //conversation.id ?? " ",
+                                  'userName': deal.userId.name,
+                                  'userImage':ApiUrl.baseUrl+deal.userId.image,
+                                  'receiverId': deal.userId.id,
+                                },
+                              );
+                            },
                           );
 
                         }
                         else {
                           // pagination loader
-                          return const Padding(
-                            padding: EdgeInsets.all(12),
+                          return const Padding(padding: EdgeInsets.all(12),
                             child: Center(child: CustomLoader()),
                           );
                         }
@@ -159,8 +131,8 @@ class InfExploreDealsScreen extends StatelessWidget {
                   );
                 }),
               ),
-      
-      
+
+
             ],
           ),
         ),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:samir_flutter_app/view/screens/Influencer_part/inf_home_screen/widgets/custom_inf_home_card.dart';
 
-import '../../../../core/app_routes/app_routes.dart';
-import '../../../../utils/app_colors/app_colors.dart';
-import '../../../../utils/app_icons/app_icons.dart';
-import '../../../components/custom_image/custom_image.dart';
-import '../../../components/custom_nav_bar/vendor_navbar.dart';
-import '../../../components/custom_text/custom_text.dart';
+import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../utils/app_icons/app_icons.dart';
+import '../../../../components/custom_image/custom_image.dart';
+import '../../../../components/custom_nav_bar/vendor_navbar.dart';
+import '../../../../components/custom_text/custom_text.dart';
 
 class InfHomeScreen extends StatelessWidget {
   const InfHomeScreen({super.key});
