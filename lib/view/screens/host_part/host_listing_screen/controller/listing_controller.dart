@@ -231,6 +231,43 @@ class ListingController extends GetxController {
   final rxSingleListingStatus = Status.loading.obs;
   void setSingleListingStatus(Status status) => rxSingleListingStatus.value = status;
 
+  // Future<void> singleGetListing({required String id}) async {
+  //   setSingleListingStatus(Status.loading);
+  //   singleListingList.clear();
+  //
+  //   try {
+  //     final response =
+  //     await ApiClient.getData(ApiUrl.getSingleListing(id: id));
+  //
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+  //
+  //       final List listingsJson = jsonResponse['data']['listings'];
+  //       final ListingItem listing = ListingItem.fromJson(listingsJson.first);
+  //       //==================== update variable setup ==================
+  //       updateTitleController.value.text = listing.title;
+  //       updateTitleDescriptionController.value.text = listing.description;
+  //       updateLocationController.value.text = listing.location;
+  //       updateAirbnbController.value.text = listing.addAirbnbLink;
+  //       updateSelectedPropertyType.value = listing.propertyType;
+  //       updateAmenities.updateAll((key, value) => listing.amenities[key] ?? false,);
+  //       updateCustomAmenities.assignAll(listing.customAmenities);
+  //       updateImageUrls.assignAll(listing.images);
+  //       //================= end update ======================
+  //       singleListingList.assignAll([listing]);
+  //
+  //       setSingleListingStatus(Status.completed);
+  //     } else {
+  //       setSingleListingStatus(Status.error);
+  //       showCustomSnackBar("Failed to load listing", isError: true);
+  //     }
+  //   } catch (e) {
+  //     setSingleListingStatus(Status.error);
+  //     showCustomSnackBar("Error: ${e.toString()}", isError: true);
+  //   }
+  // }
+
+// ================= Single Get Listing =================
   Future<void> singleGetListing({required String id}) async {
     setSingleListingStatus(Status.loading);
     singleListingList.clear();
@@ -245,25 +282,148 @@ class ListingController extends GetxController {
             ? jsonDecode(response.body)
             : Map<String, dynamic>.from(response.body);
 
-        // 👇 API structure অনুযায়ী adjust করো
-        final List listingsJson = jsonResponse['data']['listing'];
+        final List listings = jsonResponse['data']['listing'];
 
-        singleListingList.assignAll(
-          listingsJson
-              .map((e) => ListingItem.fromJson(e))
-              .toList(),
+        // 🔥 FIX JSON FIRST
+        final Map<String, dynamic> fixedJson =
+        Map<String, dynamic>.from(listings.first);
+
+        fixedJson['images'] = (fixedJson['images'] as List? ?? [])
+            .map((img) => img.toString().startsWith('http')
+            ? img.toString()
+            : ApiUrl.baseUrl + img.toString())
+            .toList();
+
+        // ✅ Create model ONCE
+        final ListingItem listing = ListingItem.fromJson(fixedJson);
+
+        // Prefill update controllers
+        updateTitleController.value.text = listing.title;
+        updateTitleDescriptionController.value.text = listing.description;
+        updateLocationController.value.text = listing.location;
+        updateAirbnbController.value.text = listing.addAirbnbLink;
+        updateSelectedPropertyType.value = listing.propertyType;
+
+        updateAmenities.updateAll(
+              (key, value) => listing.amenities[key] ?? false,
         );
+
+        updateCustomAmenities.assignAll(listing.customAmenities);
+        updateImageUrls.assignAll(listing.images);
+
+        singleListingList.assignAll([listing]);
 
         setSingleListingStatus(Status.completed);
       } else {
         setSingleListingStatus(Status.error);
-        showCustomSnackBar("Failed to load listing", isError: true);
       }
     } catch (e) {
       setSingleListingStatus(Status.error);
-      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+      debugPrint("singleGetListing error: $e");
     }
   }
+ ///////////// ========== update ==================
+  // ================== UPDATE CONTROLLERS ==================
+  Rx<TextEditingController> updateTitleController =
+      TextEditingController().obs;
+  Rx<TextEditingController> updateTitleDescriptionController =
+      TextEditingController().obs;
+  Rx<TextEditingController> updateLocationController =
+      TextEditingController().obs;
+  Rx<TextEditingController> updateAirbnbController =
+      TextEditingController().obs;
 
 
+  var updateSelectedPropertyType = ''.obs;
+
+
+  RxMap<String, bool> updateAmenities = <String, bool>{
+    "wifi": false,
+    "parking": false,
+    "airConditioning": false,
+    "pool": false,
+    "tv": false,
+    "kitchen": false,
+    "petFriendly": false,
+    "gym": false,
+    "hotTub": false,
+  }.obs;
+
+
+  RxList<String> updateCustomAmenities = <String>[].obs;
+  RxList<String> updateImageUrls = <String>[].obs;
+  RxList<File> updateSelectedImages = <File>[].obs;
+
+
+  final isUpdateListingLoading = false.obs;
+
+  // ================== UPDATE LISTING ==================
+  Future<void> updateListing({required String listingId}) async {
+    isUpdateListingLoading.value = true;
+    refresh();
+
+    try {
+// ---- BODY (ALWAYS MULTIPART) ----
+      final Map<String, String> body = {
+        "title": updateTitleController.value.text.trim(),
+        "description": updateTitleDescriptionController.value.text.trim(),
+        "location": updateLocationController.value.text.trim(),
+        "addAirbnbLink": updateAirbnbController.value.text.trim(),
+        "propertyType": updateSelectedPropertyType.value,
+
+
+// IMPORTANT
+        "amenities": jsonEncode(updateAmenities),
+        "customAmenities": updateCustomAmenities.join(","),
+
+
+// old images if backend uses them
+        //"existingImages": jsonEncode(updateImageUrls),
+      };
+
+
+      final response = await ApiClient.putMultipartData(
+        ApiUrl.updateListing(id: listingId),
+        body,
+        multipartBody: updateSelectedImages
+            .map((file) => MultipartBody("images", file))
+            .toList(),
+      );
+
+
+      isUpdateListingLoading.value = false;
+      refresh();
+
+
+      final Map<String, dynamic> jsonResponse =
+      response.body is String
+          ? jsonDecode(response.body)
+          : Map<String, dynamic>.from(response.body);
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(
+          jsonResponse['message']?.toString() ??
+              "Listing updated successfully!",
+          isError: false,
+        );
+
+
+        Get.back(result: true);
+      } else {
+        showCustomSnackBar(
+          jsonResponse['message']?.toString() ?? "Update failed",
+          isError: true,
+        );
+      }
+    } catch (e) {
+      isUpdateListingLoading.value = false;
+      refresh();
+      debugPrint("Update listing error: $e");
+      showCustomSnackBar(
+        "An error occurred. Please try again.",
+        isError: true,
+      );
+    }
+  }
 }

@@ -89,13 +89,12 @@ class CampaignCard extends StatelessWidget {
                           text: hostName ?? "",
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          bottom: 6,
                         ),
                         CustomText(
                           text: userName ?? "",
-                          fontSize: 16,
+                          fontSize: 12,
+                          color: Colors.grey,
                           fontWeight: FontWeight.w500,
-                          bottom: 6,
                         ),
 
                         // Verified Badge
@@ -166,6 +165,7 @@ class CampaignCard extends StatelessWidget {
                   color: AppColors.textClr,
                   bottom: 12,
                 ),
+                //view details
                 Row(
                   children: [
                     Flexible(
@@ -174,6 +174,7 @@ class CampaignCard extends StatelessWidget {
                         height: 34.h,
                         onTap: onViewDetails,
                         title: "View Details",
+                        fillColor: AppColors.primary2,
                         borderRadius: 8,
                         fontSize: 12,
                       ),
@@ -189,7 +190,7 @@ class CampaignCard extends StatelessWidget {
                         fontSize: 12,
                         fillColor: AppColors.white,
                         isBorder: true,
-                        borderColor: AppColors.textClr.withValues(alpha: 0.2),
+                        borderColor: AppColors.primary2.withValues(alpha: 0.5),
                         borderWidth: 1,
                         textColor: AppColors.textClr,
                       ),
@@ -209,8 +210,6 @@ class CampaignCard extends StatelessWidget {
                       borderWidth: 1,
                       textColor: AppColors.white,
                     ),
-
-
 
               ],
             ),

@@ -204,15 +204,7 @@ class InfProfileScreen extends StatelessWidget {
                           );
                         }
                     ),
-                   //payment Setting
-                    CustomProfileCard(
-                      nameTitle: "Payment Settings",
-                      icons: AppIcons.infpaymentIcon,
-                      color: AppColors.primary2,
-                      onTap: (){
-                        // Get.toNamed(AppRoutes.hostPeferralsScreen);
-                      },
-                    ),
+
                     //Log Out
                     CustomProfileCard(
                         nameTitle: "Log Out",

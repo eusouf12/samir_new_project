@@ -75,8 +75,7 @@ class HostListingScreen extends StatelessWidget {
 
                 return ListView.builder(
                   controller: isSearching ? null : scrollController,
-                  itemCount: listToShow.length +
-                      (!isSearching && controller.isLoadMoreLoading.value ? 1 : 0),
+                  itemCount: listToShow.length + (!isSearching && controller.isLoadMoreLoading.value ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index < listToShow.length) {
                       final listing = listToShow[index];
@@ -88,6 +87,9 @@ class HostListingScreen extends StatelessWidget {
 
                           final uri = Uri.parse(link.startsWith('http') ? link : 'https://$link',);
                           await launchUrl(uri, mode: LaunchMode.externalApplication,);
+                        },
+                        onTapEdit: (){
+                          Get.toNamed(AppRoutes.hostUpdateListingScreen,arguments: listing.id);
                         },
                       );
                     } else {

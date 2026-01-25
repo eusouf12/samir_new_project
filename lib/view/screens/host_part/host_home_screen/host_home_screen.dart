@@ -66,7 +66,7 @@ class HostHomeScreen extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                         CustomText(
-                          text: "Here's your overview today.",
+                          text: "Here's your overview .",
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           color: AppColors.textClr,
@@ -136,10 +136,10 @@ class HostHomeScreen extends StatelessWidget {
                         onTap: () {
                           Get.toNamed(AppRoutes.hostCollaborationScreen);
                         },
-                        title: "Collaboration\n Requests",
+                        title: "Total\n Collaboration",
                         color: AppColors.white,
                         textColor: AppColors.black,
-                        number: "${userData.value?.collaborationsTotal}",
+                        number: "${userData.value?.collaborationStats?.total}",
                       ),
                     ],
                   ),

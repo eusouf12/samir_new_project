@@ -33,6 +33,7 @@ class ApiUrl {
    static const String createCollaboration = "/api/v1/collaboration/create-collaboration";
    static String getListing({required String page})=> "/api/v1/listing/my-listings?currentPage=$page&limit=3";
    static String getSingleListing({required String id})=> "/api/v1/listing/single-listing/$id";
+   static String updateListing({required String id})=> "/api/v1/listing/update-listing/$id";
    static String getDeals({required String page})=> "/api/v1/deal/my-all-deals?currentPage=$page&limit=10";
    static String getAllDeals({required String page})=> "/api/v1/deal/get-all-deals?currentPage=$page&limit=10";
    static String getSingleDeal({required String id})=> "/api/v1/deal/get-single-deal/$id";
@@ -46,6 +47,7 @@ class ApiUrl {
    static  String  singleUserInfo({required String id})=>"/api/v1/user/single-user/$id";
    static  String  myCollaborations({required String page})=>"/api/v1/collaboration/get-my-all-collaborations?page=$page&limit=10";
    static  String  myCollaborationsFilter({required String filter,required String page})=>"/api/v1/collaboration/get-my-all-collaborations?status=$filter&page=$page&limit=10";
+
    static String singleInfluencerCollaborations({String? filter, required String id,}) {
     if (filter != null && filter.isNotEmpty) {
      return "/api/v1/collaboration/get-collaboration-user/$id?status=$filter";

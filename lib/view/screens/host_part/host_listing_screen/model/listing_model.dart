@@ -100,16 +100,24 @@ class ListingItem {
 
   /// 🔥 FIX for backend stringified array issue
   static List<String> _parseCustomAmenities(dynamic data) {
-    if (data == null || data.isEmpty) return [];
+    if (data == null) return [];
 
-    try {
-      if (data.first is String && data.first.toString().startsWith('[')) {
-        return List<String>.from(jsonDecode(data.first));
-      }
-      return List<String>.from(data);
-    } catch (_) {
-      return [];
+    // Already a proper List<String>
+    if (data is List) {
+      return data.map((e) => e.toString()).toList();
     }
+
+    // Stringified JSON array (legacy backend)
+    if (data is String) {
+      try {
+        final decoded = jsonDecode(data);
+        if (decoded is List) {
+          return decoded.map((e) => e.toString()).toList();
+        }
+      } catch (_) {}
+    }
+
+    return [];
   }
 }
 

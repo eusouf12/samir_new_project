@@ -35,7 +35,7 @@ class InfExploreDealsScreen extends StatelessWidget {
               // search field
               CustomTextField(
                 isDens: true,
-                fieldBorderColor: AppColors.primary2,
+                fieldBorderColor: AppColors.primary2.withAlpha(80),
                 fillColor: const Color(0xffF5F5F5),
                 hintText: "Explore Deals by Name",
                 hintStyle: TextStyle(color: AppColors.textClr),
@@ -63,8 +63,7 @@ class InfExploreDealsScreen extends StatelessWidget {
                     return const Center(child: CustomLoader());
                   }
 
-                  if (isSearching &&
-                      dealsController.rxSearchDealStatus.value == Status.loading) {
+                  if (isSearching && dealsController.rxSearchDealStatus.value == Status.loading) {
                     return const Center(child: CustomLoader());
                   }
 
@@ -91,7 +90,7 @@ class InfExploreDealsScreen extends StatelessWidget {
                             bannerImage: deal.title.images.isNotEmpty ?ApiUrl.baseUrl + deal.title.images.first : "",
                             profileImage: deal.userId.image.isNotEmpty ? ApiUrl.baseUrl+deal.userId.image : AppConstants.profileImage2,
                             hostName: deal.userId.name,
-                            userName: deal.userId.username,
+                            userName: deal.userId.userName,
                             rewardTitle: "${deal.compensation.numberOfNights.toString()} Night Credits",
                             campaignTitle: deal.title.title,
                             location: deal.title.location,

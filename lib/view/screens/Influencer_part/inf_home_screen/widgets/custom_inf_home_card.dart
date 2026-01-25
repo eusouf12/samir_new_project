@@ -15,6 +15,7 @@ class CustomInfHomeCard extends StatelessWidget {
     return  GestureDetector(
       onTap: onTap,
       child: Container(
+        height: 100,
         padding: EdgeInsets.all(10),
         width: MediaQuery.of(context).size.width /2.3,
         decoration: BoxDecoration(
@@ -33,10 +34,10 @@ class CustomInfHomeCard extends StatelessWidget {
             CustomImage(imageSrc:image?? AppIcons.starIcon),
             SizedBox(width: 8,),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomText(text: title?? "14", fontSize: 24, fontWeight: FontWeight.w700),
-                CustomText(text: subtitle?? "Night Credits", fontSize: 14, fontWeight: FontWeight.w500),
+                CustomText(text: title?? "14", fontSize: 24, fontWeight: FontWeight.w700,textAlign: TextAlign.center),
+                CustomText(text: subtitle?? "Night Credits", fontSize: 14, fontWeight: FontWeight.w500,textAlign: TextAlign.center,),
               ],
             ),
           ],

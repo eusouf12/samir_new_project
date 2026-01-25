@@ -30,6 +30,7 @@ import '../../view/screens/host_part/host_home_screen/host_redeem_request_screen
 import '../../view/screens/host_part/host_deal_screen/views/create_deals/host_review_confirm_screen.dart';
 import '../../view/screens/host_part/host_listing_screen/host_add_new_listing_screen.dart';
 import '../../view/screens/host_part/host_listing_screen/host_listing_screen.dart';
+import '../../view/screens/host_part/host_listing_screen/host_update_listing_screen.dart';
 import '../../view/screens/host_part/host_messages_list_screen/view/chat_inbox_screen.dart';
 import '../../view/screens/host_part/host_messages_list_screen/view/host_messages_list_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_about_screen.dart';
@@ -78,6 +79,7 @@ class AppRoutes {
  static const String hostDealsScreen = "/HostDealsScreen";
  static const String hostDealOverviewScreen = "/HostDealOverviewScreen";
  static const String hostListingScreen = "/HostListingScreen";
+ static const String hostUpdateListingScreen = "/HostUpdateListingScreen";
  static const String hostAddNewListingScreen = "/HostAddNewListingScreen";
  static const String hostActiveInflue = "/HostActiveInflue";
  static const String hostActiveViewProfileScreen = "/HostActiveViewProfileScreen";
@@ -141,6 +143,7 @@ class AppRoutes {
     GetPage(name: hostDealsScreen, page: () => HostDealsScreen()),
     GetPage(name: hostDealOverviewScreen, page: () => HostDealOverviewScreen()),
     GetPage(name: hostListingScreen, page: () => HostListingScreen()),
+    GetPage(name: hostUpdateListingScreen, page: () => HostUpdateListingScreen()),
     GetPage(name: hostAddNewListingScreen, page: () => HostAddNewListingScreen()),
     GetPage(name: hostActiveInflue, page: () => HostActiveInflue()),
     GetPage(name: hostActiveViewProfileScreen, page: () => HostActiveViewProfileScreen()),

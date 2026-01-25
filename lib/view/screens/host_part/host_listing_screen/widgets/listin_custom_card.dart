@@ -5,6 +5,8 @@ import 'package:samir_flutter_app/service/api_url.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../../../../../utils/app_icons/app_icons.dart';
+import '../../../../components/custom_button/custom_button.dart';
+import '../../../../components/custom_button/custom_button_two.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
@@ -14,11 +16,15 @@ import '../model/listing_model.dart';
 class ListingCard extends StatelessWidget {
   final ListingItem listing;
   final VoidCallback? onTapAirbnb;
+  final VoidCallback? onTapEdit;
+  final VoidCallback? onTapDelete;
 
    ListingCard({
     Key? key,
     required this.listing,
     this.onTapAirbnb,
+    this.onTapEdit,
+    this.onTapDelete,
   }) : super(key: key);
 
   @override
@@ -62,33 +68,6 @@ class ListingCard extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                     ),
-                    // listing.status == "Pending"
-                    //     ? Container(
-                    //     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    //     decoration: BoxDecoration(
-                    //     color: AppColors.primary,
-                    //     borderRadius: BorderRadius.circular(30),
-                    //   ),
-                    //   child: const CustomText(
-                    //     text: "pending",
-                    //     fontSize: 12,
-                    //     fontWeight: FontWeight.w500,
-                    //     color: AppColors.white,
-                    //   ),
-                    // )
-                    //     :Container(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    //   decoration: BoxDecoration(
-                    //     color: const Color(0xffFFEDD5),
-                    //     borderRadius: BorderRadius.circular(30),
-                    //   ),
-                    //   child: const CustomText(
-                    //     text: "Verified",
-                    //     fontSize: 12,
-                    //     fontWeight: FontWeight.w500,
-                    //     color: AppColors.red,
-                    //   ),
-                    // ),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -212,6 +191,38 @@ class ListingCard extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: CustomButton(
+                        height: 34.h,
+                        onTap: onTapEdit,
+                        title: "Edit",
+                        fillColor: AppColors.primary,
+                        borderRadius: 8,
+                        fontSize: 12,
+                      ),
+                    ),
+                    SizedBox(width: 12,),
+                    Flexible(
+                      flex: 1,
+                      child: CustomButtonTwo(
+                        height: 34.h,
+                        onTap: onTapDelete,
+                        title: "Delete",
+                        borderRadius: 8,
+                        fontSize: 12,
+                        fillColor: AppColors.white,
+                        isBorder: true,
+                        borderColor: AppColors.primary.withValues(alpha: 0.5),
+                        borderWidth: 1,
+                        textColor: AppColors.textClr,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
