@@ -381,32 +381,17 @@ class DealsController extends GetxController {
 
         if (deals.isNotEmpty) {
           final deal = deals.first;
-
-
-          //1️⃣ Night stay
           updateNights.value = deal.compensation.numberOfNights;
-
-
-          // 2️⃣ Payment
-          updateDirectPayment.value =
-              deal.compensation.directPayment;
-
-
-          updatePaymentAmount.value = double.tryParse(
-            deal.compensation.paymentAmount.toString(),
-          ) ??
-              0.0;
-
-
-          // 3️⃣ Platform followers (UNIQUE)
+          updateGuest.value = deal.guestCount;
+          updateNightCredits.value = deal.compensation.nightCredits;
+          updateDirectPayment.value = deal.compensation.directPayment;
+          updatePaymentAmount.value = double.tryParse(deal.compensation.paymentAmount.toString(),) ?? 0.0;
           updatePlatformFollowers.clear();
           for (final d in deal.deliverables) {
             if (d.platformFollowers.isNotEmpty) {
               updatePlatformFollowers.addAll(d.platformFollowers);
             }
           }
-
-          ///4️⃣ Deliverables quantity
           updateDeliverableQty.clear();
           for (final d in deal.deliverables) {
             final key = "${d.platform}_${d.contentType}";
@@ -427,8 +412,10 @@ class DealsController extends GetxController {
 
 
   // ================== UPDATE LISTING ==================
-  RxInt updateNights = 1.obs;
+  RxBool updateNightCredits = false.obs;
   RxBool updateDirectPayment = false.obs;
+  RxInt updateNights = 1.obs;
+  RxInt updateGuest = 1.obs;
   RxDouble updatePaymentAmount = 0.0.obs;
   RxMap<String, String> updatePlatformFollowers = <String, String>{}.obs;
   RxMap<String, int> updateDeliverableQty = <String, int>{}.obs;
@@ -438,43 +425,28 @@ class DealsController extends GetxController {
     isUpdateListingLoading.value = true;
     refresh();
 
-
     try {
-      /// =============================
-      /// 🔥 BUILD UPDATED DELIVERABLES
-      /// =============================
       final List<Map<String, dynamic>> updatedDeliverables = [];
-
-
       final deal = singleDealList.first;
-
-
-      for (final d in deal.deliverables) {
-        final key = "${d.platform}_${d.contentType}";
-
+      for (final d in deal.deliverables) {final key = "${d.platform}_${d.contentType}";
 
         updatedDeliverables.add({
           "platform": d.platform,
           "contentType": d.contentType,
           "quantity": updateDeliverableQty[key] ?? d.quantity,
-          "platformFollowers": updatePlatformFollowers.containsKey(d.platform)
-              ? {d.platform: updatePlatformFollowers[d.platform]}
-              : {},
+          "platformFollowers": updatePlatformFollowers.containsKey(d.platform) ? {d.platform: updatePlatformFollowers[d.platform]} : {},
         });
       }
-
-
-      /// =============================
-      /// 🔥 FINAL PATCH BODY
-      /// =============================
+      // body
       final Map<String, dynamic> body = {
         "compensation": {
-          "nightCredits": updateNights.value > 0,
-          "numberOfNights": updateNights.value,
+          "nightCredits": updateNightCredits.value,
           "directPayment": updateDirectPayment.value,
+          "numberOfNights": updateNights.value,
           "paymentAmount": updatePaymentAmount.value,
         },
         "deliverables": updatedDeliverables,
+        "guestCount": updateGuest.value,
       };
 
 
@@ -482,44 +454,26 @@ class DealsController extends GetxController {
 
 
       final response = await ApiClient.patchData(ApiUrl.updateDeal(id: dealId), jsonEncode(body),);
-
-
       isUpdateListingLoading.value = false;
       refresh();
-
-
       final Map<String, dynamic> jsonResponse =
-      response.body is String
-          ? jsonDecode(response.body)
-          : Map<String, dynamic>.from(response.body);
-
+      response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        showCustomSnackBar(
-          jsonResponse['message'] ?? "Deal updated successfully",
-          isError: false,
-        );
+        showCustomSnackBar(jsonResponse['message'] ?? "Deal updated successfully", isError: false,);
 
-
-// 🔄 refresh single deal
         await singleGetDeal(id: dealId);
-
-
+        getDeals();
         Get.back();
-      } else {
-        showCustomSnackBar(
-          jsonResponse['message'] ?? "Update failed",
-          isError: true,
-        );
+      }
+      else {
+        showCustomSnackBar(jsonResponse['message'] ?? "Update failed", isError: true,);
       }
     } catch (e) {
       isUpdateListingLoading.value = false;
       refresh();
       debugPrint("Update deal error: $e");
-      showCustomSnackBar(
-        "An error occurred. Please try again.",
-        isError: true,
-      );
+      showCustomSnackBar("An error occurred. Please try again.", isError: true);
     }
   }
 

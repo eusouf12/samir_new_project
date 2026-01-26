@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:samir_flutter_app/core/app_routes/app_routes.dart';
 import 'package:samir_flutter_app/utils/app_const/app_const.dart';
 import 'package:samir_flutter_app/utils/app_icons/app_icons.dart';
 import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
@@ -309,7 +310,7 @@ class HostDealOverviewScreen extends StatelessWidget {
                         flex: 1,
                         child: CustomButton(
                           onTap: (){
-
+                            Get.toNamed(AppRoutes.hostUpdateDealScreen,arguments: dealId);
                           },
                           height: 34.h,
                           title: "Edit",
