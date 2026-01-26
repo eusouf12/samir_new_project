@@ -81,6 +81,7 @@ class HostListingScreen extends StatelessWidget {
                       final listing = listToShow[index];
                       return ListingCard(
                         listing: listing,
+                        btn: true,
                         onTapAirbnb: () async {
                           final link = listing.addAirbnbLink;
                           if (link.isEmpty) return;
@@ -90,6 +91,9 @@ class HostListingScreen extends StatelessWidget {
                         },
                         onTapEdit: (){
                           Get.toNamed(AppRoutes.hostUpdateListingScreen,arguments: listing.id);
+                        },
+                        onTapDelete: (){
+                          controller.deleteListing(id: listing.id);
                         },
                       );
                     } else {

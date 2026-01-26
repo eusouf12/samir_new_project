@@ -1,16 +1,18 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
+import '../../collaboration_screen/controller/collabration_controller.dart';
 import '../../host_listing_screen/model/listing_model.dart';
 import '../deal_model/deal_model.dart';
+
+final CollaborationController collaborationController = Get.put(CollaborationController());
 
 class DealsController extends GetxController {
   RxList<ListingItem> listingList = <ListingItem>[].obs;
@@ -216,15 +218,15 @@ class DealsController extends GetxController {
 
     try {
       isCreatingDeal.value = true;
-      final response = await ApiClient.postData(
-        ApiUrl.createDeal,
-        jsonEncode(body),
-      );
+      final response = await ApiClient.postData(ApiUrl.createDeal, jsonEncode(body),);
 
       var jsonResponse = response.body is String ? jsonDecode(response.body) : response.body;
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         showCustomSnackBar(jsonResponse['message']?.toString() ?? "Deal created successfully", isError: false,);
+        String id = await SharePrefsHelper.getString(AppConstants.userId);
+        collaborationController.getSingleUser(userId: id);
+        await getDeals(loadMore: false);
         Get.toNamed(AppRoutes.hostHomeScreen);
       } else {
         showCustomSnackBar(
@@ -360,6 +362,82 @@ class DealsController extends GetxController {
     } catch (e) {
       setSingleDealStatus(Status.error);
       showCustomSnackBar("Error: ${e.toString()}", isError: true);
+    }
+  }
+
+
+  // ================== UPDATE LISTING ==================
+
+//   Future<void> updateListing({required String listingId}) async {
+//     isUpdateListingLoading.value = true;
+//     refresh();
+//
+//     try {
+//       final Map<String, String> body = {
+//         "title": updateTitleController.value.text.trim(),
+//         "description": updateTitleDescriptionController.value.text.trim(),
+//         "location": updateLocationController.value.text.trim(),
+//         "addAirbnbLink": updateAirbnbController.value.text.trim(),
+//         "propertyType": updateSelectedPropertyType.value,
+//         "amenities": jsonEncode(updateAmenities),
+//         "customAmenities": updateCustomAmenities.join(","),
+//
+//
+// // old images if backend uses them
+//         //"existingImages": jsonEncode(updateImageUrls),
+//       };
+//
+//
+//       final response = await ApiClient.putMultipartData(ApiUrl.updateListing(id: listingId), body,
+//         multipartBody: updateSelectedImages.map((file) => MultipartBody("images", file)).toList(),
+//       );
+//       isUpdateListingLoading.value = false;
+//       refresh();
+//
+//       final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+//
+//
+//       if (response.statusCode == 200 || response.statusCode == 201) {
+//         showCustomSnackBar(jsonResponse['message']?.toString() ?? "Listing updated successfully!", isError: false,);
+//
+//         await getListings(loadMore: false);
+//         refresh();
+//         Get.back();
+//       } else {
+//         showCustomSnackBar(jsonResponse['message']?.toString() ?? "Update failed", isError: true,);
+//       }
+//     } catch (e) {
+//       isUpdateListingLoading.value = false;
+//       refresh();
+//       debugPrint("Update listing error: $e");
+//       showCustomSnackBar("An error occurred. Please try again.", isError: true,);
+//     }
+//   }
+
+  // ============= Delete Listing ==================
+
+  Future<void> deleteDeal({required String id}) async {
+    try {
+
+      final response = await ApiClient.deleteData(ApiUrl.deleteDeal(id: id),);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint("Deal deleted successfully");
+
+        showCustomSnackBar("Listing Deal successfully!", isError: false,);
+        await getDeals(loadMore: false);
+        String id = await SharePrefsHelper.getString(AppConstants.userId);
+        collaborationController.getSingleUser(userId: id);
+        refresh();
+        Get.back();
+
+      } else {
+        debugPrint("Failed to Delete Deal");
+        showCustomSnackBar("Failed to Delete Deal", isError: true);
+      }
+    } catch (e) {
+      debugPrint("Error Deleting Deal: $e");
+      showCustomSnackBar("Something went wrong!", isError: true);
     }
   }
 

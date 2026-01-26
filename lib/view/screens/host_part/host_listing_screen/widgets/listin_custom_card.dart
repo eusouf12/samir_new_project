@@ -15,6 +15,7 @@ import '../model/listing_model.dart';
 
 class ListingCard extends StatelessWidget {
   final ListingItem listing;
+  final bool btn;
   final VoidCallback? onTapAirbnb;
   final VoidCallback? onTapEdit;
   final VoidCallback? onTapDelete;
@@ -24,11 +25,13 @@ class ListingCard extends StatelessWidget {
     required this.listing,
     this.onTapAirbnb,
     this.onTapEdit,
+    required this.btn,
     this.onTapDelete,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("ApiUrl.baseUrl + listing.images.first================ ${ApiUrl.baseUrl + listing.images.first}");
     return Container(
       width: MediaQuery.sizeOf(context).width,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -193,7 +196,8 @@ class ListingCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 8),
-                Row(
+                btn == true
+                    ? Row(
                   children: [
                     Flexible(
                       flex: 1,
@@ -223,7 +227,8 @@ class ListingCard extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
+                )
+                    : SizedBox.shrink(),
               ],
             ),
           ),

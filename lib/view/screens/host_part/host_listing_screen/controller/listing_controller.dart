@@ -2,16 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
-import '../../host_profile_screen/controller/host_profile_controller.dart';
+import '../../collaboration_screen/controller/collabration_controller.dart';
 import '../model/listing_model.dart';
 
 class ListingController extends GetxController {
-
-  final HostProfileController hostProfileController = Get.put(HostProfileController());
+  final CollaborationController collaborationController = Get.put(CollaborationController());
 
   RxList<File> selectedImages = <File>[].obs;
   void addImage(File file) {
@@ -103,8 +103,9 @@ class ListingController extends GetxController {
         refresh();
         showCustomSnackBar(jsonResponse["message"] ?? "Listing created successfully", isError: false,);
         clearFormData();
+        String id = await SharePrefsHelper.getString(AppConstants.userId);
+        collaborationController.getSingleUser(userId: id);
         await getListings(loadMore: false);
-        hostProfileController.getUserProfile();
         refresh();
         Get.back();
       } else {
@@ -187,6 +188,7 @@ class ListingController extends GetxController {
       isLoadMoreLoading.value = true;
       currentPage++;
     } else {
+      listingList.clear();
       isListingLoading.value = true;
       setListingStatus(Status.loading);
       currentPage = 1;
@@ -273,30 +275,20 @@ class ListingController extends GetxController {
     singleListingList.clear();
 
     try {
-      final response =
-      await ApiClient.getData(ApiUrl.getSingleListing(id: id));
+      final response = await ApiClient.getData(ApiUrl.getSingleListing(id: id));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> jsonResponse =
-        response.body is String
-            ? jsonDecode(response.body)
-            : Map<String, dynamic>.from(response.body);
+        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
 
         final List listings = jsonResponse['data']['listing'];
+        final Map<String, dynamic> fixedJson = Map<String, dynamic>.from(listings.first);
 
-        // 🔥 FIX JSON FIRST
-        final Map<String, dynamic> fixedJson =
-        Map<String, dynamic>.from(listings.first);
-
-        fixedJson['images'] = (fixedJson['images'] as List? ?? [])
-            .map((img) => img.toString().startsWith('http')
+        fixedJson['images'] = (fixedJson['images'] as List? ?? []).map((img) => img.toString().startsWith('http')
             ? img.toString()
-            : ApiUrl.baseUrl + img.toString())
-            .toList();
+            :  img.toString()).toList();
 
-        // ✅ Create model ONCE
         final ListingItem listing = ListingItem.fromJson(fixedJson);
-
         // Prefill update controllers
         updateTitleController.value.text = listing.title;
         updateTitleDescriptionController.value.text = listing.description;
@@ -304,13 +296,9 @@ class ListingController extends GetxController {
         updateAirbnbController.value.text = listing.addAirbnbLink;
         updateSelectedPropertyType.value = listing.propertyType;
 
-        updateAmenities.updateAll(
-              (key, value) => listing.amenities[key] ?? false,
-        );
-
+        updateAmenities.updateAll((key, value) => listing.amenities[key] ?? false,);
         updateCustomAmenities.assignAll(listing.customAmenities);
         updateImageUrls.assignAll(listing.images);
-
         singleListingList.assignAll([listing]);
 
         setSingleListingStatus(Status.completed);
@@ -322,21 +310,13 @@ class ListingController extends GetxController {
       debugPrint("singleGetListing error: $e");
     }
   }
- ///////////// ========== update ==================
+
   // ================== UPDATE CONTROLLERS ==================
-  Rx<TextEditingController> updateTitleController =
-      TextEditingController().obs;
-  Rx<TextEditingController> updateTitleDescriptionController =
-      TextEditingController().obs;
-  Rx<TextEditingController> updateLocationController =
-      TextEditingController().obs;
-  Rx<TextEditingController> updateAirbnbController =
-      TextEditingController().obs;
-
-
+  Rx<TextEditingController> updateTitleController = TextEditingController().obs;
+  Rx<TextEditingController> updateTitleDescriptionController = TextEditingController().obs;
+  Rx<TextEditingController> updateLocationController = TextEditingController().obs;
+  Rx<TextEditingController> updateAirbnbController = TextEditingController().obs;
   var updateSelectedPropertyType = ''.obs;
-
-
   RxMap<String, bool> updateAmenities = <String, bool>{
     "wifi": false,
     "parking": false,
@@ -348,12 +328,9 @@ class ListingController extends GetxController {
     "gym": false,
     "hotTub": false,
   }.obs;
-
-
   RxList<String> updateCustomAmenities = <String>[].obs;
   RxList<String> updateImageUrls = <String>[].obs;
   RxList<File> updateSelectedImages = <File>[].obs;
-
 
   final isUpdateListingLoading = false.obs;
 
@@ -363,16 +340,12 @@ class ListingController extends GetxController {
     refresh();
 
     try {
-// ---- BODY (ALWAYS MULTIPART) ----
       final Map<String, String> body = {
         "title": updateTitleController.value.text.trim(),
         "description": updateTitleDescriptionController.value.text.trim(),
         "location": updateLocationController.value.text.trim(),
         "addAirbnbLink": updateAirbnbController.value.text.trim(),
         "propertyType": updateSelectedPropertyType.value,
-
-
-// IMPORTANT
         "amenities": jsonEncode(updateAmenities),
         "customAmenities": updateCustomAmenities.join(","),
 
@@ -382,48 +355,55 @@ class ListingController extends GetxController {
       };
 
 
-      final response = await ApiClient.putMultipartData(
-        ApiUrl.updateListing(id: listingId),
-        body,
-        multipartBody: updateSelectedImages
-            .map((file) => MultipartBody("images", file))
-            .toList(),
+      final response = await ApiClient.putMultipartData(ApiUrl.updateListing(id: listingId), body,
+        multipartBody: updateSelectedImages.map((file) => MultipartBody("images", file)).toList(),
       );
-
-
       isUpdateListingLoading.value = false;
       refresh();
 
-
-      final Map<String, dynamic> jsonResponse =
-      response.body is String
-          ? jsonDecode(response.body)
-          : Map<String, dynamic>.from(response.body);
+      final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
 
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        showCustomSnackBar(
-          jsonResponse['message']?.toString() ??
-              "Listing updated successfully!",
-          isError: false,
-        );
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Listing updated successfully!", isError: false,);
 
-
-        Get.back(result: true);
+        await getListings(loadMore: false);
+        refresh();
+        Get.back();
       } else {
-        showCustomSnackBar(
-          jsonResponse['message']?.toString() ?? "Update failed",
-          isError: true,
-        );
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Update failed", isError: true,);
       }
     } catch (e) {
       isUpdateListingLoading.value = false;
       refresh();
       debugPrint("Update listing error: $e");
-      showCustomSnackBar(
-        "An error occurred. Please try again.",
-        isError: true,
-      );
+      showCustomSnackBar("An error occurred. Please try again.", isError: true,);
+    }
+  }
+
+  // ============= Delete Listing ==================
+
+  Future<void> deleteListing({required String id}) async {
+    try {
+
+      final response = await ApiClient.deleteData(ApiUrl.deleteListing(id: id),);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint("Listing deleted successfully");
+
+        showCustomSnackBar("Listing deleted successfully!", isError: false,);
+        await getListings(loadMore: false);
+        String id = await SharePrefsHelper.getString(AppConstants.userId);
+        collaborationController.getSingleUser(userId: id);
+        refresh();
+
+      } else {
+        debugPrint("Failed to delete Listing");
+        showCustomSnackBar("Failed to delete Listing", isError: true);
+      }
+    } catch (e) {
+      debugPrint("Error deleting Listing: $e");
+      showCustomSnackBar("Something went wrong!", isError: true);
     }
   }
 }

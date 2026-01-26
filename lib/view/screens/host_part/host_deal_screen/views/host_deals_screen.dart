@@ -32,7 +32,7 @@ class HostDealsScreen extends StatelessWidget {
             CustomTextField(
               isDens: true,
               fillColor: const Color(0xffF5F5F5),
-              hintText: "Search deals by name or partner",
+              hintText: "Search deals by name ",
               hintStyle: TextStyle(color: AppColors.textClr),
               prefixIcon: Icon(Icons.search_rounded, size: 18, color: AppColors.textClr),
               onChanged: (value) {
@@ -55,19 +55,16 @@ class HostDealsScreen extends StatelessWidget {
                     dealsController.searchQuery.value.isNotEmpty;
 
                 // ========= Loader =========
-                if (!isSearching &&
-                    dealsController.rxDealStatus.value == Status.loading) {
+                if (!isSearching && dealsController.rxDealStatus.value == Status.loading) {
                   return const Center(child: CustomLoader());
                 }
 
-                if (isSearching &&
-                    dealsController.rxSearchDealStatus.value == Status.loading) {
+                if (isSearching && dealsController.rxSearchDealStatus.value == Status.loading) {
                   return const Center(child: CustomLoader());
                 }
 
                 // ========= Decide list =========
-                final listToShow =
-                isSearching ? dealsController.searchDealList : dealsController.dealList;
+                final listToShow = isSearching ? dealsController.searchDealList : dealsController.dealList;
 
                 if (listToShow.isEmpty) {
                   return const Center(child: Text("No deals available"));
@@ -75,10 +72,7 @@ class HostDealsScreen extends StatelessWidget {
 
                 return NotificationListener<ScrollNotification>(
                   onNotification: (scrollInfo) {
-                    if (!isSearching &&
-                        scrollInfo.metrics.pixels ==
-                            scrollInfo.metrics.maxScrollExtent &&
-                        !dealsController.isDealLoadMore.value) {
+                    if (!isSearching && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !dealsController.isDealLoadMore.value) {
                       dealsController.getDeals(loadMore: true);
                     }
                     return false;

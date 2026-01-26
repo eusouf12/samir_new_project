@@ -15,6 +15,7 @@ import 'package:samir_flutter_app/view/screens/host_part/host_listing_screen/con
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../components/custom_button/custom_button.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../host_listing_screen/widgets/listin_custom_card.dart';
@@ -71,6 +72,7 @@ class HostDealOverviewScreen extends StatelessWidget {
 
                    return ListingCard(
                       listing: listing,
+                      btn: false,
                       onTapAirbnb: () async {
                         final link = listing.addAirbnbLink;
                         if (link.isEmpty) return;
@@ -79,10 +81,7 @@ class HostDealOverviewScreen extends StatelessWidget {
                           link.startsWith('http') ? link : 'https://$link',
                         );
 
-                        await launchUrl(
-                          uri,
-                          mode: LaunchMode.externalApplication,
-                        );
+                        await launchUrl(uri, mode: LaunchMode.externalApplication,);
                       },
                     );
 
@@ -245,6 +244,41 @@ class HostDealOverviewScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: CustomButton(
+                          onTap: (){
+
+                          },
+                          height: 34.h,
+                          title: "Edit",
+                          fillColor: AppColors.primary,
+                          borderRadius: 8,
+                          fontSize: 12,
+                        ),
+                      ),
+                      SizedBox(width: 12,),
+                      Flexible(
+                        flex: 1,
+                        child: CustomButtonTwo(
+                          onTap: (){
+                            dealsController.deleteDeal(id: dealId);
+                          },
+                          height: 34.h,
+                          title: "Delete",
+                          borderRadius: 8,
+                          fontSize: 12,
+                          fillColor: AppColors.white,
+                          isBorder: true,
+                          borderColor: AppColors.primary.withValues(alpha: 0.5),
+                          borderWidth: 1,
+                          textColor: AppColors.textClr,
+                        ),
+                      ),
+                    ],
+                  )
 
                 ],
               );
