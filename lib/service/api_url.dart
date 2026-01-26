@@ -38,6 +38,8 @@ class ApiUrl {
    static String deleteDeal({required String id})=> "/api/v1/deal/delete-deal/$id";
    static String getDeals({required String page})=> "/api/v1/deal/my-all-deals?currentPage=$page&limit=10";
    static String getAllDeals({required String page})=> "/api/v1/deal/get-all-deals?currentPage=$page&limit=10";
+   ////////
+   static String updateDeal({required String id})=> "/api/v1/deal/update-deal/$id";
    static String getSingleDeal({required String id})=> "/api/v1/deal/get-single-deal/$id";
    static String listingSearch({required String listSearch})=> "/api/v1/search/specific?query=listings&searchType=$listSearch";
    static String dealSearch({required String listSearch})=> "/api/v1/search/specific?query=deals&searchType=$listSearch";
