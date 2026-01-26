@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:samir_flutter_app/view/components/custom_button/custom_button.dart';
 import '../../../../../../core/app_routes/app_routes.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../components/custom_button/custom_button_two.dart';
@@ -37,9 +38,7 @@ class HostCreateDealTwoScreen extends StatelessWidget {
 
                   const CustomText(text: "Content Type", fontSize: 14, fontWeight: FontWeight.w500, bottom: 8),
                   _buildDropdown(),
-
-                  const SizedBox(height: 20),
-
+                  SizedBox(height: 20),
                   const CustomText(text: "How many contents should they create?", fontSize: 14, fontWeight: FontWeight.w500, bottom: 8),
                   Row(
                     children: [
@@ -63,11 +62,9 @@ class HostCreateDealTwoScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30),
                   const Divider(),
-                  const CustomText(text: "Added Deliverables", fontSize: 16, fontWeight: FontWeight.bold, top: 10, bottom: 12),
-
+                  CustomText(text: "Added Deliverables", fontSize: 16, fontWeight: FontWeight.bold, top: 10, bottom: 12),
                   Obx(() => ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -100,6 +97,77 @@ class HostCreateDealTwoScreen extends StatelessWidget {
                         ),
                       );
                     },
+                  )),
+                  CustomText(text: "Minimum Followers Required", fontSize: 16, fontWeight: FontWeight.bold, top: 10),
+                  SizedBox(height: 16),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: SizedBox(
+                          height: 48,
+                          child: TextField(
+                            controller: controller.minFollowersController.value,
+                            onChanged: (val) => controller.minFollowers.value = val,
+                            decoration: InputDecoration(
+                              hintText: "e.g. 50k, 100k",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(color: AppColors.primary),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                       SizedBox(width: 10),
+                      Expanded(
+                        flex: 1,
+                        child: CustomButton(onTap: (){
+                          controller.addMinFollowers();
+                        },
+                          title: "Add Minimum \nFollowers",
+                          fontSize: 12,
+                          height: 48,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  Obx(() => Column(
+                    children: controller.platformFollowers.entries.map((entry) {
+                      final platform = entry.key;
+                      final followers = entry.value;
+
+
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              "$platform • $followers followers",
+                              style: const TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(Icons.close, size: 18, color: Colors.red),
+                              onPressed: () {
+                                controller.platformFollowers.remove(platform);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
                   )),
 
                   const SizedBox(height: 40),

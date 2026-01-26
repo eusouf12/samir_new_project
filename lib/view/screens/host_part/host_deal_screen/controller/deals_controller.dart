@@ -67,7 +67,21 @@ class DealsController extends GetxController {
   // current selection
   var selectedPlatform = "Instagram".obs;
   var selectedContentType = "Post".obs;
-  var quantity = 1.obs;
+  var quantity = 0.obs;
+  var minFollowers = ''.obs;
+// platform wise followers list
+  RxMap<String, String> platformFollowers = <String, String>{}.obs;
+  Rx<TextEditingController> minFollowersController = TextEditingController().obs;
+  void addMinFollowers() {
+    if (minFollowers.value.trim().isEmpty) return;
+
+    platformFollowers[selectedPlatform.value] = minFollowers.value.trim();
+
+    debugPrint("AFTER ADD FOLLOWERS: $platformFollowers");
+
+    minFollowers.value = '';
+    minFollowersController.value.clear();
+  }
 
   // final list (API payload)
   RxList<Map<String, dynamic>> deliverables = <Map<String, dynamic>>[].obs;
@@ -98,27 +112,42 @@ class DealsController extends GetxController {
 
   // Add or Update deliverable
   void addDeliverable() {
+    if (quantity.value <= 0) return;
+
+    final follower = platformFollowers[selectedPlatform.value];
+
+    if (follower == null) {
+      showCustomSnackBar(
+        "Please add minimum followers for ${selectedPlatform.value}",
+        isError: true,
+      );
+      return;
+    }
+
     final index = deliverables.indexWhere(
           (e) =>
       e["platform"] == selectedPlatform.value &&
           e["contentType"] == selectedContentType.value,
     );
 
+    final followerMap = {
+      selectedPlatform.value: follower,
+    };
+
     if (index != -1) {
-      // update existing quantity
       deliverables[index]["quantity"] += quantity.value;
+      deliverables[index]["platformFollowers"] = followerMap;
       deliverables.refresh();
     } else {
-      // add new entry
       deliverables.add({
         "platform": selectedPlatform.value,
         "contentType": selectedContentType.value,
         "quantity": quantity.value,
+        "platformFollowers": followerMap,
       });
     }
 
-    // reset quantity
-    quantity.value = 1;
+    quantity.value = 0;
   }
 
   //  Remove by index

@@ -135,11 +135,13 @@ class Deliverable {
   final String platform;
   final String contentType;
   final int quantity;
+  final Map<String, String> platformFollowers;
 
   Deliverable({
     required this.platform,
     required this.contentType,
     required this.quantity,
+    required this.platformFollowers,
   });
 
   factory Deliverable.fromJson(Map<String, dynamic> json) {
@@ -147,6 +149,10 @@ class Deliverable {
       platform: json['platform'] ?? "",
       contentType: json['contentType'] ?? "",
       quantity: json['quantity'] ?? 0,
+      platformFollowers:
+      json['platformFollowers'] != null
+          ? Map<String, String>.from(json['platformFollowers'])
+          : {},
     );
   }
 }

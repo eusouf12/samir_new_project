@@ -98,7 +98,7 @@ class HostDealsScreen extends StatelessWidget {
                         // duration text
                         final inDate = "${deal.inTimeAndDate.day}-${deal.inTimeAndDate.month}-${deal.inTimeAndDate.year}";
                         final outDate = "${deal.outTimeAndDate.day}-${deal.outTimeAndDate.month}-${deal.outTimeAndDate.year}";
-                        final durationText = "$inDate – $outDate";
+                        final durationText = "$inDate to $outDate";
 
                         // progress text (optional)
                         final progressText = "Tasks info here";

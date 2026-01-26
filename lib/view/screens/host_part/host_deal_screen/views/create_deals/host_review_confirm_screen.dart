@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:samir_flutter_app/utils/app_const/app_const.dart';
-import 'package:samir_flutter_app/view/components/custom_netwrok_image/custom_network_image.dart';
-
-import '../../../../../../core/app_routes/app_routes.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../components/custom_button/custom_button.dart';
-import '../../../../../components/custom_button/custom_button_two.dart';
 import '../../../../../components/custom_loader/custom_loader.dart';
 import '../../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../../components/custom_text/custom_text.dart';
@@ -20,8 +12,10 @@ class HostReviewConfirmScreen extends StatelessWidget {
   HostReviewConfirmScreen({super.key});
   final DealsController dealsController = Get.put(DealsController());
 
+
   @override
   Widget build(BuildContext context) {
+    final followers = _collectPlatformFollowers();
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Review & Confirm"),
       body: SingleChildScrollView(
@@ -116,20 +110,75 @@ class HostReviewConfirmScreen extends StatelessWidget {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: dealsController.deliverables.map((item) {
+                              final String platform = item['platform'];
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 6),
-                                child: CustomText(
-                                  text:
-                                  "${item['quantity']} ${item['platform']} ${item['contentType']}${item['quantity'] > 1 ? 's' : ''}",
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textClr,
-                                  bottom: 6,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      dealsController.platformIcons[platform],
+                                      size: 16,
+                                      color: dealsController.platformColors[platform],
+                                    ),
+                                    CustomText(
+                                      text:
+                                      "${item['quantity']} ${item['platform']} ${item['contentType']}${item['quantity'] > 1 ? 's' : ''}",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.textClr,
+                                      left: 10,
+                                    ),
+                                  ],
                                 ),
                               );
                             }).toList(),
                           );
                         }),
+                        Divider(thickness: 1, color: AppColors.textClr.withValues(alpha: .2),),
+                        // ================= Minimum Followers =================
+                        if (followers.isNotEmpty) ...[
+                          Divider(thickness: 1, color: AppColors.textClr.withValues(alpha: .2)),
+
+                          CustomText(
+                            text: "Minimum Followers Requirement",
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black,
+                            bottom: 8,
+                            top: 6,
+                          ),
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: followers.map((f) {
+                              final platform = f.keys.first;
+                              final count = f.values.first;
+
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 6),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      dealsController.platformIcons[platform],
+                                      size: 16,
+                                      color: dealsController.platformColors[platform],
+                                    ),
+                                    const SizedBox(width: 8),
+                                    CustomText(
+                                      text: "$platform: $count followers",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.textClr,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+
+
                         Divider(thickness: 1, color: AppColors.textClr.withValues(alpha: .2),),
                         //Offers
                         CustomText(
@@ -335,6 +384,22 @@ class HostReviewConfirmScreen extends StatelessWidget {
       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ];
     return months[month - 1];
+  }
+  List<Map<String, String>> _collectPlatformFollowers() {
+    final Map<String, String> result = {};
+
+    for (final d in dealsController.deliverables) {
+      final Map<String, String>? followers =
+      d["platformFollowers"] as Map<String, String>?;
+
+      if (followers != null) {
+        result.addAll(followers); // same platform হলে overwrite OK
+      }
+    }
+
+    return result.entries
+        .map((e) => {e.key: e.value})
+        .toList();
   }
 
 }

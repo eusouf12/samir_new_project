@@ -68,6 +68,8 @@ class HostDealOverviewScreen extends StatelessWidget {
                   ),
                   //listing card
                   Obx((){
+                    if (listingController.singleListingList.isEmpty) {return const SizedBox();}
+
                     final listing = listingController.singleListingList.first;
 
                    return ListingCard(
@@ -170,6 +172,63 @@ class HostDealOverviewScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height:20),
+               // ===== Minimum Followers Required =====
+                  Container(
+                    width: MediaQuery.sizeOf(context).width,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.black.withValues(alpha: 0.1),
+                          blurRadius: 2,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: "Minimum Followers Required",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          bottom: 12,
+                        ),
+
+
+                        ..._uniquePlatformFollowers(deal.deliverables)
+                            .entries
+                            .map((entry) {
+                          final platform = entry.key;
+                          final followers = entry.value;
+
+
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  dealsController.platformIcons[platform],
+                                  size: 18,
+                                  color: dealsController.platformColors[platform],
+                                ),
+                                const SizedBox(width: 8),
+                                CustomText(
+                                  text: "$platform • $followers followers",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.textClr,
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
                   //assign content
                   Container(
                     width: MediaQuery.sizeOf(context).width,
@@ -288,5 +347,28 @@ class HostDealOverviewScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+  Map<String, String> _uniquePlatformFollowers(List deliverables) {
+    final Map<String, String> result = {};
+
+
+    for (final d in deliverables) {
+      final Map<String, dynamic>? followers =
+      d.platformFollowers as Map<String, dynamic>?;
+
+
+      if (followers == null) continue;
+
+
+      for (final entry in followers.entries) {
+// যদি platform আগে থেকেই থাকে → skip
+        if (!result.containsKey(entry.key)) {
+          result[entry.key] = entry.value.toString();
+        }
+      }
+    }
+
+
+    return result;
   }
 }

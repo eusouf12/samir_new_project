@@ -113,6 +113,10 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                   debugPrint("Total Nights: ${controller.totalNights.value}");
                   debugPrint("Payment Amount: ${controller.paymentAmount.value}");
                   debugPrint("Guest Count: ${controller.guestCount.value}");
+                  debugPrint("==== PLATFORM FOLLOWERS ====");
+                  controller.platformFollowers.forEach((platform, followers) {
+                    debugPrint("$platform : $followers");
+                  });
 
                   Get.toNamed(AppRoutes.hostReviewConfirmScreen);
                 },
