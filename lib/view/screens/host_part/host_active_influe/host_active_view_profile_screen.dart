@@ -215,6 +215,15 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                         title: deal.selectDeal?.selectListing?.title,
                         hostName: deal.userId?.name,
                         //date: deal.createdAt,
+                        // onSendRequest: () {
+                        //   Get.toNamed(AppRoutes.hostSendCollaboarationScreen,
+                        //     arguments: {
+                        //       "id": user.id,
+                        //       "name": user.name,
+                        //       "image": user.image,
+                        //     },
+                        //   );
+                        // },
                       );
                     },
                   ),

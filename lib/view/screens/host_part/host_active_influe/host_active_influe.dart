@@ -87,12 +87,13 @@ class HostActiveInflue extends StatelessWidget {
                           username: user.userName ?? '',
                           imageUrl: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
                           tags: user.nicheTags,
-                          onSendRequest: () {
-                            Get.toNamed(AppRoutes.hostSendCollaboarationScreen,
+                          onViewMessage: () {
+                            Get.toNamed(AppRoutes.chatScreen,
                               arguments: {
-                                "id": user.id,
-                                "name": user.name,
-                                "image": user.image,
+                                'conversationId': "",
+                                'userName': user.name,
+                                'userImage': user.image,
+                                'receiverId': user.id,
                               },
                             );
                           },

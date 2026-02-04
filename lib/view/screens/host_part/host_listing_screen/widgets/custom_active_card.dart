@@ -12,7 +12,8 @@ class CustomActiveCard extends StatelessWidget {
   final String imageUrl;
   final List<String> tags;
   final VoidCallback onViewProfile;
-  final VoidCallback onSendRequest;
+  final VoidCallback onViewMessage;
+  final VoidCallback? onSendRequest;
 
   const CustomActiveCard({
     super.key,
@@ -21,7 +22,8 @@ class CustomActiveCard extends StatelessWidget {
     required this.imageUrl,
     this.tags = const [],
     required this.onViewProfile,
-    required this.onSendRequest,
+    required this.onViewMessage,
+    this.onSendRequest,
   });
 
   @override
@@ -122,8 +124,8 @@ class CustomActiveCard extends StatelessWidget {
                   Flexible(
                     child: CustomButtonTwo(
                       height: 40,
-                      onTap: onSendRequest,
-                      title: "Send Request",
+                      onTap: onViewMessage,
+                      title: "Send Message",
                       fontSize: 12,
                       borderRadius: 10,
                     ),
