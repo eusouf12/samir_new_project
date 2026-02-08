@@ -11,7 +11,7 @@ import '../../controller/deals_controller.dart';
 class HostReviewConfirmScreen extends StatelessWidget {
   HostReviewConfirmScreen({super.key});
   final DealsController dealsController = Get.put(DealsController());
-
+  final page = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -365,9 +365,9 @@ class HostReviewConfirmScreen extends StatelessWidget {
                         ? CustomLoader()
                         : CustomButton(
                        onTap: () async {
-                        await dealsController.createDeal();
+                        await dealsController.createDeal(pageName: page);
                       },
-                      title: "Publish Deal",
+                      title:page == "deal" ? "Publish Deal" : "Send Request",
                     );
                   }),
                 ],

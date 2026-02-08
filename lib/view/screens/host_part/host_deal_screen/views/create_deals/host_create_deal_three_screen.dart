@@ -12,6 +12,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
   HostCreateDealThreeScreen({super.key});
 
   final DealsController controller = Get.put(DealsController());
+  final page = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
               Obx(() => Column(
                 children: [
                   _buildCompCard(
-                    title: "Night Credits",
+                    title: "Night Stay",
                     subtitle: "Offer free nights at your property as compensation",
                     isActive: controller.isNightCredits.value,
                     onTap: controller.toggleNightCredits,
@@ -108,6 +109,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
               CustomButtonTwo(
                 title: "Next →",
                 onTap: () {
+                  debugPrint("page == ${page}");
                   debugPrint("Night Credits: ${controller.isNightCredits.value}");
                   debugPrint("Direct Payment: ${controller.isDirectPayment.value}");
                   debugPrint("Total Nights: ${controller.totalNights.value}");
@@ -118,7 +120,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                     debugPrint("$platform : $followers");
                   });
 
-                  Get.toNamed(AppRoutes.hostReviewConfirmScreen);
+                  Get.toNamed(AppRoutes.hostReviewConfirmScreen,arguments: page);
                 },
               ),
             ],

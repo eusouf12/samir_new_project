@@ -5,18 +5,21 @@ import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_button/custom_button_two.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../../host_active_influe/model/all_user_model.dart';
 
 class CustomActiveCard extends StatelessWidget {
   final String name;
   final String username;
   final String imageUrl;
   final List<String> tags;
+  final List<SocialMediaLink>? socialMediaLinks;
   final VoidCallback onViewProfile;
   final VoidCallback onViewMessage;
   final VoidCallback? onSendRequest;
 
   const CustomActiveCard({
     super.key,
+    required this.socialMediaLinks,
     required this.name,
     required this.username,
     required this.imageUrl,
@@ -46,7 +49,7 @@ class CustomActiveCard extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              /// ===== Profile Row =====
+              // ===== Profile Row =====
               Row(
                 children: [
                   CustomNetworkImage(
@@ -75,35 +78,65 @@ class CustomActiveCard extends StatelessWidget {
               ),
 
               /// ===== Tags =====
-              if (tags.isNotEmpty) ...[
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: tags.map((tag) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffECFEFF),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: CustomText(
-                        text: tag,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ],
+              // if (tags.isNotEmpty) ...[
+              //   const SizedBox(height: 16),
+              //   Wrap(
+              //     spacing: 8,
+              //     runSpacing: 8,
+              //     children: tags.map((tag) {
+              //       return Container(
+              //         padding: const EdgeInsets.symmetric(
+              //           horizontal: 12,
+              //           vertical: 4,
+              //         ),
+              //         decoration: BoxDecoration(
+              //           color: const Color(0xffECFEFF),
+              //           borderRadius: BorderRadius.circular(10),
+              //         ),
+              //         child: CustomText(
+              //           text: tag,
+              //           fontSize: 12,
+              //           fontWeight: FontWeight.w600,
+              //           color: AppColors.primary,
+              //         ),
+              //       );
+              //     }).toList(),
+              //   ),
+              // ],
+
+              const SizedBox(height: 12),
+              // ====== platform followers ===========
+              Row(
+                children: (socialMediaLinks ?? []).isEmpty
+                    ? [
+                  SizedBox.shrink()
+                ]
+                    : (socialMediaLinks!).map((item) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Row(
+                      children: [
+                        Icon(
+                          _getPlatformIcon(item.platform),
+                          size: 18,
+                          color: _getPlatformColor(item.platform),
+                        ),
+                        const SizedBox(width: 8),
+                        CustomText(
+                          text: "${item.followers} K",
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
 
               const SizedBox(height: 12),
 
-              /// ===== Buttons =====
+              // ===== Buttons =====
               Row(
                 children: [
                   Flexible(
@@ -138,4 +171,40 @@ class CustomActiveCard extends StatelessWidget {
       ),
     );
   }
+  IconData _getPlatformIcon(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'instagram':
+        return Icons.camera_alt;
+      case 'facebook':
+        return Icons.facebook;
+      case 'tiktok':
+        return Icons.music_note;
+      case 'youtube':
+        return Icons.play_circle_fill;
+      case 'x':
+      case 'twitter':
+        return Icons.alternate_email;
+      default:
+        return Icons.public;
+    }
+  }
+  Color _getPlatformColor(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'instagram':
+        return const Color(0xFFE1306C); // pink
+      case 'facebook':
+        return const Color(0xFF1877F2); // blue
+      case 'tiktok':
+        return Colors.black;
+      case 'youtube':
+        return const Color(0xFFFF0000); // red
+      case 'x':
+      case 'twitter':
+        return Colors.black;
+      default:
+        return AppColors.primary;
+    }
+  }
+
+
 }

@@ -29,9 +29,11 @@ class ApiUrl {
 
    ///========================= Host =========================createListing
    static const String createListing = "/api/v1/listing/create-listing";
+   static  String sendCollaboration ({required String id})=> "/api/v1/collaboration/create-collaboration-web/$id";
    static const String createDeal = "/api/v1/deal/create-deal";
    static const String createCollaboration = "/api/v1/collaboration/create-collaboration";
    static String getListing({required String page})=> "/api/v1/listing/my-listings?currentPage=$page&limit=10";
+   static String getVerifiedListings({required String page})=> "/api/v1/listing/user-personal-verify?currentPage=$page&limit=10";
    static String getSingleListing({required String id})=> "/api/v1/listing/single-listing/$id";
    static String updateListing({required String id})=> "/api/v1/listing/update-listing/$id";
    static String deleteListing({required String id})=> "/api/v1/listing/delete-listing/$id";

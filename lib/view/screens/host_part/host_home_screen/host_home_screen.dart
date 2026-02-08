@@ -118,16 +118,16 @@ class HostHomeScreen extends StatelessWidget {
                       ),
                       SizedBox(width: 16),
                       //Redeem Requests
-                      CustomContainerCard(
-                        title: "Redeem\n Requests",
-                        color: AppColors.white,
-                        textColor: AppColors.black,
-                        number: "0",
-                        onTap: () {
-                          Get.toNamed(AppRoutes.hostListingScreen);
-                        },
-                      ),
-                      SizedBox(width: 16),
+                      // CustomContainerCard(
+                      //   title: "Redeem\n Requests",
+                      //   color: AppColors.white,
+                      //   textColor: AppColors.black,
+                      //   number: "0",
+                      //   onTap: () {
+                      //     Get.toNamed(AppRoutes.hostListingScreen);
+                      //   },
+                      // ),
+                      // SizedBox(width: 16),
                       CustomContainerCard(
                         onTap: () {
                           Get.toNamed(AppRoutes.hostCollaborationScreen);
@@ -144,7 +144,7 @@ class HostHomeScreen extends StatelessWidget {
                 // create and add
                 CustomButtonTwo(
                   onTap: () {
-                    Get.toNamed(AppRoutes.hostCreateDealScreen);
+                    Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: "deal");
                   },
                   title: "Create Deal",
                   borderRadius: 10,

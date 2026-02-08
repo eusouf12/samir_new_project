@@ -18,8 +18,9 @@ class HostCreateDealScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final page = Get.arguments;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      listingController.getListings(loadMore: false);
+      listingController.getVerifiedListings(loadMore: false);
     });
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -61,8 +62,8 @@ class HostCreateDealScreen extends StatelessWidget {
                   const CustomText(text: "Title", fontSize: 14, fontWeight: FontWeight.w600, bottom: 8),
                   Obx(() => GestureDetector(
                     onTap: () {
-                      if (listingController.listingList.isEmpty) {
-                        listingController.getListings();
+                      if (listingController.verifiedListingList.isEmpty) {
+                        listingController.getVerifiedListings();
                       }
                       _openListingDropdown(context);
                     },
@@ -110,13 +111,14 @@ class HostCreateDealScreen extends StatelessWidget {
                   const SizedBox(height: 50),
                   CustomButtonTwo(
                     onTap: () {
+                      debugPrint("page == ${page}");
                       debugPrint('Selected title: ${dealsController.selectedTitle.value}');
                       debugPrint('Description: ${dealsController.titleDescriptionController.value.text}');
                       debugPrint('Check-in date: ${dealsController.checkInFormattedDate}');
                       debugPrint('Check-in time: ${dealsController.checkInFormattedTime}');
                       debugPrint('Check-out date: ${dealsController.checkOutFormattedDate}');
                       debugPrint('Check-out time: ${dealsController.checkOutFormattedTime}');
-                      Get.toNamed(AppRoutes.hostCreateDealTwoScreen);
+                      Get.toNamed(AppRoutes.hostCreateDealTwoScreen,arguments: page);
                     },
                     title: "Next →",
                   ),
@@ -267,38 +269,43 @@ class HostCreateDealScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Obx(() {
-                      if (listingController.listingList.isEmpty && listingController.isListingLoading.value) {
-                        return const Center(child: CircularProgressIndicator());
+                      if (listingController.verifiedListingList.isEmpty &&
+                          listingController.isVerifiedListingLoading.value) {
+                        return const Center(child: CustomLoader());
                       }
 
                       return NotificationListener<ScrollNotification>(
-                        onNotification: (ScrollNotification scrollInfo) {
-                          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !listingController.isLoadMoreLoading.value) {
-                            listingController.getListings(loadMore: true);
+                        onNotification: (scrollInfo) {
+                          if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !listingController.isVerifiedLoadMoreLoading.value) {
+                            listingController.getVerifiedListings(loadMore: true);
                           }
                           return false;
                         },
                         child: ListView.separated(
                           padding: EdgeInsets.zero,
-                          itemCount: listingController.listingList.length + (listingController.isLoadMoreLoading.value ? 1 : 0),
-                          separatorBuilder: (context, index) => Divider(height: 1, color: Colors.white),
+                          itemCount: listingController.verifiedListingList.length + (listingController.isVerifiedLoadMoreLoading.value ? 1 : 0),
+                          separatorBuilder: (_, __) =>
+                          const Divider(height: 1,color: Colors.white,),
+
                           itemBuilder: (context, index) {
-                            if (index == listingController.listingList.length) {
-                              return const Padding(padding: EdgeInsets.all(10),
+                            if (index == listingController.verifiedListingList.length) {
+                              return const Padding(
+                                padding: EdgeInsets.all(10),
                                 child: Center(child: CustomLoader()),
                               );
                             }
-
-                            final item = listingController.listingList[index];
+                            final item = listingController.verifiedListingList[index];
                             return ListTile(
-                              title: Text(item.title, style: const TextStyle(fontSize: 15)),
+                              title: Text(item.title, style: const TextStyle(fontSize: 15),),
                               onTap: () {
                                 dealsController.selectedId.value = item.id;
                                 dealsController.selectedTitle.value = item.title;
                                 dealsController.selectedAirbnbLink.value = item.addAirbnbLink;
-                                debugPrint("Selected ID: ${dealsController.selectedId.value}");
-                                debugPrint("Selected Title: ${dealsController.selectedTitle.value}");
-                                debugPrint("Selected Title: ${dealsController.selectedAirbnbLink.value}");
+
+                                debugPrint("Selected ID: ${item.id}");
+                                debugPrint("Selected Title: ${item.title}");
+                                debugPrint("Selected Airbnb: ${item.addAirbnbLink}");
+
                                 Navigator.pop(context);
                               },
                             );
@@ -315,5 +322,6 @@ class HostCreateDealScreen extends StatelessWidget {
       },
     );
   }
+
 
 }

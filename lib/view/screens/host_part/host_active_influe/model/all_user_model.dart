@@ -50,10 +50,12 @@ class AllUserModel {
   final String email;
   final String role;
   final String status;
+
   final String? userName;
   final String? image;
   final String? bio;
   final String? aboutMe;
+
   final String? city;
   final String? state;
   final String? country;
@@ -62,17 +64,24 @@ class AllUserModel {
   final String? phone;
   final String? gender;
   final String? dateOfBirth;
+
   final bool airbnbAccountLinked;
-  final bool? isFounderMember;
+  final bool isFounderMember;
+  final bool isStripeConnected;
+
+  final double averageRating;
   final int responseRate;
   final int avgResponseTime;
   final int totalReviews;
   final int referralCount;
+
   final List<String> nicheTags;
   final List<String> collaborations;
   final List<String> deals;
   final List<String> listings;
+
   final List<RedeemStar> redeemStars;
+  final List<SocialMediaLink> socialMediaLinks;
 
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -84,6 +93,9 @@ class AllUserModel {
     required this.role,
     required this.status,
     required this.airbnbAccountLinked,
+    required this.isFounderMember,
+    required this.isStripeConnected,
+    required this.averageRating,
     required this.responseRate,
     required this.avgResponseTime,
     required this.totalReviews,
@@ -93,6 +105,7 @@ class AllUserModel {
     required this.deals,
     required this.listings,
     required this.redeemStars,
+    required this.socialMediaLinks,
     required this.createdAt,
     required this.updatedAt,
     this.userName,
@@ -107,7 +120,6 @@ class AllUserModel {
     this.phone,
     this.gender,
     this.dateOfBirth,
-    this.isFounderMember,
   });
 
   factory AllUserModel.fromJson(Map<String, dynamic> json) {
@@ -131,8 +143,12 @@ class AllUserModel {
       phone: json['phone'],
       gender: json['gender'],
       dateOfBirth: json['dateOfBirth'],
+
       airbnbAccountLinked: json['airbnbAccountLinked'] ?? false,
       isFounderMember: json['isFounderMember'] ?? false,
+      isStripeConnected: json['isStripeConnected'] ?? false,
+
+      averageRating: (json['averageRating'] ?? 0).toDouble(),
       responseRate: json['responseRate'] ?? 0,
       avgResponseTime: json['avgResponseTime'] ?? 0,
       totalReviews: json['totalReviews'] ?? 0,
@@ -158,22 +174,25 @@ class AllUserModel {
           .map((e) => RedeemStar.fromJson(e))
           .toList(),
 
+      socialMediaLinks: (json['socialMediaLinks'] as List<dynamic>? ?? [])
+          .map((e) => SocialMediaLink.fromJson(e))
+          .toList(),
+
       createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
       updatedAt: DateTime.tryParse(json['updatedAt'] ?? '') ?? DateTime.now(),
     );
   }
 }
 
+
 class RedeemStar {
   final String? id;
   final String? collaborationId;
-  final int? stars;
   final DateTime? createdAt;
 
   RedeemStar({
     this.id,
     this.collaborationId,
-    this.stars,
     this.createdAt,
   });
 
@@ -181,12 +200,35 @@ class RedeemStar {
     return RedeemStar(
       id: json['_id'],
       collaborationId: json['collaborationId'],
-      stars: json['stars'],
       createdAt: json['createdAt'] != null
           ? DateTime.tryParse(json['createdAt'])
           : null,
     );
   }
 }
+
+class SocialMediaLink {
+  final String id;
+  final String platform;
+  final String url;
+  final String followers;
+
+  SocialMediaLink({
+    required this.id,
+    required this.platform,
+    required this.url,
+    required this.followers,
+  });
+
+  factory SocialMediaLink.fromJson(Map<String, dynamic> json) {
+    return SocialMediaLink(
+      id: json['_id'] ?? '',
+      platform: json['platform'] ?? '',
+      url: json['url'] ?? '',
+      followers: json['followers'] ?? "0",
+    );
+  }
+}
+
 
 

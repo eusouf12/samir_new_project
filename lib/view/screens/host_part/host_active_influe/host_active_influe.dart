@@ -85,8 +85,8 @@ class HostActiveInflue extends StatelessWidget {
                         return CustomActiveCard(
                           name: user.name,
                           username: user.userName ?? '',
+                          socialMediaLinks: user.socialMediaLinks,
                           imageUrl: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
-                          tags: user.nicheTags,
                           onViewMessage: () {
                             Get.toNamed(AppRoutes.chatScreen,
                               arguments: {

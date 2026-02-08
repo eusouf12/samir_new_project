@@ -210,7 +210,7 @@ class DealsController extends GetxController {
 
   // ================ create deals Controller ==============
   var isCreatingDeal = false.obs;
-  Future<void> createDeal() async {
+  Future<void> createDeal({required String pageName, String? dealId}) async {
     final body = {
       "title": selectedId.value,
       "description": titleDescriptionController.value.text,
@@ -222,8 +222,7 @@ class DealsController extends GetxController {
         checkInDate.value!.day,
         checkInTime.value!.hour,
         checkInTime.value!.minute,
-      ).toUtc().toIso8601String()
-          : null,
+      ).toUtc().toIso8601String() : null,
       "outTimeAndDate": checkOutDate.value != null && checkOutTime.value != null
           ? DateTime(
         checkOutDate.value!.year,
@@ -245,7 +244,7 @@ class DealsController extends GetxController {
 
     try {
       isCreatingDeal.value = true;
-      final response = await ApiClient.postData(ApiUrl.createDeal, jsonEncode(body),);
+      final response = await ApiClient.postData(pageName == "deal" ? ApiUrl.createDeal : ApiUrl.sendCollaboration(id: dealId ?? ""), jsonEncode(body),);
 
       var jsonResponse = response.body is String ? jsonDecode(response.body) : response.body;
 
@@ -255,11 +254,9 @@ class DealsController extends GetxController {
         collaborationController.getSingleUser(userId: id);
         await getDeals(loadMore: false);
         Get.toNamed(AppRoutes.hostHomeScreen);
-      } else {
-        showCustomSnackBar(
-          jsonResponse['error']?.toString() ?? "Failed to create deal",
-          isError: true,
-        );
+      }
+      else {
+        showCustomSnackBar(jsonResponse['error']?.toString() ?? "Failed to create deal", isError: true,);
       }
     } catch (e) {
       showCustomSnackBar("Something went wrong. Try again.", isError: true,);

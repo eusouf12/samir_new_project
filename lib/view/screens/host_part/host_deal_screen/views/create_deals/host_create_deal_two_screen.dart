@@ -15,6 +15,7 @@ class HostCreateDealTwoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final page = Get.arguments;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Create Deal"),
@@ -35,6 +36,79 @@ class HostCreateDealTwoScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  // ========  Required Followers =========
+                  CustomText(text: "Minimum Followers Required", fontSize: 16, fontWeight: FontWeight.bold, top: 10),
+                  SizedBox(height: 16),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: SizedBox(
+                          height: 48,
+                          child: TextField(
+                            controller: controller.minFollowersController.value,
+                            onChanged: (val) => controller.minFollowers.value = val,
+                            decoration: InputDecoration(
+                              hintText: "e.g. 50k, 100k",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide(color: AppColors.primary),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        flex: 1,
+                        child: CustomButton(onTap: (){
+                          controller.addMinFollowers();
+                        },
+                          title: "Add Minimum \nFollowers",
+                          fontSize: 12,
+                          height: 48,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  const Divider(),
+                  SizedBox(height: 10),
+                  Obx(() => Column(
+                    children: controller.platformFollowers.entries.map((entry) {
+                      final platform = entry.key;
+                      final followers = entry.value;
+
+
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              "$platform • $followers followers",
+                              style: const TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(Icons.close, size: 18, color: Colors.red),
+                              onPressed: () {
+                                controller.platformFollowers.remove(platform);
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  )),
 
                   const CustomText(text: "Content Type", fontSize: 14, fontWeight: FontWeight.w500, bottom: 8),
                   _buildDropdown(),
@@ -98,88 +172,19 @@ class HostCreateDealTwoScreen extends StatelessWidget {
                       );
                     },
                   )),
-                  CustomText(text: "Minimum Followers Required", fontSize: 16, fontWeight: FontWeight.bold, top: 10),
-                  SizedBox(height: 16),
 
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: SizedBox(
-                          height: 48,
-                          child: TextField(
-                            controller: controller.minFollowersController.value,
-                            onChanged: (val) => controller.minFollowers.value = val,
-                            decoration: InputDecoration(
-                              hintText: "e.g. 50k, 100k",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(color: AppColors.primary),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                       SizedBox(width: 10),
-                      Expanded(
-                        flex: 1,
-                        child: CustomButton(onTap: (){
-                          controller.addMinFollowers();
-                        },
-                          title: "Add Minimum \nFollowers",
-                          fontSize: 12,
-                          height: 48,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                  Obx(() => Column(
-                    children: controller.platformFollowers.entries.map((entry) {
-                      final platform = entry.key;
-                      final followers = entry.value;
-
-
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.grey.shade300),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              "$platform • $followers followers",
-                              style: const TextStyle(fontWeight: FontWeight.w500),
-                            ),
-                            const Spacer(),
-                            IconButton(
-                              icon: const Icon(Icons.close, size: 18, color: Colors.red),
-                              onPressed: () {
-                                controller.platformFollowers.remove(platform);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  )),
 
                   const SizedBox(height: 40),
                   CustomButtonTwo(
                     onTap: () {
                       debugPrint("==== SELECTED DELIVERABLES ====");
+                      debugPrint("page == ${page}");
 
                       for (var item in controller.deliverables) {
                         debugPrint(item.toString());
                       }
 
-                      Get.toNamed(AppRoutes.hostCreateDealThreeScreen);
+                      Get.toNamed(AppRoutes.hostCreateDealThreeScreen,arguments: page);
                     },
                     title: "Next →",
                   ),

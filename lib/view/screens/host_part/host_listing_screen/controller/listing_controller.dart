@@ -9,6 +9,7 @@ import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../../collaboration_screen/controller/collabration_controller.dart';
 import '../model/listing_model.dart';
+import '../model/verified_listing.dart';
 
 class ListingController extends GetxController {
   final CollaborationController collaborationController = Get.put(CollaborationController());
@@ -227,6 +228,66 @@ class ListingController extends GetxController {
       isLoadMoreLoading.value = false;
     }
   }
+
+  // ============== Verified Listings Controller ===================
+
+  RxList<VerifiedListingItem> verifiedListingList = <VerifiedListingItem>[].obs;
+
+  final isVerifiedListingLoading = false.obs;
+  final isVerifiedLoadMoreLoading = false.obs;
+
+  final rxVerifiedListingStatus = Status.loading.obs;
+  void setVerifiedListingStatus(Status status) => rxVerifiedListingStatus.value = status;
+  int verifiedCurrentPage = 1;
+  int verifiedTotalPages = 1;
+
+  Future<void> getVerifiedListings({bool loadMore = false}) async {
+    if (loadMore) {
+      if (isVerifiedLoadMoreLoading.value || verifiedCurrentPage >= verifiedTotalPages) return;
+      isVerifiedLoadMoreLoading.value = true;
+      verifiedCurrentPage++;
+    }
+    else {
+      verifiedListingList.clear();
+      isVerifiedListingLoading.value = true;
+      setVerifiedListingStatus(Status.loading);
+      verifiedCurrentPage = 1;
+    }
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.getVerifiedListings(page: verifiedCurrentPage.toString()));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> jsonResponse =
+        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final VerifiedListingsResponse model =
+        VerifiedListingsResponse.fromJson(jsonResponse);
+
+        verifiedTotalPages = model.data.pagination.totalPages;
+
+        final existingIds = verifiedListingList.map((e) => e.id).toSet();
+
+        for (final item in model.data.listings) {
+          if (!existingIds.contains(item.id)) {
+            verifiedListingList.add(item);
+          }
+        }
+
+        setVerifiedListingStatus(Status.completed);
+      } else {
+        setVerifiedListingStatus(Status.error);
+        showCustomSnackBar("Failed to load verified listings", isError: true);
+      }
+    } catch (e) {
+      setVerifiedListingStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+    } finally {
+      isVerifiedListingLoading.value = false;
+      isVerifiedLoadMoreLoading.value = false;
+    }
+  }
+
 
   // ================= Single Get Listing =================
   RxList<ListingItem> singleListingList = <ListingItem>[].obs;

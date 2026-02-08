@@ -128,26 +128,26 @@ class HostDealOverviewScreen extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: 5),
-                        //Direct Payment
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              text: "Direct Payment : ",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              bottom: 16,
-                            ),
-                            CustomText(
-                              text: "${deal.compensation.directPayment == true?"Yes":"No"}",
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              bottom: 16,
-                            ),
-
-                          ],
-                        ),
+                        // //Direct Payment
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                        //   children: [
+                        //     CustomText(
+                        //       text: "Direct Payment : ",
+                        //       fontSize: 14,
+                        //       fontWeight: FontWeight.w500,
+                        //       bottom: 16,
+                        //     ),
+                        //     CustomText(
+                        //       text: "${deal.compensation.directPayment == true?"Yes":"No"}",
+                        //       fontSize: 14,
+                        //       fontWeight: FontWeight.w500,
+                        //       bottom: 16,
+                        //     ),
+                        //
+                        //   ],
+                        // ),
                         SizedBox(height: 5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
