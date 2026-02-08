@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:samir_flutter_app/service/api_url.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
-import '../../../../../utils/app_const/app_const.dart';
 import '../../../../../utils/app_icons/app_icons.dart';
 import '../../../../components/custom_button/custom_button.dart';
 import '../../../../components/custom_button/custom_button_two.dart';
@@ -16,6 +14,7 @@ import '../model/listing_model.dart';
 class ListingCard extends StatelessWidget {
   final ListingItem listing;
   final bool btn;
+  final String? staus;
   final VoidCallback? onTapAirbnb;
   final VoidCallback? onTapEdit;
   final VoidCallback? onTapDelete;
@@ -25,6 +24,7 @@ class ListingCard extends StatelessWidget {
     required this.listing,
     this.onTapAirbnb,
     this.onTapEdit,
+    this.staus,
     required this.btn,
     this.onTapDelete,
   }) : super(key: key);
@@ -56,7 +56,7 @@ class ListingCard extends StatelessWidget {
           const SizedBox(height: 16),
 
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding:  EdgeInsets.all(12.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -71,9 +71,30 @@ class ListingCard extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                     ),
+
+                    Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: staus== "verified" ? Color(0xFFE8F5E9) : staus == "rejected" ? Colors.red.withOpacity(0.1) :Color(0xFFFFF3E0),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color:staus== "verified"? Colors.green : staus== "rejected" ? Colors.red : Colors.orange, width: 1),
+                        ),
+                        child:  Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            staus == "verified" ? Icon(Icons.check_circle, color: Colors.green, size: 16) : SizedBox.shrink(),
+                            SizedBox(width: 4),
+                            CustomText(text: staus == "verified" ? "Verified" : staus == "rejected" ? "Rejected" : "Pending",
+                              color: staus == "verified" ? Colors.green : staus == "rejected" ? Colors.red : Colors.orange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                          ],
+                        ),
+                      )
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
 
                 // ============= Location ===========
                 Row(
@@ -88,7 +109,7 @@ class ListingCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
 
                 // ============= Description ===========
                 CustomText(
@@ -132,7 +153,32 @@ class ListingCard extends StatelessWidget {
                   )
                       .toList(),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
+                // =========== rejected reason ===========
+                staus == "rejected"
+                    ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                        CustomText(
+                         text: "Rejected Reason: ",
+                         fontSize: 14,
+                         fontWeight: FontWeight.w600,
+                          color: Colors.red,
+                          bottom: 8,
+                       ),
+                        CustomText(
+                      text: listing.rejectionReason ?? "N/A",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      maxLines: 5,
+                      textAlign: TextAlign.start, bottom: 8,
+                    ),
+                      ],
+                    )
+                    :  SizedBox.shrink(),
+
+
+                 SizedBox(height: 8),
 
                 // ============= Custom Amenities ===========
                 if (listing.customAmenities.isNotEmpty && listing.customAmenities.first.isNotEmpty) ...[
@@ -199,7 +245,7 @@ class ListingCard extends StatelessWidget {
                 btn == true
                     ? Row(
                   children: [
-                    Flexible(
+                    staus != "rejected" ? Flexible(
                       flex: 1,
                       child: CustomButton(
                         height: 34.h,
@@ -209,7 +255,7 @@ class ListingCard extends StatelessWidget {
                         borderRadius: 8,
                         fontSize: 12,
                       ),
-                    ),
+                    ) : SizedBox.shrink(),
                     SizedBox(width: 12,),
                     Flexible(
                       flex: 1,

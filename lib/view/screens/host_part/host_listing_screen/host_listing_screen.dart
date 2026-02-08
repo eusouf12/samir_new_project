@@ -81,6 +81,7 @@ class HostListingScreen extends StatelessWidget {
                       final listing = listToShow[index];
                       return ListingCard(
                         listing: listing,
+                        staus: listing.status,
                         btn: true,
                         onTapAirbnb: () async {
                           final link = listing.addAirbnbLink;

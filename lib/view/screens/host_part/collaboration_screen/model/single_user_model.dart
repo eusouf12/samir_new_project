@@ -43,7 +43,7 @@ class SingleUserProfileData {
   final int? avgResponseTime;
   final int? collaborationsTotal;
   final int? dealsTotal;
-  final int? listingsTotal;
+  final int? totalListings;
   final String? status;
 
   final List<String>? deals;
@@ -74,7 +74,7 @@ class SingleUserProfileData {
     this.avgResponseTime,
     this.collaborationsTotal,
     this.dealsTotal,
-    this.listingsTotal,
+    this.totalListings,
     this.status,
     this.deals,
     this.listings,
@@ -106,16 +106,12 @@ class SingleUserProfileData {
       avgResponseTime: json['avgResponseTime'],
       collaborationsTotal: json['collaborationsTotal'],
       dealsTotal: json['dealsTotal'],
-      listingsTotal: json['listingsTotal'],
+      totalListings: json['totalListings'],
       status: json['status'],
       deals: (json['deals'] as List?)?.cast<String>(),
       listings: (json['listings'] as List?)?.cast<String>(),
-      redeemStars: (json['redeemStars'] as List?)
-          ?.map((e) => SingleUserRedeemStar.fromJson(e))
-          .toList(),
-      collaborationStats: json['collaborationStats'] != null
-          ? SingleUserCollaborationStats.fromJson(json['collaborationStats'])
-          : null,
+      redeemStars: (json['redeemStars'] as List?)?.map((e) => SingleUserRedeemStar.fromJson(e)).toList(),
+      collaborationStats: json['collaborationStats'] != null ? SingleUserCollaborationStats.fromJson(json['collaborationStats']) : null,
     );
   }
 }

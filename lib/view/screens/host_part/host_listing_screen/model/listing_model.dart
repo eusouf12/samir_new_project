@@ -51,6 +51,7 @@ class ListingsData {
 /// ================== LISTING ITEM ==================
 class ListingItem {
   final String id;
+  final String? rejectionReason;
   final String title;
   final String description;
   final String addAirbnbLink;
@@ -66,6 +67,7 @@ class ListingItem {
 
   ListingItem({
     required this.id,
+    this.rejectionReason,
     required this.title,
     required this.description,
     required this.addAirbnbLink,
@@ -83,6 +85,7 @@ class ListingItem {
   factory ListingItem.fromJson(Map<String, dynamic> json) {
     return ListingItem(
       id: json['_id'] ?? '',
+      rejectionReason: json['rejectionReason'] as String?,
       title: json['title'] ?? '',
       description: json['description'] ?? '',
       addAirbnbLink: json['addAirbnbLink'] ?? '',
