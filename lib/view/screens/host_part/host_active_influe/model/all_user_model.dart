@@ -46,6 +46,7 @@ class AllUserPagination {
 
 class AllUserModel {
   final String id;
+  final int? nightCredits;
   final String name;
   final String email;
   final String role;
@@ -89,6 +90,7 @@ class AllUserModel {
   AllUserModel({
     required this.id,
     required this.name,
+    this.nightCredits,
     required this.email,
     required this.role,
     required this.status,
@@ -126,15 +128,14 @@ class AllUserModel {
     return AllUserModel(
       id: json['_id'] ?? '',
       name: json['name'] ?? '',
+      nightCredits: json['nightCredits'] ?? 0,
       email: json['email'] ?? '',
       role: json['role'] ?? '',
       status: json['status'] ?? 'inactive',
-
       userName: json['userName'],
       image: json['image'],
       bio: json['bio'],
       aboutMe: json['aboutMe'],
-
       city: json['city'],
       state: json['state'],
       country: json['country'],

@@ -109,81 +109,42 @@ class SingleUserInfo {
 
 class SingleUserDealInfo {
   final String? id;
-  final String? dealTitle;
-  final String? description;
-  final SingleUserListingInfo? selectListing;
   final SingleUserCompensation? compensation;
+  final SingleUserDealTitle? title;
+  final String? description;
   final String? addAirbnbLink;
   final String? inTimeAndDate;
   final String? outTimeAndDate;
+  final int? guestCount;
   final String? status;
-  final List<SingleUserDeliverable>? deliverables;
 
   SingleUserDealInfo({
     this.id,
-    this.dealTitle,
-    this.description,
-    this.selectListing,
     this.compensation,
+    this.title,
+    this.description,
     this.addAirbnbLink,
     this.inTimeAndDate,
     this.outTimeAndDate,
+    this.guestCount,
     this.status,
-    this.deliverables,
   });
 
   factory SingleUserDealInfo.fromJson(Map<String, dynamic> json) {
     return SingleUserDealInfo(
       id: json['_id'],
-      dealTitle: json['dealTitle'],
-      description: json['description'],
-      selectListing: json['selectListing'] != null
-          ? SingleUserListingInfo.fromJson(json['selectListing'])
-          : null,
       compensation: json['compensation'] != null
           ? SingleUserCompensation.fromJson(json['compensation'])
           : null,
+      title: json['title'] != null
+          ? SingleUserDealTitle.fromJson(json['title'])
+          : null,
+      description: json['description'],
       addAirbnbLink: json['addAirbnbLink'],
       inTimeAndDate: json['inTimeAndDate'],
       outTimeAndDate: json['outTimeAndDate'],
+      guestCount: json['guestCount'],
       status: json['status'],
-      deliverables: (json['deliverables'] as List?)
-          ?.map((e) => SingleUserDeliverable.fromJson(e))
-          .toList(),
-    );
-  }
-}
-
-class SingleUserListingInfo {
-  final SingleUserAmenities? amenities;
-  final String? id;
-  final String? title;
-  final String? description;
-  final String? location;
-  final String? propertyType;
-  final List<String>? images;
-
-  SingleUserListingInfo({
-    this.amenities,
-    this.id,
-    this.title,
-    this.description,
-    this.location,
-    this.propertyType,
-    this.images,
-  });
-
-  factory SingleUserListingInfo.fromJson(Map<String, dynamic> json) {
-    return SingleUserListingInfo(
-      amenities: json['amenities'] != null
-          ? SingleUserAmenities.fromJson(json['amenities'])
-          : null,
-      id: json['_id'],
-      title: json['title'],
-      description: json['description'],
-      location: json['location'],
-      propertyType: json['propertyType'],
-      images: (json['images'] as List?)?.cast<String>(),
     );
   }
 }
@@ -191,22 +152,45 @@ class SingleUserListingInfo {
 class SingleUserCompensation {
   final bool? nightCredits;
   final int? numberOfNights;
-  final bool? directPayment;
   final String? paymentAmount;
+  final bool? directPayment;
 
   SingleUserCompensation({
     this.nightCredits,
     this.numberOfNights,
-    this.directPayment,
     this.paymentAmount,
+    this.directPayment,
   });
 
   factory SingleUserCompensation.fromJson(Map<String, dynamic> json) {
     return SingleUserCompensation(
       nightCredits: json['nightCredits'],
       numberOfNights: json['numberOfNights'],
-      directPayment: json['directPayment'],
       paymentAmount: json['paymentAmount'],
+      directPayment: json['directPayment'],
+    );
+  }
+}
+
+class SingleUserDealTitle {
+  final String? id;
+  final String? title;
+  final String? location;
+  final List<String>? images;
+
+  SingleUserDealTitle({
+    this.id,
+    this.title,
+    this.location,
+    this.images,
+  });
+
+  factory SingleUserDealTitle.fromJson(Map<String, dynamic> json) {
+    return SingleUserDealTitle(
+      id: json['_id'],
+      title: json['title'],
+      location: json['location'],
+      images: (json['images'] as List?)?.cast<String>(),
     );
   }
 }

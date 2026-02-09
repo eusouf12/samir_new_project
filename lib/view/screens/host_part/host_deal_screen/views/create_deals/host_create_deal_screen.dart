@@ -15,10 +15,12 @@ class HostCreateDealScreen extends StatelessWidget {
   HostCreateDealScreen({super.key});
   final DealsController dealsController = Get.put(DealsController());
   final ListingController listingController = Get.put(ListingController());
+  final args = Get.arguments as Map<String, dynamic>;
 
   @override
   Widget build(BuildContext context) {
-    final page = Get.arguments;
+    final String page = args['page'];
+    final String id = args['id'] ;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       listingController.getVerifiedListings(loadMore: false);
     });
@@ -111,14 +113,14 @@ class HostCreateDealScreen extends StatelessWidget {
                   const SizedBox(height: 50),
                   CustomButtonTwo(
                     onTap: () {
-                      debugPrint("page == ${page}");
+                      debugPrint("page == ${page} == id = ${id}");
                       debugPrint('Selected title: ${dealsController.selectedTitle.value}');
                       debugPrint('Description: ${dealsController.titleDescriptionController.value.text}');
                       debugPrint('Check-in date: ${dealsController.checkInFormattedDate}');
                       debugPrint('Check-in time: ${dealsController.checkInFormattedTime}');
                       debugPrint('Check-out date: ${dealsController.checkOutFormattedDate}');
                       debugPrint('Check-out time: ${dealsController.checkOutFormattedTime}');
-                      Get.toNamed(AppRoutes.hostCreateDealTwoScreen,arguments: page);
+                      Get.toNamed(AppRoutes.hostCreateDealTwoScreen,arguments: {"page": page, "id": id});
                     },
                     title: "Next →",
                   ),

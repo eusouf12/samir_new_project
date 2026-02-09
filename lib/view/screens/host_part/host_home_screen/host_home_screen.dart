@@ -144,7 +144,7 @@ class HostHomeScreen extends StatelessWidget {
                 // create and add
                 CustomButtonTwo(
                   onTap: () {
-                    Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: "deal");
+                    Get.toNamed(AppRoutes.hostCreateDealScreen, arguments: {"page": "deal", "id": ""});
                   },
                   title: "Create Deal",
                   borderRadius: 10,

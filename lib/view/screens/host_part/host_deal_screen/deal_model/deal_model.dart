@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 class DealResponse {
   final bool success;

@@ -177,7 +177,7 @@ class HostCollaborationScreen extends StatelessWidget {
                               userName: collaboration.selectInfluencerOrHost?.name,
                               userHandle:  collaboration.selectInfluencerOrHost?.userName,
                               //tags: collaboration. ?? ["General"],
-                              location: collaboration.selectDeal?.selectListing?.title ?? "",
+                              location: collaboration.selectDeal?.title?.title ?? "",
 
                               // ===== Dynamic Callbacks =====
                               onViewDetailsTap: () {
@@ -188,17 +188,17 @@ class HostCollaborationScreen extends StatelessWidget {
                                           : "image",
                                       "name": collaboration.selectInfluencerOrHost?.name ?? "name",
                                       "userName": collaboration.selectInfluencerOrHost?.userName ?? "userName",
-                                      "listingName":  collaboration.selectDeal?.selectListing?.title ?? "listingName",
+                                      "listingName":  collaboration.selectDeal?.title?.title ?? "listingName",
                                       "listingImage":
-                                      (collaboration.selectDeal?.selectListing?.images?.isNotEmpty ?? false)
-                                          ? ApiUrl.baseUrl + (collaboration.selectDeal!.selectListing!.images!.first)
+                                      (collaboration.selectDeal?.title?.images?.isNotEmpty ?? false)
+                                          ? ApiUrl.baseUrl + (collaboration.selectDeal!.title!.images!.first)
                                           : "",
                                       "payment":  collaboration.selectDeal?.compensation?.paymentAmount ?? "payment",
                                       "nightStay":  collaboration.selectDeal?.compensation?.numberOfNights ?? "nightStay",
                                       "inTimeAndDate": collaboration.selectDeal?.inTimeAndDate ?? "inTimeAndDate",
                                       "outTimeAndDate": collaboration.selectDeal?.outTimeAndDate ?? "outTimeAndDate",
-                                      "amenities": collaboration.selectDeal?.selectListing?.amenities ?? {},
-                                      "deliverables": collaboration.selectDeal?.deliverables ?? [],
+                                      // "amenities": collaboration.selectDeal?.title?.amenities ?? {},
+                                      // "deliverables": collaboration.selectDeal?.deliverables ?? [],
                                     }
                                 );
                               },

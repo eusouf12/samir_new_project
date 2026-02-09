@@ -9,6 +9,7 @@ import '../../host_active_influe/model/all_user_model.dart';
 
 class CustomActiveCard extends StatelessWidget {
   final String name;
+  final int? nightCredits;
   final String username;
   final String imageUrl;
   final List<String> tags;
@@ -21,6 +22,7 @@ class CustomActiveCard extends StatelessWidget {
     super.key,
     required this.socialMediaLinks,
     required this.name,
+    this.nightCredits,
     required this.username,
     required this.imageUrl,
     this.tags = const [],
@@ -93,7 +95,7 @@ class CustomActiveCard extends StatelessWidget {
                          SizedBox(width: 4),
 
                         Text(
-                         "3 Night Credits",
+                         "${nightCredits} Night Credits",
                          style: TextStyle(
                            color: Color(0xFF1A237E),
                            fontSize: 11,

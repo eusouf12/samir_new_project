@@ -11,10 +11,12 @@ import '../../controller/deals_controller.dart';
 class HostReviewConfirmScreen extends StatelessWidget {
   HostReviewConfirmScreen({super.key});
   final DealsController dealsController = Get.put(DealsController());
-  final page = Get.arguments;
+  final args = Get.arguments as Map<String, dynamic>;
 
   @override
   Widget build(BuildContext context) {
+    final String page = args['page'];
+    final String id = args['id'] ;
     final followers = _collectPlatformFollowers();
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Review & Confirm"),
@@ -361,11 +363,12 @@ class HostReviewConfirmScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 30,),
                   Obx((){
+                    debugPrint("page == ${page} == id = ${id}");
                     return dealsController.isCreatingDeal.value
                         ? CustomLoader()
                         : CustomButton(
                        onTap: () async {
-                         page == "deal" ? await dealsController.createDeal(pageName: page,) :await dealsController.createDeal(pageName: page,dealId:"");
+                         page == "deal" ? await dealsController.createDeal(pageName: page,) :await dealsController.createDeal(pageName: page,dealId:id);
                       },
                       title:page == "deal" ? "Publish Deal" : "Send Request",
                     );

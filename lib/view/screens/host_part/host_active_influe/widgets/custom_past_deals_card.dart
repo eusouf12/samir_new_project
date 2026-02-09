@@ -47,7 +47,7 @@ class CustomPastDealsCard extends StatelessWidget {
                 fit: BoxFit.cover,
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
-              SizedBox(width: 40),
+              SizedBox(width: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -57,7 +57,7 @@ class CustomPastDealsCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                   CustomText(
-                    text: hostName ??"",
+                    text: "By ${hostName }"??"",
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textClr,

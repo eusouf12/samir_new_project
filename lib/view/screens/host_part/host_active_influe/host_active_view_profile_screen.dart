@@ -30,18 +30,19 @@ class HostActiveViewProfileScreen extends StatelessWidget {
     final String image = args['image'] ??"";
     final List<dynamic> socialMediaLinks = args['socialMediaLinks'] ?? [];
     final bool founderMember = args['founderMember']??false;
+    final int nightCredits = args['nightCredits']??0;
     final String date = "2026-12-24T21:43:46.978Z";
-    final List<SocialMediaLink> socialLinks = socialMediaLinks.map((e) {
-      return SocialMediaLink(
-        platform: e['platform'] ?? '',
-        url: e['url'] ?? '',
-        followers: e['followers'] ?? 0,
-        id: e['_id'] ?? '',
-      );
-    }).toList();
+    // final List<SocialMediaLink> socialLinks = socialMediaLinks.map((e) {
+    //   return SocialMediaLink(
+    //     platform: e['platform'] ?? '',
+    //     url: e['url'] ?? '',
+    //     followers: e['followers'] ?? 0,
+    //     id: e['_id'] ?? '',
+    //   );
+    // }).toList();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-       collaborationController.getSingleUserCollaboration(id: userId);
+       collaborationController.getSingleUserCollaboration(id: userId,filterName: "completed");
     });
 
     return Scaffold(
@@ -152,7 +153,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                     SizedBox(width: 4),
 
                                     Text(
-                                      "3000 Night Credits",
+                                      "${nightCredits} Night Credits",
                                       style: TextStyle(
                                         color: Color(0xFF1A237E),
                                         fontSize: 11,
@@ -201,7 +202,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                   SizedBox(height: 20),
                   CustomButtonTwo(
                     onTap: (){
-                      Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: "Collaboration");
+                      Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: {"page": "Collaboration", "id": userId},);
                     },
                       height: 40,
                       title: "Send Collaboration Request",
@@ -222,15 +223,10 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                  return const Center(child: CustomLoader());
               }
 
-              final completedDeals = collaborationController.singleUserCollaborationList.where((e) => e.status == 'completed').toList();
+              final completedDeals = collaborationController.singleUserCollaborationList;
 
               if (completedDeals.isEmpty) {
-                return Column(
-                  children: const [
-                    SizedBox(height: 30),
-                    CustomText(text: "No past deals found", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textClr,),
-                  ],
-                );
+                return Column(children: const [SizedBox(height: 30), CustomText(text: "No past deals found", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textClr,),],);
               }
 
               return Column(
@@ -244,29 +240,30 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
-                      CustomText(
-                        text: "${completedDeals.length} completed",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.textClr,
+                      GestureDetector(
+                        onTap: (){
+                          Get.toNamed(AppRoutes.hostPastDealsScreen,arguments: userId);
+                        },
+                        child: CustomText(
+                          text: "view All",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primary,
+                        ),
                       ),
                     ],
                   ),
-
                   /// list
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    itemCount: completedDeals.length,
+                    itemCount: completedDeals.isEmpty ? 0 : (completedDeals.length > 5 ? 5 : completedDeals.length),
                     itemBuilder: (context, index) {
                       final deal = completedDeals[index];
                       return CustomPastDealsCard(
-                        imageUrl: (deal.selectDeal?.selectListing?.images?.isNotEmpty ?? false)
-                            ? ApiUrl.baseUrl + deal.selectDeal!.selectListing!.images!.first
-                            : "",
-
-                        title: deal.selectDeal?.selectListing?.title,
+                        imageUrl: (deal.selectDeal?.title?.images?.isNotEmpty ?? false) ? ApiUrl.baseUrl + deal.selectDeal!.title!.images!.first : "",
+                        title: deal.selectDeal?.title?.title,
                         hostName: deal.userId?.name,
                         //date: deal.createdAt,
                         // onSendRequest: () {
@@ -281,6 +278,30 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                       );
                     },
                   ),
+                  SizedBox(height: 30,),
+                  //Review
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const CustomText(
+                        text: "Review",
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          Get.toNamed(AppRoutes.hostPastDealsScreen,arguments: userId);
+                        },
+                        child: CustomText(
+                          text: "view All",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+
                 ],
               );
             }),

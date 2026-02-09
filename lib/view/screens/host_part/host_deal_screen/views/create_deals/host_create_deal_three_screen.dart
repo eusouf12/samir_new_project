@@ -12,10 +12,12 @@ class HostCreateDealThreeScreen extends StatelessWidget {
   HostCreateDealThreeScreen({super.key});
 
   final DealsController controller = Get.put(DealsController());
-  final page = Get.arguments;
+  final args = Get.arguments as Map<String, dynamic>;
 
   @override
   Widget build(BuildContext context) {
+    final String page = args['page'];
+    final String id = args['id'] ;
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: page == "deal" ? "Create Deal" : "Create Collaboration"),
       body: SingleChildScrollView(
@@ -109,7 +111,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
               CustomButtonTwo(
                 title: "Next →",
                 onTap: () {
-                  debugPrint("page == ${page}");
+                  debugPrint("page == ${page} == id = ${id}");
                   debugPrint("Night Credits: ${controller.isNightCredits.value}");
                   debugPrint("Direct Payment: ${controller.isDirectPayment.value}");
                   debugPrint("Total Nights: ${controller.totalNights.value}");
@@ -120,7 +122,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                     debugPrint("$platform : $followers");
                   });
 
-                  Get.toNamed(AppRoutes.hostReviewConfirmScreen,arguments: page);
+                  Get.toNamed(AppRoutes.hostReviewConfirmScreen,arguments: {"page": page, "id": id});
                 },
               ),
             ],

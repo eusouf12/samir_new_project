@@ -12,10 +12,12 @@ class HostCreateDealTwoScreen extends StatelessWidget {
   HostCreateDealTwoScreen({super.key});
 
   final DealsController controller = Get.put(DealsController());
+  final args = Get.arguments as Map<String, dynamic>;
 
   @override
   Widget build(BuildContext context) {
-    final page = Get.arguments;
+    final String page = args['page'];
+    final String id = args['id'] ;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar:  CustomRoyelAppbar(leftIcon: true, titleName: page == "deal" ? "Create Deal" : "Create Collaboration"),
@@ -178,13 +180,13 @@ class HostCreateDealTwoScreen extends StatelessWidget {
                   CustomButtonTwo(
                     onTap: () {
                       debugPrint("==== SELECTED DELIVERABLES ====");
-                      debugPrint("page == ${page}");
+                      debugPrint("page == ${page} == id = ${id}");
 
                       for (var item in controller.deliverables) {
                         debugPrint(item.toString());
                       }
 
-                      Get.toNamed(AppRoutes.hostCreateDealThreeScreen,arguments: page);
+                      Get.toNamed(AppRoutes.hostCreateDealThreeScreen,arguments: {"page": page, "id": id});
                     },
                     title: "Next →",
                   ),

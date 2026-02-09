@@ -84,6 +84,7 @@ class HostActiveInflue extends StatelessWidget {
 
                         return CustomActiveCard(
                           name: user.name,
+                         nightCredits: user.nightCredits,
                           username: user.userName ?? '',
                           socialMediaLinks: user.socialMediaLinks,
                           imageUrl: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
@@ -113,6 +114,7 @@ class HostActiveInflue extends StatelessWidget {
                                   "_id": e.id,
                                 }).toList(),
                                 "founderMember": user.isFounderMember,
+                                "nightCredits": user.nightCredits,
                               },
                             );
                           },
