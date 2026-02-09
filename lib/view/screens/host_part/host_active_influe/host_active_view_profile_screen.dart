@@ -12,6 +12,7 @@ import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../collaboration_screen/controller/collabration_controller.dart';
 import 'controller/influencer_list_host_controller.dart';
+import 'model/all_user_model.dart';
 
 class HostActiveViewProfileScreen extends StatelessWidget {
   HostActiveViewProfileScreen({super.key});
@@ -25,9 +26,17 @@ class HostActiveViewProfileScreen extends StatelessWidget {
     final String name = args['name']?? "";
     final String userName = args['userName'] ??"";
     final String image = args['image'] ??"";
-    final String followers = args['followers']??"";
+    final List<dynamic> socialMediaLinks = args['socialMediaLinks'] ?? [];
     final bool founderMember = args['founderMember']??false;
     final String date = "2026-12-24T21:43:46.978Z";
+    final List<SocialMediaLink> socialLinks = socialMediaLinks.map((e) {
+      return SocialMediaLink(
+        platform: e['platform'] ?? '',
+        url: e['url'] ?? '',
+        followers: e['followers'] ?? 0,
+        id: e['_id'] ?? '',
+      );
+    }).toList();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
        collaborationController.getSingleUserCollaboration(id: userId);
@@ -67,8 +76,8 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                         children: [
                           CustomNetworkImage(
                             imageUrl: ApiUrl.baseUrl + image,
-                            height: 100,
-                            width: 100,
+                            height: 95,
+                            width: 95,
                             boxShape: BoxShape.circle,
                           ),
                           founderMember?Positioned(
@@ -78,7 +87,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                           ): SizedBox.shrink(),
                         ],
                       ),
-                      SizedBox(width: 20),
+                      SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -97,27 +106,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 4),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              //followers
-                              Column(
-                                children: [
-                                  CustomText(
-                                    text: followers,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color(0xffFD8270),
-                                  ),
-                                  CustomText(
-                                    text: "Followers",
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.textClr,
-                                  ),
-                                ],
-                              ),
-                              SizedBox(width: 40),
-                              //founder member
                               founderMember==true?Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 10,
@@ -139,7 +128,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                     CustomText(
                                       left: 6,
                                       text: "Founder Member",
-                                      fontSize: 12,
+                                      fontSize: 11,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.white,
                                     ),
@@ -147,12 +136,65 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                 ),
                               )
                                   : SizedBox.shrink(),
+                              SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFFF9F2),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.star, color: Colors.orange, size: 16,),
+                                    SizedBox(width: 4),
 
+                                    Text(
+                                      "3000 Night Credits",
+                                      style: TextStyle(
+                                        color: Color(0xFF1A237E),
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
                             ],
                           ),
                         ],
                       )
                     ],
+                  ),
+                  SizedBox(height: 20),
+                  // ====== platform followers ===========
+                  Row(
+                    children: (socialMediaLinks ).isEmpty
+                        ? [
+                      SizedBox.shrink()
+                    ]
+                        : (socialMediaLinks).map((item) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Row(
+                          children: [
+                            Icon(
+                              _getPlatformIcon(item['platform'] ?? ''),
+                              size: 20,
+                              color: _getPlatformColor(item['platform'] ?? ''),
+                            ),
+                            const SizedBox(width: 8),
+                            CustomText(
+                              text: "${item['followers'] ?? 0} ",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.black,
+                            ),
+
+                          ],
+                        ),
+                      );
+                    }).toList(),
                   ),
                 ],
               ),
@@ -234,5 +276,39 @@ class HostActiveViewProfileScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+  IconData _getPlatformIcon(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'instagram':
+        return Icons.camera_alt;
+      case 'facebook':
+        return Icons.facebook;
+      case 'tiktok':
+        return Icons.music_note;
+      case 'youtube':
+        return Icons.play_circle_fill;
+      case 'x':
+      case 'twitter':
+        return Icons.alternate_email;
+      default:
+        return Icons.public;
+    }
+  }
+  Color _getPlatformColor(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'instagram':
+        return const Color(0xFFE1306C); // pink
+      case 'facebook':
+        return const Color(0xFF1877F2); // blue
+      case 'tiktok':
+        return Colors.black;
+      case 'youtube':
+        return const Color(0xFFFF0000); // red
+      case 'x':
+      case 'twitter':
+        return Colors.black;
+      default:
+        return AppColors.primary;
+    }
   }
 }

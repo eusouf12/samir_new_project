@@ -59,21 +59,50 @@ class CustomActiveCard extends StatelessWidget {
                     boxShape: BoxShape.circle,
                   ),
                   const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: name,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      CustomText(
-                        text: "@$username",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: name,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.start,
+                          maxLines: 1,
+                        ),
+                        CustomText(
+                          text: "@$username",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ],
+                    ),
                   ),
+                   SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFF9F2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                         Icon(Icons.star, color: Colors.orange, size: 16,),
+                         SizedBox(width: 4),
+
+                        Text(
+                         "3 Night Credits",
+                         style: TextStyle(
+                           color: Color(0xFF1A237E),
+                           fontSize: 11,
+                           fontWeight: FontWeight.bold,
+                         ),
+                                                    ),
+                      ],
+                    ),
+                  )
                 ],
               ),
 
@@ -123,7 +152,7 @@ class CustomActiveCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         CustomText(
-                          text: "${item.followers} K",
+                          text: "${item.followers}",
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
                           color: AppColors.black,

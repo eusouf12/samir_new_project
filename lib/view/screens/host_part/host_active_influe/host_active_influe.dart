@@ -106,7 +106,12 @@ class HostActiveInflue extends StatelessWidget {
                                 "name": user.name,
                                 "userName": user.userName,
                                 "image": user.image,
-                                "followers": "125 K",
+                                "socialMediaLinks": user.socialMediaLinks.map((e) => {
+                                  "platform": e.platform,
+                                  "url": e.url,
+                                  "followers": e.followers,
+                                  "_id": e.id,
+                                }).toList(),
                                 "founderMember": user.isFounderMember,
                               },
                             );
