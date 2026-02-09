@@ -365,7 +365,7 @@ class HostReviewConfirmScreen extends StatelessWidget {
                         ? CustomLoader()
                         : CustomButton(
                        onTap: () async {
-                        await dealsController.createDeal(pageName: page);
+                         page == "deal" ? await dealsController.createDeal(pageName: page,) :await dealsController.createDeal(pageName: page,dealId:"");
                       },
                       title:page == "deal" ? "Publish Deal" : "Send Request",
                     );

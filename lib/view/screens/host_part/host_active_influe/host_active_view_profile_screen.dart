@@ -7,7 +7,9 @@ import 'package:samir_flutter_app/view/components/custom_image/custom_image.dart
 import 'package:samir_flutter_app/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_active_influe/widgets/custom_past_deals_card.dart';
+import '../../../../core/app_routes/app_routes.dart';
 import '../../../../service/api_url.dart';
+import '../../../components/custom_button/custom_button_two.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../collaboration_screen/controller/collabration_controller.dart';
@@ -196,6 +198,16 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                       );
                     }).toList(),
                   ),
+                  SizedBox(height: 20),
+                  CustomButtonTwo(
+                    onTap: (){
+                      Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: "Collaboration");
+                    },
+                      height: 40,
+                      title: "Send Collaboration Request",
+                      fontSize: 12,
+                      borderRadius: 10,
+                    ),
                 ],
               ),
             ),

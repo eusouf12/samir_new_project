@@ -18,7 +18,7 @@ class HostCreateDealTwoScreen extends StatelessWidget {
     final page = Get.arguments;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Create Deal"),
+      appBar:  CustomRoyelAppbar(leftIcon: true, titleName: page == "deal" ? "Create Deal" : "Create Collaboration"),
       body: SingleChildScrollView(
         child: Column(
           children: [
