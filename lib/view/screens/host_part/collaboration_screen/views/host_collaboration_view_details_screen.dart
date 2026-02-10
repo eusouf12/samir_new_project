@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
@@ -24,9 +25,20 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
     final int nightStay = args["nightStay"] ?? 0;
     final String inTimeAndDate = args["inTimeAndDate"] ?? "";
     final String outTimeAndDate = args["outTimeAndDate"] ?? "";
-    final Map<String, dynamic> amenities = Map<String, dynamic>.from(args["amenities"] ?? {});
-    final List<String> amenityList = amenities.entries.where((e) => e.value == true).map((e) => e.key).toList();
-    final List deliverables = args["deliverables"] ?? [];
+    final SingleUserAmenities? amenities = args["amenities"];
+    final List<SingleUserDeliverable> deliverables = args["deliverables"] ?? [];
+    final List<String> enabledAmenities = [];
+    if (amenities != null) {
+      if (amenities.wifi) enabledAmenities.add("Wifi");
+      if (amenities.kitchen) enabledAmenities.add("Kitchen");
+      if (amenities.tv) enabledAmenities.add("TV");
+      if (amenities.pool) enabledAmenities.add("Pool");
+      if (amenities.airConditioning) enabledAmenities.add("AirConditioning");
+      if (amenities.gym) enabledAmenities.add("Gym");
+      if (amenities.parking) enabledAmenities.add("Parking");
+      if (amenities.petFriendly) enabledAmenities.add("PetFriendly");
+      if (amenities.hotTub) enabledAmenities.add("HotTub");
+    }
 
     return CustomGradient(
       child: Scaffold(
@@ -103,7 +115,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                             color: AppColors.textClr,
                           ),
                           CustomText(
-                            text: inTimeAndDate,
+                            text: formatDate(inTimeAndDate),
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
@@ -119,7 +131,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                             color: AppColors.textClr,
                           ),
                           CustomText(
-                            text: outTimeAndDate,
+                            text: formatDate(outTimeAndDate),
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                           ),
@@ -179,7 +191,11 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                         Wrap(
                           spacing: 10,
                           runSpacing: 10,
-                          children: amenityList.map((amenity) {
+                          children: enabledAmenities.map((amenity) {
+                            final formattedAmenity = amenity.replaceAllMapped(RegExp(r'[A-Z]'), (m) => ' ${m.group(0)}',).trim();
+
+                            final displayText = formattedAmenity[0].toUpperCase() + formattedAmenity.substring(1);
+
                             return Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
@@ -187,7 +203,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: CustomText(
-                                text: amenity.replaceAllMapped(RegExp(r'[A-Z]'), (m) => ' ${m.group(0)}',).capitalizeFirst!,
+                                text: displayText,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.primary,
@@ -195,6 +211,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                             );
                           }).toList(),
                         ),
+
                       ],
                     ),
                   ),
@@ -289,4 +306,11 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
       ),
     );
   }
+  // Example
+  String formatDate(String isoDate) {
+    if (isoDate.isEmpty) return "";
+    DateTime parsedDate = DateTime.parse(isoDate);
+    return DateFormat('MMM dd, yyyy').format(parsedDate);
+  }
+
 }

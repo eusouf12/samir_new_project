@@ -171,9 +171,7 @@ class HostCollaborationScreen extends StatelessWidget {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16),
                             child: CustomCollaborationCard(
-                              profileImage: (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false)
-                                  ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image!
-                                  : "",
+                              profileImage: (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image! : "",
                               userName: collaboration.selectInfluencerOrHost?.name,
                               userHandle:  collaboration.selectInfluencerOrHost?.userName,
                               //tags: collaboration. ?? ["General"],
@@ -181,27 +179,58 @@ class HostCollaborationScreen extends StatelessWidget {
 
                               // ===== Dynamic Callbacks =====
                               onViewDetailsTap: () {
-                                Get.toNamed(AppRoutes.hostCollaborationViewDetailsScreen,
-                                    arguments: {
-                                      "image": (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false)
-                                          ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image!
-                                          : "image",
-                                      "name": collaboration.selectInfluencerOrHost?.name ?? "name",
-                                      "userName": collaboration.selectInfluencerOrHost?.userName ?? "userName",
-                                      "listingName":  collaboration.selectDeal?.title?.title ?? "listingName",
-                                      "listingImage":
-                                      (collaboration.selectDeal?.title?.images?.isNotEmpty ?? false)
-                                          ? ApiUrl.baseUrl + (collaboration.selectDeal!.title!.images!.first)
-                                          : "",
-                                      "payment":  collaboration.selectDeal?.compensation?.paymentAmount ?? "payment",
-                                      "nightStay":  collaboration.selectDeal?.compensation?.numberOfNights ?? "nightStay",
-                                      "inTimeAndDate": collaboration.selectDeal?.inTimeAndDate ?? "inTimeAndDate",
-                                      "outTimeAndDate": collaboration.selectDeal?.outTimeAndDate ?? "outTimeAndDate",
-                                      // "amenities": collaboration.selectDeal?.title?.amenities ?? {},
-                                      // "deliverables": collaboration.selectDeal?.deliverables ?? [],
-                                    }
+
+                                debugPrint("===== COLLABORATION DETAILS ARGS =====");
+
+                                debugPrint("Influencer image: ${collaboration.selectInfluencerOrHost?.image}");
+                                debugPrint("Influencer name: ${collaboration.selectInfluencerOrHost?.name}");
+                                debugPrint("Influencer username: ${collaboration.selectInfluencerOrHost?.userName}");
+
+                                debugPrint("Listing title: ${collaboration.selectDeal?.title?.title}");
+                                debugPrint("Listing images: ${collaboration.selectDeal?.title?.images}");
+
+                                debugPrint("Payment amount: ${collaboration.selectDeal?.compensation?.paymentAmount}");
+                                debugPrint("Night stay: ${collaboration.selectDeal?.compensation?.numberOfNights}");
+
+                                debugPrint("Check-in: ${collaboration.selectDeal?.inTimeAndDate}");
+                                debugPrint("Check-out: ${collaboration.selectDeal?.outTimeAndDate}");
+
+                                debugPrint("Amenities: ${collaboration.selectDeal?.title?.amenities}");
+
+                                debugPrint("Deliverables: ${collaboration.deliverables}");
+
+                                debugPrint("====================================");
+
+                                Get.toNamed(
+                                  AppRoutes.hostCollaborationViewDetailsScreen,
+                                  arguments: {
+                                    "image": (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false)
+                                        ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image!
+                                        : "",
+
+                                    "name": collaboration.selectInfluencerOrHost?.name ?? "",
+                                    "userName": collaboration.selectInfluencerOrHost?.userName ?? "",
+
+                                    "listingName": collaboration.selectDeal?.title?.title ?? "",
+
+                                    "listingImage":
+                                    (collaboration.selectDeal?.title?.images?.isNotEmpty ?? false)
+                                        ? ApiUrl.baseUrl +
+                                        collaboration.selectDeal!.title!.images!.first
+                                        : "",
+
+                                    "payment": collaboration.selectDeal?.compensation?.paymentAmount ?? "0",
+                                    "nightStay": collaboration.selectDeal?.compensation?.numberOfNights ?? 0,
+
+                                    "inTimeAndDate": collaboration.selectDeal?.inTimeAndDate ?? "",
+                                    "outTimeAndDate": collaboration.selectDeal?.outTimeAndDate ?? "",
+
+                                    "amenities": collaboration.selectDeal?.title?.amenities,
+                                    "deliverables": collaboration.deliverables ?? [],
+                                  },
                                 );
                               },
+
                               onApproveTap: () {
 
                                 // controller.approveCollaboration(collaboration.id);

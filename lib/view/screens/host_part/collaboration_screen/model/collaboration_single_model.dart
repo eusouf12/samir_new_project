@@ -31,6 +31,7 @@ class SingleUserCollaborationData {
   final SingleUserInfo? userId;
   final SingleUserInfo? selectInfluencerOrHost;
   final SingleUserDealInfo? selectDeal;
+  final List<SingleUserDeliverable>? deliverables;
   final String? status;
   final String? negotiationStatus;
   final String? paymentStatus;
@@ -43,6 +44,7 @@ class SingleUserCollaborationData {
     this.id,
     this.userId,
     this.selectInfluencerOrHost,
+    this.deliverables,
     this.selectDeal,
     this.status,
     this.negotiationStatus,
@@ -56,15 +58,10 @@ class SingleUserCollaborationData {
   factory SingleUserCollaborationData.fromJson(Map<String, dynamic> json) {
     return SingleUserCollaborationData(
       id: json['_id'],
-      userId: json['userId'] != null
-          ? SingleUserInfo.fromJson(json['userId'])
-          : null,
-      selectInfluencerOrHost: json['selectInfluencerOrHost'] != null
-          ? SingleUserInfo.fromJson(json['selectInfluencerOrHost'])
-          : null,
-      selectDeal: json['selectDeal'] != null
-          ? SingleUserDealInfo.fromJson(json['selectDeal'])
-          : null,
+      userId: json['userId'] != null ? SingleUserInfo.fromJson(json['userId']) : null,
+      selectInfluencerOrHost: json['selectInfluencerOrHost'] != null ? SingleUserInfo.fromJson(json['selectInfluencerOrHost']) : null,
+      selectDeal: json['selectDeal'] != null ? SingleUserDealInfo.fromJson(json['selectDeal']) : null,
+      deliverables: (json['deliverables'] as List?)?.map((e) => SingleUserDeliverable.fromJson(e)).toList(),
       status: json['status'],
       negotiationStatus: json['negotiationStatus'],
       paymentStatus: json['paymentStatus'],
@@ -80,32 +77,61 @@ class SingleUserCollaborationData {
 
 class SingleUserInfo {
   final String? id;
-  final String? image;
   final String? name;
   final String? userName;
   final String? email;
   final String? role;
+  final String? fullAddress;
+  final String? image;
+  final List<InfluencerSocialMedia>? socialMediaLinks;
 
   SingleUserInfo({
     this.id,
-    this.image,
     this.name,
     this.userName,
     this.email,
     this.role,
+    this.fullAddress,
+    this.image,
+    this.socialMediaLinks,
   });
 
   factory SingleUserInfo.fromJson(Map<String, dynamic> json) {
     return SingleUserInfo(
-      id: json['_id'] ?? "",
-      name: json['name'] ??"",
-      userName: json['userName'] ??"",
-      image: json['image'] ?? "",
+      id: json['_id'],
+      name: json['name'],
+      userName: json['userName'],
       email: json['email'],
       role: json['role'],
+      fullAddress: json['fullAddress'],
+      image: json['image'],
+      socialMediaLinks: (json['socialMediaLinks'] as List?)
+          ?.map((e) => InfluencerSocialMedia.fromJson(e))
+          .toList(),
     );
   }
 }
+
+class InfluencerSocialMedia {
+  final String? platform;
+  final String? url;
+  final String? followers;
+
+  InfluencerSocialMedia({
+    this.platform,
+    this.url,
+    this.followers,
+  });
+
+  factory InfluencerSocialMedia.fromJson(Map<String, dynamic> json) {
+    return InfluencerSocialMedia(
+      platform: json['platform'],
+      url: json['url'],
+      followers: json['followers'],
+    );
+  }
+}
+
 
 class SingleUserDealInfo {
   final String? id;
@@ -117,6 +143,7 @@ class SingleUserDealInfo {
   final String? outTimeAndDate;
   final int? guestCount;
   final String? status;
+
 
   SingleUserDealInfo({
     this.id,
@@ -133,18 +160,52 @@ class SingleUserDealInfo {
   factory SingleUserDealInfo.fromJson(Map<String, dynamic> json) {
     return SingleUserDealInfo(
       id: json['_id'],
-      compensation: json['compensation'] != null
-          ? SingleUserCompensation.fromJson(json['compensation'])
-          : null,
-      title: json['title'] != null
-          ? SingleUserDealTitle.fromJson(json['title'])
-          : null,
+      compensation: json['compensation'] != null ? SingleUserCompensation.fromJson(json['compensation']) : null,
+      title: json['title'] != null ? SingleUserDealTitle.fromJson(json['title']) : null,
       description: json['description'],
       addAirbnbLink: json['addAirbnbLink'],
       inTimeAndDate: json['inTimeAndDate'],
       outTimeAndDate: json['outTimeAndDate'],
       guestCount: json['guestCount'],
       status: json['status'],
+    );
+  }
+}
+
+class SingleUserAmenities {
+  final bool wifi;
+  final bool kitchen;
+  final bool tv;
+  final bool pool;
+  final bool airConditioning;
+  final bool gym;
+  final bool parking;
+  final bool petFriendly;
+  final bool hotTub;
+
+  SingleUserAmenities({
+    required this.wifi,
+    required this.kitchen,
+    required this.tv,
+    required this.pool,
+    required this.airConditioning,
+    required this.gym,
+    required this.parking,
+    required this.petFriendly,
+    required this.hotTub,
+  });
+
+  factory SingleUserAmenities.fromJson(Map<String, dynamic> json) {
+    return SingleUserAmenities(
+      wifi: json['wifi'] ?? false,
+      kitchen: json['kitchen'] ?? false,
+      tv: json['tv'] ?? false,
+      pool: json['pool'] ?? false,
+      airConditioning: json['airConditioning'] ?? false,
+      gym: json['gym'] ?? false,
+      parking: json['parking'] ?? false,
+      petFriendly: json['petFriendly'] ?? false,
+      hotTub: json['hotTub'] ?? false,
     );
   }
 }
@@ -177,12 +238,14 @@ class SingleUserDealTitle {
   final String? title;
   final String? location;
   final List<String>? images;
+  final SingleUserAmenities? amenities;
 
   SingleUserDealTitle({
     this.id,
     this.title,
     this.location,
     this.images,
+    this.amenities,
   });
 
   factory SingleUserDealTitle.fromJson(Map<String, dynamic> json) {
@@ -191,6 +254,7 @@ class SingleUserDealTitle {
       title: json['title'],
       location: json['location'],
       images: (json['images'] as List?)?.cast<String>(),
+      amenities: json['amenities'] != null ? SingleUserAmenities.fromJson(json['amenities']) : null,
     );
   }
 }
@@ -241,40 +305,3 @@ class SingleUserSocialMediaLinks {
   }
 }
 
-class SingleUserAmenities {
-  final bool kitchen;
-  final bool airConditioning;
-  final bool gym;
-  final bool parking;
-  final bool petFriendly;
-  final bool hotTub;
-  final bool wifi;
-  final bool tv;
-  final bool pool;
-
-  SingleUserAmenities({
-    required this.kitchen,
-    required this.airConditioning,
-    required this.gym,
-    required this.parking,
-    required this.petFriendly,
-    required this.hotTub,
-    required this.wifi,
-    required this.tv,
-    required this.pool,
-  });
-
-  factory SingleUserAmenities.fromJson(Map<String, dynamic> json) {
-    return SingleUserAmenities(
-      kitchen: json['kitchen'] ?? false,
-      airConditioning: json['airConditioning'] ?? false,
-      gym: json['gym'] ?? false,
-      parking: json['parking'] ?? false,
-      petFriendly: json['petFriendly'] ?? false,
-      hotTub: json['hotTub'] ?? false,
-      wifi: json['wifi'] ?? false,
-      tv: json['tv'] ?? false,
-      pool: json['pool'] ?? false,
-    );
-  }
-}
