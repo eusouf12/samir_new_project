@@ -23,6 +23,7 @@ class HostCollaborationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
+      controller.currentIndex.value = 0;
       String id = await SharePrefsHelper.getString(AppConstants.userId);
       controller.getSingleUserCollaboration(id: id);
       controller.getSingleUser(userId: id);
@@ -52,7 +53,7 @@ class HostCollaborationScreen extends StatelessWidget {
                 maxLines: 3,
                 bottom: 20,
               ),
-            Obx(() {
+              Obx(() {
               final userData = controller.singleUserProfile;
 
               // Null safety check
@@ -102,7 +103,7 @@ class HostCollaborationScreen extends StatelessWidget {
                         color: Color(0xff22C55E),
                       ),
                       CustomText(
-                        text: "Approved",
+                        text: "Ongoing",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                       ),
@@ -126,9 +127,7 @@ class HostCollaborationScreen extends StatelessWidget {
                 ],
               );
             }),
-
-
-            SizedBox(height: 20.h),
+              SizedBox(height: 20.h),
               // ========== Custom TabBar ==========
               Obx(() => CustomTabBar(
                 tabs: controller.collaborationTabList,
@@ -136,7 +135,6 @@ class HostCollaborationScreen extends StatelessWidget {
                 onTabSelected: controller.onTabSelected,
                 selectedColor: AppColors.primary,
               )),
-
               SizedBox(height: 10.h),
 
               // ========== Collaboration List ==========
@@ -174,29 +172,15 @@ class HostCollaborationScreen extends StatelessWidget {
                               profileImage: (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image! : "",
                               userName: collaboration.selectInfluencerOrHost?.name,
                               userHandle:  collaboration.selectInfluencerOrHost?.userName,
-                              //tags: collaboration. ?? ["General"],
+                              status: collaboration.status,
                               location: collaboration.selectDeal?.title?.title ?? "",
+                               socialMediaLinks: collaboration.selectInfluencerOrHost?.socialMediaLinks ?? [],
 
                               // ===== Dynamic Callbacks =====
                               onViewDetailsTap: () {
 
                                 debugPrint("===== COLLABORATION DETAILS ARGS =====");
-
-                                debugPrint("Influencer image: ${collaboration.selectInfluencerOrHost?.image}");
-                                debugPrint("Influencer name: ${collaboration.selectInfluencerOrHost?.name}");
-                                debugPrint("Influencer username: ${collaboration.selectInfluencerOrHost?.userName}");
-
-                                debugPrint("Listing title: ${collaboration.selectDeal?.title?.title}");
-                                debugPrint("Listing images: ${collaboration.selectDeal?.title?.images}");
-
-                                debugPrint("Payment amount: ${collaboration.selectDeal?.compensation?.paymentAmount}");
-                                debugPrint("Night stay: ${collaboration.selectDeal?.compensation?.numberOfNights}");
-
-                                debugPrint("Check-in: ${collaboration.selectDeal?.inTimeAndDate}");
-                                debugPrint("Check-out: ${collaboration.selectDeal?.outTimeAndDate}");
-
                                 debugPrint("Amenities: ${collaboration.selectDeal?.title?.amenities}");
-
                                 debugPrint("Deliverables: ${collaboration.deliverables}");
 
                                 debugPrint("====================================");
@@ -204,29 +188,19 @@ class HostCollaborationScreen extends StatelessWidget {
                                 Get.toNamed(
                                   AppRoutes.hostCollaborationViewDetailsScreen,
                                   arguments: {
-                                    "image": (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false)
-                                        ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image!
-                                        : "",
-
+                                    "image": (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image! : "",
                                     "name": collaboration.selectInfluencerOrHost?.name ?? "",
                                     "userName": collaboration.selectInfluencerOrHost?.userName ?? "",
-
                                     "listingName": collaboration.selectDeal?.title?.title ?? "",
-
-                                    "listingImage":
-                                    (collaboration.selectDeal?.title?.images?.isNotEmpty ?? false)
-                                        ? ApiUrl.baseUrl +
-                                        collaboration.selectDeal!.title!.images!.first
-                                        : "",
-
+                                    "listingImage": (collaboration.selectDeal?.title?.images?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectDeal!.title!.images!.first : "",
                                     "payment": collaboration.selectDeal?.compensation?.paymentAmount ?? "0",
                                     "nightStay": collaboration.selectDeal?.compensation?.numberOfNights ?? 0,
-
                                     "inTimeAndDate": collaboration.selectDeal?.inTimeAndDate ?? "",
                                     "outTimeAndDate": collaboration.selectDeal?.outTimeAndDate ?? "",
-
                                     "amenities": collaboration.selectDeal?.title?.amenities,
                                     "deliverables": collaboration.deliverables ?? [],
+                                    "socialMediaLinks": collaboration.selectInfluencerOrHost?.socialMediaLinks ?? [],
+                                    "status" : collaboration.status
                                   },
                                 );
                               },

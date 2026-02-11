@@ -132,7 +132,6 @@ class InfluencerSocialMedia {
   }
 }
 
-
 class SingleUserDealInfo {
   final String? id;
   final SingleUserCompensation? compensation;

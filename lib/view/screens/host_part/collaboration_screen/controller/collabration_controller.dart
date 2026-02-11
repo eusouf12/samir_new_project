@@ -10,7 +10,7 @@ import '../model/single_user_model.dart';
 
 
 class CollaborationController extends GetxController {
-  RxList<String> collaborationTabList = <String>['All','Pending','Approved','Declined'].obs;
+  RxList<String> collaborationTabList = <String>['All','Pending','Ongoing','Declined'].obs;
   RxInt currentIndex = 0.obs;
 
   // Function to call based on tab index

@@ -3,6 +3,7 @@ import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_button/custom_button_two.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../model/collaboration_single_model.dart';
 
 class CustomCollaborationCard extends StatelessWidget {
   final String? profileImage;
@@ -14,6 +15,7 @@ class CustomCollaborationCard extends StatelessWidget {
   final VoidCallback? onViewDetailsTap;
   final VoidCallback? onApproveTap;
   final VoidCallback? onDeclineTap;
+  final List<InfluencerSocialMedia> socialMediaLinks;
 
   const CustomCollaborationCard({
     super.key,
@@ -26,6 +28,7 @@ class CustomCollaborationCard extends StatelessWidget {
     this.onViewDetailsTap,
     this.onApproveTap,
     this.onDeclineTap,
+    required this.socialMediaLinks,
   });
 
   @override
@@ -60,15 +63,42 @@ class CustomCollaborationCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: userName ?? "Unknown",
+                      text: userName ?? "",
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                     CustomText(
-                      text: userHandle ?? "@unknown",
+                      text: "@${userHandle}" ?? "",
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
+                      bottom: 10,
                     ),
+                    Row(
+                      children: socialMediaLinks.isEmpty
+                          ? []
+                          : socialMediaLinks.map((item) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Row(
+                            children: [
+                              Icon(
+                                _getPlatformIcon(item.platform ?? ""),
+                                size: 18,
+                                color: _getPlatformColor(item.platform ?? ""),
+                              ),
+                              const SizedBox(width: 4),
+                              CustomText(
+                                text: item.followers ?? "0",
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.black,
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+
                   ],
                 ),
               ],
@@ -170,5 +200,39 @@ class CustomCollaborationCard extends StatelessWidget {
         ),
       ),
     );
+  }
+  IconData _getPlatformIcon(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'instagram':
+        return Icons.camera_alt;
+      case 'facebook':
+        return Icons.facebook;
+      case 'tiktok':
+        return Icons.music_note;
+      case 'youtube':
+        return Icons.play_circle_fill;
+      case 'x':
+      case 'twitter':
+        return Icons.alternate_email;
+      default:
+        return Icons.public;
+    }
+  }
+  Color _getPlatformColor(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'instagram':
+        return const Color(0xFFE1306C); // pink
+      case 'facebook':
+        return const Color(0xFF1877F2); // blue
+      case 'tiktok':
+        return Colors.black;
+      case 'youtube':
+        return const Color(0xFFFF0000); // red
+      case 'x':
+      case 'twitter':
+        return Colors.black;
+      default:
+        return AppColors.primary;
+    }
   }
 }

@@ -27,6 +27,9 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
     final String outTimeAndDate = args["outTimeAndDate"] ?? "";
     final SingleUserAmenities? amenities = args["amenities"];
     final List<SingleUserDeliverable> deliverables = args["deliverables"] ?? [];
+    final List socialMediaLinks = args["socialMediaLinks"] ?? [];
+    final String status = args["status"] ?? "";
+
     final List<String> enabledAmenities = [];
     if (amenities != null) {
       if (amenities.wifi) enabledAmenities.add("Wifi");
@@ -56,7 +59,37 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(text: name, fontSize: 14,fontWeight: FontWeight.w600,),
-                        CustomText(text: userName,fontSize: 12,fontWeight: FontWeight.w400,),
+                        CustomText(text: userName,fontSize: 12,fontWeight: FontWeight.w400,bottom: 10,),
+                        Row(
+                          children: [
+                            Row(
+                              children: socialMediaLinks.isEmpty
+                                  ? []
+                                  : socialMediaLinks.map((item) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        _getPlatformIcon(item.platform ?? ""),
+                                        size: 18,
+                                        color: _getPlatformColor(item.platform ?? ""),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      CustomText(
+                                        text: item.followers ?? "0",
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.black,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        )
+
                       ],
                     ),
                   ],
@@ -244,7 +277,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                            text: "Total Value",
+                            text: "Total Payment",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: AppColors.textClr,
@@ -263,7 +296,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                            text: "Host Credit Reward",
+                            text: "Night Stay",
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: AppColors.textClr,
@@ -282,7 +315,9 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 60,),
-                Row(
+                (status == "ongoing" || status == "rejected" )
+                    ? SizedBox.shrink()
+                    : Row(
                   children: [
                     Flexible(child: CustomButtonTwo(
                       onTap: (){
@@ -294,8 +329,8 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                     Flexible(child: CustomButtonTwo(
                       onTap: (){
 
-                       },
-                       title: "Accept",fillColor: AppColors.primary,)
+                      },
+                      title: "Accept",fillColor: AppColors.primary,)
                     )
                   ],
                 ),
@@ -312,5 +347,38 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
     DateTime parsedDate = DateTime.parse(isoDate);
     return DateFormat('MMM dd, yyyy').format(parsedDate);
   }
-
+  IconData _getPlatformIcon(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'instagram':
+        return Icons.camera_alt;
+      case 'facebook':
+        return Icons.facebook;
+      case 'tiktok':
+        return Icons.music_note;
+      case 'youtube':
+        return Icons.play_circle_fill;
+      case 'x':
+      case 'twitter':
+        return Icons.alternate_email;
+      default:
+        return Icons.public;
+    }
+  }
+  Color _getPlatformColor(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'instagram':
+        return const Color(0xFFE1306C); // pink
+      case 'facebook':
+        return const Color(0xFF1877F2); // blue
+      case 'tiktok':
+        return Colors.black;
+      case 'youtube':
+        return const Color(0xFFFF0000); // red
+      case 'x':
+      case 'twitter':
+        return Colors.black;
+      default:
+        return AppColors.primary;
+    }
+  }
 }
