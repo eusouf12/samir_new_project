@@ -12,7 +12,6 @@ class ChatListController extends GetxController {
   int currentPage = 1;
   int totalPages = 1;
 
-  // Get Conversation List API
   Future<void> getConversations({bool loadMore = false}) async {
     if (loadMore) {
       if (currentPage >= totalPages) return;
@@ -40,4 +39,32 @@ class ChatListController extends GetxController {
       isLoading.value = false;
     }
   }
+  // ==================== GetCheckPreviousListExist =================
+  RxList<ConversationModel> chatExistList = <ConversationModel>[].obs;
+
+  final isChatExistLoading = false.obs;
+
+  Future<String?> checkChatListExist({
+    required String id,
+  }) async {
+    try {
+      final response =
+      await ApiClient.getData(ApiUrl.checkChatList(id: id));
+
+      if (response.statusCode == 200) {
+        final body = response.body;
+
+        final messages = body['data']['messages'];
+
+        if (messages != null && messages.isNotEmpty) {
+          return messages.first['conversationId'];
+        }
+      }
+    } catch (e) {
+      debugPrint('❌ Conversation API Error: $e');
+    }
+
+    return null;
+  }
+
 }

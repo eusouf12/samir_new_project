@@ -9,11 +9,13 @@ import '../../../../utils/app_const/app_const.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_text_field/custom_text_field.dart';
 import '../host_listing_screen/widgets/custom_active_card.dart';
+import '../host_messages_list_screen/controller/chat_list_controller.dart';
 import 'controller/influencer_list_host_controller.dart';
 
 class HostActiveInflue extends StatelessWidget {
   HostActiveInflue({super.key});
   final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
+  final ChatListController chatListController = Get.put(ChatListController());
 
   @override
   Widget build(BuildContext context) {
@@ -84,19 +86,21 @@ class HostActiveInflue extends StatelessWidget {
 
                         return CustomActiveCard(
                           name: user.name,
-                         nightCredits: user.nightCredits,
+                           nightCredits: user.nightCredits,
                           username: user.userName ?? '',
                           socialMediaLinks: user.socialMediaLinks,
                           imageUrl: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
-                          onViewMessage: () {
-                            Get.toNamed(AppRoutes.chatScreen,
-                              arguments: {
-                                'conversationId': "",
-                                'userName': user.name,
-                                'userImage': user.image,
-                                'receiverId': user.id,
-                              },
-                            );
+                          onViewMessage: () async {
+                            final conversationId = await chatListController.checkChatListExist(id: user.id);
+
+                              Get.toNamed(AppRoutes.chatScreen,
+                                arguments: {
+                                  'conversationId':conversationId != null ? conversationId : "",
+                                  'userName': user.name,
+                                  'userImage': user.image,
+                                  'receiverId': user.id,
+                                },
+                              );
                           },
                           onViewProfile: () {
                             debugPrint("user.userName, === ${user.image}");

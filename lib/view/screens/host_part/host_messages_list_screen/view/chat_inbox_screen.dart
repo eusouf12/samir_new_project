@@ -25,10 +25,10 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String conversationId = args['conversationId'];
-    final String userName = args['userName'];
-    final String userImage = args['userImage'];
-    final String receiverId = args['receiverId'];
+    final String conversationId = args['conversationId'] ?? "";
+    final String userName = args['userName'] ?? "";
+    final String? userImage = args['userImage'] as String?;
+    final String receiverId = args['receiverId'] ?? "";
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       controller.getChatMessages(id: conversationId);
       profileController.getUserProfile();
@@ -49,7 +49,8 @@ class ChatScreen extends StatelessWidget {
           title: Row(
             children:  [
               CircleAvatar(
-                backgroundImage: NetworkImage("${ApiUrl.baseUrl}$userImage"),
+                backgroundImage: (userImage != null && userImage.isNotEmpty)
+                    ? NetworkImage("${ApiUrl.baseUrl}$userImage") : NetworkImage("${AppConstants.profileImage2}"),
                 radius: 20,
               ),
               SizedBox(width: 10),
