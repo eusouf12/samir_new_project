@@ -7,6 +7,7 @@ import 'package:samir_flutter_app/view/components/custom_image/custom_image.dart
 import 'package:samir_flutter_app/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_active_influe/widgets/custom_past_deals_card.dart';
+import 'package:samir_flutter_app/view/screens/host_part/host_active_influe/widgets/custom_review_card.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../service/api_url.dart';
 import '../../../components/custom_button/custom_button_two.dart';
@@ -32,17 +33,11 @@ class HostActiveViewProfileScreen extends StatelessWidget {
     final bool founderMember = args['founderMember']??false;
     final int nightCredits = args['nightCredits']??0;
     final String date = "2026-12-24T21:43:46.978Z";
-    // final List<SocialMediaLink> socialLinks = socialMediaLinks.map((e) {
-    //   return SocialMediaLink(
-    //     platform: e['platform'] ?? '',
-    //     url: e['url'] ?? '',
-    //     followers: e['followers'] ?? 0,
-    //     id: e['_id'] ?? '',
-    //   );
-    // }).toList();
+
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
        collaborationController.getSingleUserCollaboration(id: userId,filterName: "completed");
+       collaborationController.getUserReviews(userId: userId);
     });
 
     return Scaffold(
@@ -218,11 +213,9 @@ class HostActiveViewProfileScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: Obx(() {
-              // loader
               if (collaborationController.singleUserCollaborationStatus.value == Status.loading) {
                  return const Center(child: CustomLoader());
               }
-
               final completedDeals = collaborationController.singleUserCollaborationList;
 
               if (completedDeals.isEmpty) {
@@ -253,7 +246,6 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  /// list
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -278,19 +270,46 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  SizedBox(height: 30,),
-                  //Review
+                ],
+              );
+            }),
+          ),
+          // ==================== Reviews Section ====================
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            child: Obx(() {
+              if (collaborationController.isReviewLoading.value) {
+                return const Center(child: CustomLoader());
+              }
+              final reviews = collaborationController.userReviewsList;
+
+              if (reviews.isEmpty) {
+                return Column(
+                  children: const [
+                    SizedBox(height: 30),
+                    CustomText(
+                      text: "No reviews found",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.textClr,
+                    ),
+                  ],
+                );
+              }
+
+              return Column(
+                children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const CustomText(
+                      CustomText(
                         text: "Review",
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
                       GestureDetector(
-                        onTap: (){
-                          Get.toNamed(AppRoutes.hostPastDealsScreen,arguments: userId);
+                        onTap: () {
+                          Get.toNamed(AppRoutes.reviewAllScreen, arguments: userId);
                         },
                         child: CustomText(
                           text: "view All",
@@ -301,7 +320,26 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 10),
 
+                  // Review List (Preview max 5)
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    itemCount: reviews.length > 5 ? 5 : reviews.length,
+                    itemBuilder: (context, index) {
+                      final review = reviews[index];
+                      return CustomReviewCard(
+                        hostName: review.reviewer.name ,
+                        comment: review.comment ?? "",
+                        imageUrl:AppConstants.profileImage2,
+                        date: review.createdAt,
+                        rating: review.rating.toDouble() ?? 5.0,
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 30),
                 ],
               );
             }),

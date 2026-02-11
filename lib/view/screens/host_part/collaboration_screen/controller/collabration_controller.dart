@@ -5,6 +5,7 @@ import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
+import '../../host_active_influe/model/review_model.dart';
 import '../model/collaboration_single_model.dart';
 import '../model/single_user_model.dart';
 
@@ -153,6 +154,62 @@ class CollaborationController extends GetxController {
     }
   }
 
+ //========== Review ===================
+  final isReviewLoading = false.obs;
+  final isReviewLoadMore = false.obs;
+  final rxReviewStatus = Status.loading.obs;
+  void setReviewStatus(Status status) => rxReviewStatus.value = status;
 
+  // ==================== Reviews List ====================
+  RxList<ReviewModel> userReviewsList = <ReviewModel>[].obs;
 
+  // Pagination
+  int currentReviewPage = 1;
+  int totalReviewPages = 1;
+
+  // ==================== Fetch Reviews ====================
+  Future<void> getUserReviews({required String userId, bool loadMore = false}) async {
+    if (loadMore) {
+      if (isReviewLoadMore.value || currentReviewPage >= totalReviewPages) return;
+      isReviewLoadMore.value = true;
+      currentReviewPage++;
+    } else {
+      userReviewsList.clear();
+      isReviewLoading.value = true;
+      currentReviewPage = 1;
+      setReviewStatus(Status.loading);
+    }
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.getReview(userId: userId, page: currentReviewPage.toString()));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse =
+        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final data = UserReviewResponse.fromJson(jsonResponse);
+
+        // Pagination update
+        totalReviewPages = data.data.pagination.totalPages;
+
+        // Avoid duplicates
+        final existingIds = userReviewsList.map((e) => e.id).toSet();
+        userReviewsList.addAll(
+          data.data.reviews.where((e) => !existingIds.contains(e.id)),
+        );
+
+        setReviewStatus(Status.completed);
+      } else {
+        setReviewStatus(Status.error);
+        showCustomSnackBar("Failed to load reviews", isError: true);
+      }
+    } catch (e) {
+      setReviewStatus(Status.error);
+      showCustomSnackBar("Error fetching reviews: ${e.toString()}", isError: true);
+    } finally {
+      isReviewLoading.value = false;
+      isReviewLoadMore.value = false;
+    }
+  }
 }
+
