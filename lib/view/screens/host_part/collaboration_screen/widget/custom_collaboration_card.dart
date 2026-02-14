@@ -13,6 +13,7 @@ class CustomCollaborationCard extends StatelessWidget {
   final List<String>? tags;
   final String? location;
   final VoidCallback? onViewDetailsTap;
+  final VoidCallback? onPaymentTap;
   final VoidCallback? onApproveTap;
   final VoidCallback? onDeclineTap;
   final List<InfluencerSocialMedia> socialMediaLinks;
@@ -26,6 +27,7 @@ class CustomCollaborationCard extends StatelessWidget {
     this.tags,
     this.location,
     this.onViewDetailsTap,
+    this.onPaymentTap,
     this.onApproveTap,
     this.onDeclineTap,
     required this.socialMediaLinks,
@@ -51,55 +53,83 @@ class CustomCollaborationCard extends StatelessWidget {
           children: [
             // ===== User Info =====
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomNetworkImage(
-                  imageUrl: profileImage ?? "",
-                  height: 64,
-                  width: 64,
-                  boxShape: BoxShape.circle,
-                ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    CustomText(
-                      text: userName ?? "",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                    CustomNetworkImage(
+                      imageUrl: profileImage ?? "",
+                      height: 64,
+                      width: 64,
+                      boxShape: BoxShape.circle,
                     ),
-                    CustomText(
-                      text: "@${userHandle}" ?? "",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      bottom: 10,
-                    ),
-                    Row(
-                      children: socialMediaLinks.isEmpty
-                          ? []
-                          : socialMediaLinks.map((item) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: Row(
-                            children: [
-                              Icon(
-                                _getPlatformIcon(item.platform ?? ""),
-                                size: 18,
-                                color: _getPlatformColor(item.platform ?? ""),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(
+                          text: userName ?? "",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+
+                        CustomText(
+                          text: "@${userHandle}" ?? "",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          bottom: 10,
+                        ),
+                        Row(
+                          children: socialMediaLinks.isEmpty
+                              ? []
+                              : socialMediaLinks.map((item) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    _getPlatformIcon(item.platform ?? ""),
+                                    size: 18,
+                                    color: _getPlatformColor(item.platform ?? ""),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  CustomText(
+                                    text: item.followers ?? "0",
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.black,
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 4),
-                              CustomText(
-                                text: item.followers ?? "0",
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.black,
-                              ),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                            );
+                          }).toList(),
+                        ),
+
+                      ],
                     ),
 
                   ],
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: status== "accepted" ? Color(0xFFE8F5E9) : status == "rejected" ? Colors.red.withOpacity(0.1) :status== "ongoing" ? AppColors.primary.withOpacity(0.1) :Color(0xFFFFF3E0),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color:status== "accepted"? Colors.green : status== "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary  : Colors.orange, width: 1),
+                  ),
+                  child:  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CustomText(text: status == "accepted" ? "Accepted" : status == "rejected" ? "Rejected" : status== "ongoing" ? "Ongoing"  : "Pending",
+                        color: status == "accepted" ? Colors.green : status == "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary  : Colors.orange,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -167,7 +197,25 @@ class CustomCollaborationCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                (status == "ongoing" || status == "rejected")?
+                ( status == "accepted")?
+                     Expanded(
+                  flex: 2,
+                  child: CustomButtonTwo(
+                    height: 40,
+                    onTap: onPaymentTap,
+                    title: "Make Payment",
+                    fontSize: 12,
+                    borderRadius: 10,
+                    isBorder: true,
+                    fillColor: AppColors.primary,
+                    textColor: AppColors.white,
+                    borderWidth: 1,
+                    borderColor: AppColors.primary,
+                  ),
+                )
+                    : SizedBox.shrink(),
+                const SizedBox(width: 8),
+                (status == "ongoing" || status == "rejected" || status == "accepted")?
                 SizedBox.shrink()
                     : Expanded(
                   flex: 2,
@@ -180,7 +228,7 @@ class CustomCollaborationCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                (status == "ongoing" || status == "rejected")?
+                (status == "ongoing" || status == "rejected" || status == "accepted")?
                   SizedBox.shrink()
                     : Expanded(
                   flex: 1,

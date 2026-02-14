@@ -318,14 +318,13 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                 (status == "ongoing" || status == "rejected" )
                     ? SizedBox.shrink()
                     : Row(
-                  children: [
+                    children: [
                     Flexible(child: CustomButtonTwo(
                       onTap: (){
                         Get.back();
                       },
-                      title: "Decline",fillColor: AppColors.red_02,)
-                    ),
-                    SizedBox(width: 16,),
+                      title: "Decline",fillColor: AppColors.red_02,)),
+                    SizedBox(width: 10,),
                     Flexible(child: CustomButtonTwo(
                       onTap: (){
 
@@ -334,6 +333,14 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                     )
                   ],
                 ),
+                SizedBox(height: 10,),
+                (status == "ongoing" || status == "rejected" )
+                    ? SizedBox.shrink()
+                    : CustomButtonTwo(
+                  onTap: (){
+                    Get.back();
+                  },
+                  title: "Request to Negotiation",fillColor: AppColors.primary),
               ],
             ),
           ),

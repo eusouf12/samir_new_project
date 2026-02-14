@@ -53,6 +53,7 @@ class ApiUrl {
    static  String  hostList({required String page})=>"/api/v1/user/all-users?role=host&page=$page&limit=10";
    static String influencerSearch({required String query})=> "/api/v1/search/specific?query=users&searchType=$query";
    static  String  singleUserInfo({required String id})=>"/api/v1/user/single-user/$id";
+   static  String  acceptOrReject({required String id})=>"/api/v1/collaboration/accept-or-reject-collaboration/$id";
    static  String  myCollaborations({required String page})=>"/api/v1/collaboration/get-my-all-collaborations?page=$page&limit=10";
    static  String  myCollaborationsFilter({required String filter,required String page})=>"/api/v1/collaboration/get-my-all-collaborations?status=$filter&page=$page&limit=10";
 

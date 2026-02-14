@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
@@ -127,7 +128,6 @@ class CollaborationController extends GetxController {
   // SingleUserProfileData? singleUserProfile;
   Rxn<SingleUserProfileData> singleUserProfile = Rxn<SingleUserProfileData>();
 
-
   Future<void> getSingleUser({required String userId}) async {
     isGetSingleUserLoading.value = true;
     setGetSingleUserStatus(Status.loading);
@@ -162,12 +162,9 @@ class CollaborationController extends GetxController {
 
   // ==================== Reviews List ====================
   RxList<ReviewModel> userReviewsList = <ReviewModel>[].obs;
-
-  // Pagination
   int currentReviewPage = 1;
   int totalReviewPages = 1;
 
-  // ==================== Fetch Reviews ====================
   Future<void> getUserReviews({required String userId, bool loadMore = false}) async {
     if (loadMore) {
       if (isReviewLoadMore.value || currentReviewPage >= totalReviewPages) return;
@@ -209,6 +206,44 @@ class CollaborationController extends GetxController {
     } finally {
       isReviewLoading.value = false;
       isReviewLoadMore.value = false;
+    }
+  }
+
+  //============  Accept or Reject ================
+  RxBool acceptRejectedLoading = false.obs;
+  Future<void> acceptRejected({required String action,required String userId,required String collabrationId}) async {
+    acceptRejectedLoading.value = true;
+    refresh();
+
+    try {
+      Map<String, String> body = {
+        "action":action,
+      };
+
+      dynamic response = await ApiClient.patchData(ApiUrl.acceptOrReject(id: collabrationId), jsonEncode(body),);
+
+      acceptRejectedLoading.value = false;
+      refresh();
+
+      Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : response.body as Map<String, dynamic>;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Status updated successfully!", isError: false,);
+        getSingleUser(userId: userId);
+      } else {
+        showCustomSnackBar(
+          jsonResponse['message']?.toString() ?? "Status Update failed",
+          isError: true,
+        );
+      }
+    } catch (e) {
+      acceptRejectedLoading.value = false;
+      refresh();
+      showCustomSnackBar(
+        "An error occurred. Please try again.",
+        isError: true,
+      );
+      debugPrint("Profile update error: $e");
     }
   }
 }

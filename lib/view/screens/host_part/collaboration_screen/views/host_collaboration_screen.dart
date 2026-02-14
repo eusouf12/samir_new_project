@@ -204,14 +204,17 @@ class HostCollaborationScreen extends StatelessWidget {
                                   },
                                 );
                               },
-
+                              onPaymentTap: (){
+                                  // Get.toNamed(
+                                  //     AppRoutes.hostCollaborationViewDetailsScreen,
+                                  // );
+                                },
                               onApproveTap: () {
 
-                                // controller.approveCollaboration(collaboration.id);
+                                 controller.acceptRejected(action: 'accept', userId: collaboration.selectInfluencerOrHost?.id ?? "", collabrationId: collaboration.id ?? "");
                               },
                               onDeclineTap: () {
-
-                                // controller.declineCollaboration(collaboration.id);
+                                controller.acceptRejected(action: 'reject', userId: collaboration.selectInfluencerOrHost?.id ?? "", collabrationId: collaboration.id ?? "");
                               },
                             ),
                           );
