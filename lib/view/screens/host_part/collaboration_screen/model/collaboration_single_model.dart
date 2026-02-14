@@ -112,6 +112,7 @@ class SingleUserInfo {
   }
 }
 
+
 class InfluencerSocialMedia {
   final String? platform;
   final String? url;
