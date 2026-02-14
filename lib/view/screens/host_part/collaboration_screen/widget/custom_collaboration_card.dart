@@ -53,7 +53,7 @@ class CustomCollaborationCard extends StatelessWidget {
             Row(
               children: [
                 CustomNetworkImage(
-                  imageUrl: profileImage ?? "https://via.placeholder.com/64",
+                  imageUrl: profileImage ?? "",
                   height: 64,
                   width: 64,
                   boxShape: BoxShape.circle,

@@ -333,7 +333,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                       return CustomReviewCard(
                         hostName: review.reviewer.name ,
                         comment: review.comment ?? "",
-                        imageUrl:AppConstants.profileImage2,
+                        imageUrl:ApiUrl.baseUrl + review.reviewer.image,
                         date: review.createdAt,
                         rating: review.rating.toDouble() ?? 5.0,
                       );

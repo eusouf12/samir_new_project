@@ -187,11 +187,13 @@ class Reviewer {
   final String id;
   final String name;
   final String email;
+  final String image;
 
   Reviewer({
     required this.id,
     required this.name,
     required this.email,
+    required this.image,
   });
 
   factory Reviewer.fromJson(Map<String, dynamic> json) {
@@ -199,6 +201,7 @@ class Reviewer {
       id: json['_id'] ?? '',
       name: json['name'] ?? '',
       email: json['email'] ?? '',
+      image: json['image'] ?? '',
     );
   }
 
@@ -206,5 +209,7 @@ class Reviewer {
     "_id": id,
     "name": name,
     "email": email,
+    "image": image,
   };
 }
+

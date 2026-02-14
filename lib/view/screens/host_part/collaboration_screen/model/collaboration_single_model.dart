@@ -280,11 +280,11 @@ class SingleUserDeliverable {
 }
 
 class SingleUserSocialMediaLinks {
-  final String? instagram;
-  final String? facebook;
-  final String? twitter;
-  final String? youtube;
-  final String? tiktok;
+  final List<SocialPost>? instagram;
+  final List<SocialPost>? facebook;
+  final List<SocialPost>? twitter;
+  final List<SocialPost>? youtube;
+  final List<SocialPost>? tiktok;
 
   SingleUserSocialMediaLinks({
     this.instagram,
@@ -296,12 +296,56 @@ class SingleUserSocialMediaLinks {
 
   factory SingleUserSocialMediaLinks.fromJson(Map<String, dynamic> json) {
     return SingleUserSocialMediaLinks(
-      instagram: json['instagram'],
-      facebook: json['facebook'],
-      twitter: json['twitter'],
-      youtube: json['youtube'],
-      tiktok: json['tiktok'],
+      instagram: (json['instagram'] as List?)
+          ?.where((e) => e is Map<String, dynamic>)
+          .map((e) => SocialPost.fromJson(e))
+          .toList(),
+
+      facebook: (json['facebook'] as List?)
+          ?.where((e) => e is Map<String, dynamic>)
+          .map((e) => SocialPost.fromJson(e))
+          .toList(),
+
+      twitter: (json['twitter'] as List?)
+          ?.where((e) => e is Map<String, dynamic>)
+          .map((e) => SocialPost.fromJson(e))
+          .toList(),
+
+      youtube: (json['youtube'] as List?)
+          ?.where((e) => e is Map<String, dynamic>)
+          .map((e) => SocialPost.fromJson(e))
+          .toList(),
+
+      tiktok: (json['tiktok'] as List?)
+          ?.where((e) => e is Map<String, dynamic>)
+          .map((e) => SocialPost.fromJson(e))
+          .toList(),
     );
   }
 }
+
+class SocialPost {
+  final String? id;
+  final String? url;
+  final String? contentType;
+  final String? postDate;
+
+  SocialPost({
+    this.id,
+    this.url,
+    this.contentType,
+    this.postDate,
+  });
+
+  factory SocialPost.fromJson(Map<String, dynamic> json) {
+    return SocialPost(
+      id: json['_id'],
+      url: json['url'],
+      contentType: json['contentType'],
+      postDate: json['postDate'],
+    );
+  }
+}
+
+
 
