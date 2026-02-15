@@ -61,6 +61,7 @@ class HostCollaborationScreen extends StatelessWidget {
               final pending = userData.value?.collaborationStats?.pending?.count ?? 0;
               final approved = userData.value?.collaborationStats?.ongoing?.count ?? 0;
               final declined = userData.value?.collaborationStats?.rejected?.count ?? 0;
+              final accepted = userData.value?.collaborationStats?.accepted?.count ?? 0;
 
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,6 +90,21 @@ class HostCollaborationScreen extends StatelessWidget {
                       ),
                       CustomText(
                         text: "Pending",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      CustomText(
+                        text: "$accepted",
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff22C55E),
+                      ),
+                      CustomText(
+                        text: "Accepted",
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
                       ),

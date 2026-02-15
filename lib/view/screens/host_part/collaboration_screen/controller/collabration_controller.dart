@@ -12,7 +12,7 @@ import '../model/single_user_model.dart';
 
 
 class CollaborationController extends GetxController {
-  RxList<String> collaborationTabList = <String>['All','Pending','Ongoing','Declined'].obs;
+  RxList<String> collaborationTabList = <String>['All','Pending','Accepted','Ongoing','Declined'].obs;
   RxInt currentIndex = 0.obs;
 
   // Function to call based on tab index
@@ -27,9 +27,12 @@ class CollaborationController extends GetxController {
         getSingleUserCollaboration(id: id,filterName: "pending");
         break;
       case 2:
-        getSingleUserCollaboration(id: id,filterName : "ongoing");
+        getSingleUserCollaboration(id: id,filterName: "accepted");
         break;
       case 3:
+        getSingleUserCollaboration(id: id,filterName : "ongoing");
+        break;
+      case 4:
         getSingleUserCollaboration(id: id,filterName : "rejected");
         break;
     }
@@ -229,7 +232,7 @@ class CollaborationController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         showCustomSnackBar(jsonResponse['message']?.toString() ?? "Status updated successfully!", isError: false,);
-        getSingleUser(userId: userId);
+        getSingleUserCollaboration(id: userId);
       } else {
         showCustomSnackBar(
           jsonResponse['message']?.toString() ?? "Status Update failed",
