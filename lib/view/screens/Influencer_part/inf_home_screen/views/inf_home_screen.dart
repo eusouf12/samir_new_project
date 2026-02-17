@@ -7,7 +7,7 @@ import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../utils/app_icons/app_icons.dart';
 import '../../../../components/custom_image/custom_image.dart';
-import '../../../../components/custom_nav_bar/vendor_navbar.dart';
+import '../../../../components/custom_nav_bar/inf_navbar.dart';
 import '../../../../components/custom_text/custom_text.dart';
 
 class InfHomeScreen extends StatelessWidget {

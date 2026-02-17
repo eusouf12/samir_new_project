@@ -11,7 +11,7 @@ import 'package:samir_flutter_app/view/screens/Influencer_part/inf_explore_deals
 import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_deals_container.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../service/api_url.dart';
-import '../../../components/custom_nav_bar/vendor_navbar.dart';
+import '../../../components/custom_nav_bar/inf_navbar.dart';
 import 'controller/all_deal_controller.dart';
 
 

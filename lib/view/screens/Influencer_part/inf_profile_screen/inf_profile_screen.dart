@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
-import 'package:samir_flutter_app/view/components/custom_nav_bar/vendor_navbar.dart';
+import 'package:samir_flutter_app/view/components/custom_nav_bar/inf_navbar.dart';
 import 'package:samir_flutter_app/view/screens/Influencer_part/inf_profile_screen/share_your_profile.dart';
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../helper/shared_prefe/shared_prefe.dart';
