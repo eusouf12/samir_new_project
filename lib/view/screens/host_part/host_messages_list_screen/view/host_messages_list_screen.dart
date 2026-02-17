@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:samir_flutter_app/service/api_url.dart';
-import 'package:samir_flutter_app/utils/app_const/app_const.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_messages_list_screen/widgets/custom_message_card.dart';
 import '../../../../../core/app_routes/app_routes.dart';
-import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_nav_bar/navbar.dart';
 import '../controller/chat_list_controller.dart';
-import 'chat_inbox_screen.dart';
 
 class HostMessagesListScreen extends StatelessWidget {
   HostMessagesListScreen({super.key});
@@ -51,7 +48,7 @@ class HostMessagesListScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   if (index < controller.conversationList.length) {
                     final conversation = controller.conversationList[index];
-                    final user =  conversation.participants[1];
+                    final user =  conversation.participants[0];
                     return GestureDetector(
                       onTap: (){
                         debugPrint("id con ${conversation.id}");

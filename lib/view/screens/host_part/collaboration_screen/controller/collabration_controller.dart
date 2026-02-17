@@ -272,7 +272,6 @@ class CollaborationController extends GetxController {
 
     selectedCollaboration.value = coll;
 
-    // ১. লেটেস্ট ডেটা দিয়ে ভেরিয়েবলগুলো আপডেট করুন
     updateNightsColl.value = coll.compensation?.numberOfNights ?? 1;
     updateGuestColl.value = coll.guestCount ?? 1;
     updatePaymentAmountColl.value = double.tryParse(coll.compensation?.paymentAmount ?? "0") ?? 0.0;

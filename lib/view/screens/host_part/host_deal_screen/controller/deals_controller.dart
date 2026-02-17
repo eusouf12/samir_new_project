@@ -250,9 +250,11 @@ class DealsController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         showCustomSnackBar(jsonResponse['message']?.toString() ?? "Deal created successfully", isError: false,);
+        resetForm();
         String id = await SharePrefsHelper.getString(AppConstants.userId);
         collaborationController.getSingleUser(userId: id);
         await getDeals(loadMore: false);
+        isCreatingDeal.value = false;
         Get.toNamed(AppRoutes.hostHomeScreen);
       }
       else {
@@ -263,7 +265,42 @@ class DealsController extends GetxController {
       isCreatingDeal.value = false;
       debugPrint("Create deal error: $e");
     }
+    finally {
+      isCreatingDeal.value = false;
+    }
   }
+
+
+  void resetForm() {
+    // page 1
+    selectedTitle.value = '';
+    selectedId.value = '';
+    selectedAirbnbLink.value = '';
+    titleDescriptionController.value.clear();
+
+    checkInTime.value = null;
+    checkInDate.value = null;
+    checkOutTime.value = null;
+    checkOutDate.value = null;
+
+    // page 2
+    selectedPlatform.value = "Instagram";
+    selectedContentType.value = "Post";
+    quantity.value = 0;
+    minFollowers.value = '';
+    minFollowersController.value.clear();
+    platformFollowers.clear();
+    deliverables.clear();
+
+    // page 3
+    isNightCredits.value = false;
+    isDirectPayment.value = false;
+    totalNights.value = 0;
+    paymentAmount.value = 0.0;
+    guestCount.value = 0;
+    paymentController.text = "0.00";
+  }
+
 
   // ================ Search Deals =================
   RxList<Deal> searchDealList = <Deal>[].obs;
