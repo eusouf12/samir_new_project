@@ -177,7 +177,7 @@ class HostCollaborationScreen extends StatelessWidget {
                     //   return false;
                     // },
                       child: ListView.builder(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(10),
                         itemCount: controller.singleUserCollaborationList.length,
                         itemBuilder: (context, index) {
                           final collaboration = controller.singleUserCollaborationList[index];
@@ -195,12 +195,36 @@ class HostCollaborationScreen extends StatelessWidget {
                               // ===== Dynamic Callbacks =====
                               onViewDetailsTap: () {
 
-                                debugPrint("===== COLLABORATION DETAILS ARGS =====");
-                                debugPrint("Amenities: ${collaboration.selectDeal?.title?.amenities}");
-                                debugPrint("Deliverables: ${collaboration.deliverables}");
+                                debugPrint("=========== COLLABORATION DETAILS ===========");
 
-                                debugPrint("====================================");
+                                debugPrint("image: ${ (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false)
+                                    ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image!
+                                    : "" }");
 
+                                debugPrint("name: ${collaboration.selectInfluencerOrHost?.name}");
+                                debugPrint("userName: ${collaboration.selectInfluencerOrHost?.userName}");
+                                debugPrint("listingName: ${collaboration.selectDeal?.title?.title}");
+
+                                debugPrint("listingImage: ${ (collaboration.selectDeal?.title?.images?.isNotEmpty ?? false)
+                                    ? ApiUrl.baseUrl + collaboration.selectDeal!.title!.images!.first
+                                    : "" }");
+
+                                debugPrint("payment: ${collaboration.compensation?.paymentAmount}");
+                                debugPrint("nightStay: ${collaboration.compensation?.numberOfNights}");
+                                debugPrint("guestCount: ${collaboration.guestCount}");
+
+                                debugPrint("inTimeAndDate: ${collaboration.selectDeal?.inTimeAndDate}");
+                                debugPrint("outTimeAndDate: ${collaboration.selectDeal?.outTimeAndDate}");
+
+                                debugPrint("amenities: ${collaboration.selectDeal?.title?.amenities}");
+                                debugPrint("deliverables: ${collaboration.deliverables}");
+                                debugPrint("socialMediaLinks: ${collaboration.selectInfluencerOrHost?.socialMediaLinks}");
+
+                                debugPrint("status: ${collaboration.status}");
+                                debugPrint("userId: ${collaboration.selectInfluencerOrHost?.id}");
+                                debugPrint("collabrationId: ${collaboration.id}");
+
+                                debugPrint("=============================================");
                                 Get.toNamed(
                                   AppRoutes.hostCollaborationViewDetailsScreen,
                                   arguments: {
@@ -209,14 +233,17 @@ class HostCollaborationScreen extends StatelessWidget {
                                     "userName": collaboration.selectInfluencerOrHost?.userName ?? "",
                                     "listingName": collaboration.selectDeal?.title?.title ?? "",
                                     "listingImage": (collaboration.selectDeal?.title?.images?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectDeal!.title!.images!.first : "",
-                                    "payment": collaboration.selectDeal?.compensation?.paymentAmount ?? "0",
-                                    "nightStay": collaboration.selectDeal?.compensation?.numberOfNights ?? 0,
-                                    "inTimeAndDate": collaboration.selectDeal?.inTimeAndDate ?? "",
-                                    "outTimeAndDate": collaboration.selectDeal?.outTimeAndDate ?? "",
+                                    "payment": collaboration.compensation?.paymentAmount ?? "0",
+                                    "nightStay": collaboration.compensation?.numberOfNights ?? 0,
+                                    "inTimeAndDate": collaboration.inTimeAndDate ?? "",
+                                    "outTimeAndDate": collaboration.outTimeAndDate ?? "",
+                                    "guestCount": collaboration.guestCount ?? 0,
                                     "amenities": collaboration.selectDeal?.title?.amenities,
                                     "deliverables": collaboration.deliverables ?? [],
                                     "socialMediaLinks": collaboration.selectInfluencerOrHost?.socialMediaLinks ?? [],
-                                    "status" : collaboration.status
+                                    "status" : collaboration.status,
+                                    "userId" : collaboration.selectInfluencerOrHost?.id,
+                                    "collabrationId" : collaboration.id,
                                   },
                                 );
                               },

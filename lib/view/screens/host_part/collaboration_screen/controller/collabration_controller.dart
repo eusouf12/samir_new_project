@@ -214,6 +214,7 @@ class CollaborationController extends GetxController {
 
   //============  Accept or Reject ================
   RxBool acceptRejectedLoading = false.obs;
+  RxString currentStatus = "".obs;
   Future<void> acceptRejected({required String action,required String userId,required String collabrationId}) async {
     acceptRejectedLoading.value = true;
     refresh();
@@ -231,6 +232,8 @@ class CollaborationController extends GetxController {
       Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : response.body as Map<String, dynamic>;
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        final newStatus = jsonResponse["data"]?["status"] ?? action;
+        currentStatus.value = newStatus;
         showCustomSnackBar(jsonResponse['message']?.toString() ?? "Status updated successfully!", isError: false,);
         getSingleUserCollaboration(id: userId);
       } else {
@@ -249,5 +252,108 @@ class CollaborationController extends GetxController {
       debugPrint("Profile update error: $e");
     }
   }
+
+  //=========== update collabration ==============
+  RxInt updateNightsColl = 0.obs;
+  RxInt updateGuestColl = 0.obs;
+  RxDouble updatePaymentAmountColl = 0.0.obs;
+  RxMap<String, int> updateDeliverableQtyColl = <String, int>{}.obs;
+  final isUpdateCollLoading = false.obs;
+  RxList<SingleUserDeliverable> updatedDeliverables = <SingleUserDeliverable>[].obs;
+
+  Rx<SingleUserCollaborationData?> selectedCollaboration = Rx<SingleUserCollaborationData?>(null);
+
+  TextEditingController paymentController = TextEditingController();
+
+  void setSelectedCollaboration(String collId) {
+    final coll = singleUserCollaborationList.firstWhereOrNull((e) => e.id == collId);
+
+    if (coll == null) return;
+
+    selectedCollaboration.value = coll;
+
+    // ১. লেটেস্ট ডেটা দিয়ে ভেরিয়েবলগুলো আপডেট করুন
+    updateNightsColl.value = coll.compensation?.numberOfNights ?? 1;
+    updateGuestColl.value = coll.guestCount ?? 1;
+    updatePaymentAmountColl.value = double.tryParse(coll.compensation?.paymentAmount ?? "0") ?? 0.0;
+
+
+    paymentController.text = updatePaymentAmountColl.value.toString();
+
+    updateDeliverableQtyColl.clear();
+    for (var d in coll.deliverables ?? []) {
+      final key = "${d.platform}_${d.contentType}";
+      updateDeliverableQtyColl[key] = d.quantity ?? 0;
+    }
+  }
+
+  @override
+  void onClose() {
+    paymentController.dispose();
+    super.onClose();
+  }
+
+
+
+  Future<void> updateCollabration({required String collId}) async {
+    isUpdateCollLoading.value = true;
+
+    try {
+      final List<Map<String, dynamic>> deliverableBody = [];
+
+      for (final d in selectedCollaboration.value?.deliverables ?? []) {
+        final key = "${d.platform}_${d.contentType}";
+
+        deliverableBody.add({
+          "platform": d.platform,
+          "contentType": d.contentType,
+          "quantity": updateDeliverableQtyColl[key] ?? d.quantity,
+        });
+      }
+
+      final body = {
+        "compensation": {
+          "numberOfNights": updateNightsColl.value,
+          "paymentAmount": updatePaymentAmountColl.value.toString(),
+        },
+        "deliverables": deliverableBody,
+        "guestCount": updateGuestColl.value,
+      };
+
+      final response = await ApiClient.patchData(ApiUrl.updateCollabration(id: collId), jsonEncode(body),);
+
+      final jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final updatedModel = SingleUserCollaborationData.fromJson(jsonResponse["data"]);
+
+        // update list
+        final index = singleUserCollaborationList.indexWhere((e) => e.id == updatedModel.id);
+
+        if (index != -1) {
+          singleUserCollaborationList[index] = updatedModel;
+          singleUserCollaborationList.refresh();
+        }
+
+        selectedCollaboration.value = updatedModel;
+        selectedCollaboration.refresh();
+        updatedDeliverables.assignAll(updatedModel.deliverables ?? []);
+        updatePaymentAmountColl.value = double.tryParse(updatedModel.compensation?.paymentAmount ?? "0") ?? 0.0;
+        updateNightsColl.value = updatedModel.compensation?.numberOfNights ?? 0;
+
+        showCustomSnackBar(jsonResponse['message'] ?? "Updated successfully", isError: false,);
+
+        Get.back();
+      } else {
+        showCustomSnackBar(jsonResponse['message'] ?? "Update failed", isError: true,);
+      }
+    } catch (e) {
+      showCustomSnackBar("Something went wrong", isError: true,);
+    } finally {
+      isUpdateCollLoading.value = false;
+    }
+  }
+
+
 }
 

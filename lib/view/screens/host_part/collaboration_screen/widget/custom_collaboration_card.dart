@@ -56,62 +56,66 @@ class CustomCollaborationCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    CustomNetworkImage(
-                      imageUrl: profileImage ?? "",
-                      height: 64,
-                      width: 64,
-                      boxShape: BoxShape.circle,
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: userName ?? "",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      CustomNetworkImage(
+                        imageUrl: profileImage ?? "",
+                        height: 64,
+                        width: 64,
+                        boxShape: BoxShape.circle,
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              text: userName ?? "",
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
 
-                        CustomText(
-                          text: "@${userHandle}" ?? "",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          bottom: 10,
-                        ),
-                        Row(
-                          children: socialMediaLinks.isEmpty
-                              ? []
-                              : socialMediaLinks.map((item) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    _getPlatformIcon(item.platform ?? ""),
-                                    size: 18,
-                                    color: _getPlatformColor(item.platform ?? ""),
+                            CustomText(
+                              text: "@${userHandle}" ?? "",
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              bottom: 10,
+                            ),
+                            Row(
+                              children: socialMediaLinks.isEmpty
+                                  ? []
+                                  : socialMediaLinks.map((item) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        _getPlatformIcon(item.platform ?? ""),
+                                        size: 18,
+                                        color: _getPlatformColor(item.platform ?? ""),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      CustomText(
+                                        text: item.followers ?? "0",
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.black,
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(width: 4),
-                                  CustomText(
-                                    text: item.followers ?? "0",
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.black,
-                                  ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
+                                );
+                              }).toList(),
+                            ),
+
+                          ],
                         ),
+                      ),
 
-                      ],
-                    ),
-
-                  ],
+                    ],
+                  ),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),

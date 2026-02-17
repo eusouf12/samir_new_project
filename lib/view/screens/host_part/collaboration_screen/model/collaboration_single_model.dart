@@ -30,47 +30,76 @@ class SingleUserCollaborationData {
   final String? id;
   final SingleUserInfo? userId;
   final SingleUserInfo? selectInfluencerOrHost;
-  final SingleUserDealInfo? selectDeal;
+  final SingleUserCompensation? compensation;
   final List<SingleUserDeliverable>? deliverables;
+  final SingleUserDealInfo? selectDeal;
+  final String? description;
+  final String? addAirbnbLink;
+  final String? inTimeAndDate;
+  final String? outTimeAndDate;
+  final int? guestCount;
   final String? status;
   final String? negotiationStatus;
   final String? paymentStatus;
-  final String? rejectReason;
+
   final SingleUserSocialMediaLinks? socialMediaLinks;
-  final String? createdAt;
-  final String? updatedAt;
 
   SingleUserCollaborationData({
     this.id,
     this.userId,
     this.selectInfluencerOrHost,
+    this.compensation,
     this.deliverables,
     this.selectDeal,
+    this.description,
+    this.addAirbnbLink,
+    this.inTimeAndDate,
+    this.outTimeAndDate,
+    this.guestCount,
     this.status,
     this.negotiationStatus,
     this.paymentStatus,
-    this.rejectReason,
     this.socialMediaLinks,
-    this.createdAt,
-    this.updatedAt,
   });
 
   factory SingleUserCollaborationData.fromJson(Map<String, dynamic> json) {
     return SingleUserCollaborationData(
       id: json['_id'],
-      userId: json['userId'] != null ? SingleUserInfo.fromJson(json['userId']) : null,
-      selectInfluencerOrHost: json['selectInfluencerOrHost'] != null ? SingleUserInfo.fromJson(json['selectInfluencerOrHost']) : null,
-      selectDeal: json['selectDeal'] != null ? SingleUserDealInfo.fromJson(json['selectDeal']) : null,
-      deliverables: (json['deliverables'] as List?)?.map((e) => SingleUserDeliverable.fromJson(e)).toList(),
+
+      userId: json['userId'] != null
+          ? SingleUserInfo.fromJson(json['userId'])
+          : null,
+
+      selectInfluencerOrHost: json['selectInfluencerOrHost'] != null
+          ? SingleUserInfo.fromJson(json['selectInfluencerOrHost'])
+          : null,
+
+      compensation: json['compensation'] != null
+          ? SingleUserCompensation.fromJson(json['compensation'])
+          : null,
+
+      deliverables: (json['deliverables'] as List?)
+          ?.map((e) => SingleUserDeliverable.fromJson(e))
+          .toList(),
+
+      selectDeal: json['selectDeal'] != null
+          ? SingleUserDealInfo.fromJson(json['selectDeal'])
+          : null,
+
+      description: json['description'],
+      addAirbnbLink: json['addAirbnbLink'],
+
+      inTimeAndDate: json['inTimeAndDate'],
+      outTimeAndDate: json['outTimeAndDate'],
+      guestCount: json['guestCount'],
+
       status: json['status'],
       negotiationStatus: json['negotiationStatus'],
       paymentStatus: json['paymentStatus'],
-      rejectReason: json['rejectReason'],
+
       socialMediaLinks: json['socialMediaLinks'] != null
           ? SingleUserSocialMediaLinks.fromJson(json['socialMediaLinks'])
           : null,
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
     );
   }
 }
@@ -111,7 +140,6 @@ class SingleUserInfo {
     );
   }
 }
-
 
 class InfluencerSocialMedia {
   final String? platform;
@@ -263,11 +291,13 @@ class SingleUserDeliverable {
   final String? platform;
   final String? contentType;
   final int? quantity;
+  final Map<String, dynamic>? platformFollowers;
 
   SingleUserDeliverable({
     this.platform,
     this.contentType,
     this.quantity,
+    this.platformFollowers,
   });
 
   factory SingleUserDeliverable.fromJson(Map<String, dynamic> json) {
@@ -275,6 +305,7 @@ class SingleUserDeliverable {
       platform: json['platform'],
       contentType: json['contentType'],
       quantity: json['quantity'],
+      platformFollowers: json['platformFollowers'],
     );
   }
 }
