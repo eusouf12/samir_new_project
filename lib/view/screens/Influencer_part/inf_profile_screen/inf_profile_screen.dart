@@ -7,6 +7,7 @@ import 'package:samir_flutter_app/view/screens/Influencer_part/inf_profile_scree
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../service/api_url.dart';
+import '../../../../service/socket_service.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../../utils/app_const/app_const.dart';
 import '../../../../utils/app_icons/app_icons.dart';
@@ -230,6 +231,8 @@ class InfProfileScreen extends StatelessWidget {
                                         Get.back();
                                       },
                                       leftOnTap: () async {
+                                        SocketApi.disconnect();
+                                        debugPrint("========== **** Socket  Disconnect *** =======");
                                         await SharePrefsHelper.clearAll();
                                         Get.offAllNamed(AppRoutes.loginScreen);
                                       },

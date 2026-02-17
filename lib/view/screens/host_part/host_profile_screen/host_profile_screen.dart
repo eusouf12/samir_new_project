@@ -10,6 +10,7 @@ import 'package:samir_flutter_app/view/screens/host_part/host_profile_screen/wid
 import '../../../../core/app_routes/app_routes.dart';
 import '../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../service/api_url.dart';
+import '../../../../service/socket_service.dart';
 import '../../../../utils/app_icons/app_icons.dart';
 import '../../../components/custom_image/custom_image.dart';
 import '../../../components/custom_loader/custom_loader.dart';
@@ -211,6 +212,8 @@ class HostProfileScreen extends StatelessWidget {
                                       Get.back();
                                     },
                                     leftOnTap: () async {
+                                      SocketApi.disconnect();
+                                      debugPrint("========== **** Socket  Disconnect *** =======");
                                       await SharePrefsHelper.clearAll();
                                       Get.offAllNamed(AppRoutes.loginScreen);
                                     },

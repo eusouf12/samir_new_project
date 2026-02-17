@@ -156,7 +156,7 @@ class InfluencerSocialMedia {
     return InfluencerSocialMedia(
       platform: json['platform'],
       url: json['url'],
-      followers: json['followers'],
+      followers: json['followers']?.toString(),
     );
   }
 }

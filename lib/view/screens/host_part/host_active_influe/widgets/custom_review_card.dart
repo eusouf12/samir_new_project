@@ -3,12 +3,7 @@ import 'package:intl/intl.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-// আপনার প্রজেক্টের পাথ অনুযায়ী নিচের ইম্পোর্টগুলো ঠিক রাখুন
-import '../../../../../utils/app_colors/app_colors.dart';
-import '../../../../components/custom_netwrok_image/custom_network_image.dart';
-import '../../../../components/custom_text/custom_text.dart';
+
 
 class CustomReviewCard extends StatelessWidget {
   final String? comment;

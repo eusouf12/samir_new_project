@@ -6,10 +6,7 @@ class SocketApi {
   static bool _isInitialized = false;
 
   static void init(String baseUrl, String userId) {
-    if (_isInitialized) {
-      debugPrint('⚠️ Socket already initialized');
-      return;
-    }
+    disconnect();
 
     try {
       debugPrint('🟡 Connecting to: $baseUrl with user: $userId');
@@ -26,6 +23,9 @@ class SocketApi {
             .setReconnectionDelayMax(5000)
             .build(),
       );
+      socket!.onConnect((_) {
+        debugPrint("✅ Socket Connected: ${socket!.id}");
+      });
 
       _setupCoreListeners(userId);
       socket!.connect();
@@ -35,7 +35,14 @@ class SocketApi {
       debugPrint("⚠xx Socket init failed: $e");
     }
   }
-
+  static void disconnect() {
+    if (socket != null && socket!.connected) {
+      socket!.disconnect();
+      socket!.dispose();
+      socket = null;
+      debugPrint("🛑 Previous Socket Disconnected");
+    }
+  }
   static void _setupCoreListeners(String userId) {
     if (socket == null) return;
 
