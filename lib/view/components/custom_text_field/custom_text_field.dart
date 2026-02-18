@@ -27,6 +27,7 @@ class CustomTextField extends StatefulWidget {
     this.suffixIconColor,
     this.fieldBorderRadius = 16,
     this.fieldBorderColor = Colors.transparent,
+    this.fieldFocusBorderColor,
     this.isPassword = false,
     this.isPrefixIcon = true,
     this.readOnly = false,
@@ -57,6 +58,7 @@ class CustomTextField extends StatefulWidget {
   final Widget? prefixIcon;
   final double fieldBorderRadius;
   final Color fieldBorderColor;
+  final Color? fieldFocusBorderColor;
   final bool isPassword;
   final bool isPrefixIcon;
   final bool readOnly;
@@ -71,6 +73,7 @@ class CustomTextField extends StatefulWidget {
 
 class _CustomTextFieldState extends State<CustomTextField> {
   bool obscureText = true;
+
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +130,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(widget.fieldBorderRadius),
-          borderSide: BorderSide(color: AppColors.primary, width: 1),
+          borderSide: BorderSide(color:widget.fieldFocusBorderColor ?? AppColors.primary, width: 1),
           gapPadding: 0,
         ),
         enabledBorder: OutlineInputBorder(

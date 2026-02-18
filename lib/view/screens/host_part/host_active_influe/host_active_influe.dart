@@ -4,6 +4,7 @@ import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../core/app_routes/app_routes.dart';
+import '../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../service/api_url.dart';
 import '../../../../utils/app_const/app_const.dart';
 import '../../../components/custom_loader/custom_loader.dart';
@@ -16,15 +17,16 @@ class HostActiveInflue extends StatelessWidget {
   HostActiveInflue({super.key});
   final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
   final ChatListController chatListController = Get.put(ChatListController());
-
+  String? role;
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      role = await SharePrefsHelper.getString(AppConstants.role);
       influencerListHostController.getInfluencers();
     });
     return CustomGradient(
       child: Scaffold(
-        appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Active Influencers"),
+        appBar: CustomRoyelAppbar(leftIcon: true, titleName: role == "host" ? "Active Influencers" : "Active Host"),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -32,6 +34,7 @@ class HostActiveInflue extends StatelessWidget {
               CustomTextField(
                 isDens: true,
                 fillColor: const Color(0xffF5F5F5),
+                fieldFocusBorderColor:role == "host" ? AppColors.primary : AppColors.primary2,
                 hintText: "Search influencer by name ",
                 hintStyle: TextStyle(color: AppColors.textClr),
                 prefixIcon: Icon(Icons.search_rounded, size: 18, color: AppColors.textClr),
@@ -83,8 +86,8 @@ class HostActiveInflue extends StatelessWidget {
                         }
 
                         final user = listToShow[index];
-
                         return CustomActiveCard(
+                          role: role,
                           name: user.name,
                            nightCredits: user.nightCredits,
                           username: user.userName ?? '',
@@ -99,6 +102,7 @@ class HostActiveInflue extends StatelessWidget {
                                   'userName': user.name,
                                   'userImage': user.image,
                                   'receiverId': user.id,
+                                  'role': role,
                                 },
                               );
                           },
@@ -119,6 +123,7 @@ class HostActiveInflue extends StatelessWidget {
                                 }).toList(),
                                 "founderMember": user.isFounderMember,
                                 "nightCredits": user.nightCredits,
+                                "role": role,
                               },
                             );
                           },

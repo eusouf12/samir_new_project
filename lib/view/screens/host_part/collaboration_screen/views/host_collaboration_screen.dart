@@ -18,6 +18,7 @@ class HostCollaborationScreen extends StatelessWidget {
   HostCollaborationScreen({super.key});
 
   final CollaborationController controller = Get.put(CollaborationController());
+  String? role ;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class HostCollaborationScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       controller.currentIndex.value = 0;
       String id = await SharePrefsHelper.getString(AppConstants.userId);
+      role = await SharePrefsHelper.getString(AppConstants.userId);
       controller.getSingleUserCollaboration(id: id);
       controller.getSingleUser(userId: id);
     });
@@ -149,7 +151,7 @@ class HostCollaborationScreen extends StatelessWidget {
                 tabs: controller.collaborationTabList,
                 selectedIndex: controller.currentIndex.value,
                 onTabSelected: controller.onTabSelected,
-                selectedColor: AppColors.primary,
+                selectedColor: role == "host" ? AppColors.primary : AppColors.primary2,
               )),
               SizedBox(height: 10.h),
 
@@ -244,6 +246,7 @@ class HostCollaborationScreen extends StatelessWidget {
                                     "status" : collaboration.status,
                                     "userId" : collaboration.selectInfluencerOrHost?.id,
                                     "collabrationId" : collaboration.id,
+                                    "role" : role,
                                   },
                                 );
                               },

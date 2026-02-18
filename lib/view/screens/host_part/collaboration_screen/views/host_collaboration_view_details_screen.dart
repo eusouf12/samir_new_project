@@ -6,7 +6,6 @@ import 'package:samir_flutter_app/view/components/custom_button/custom_button_tw
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
-import '../../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../controller/collabration_controller.dart';
@@ -39,6 +38,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
     final List socialMediaLinks = args["socialMediaLinks"] ?? [];
     final String userId = args["userId"] ?? "";
     final String collabrationId = args["collabrationId"] ?? "";
+    final String role = args["role"] ;
 
     // Amenities List logic
     final List<String> enabledAmenities = [];
@@ -72,7 +72,8 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                       children: [
                         CustomText(text: name, fontSize: 14, fontWeight: FontWeight.w600),
                         CustomText(text: userName, fontSize: 12, fontWeight: FontWeight.w400, bottom: 10),
-                        Row(
+                        role == "host"
+                        ?Row(
                           children: socialMediaLinks.map((item) {
                             return Padding(
                               padding: const EdgeInsets.only(right: 8),
@@ -86,6 +87,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                             );
                           }).toList(),
                         )
+                        :SizedBox.shrink(),
                       ],
                     ),
                   ],
@@ -162,7 +164,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                           const SizedBox(width: 10),
                           Flexible(child: CustomButtonTwo(
                               onTap: () => controller.acceptRejected(action: 'accept', userId: userId, collabrationId: collabrationId),
-                              title: "Accept", fillColor: AppColors.primary)),
+                              title: "Accept", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)),
                         ],
                       ),
 
@@ -171,11 +173,11 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                           ? const SizedBox.shrink()
                           : CustomButtonTwo(
                           onTap: () => Get.toNamed(AppRoutes.negotiationScreen, arguments: collabrationId),
-                          title: "Request to Negotiation", fillColor: AppColors.primary),
+                          title: "Request to Negotiation", fillColor: role == "host" ? AppColors.primary : AppColors.primary2),
                       const SizedBox(height: 10),
 
                       (status == "accepted")
-                          ? CustomButtonTwo(onTap: () => Get.back(), title: "Make Payment", fillColor: AppColors.primary)
+                          ? CustomButtonTwo(onTap: () => Get.back(), title: "Make Payment", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)
                           : const SizedBox.shrink(),
                     ],
                   );

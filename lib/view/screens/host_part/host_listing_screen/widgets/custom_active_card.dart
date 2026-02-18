@@ -9,6 +9,7 @@ import '../../host_active_influe/model/all_user_model.dart';
 
 class CustomActiveCard extends StatelessWidget {
   final String name;
+  final String? role;
   final int? nightCredits;
   final String username;
   final String imageUrl;
@@ -29,6 +30,7 @@ class CustomActiveCard extends StatelessWidget {
     required this.onViewProfile,
     required this.onViewMessage,
     this.onSendRequest,
+    this.role,
   });
 
   @override
@@ -82,7 +84,8 @@ class CustomActiveCard extends StatelessWidget {
                     ),
                   ),
                    SizedBox(width: 8),
-                  Container(
+                  role == "host"
+                      ? Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFFF9F2),
@@ -105,6 +108,7 @@ class CustomActiveCard extends StatelessWidget {
                       ],
                     ),
                   )
+                      : SizedBox.shrink(),
                 ],
               ),
 
@@ -137,7 +141,8 @@ class CustomActiveCard extends StatelessWidget {
 
               const SizedBox(height: 12),
               // ====== platform followers ===========
-              Row(
+              role == "host"
+              ?Row(
                 children: (socialMediaLinks ?? []).isEmpty
                     ? [
                   SizedBox.shrink()
@@ -163,7 +168,8 @@ class CustomActiveCard extends StatelessWidget {
                     ),
                   );
                 }).toList(),
-              ),
+              )
+              :SizedBox.shrink(),
 
               const SizedBox(height: 12),
 
@@ -181,7 +187,7 @@ class CustomActiveCard extends StatelessWidget {
                       fillColor: AppColors.white,
                       textColor: AppColors.black_02,
                       borderWidth: 1,
-                      borderColor: AppColors.primary,
+                      borderColor:role == "host" ? AppColors.primary : AppColors.primary2,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -192,6 +198,7 @@ class CustomActiveCard extends StatelessWidget {
                       title: "Send Message",
                       fontSize: 12,
                       borderRadius: 10,
+                      fillColor: role == "host" ? AppColors.primary : AppColors.primary2,
                     ),
                   ),
                 ],

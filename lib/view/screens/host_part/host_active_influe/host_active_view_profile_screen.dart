@@ -32,6 +32,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
     final List<dynamic> socialMediaLinks = args['socialMediaLinks'] ?? [];
     final bool founderMember = args['founderMember']??false;
     final int nightCredits = args['nightCredits']??0;
+    final String role = args['role'] ;
     final String date = "2026-12-24T21:43:46.978Z";
 
 
@@ -73,7 +74,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                       Stack(
                         children: [
                           CustomNetworkImage(
-                            imageUrl: ApiUrl.baseUrl + image,
+                            imageUrl: image.isEmpty ? AppConstants.profileImage2 :  ApiUrl.baseUrl + image,
                             height: 95,
                             width: 95,
                             boxShape: BoxShape.circle,
@@ -135,7 +136,8 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                               )
                                   : SizedBox.shrink(),
                               SizedBox(width: 8),
-                              Container(
+                              role == "host"
+                              ? Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                                 decoration: BoxDecoration(
                                   color: const Color(0xFFFFF9F2),
@@ -158,6 +160,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                   ],
                                 ),
                               )
+                              : SizedBox.shrink(),
                             ],
                           ),
                         ],
@@ -166,7 +169,8 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   // ====== platform followers ===========
-                  Row(
+                  role == "host"
+                  ? Row(
                     children: (socialMediaLinks ).isEmpty
                         ? [
                       SizedBox.shrink()
@@ -193,7 +197,8 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                         ),
                       );
                     }).toList(),
-                  ),
+                  )
+                  : SizedBox.shrink(),
                   SizedBox(height: 20),
                   CustomButtonTwo(
                     onTap: (){
@@ -203,6 +208,9 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                       title: "Send Collaboration Request",
                       fontSize: 12,
                       borderRadius: 10,
+                    fillColor: role == "host" ? AppColors.primary : AppColors.primary2,
+                    textColor: AppColors.white,
+                    fontWeight: FontWeight.w600,
                     ),
                 ],
               ),

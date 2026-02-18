@@ -84,21 +84,21 @@ class InfActiveHostsScreen extends StatelessWidget {
                         final user = listToShow[index];
 
                         return CustomHostActiveCard(
-                          name: user.name,
-                          username: user.userName ?? '',
+                          userName: user.name,
+                          userHandle: user.userName ?? '',
                           location: user.fullAddress,
-                          imageUrl: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
-                          onSendMessage: () {
-                            Get.toNamed(AppRoutes.chatScreen,
-                              arguments: {
-                                'conversationId':"", //conversation.id ?? " ",
-                                'userName': user.name,
-                                'userImage': user.image,
-                                'receiverId': user.id,
-                              },
-                            );
-                          },
-                          onViewProfile: () {
+                          profileImage: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
+                          // on: () {
+                          //   Get.toNamed(AppRoutes.chatScreen,
+                          //     arguments: {
+                          //       'conversationId':"", //conversation.id ?? " ",
+                          //       'userName': user.name,
+                          //       'userImage': user.image,
+                          //       'receiverId': user.id,
+                          //     },
+                          //   );
+                          // },
+                          onViewDetailsTap: () {
                             debugPrint("user.userName, === ${user.image}");
                             debugPrint("user.isFounderMember === ${user.isFounderMember}");
                             Get.toNamed(AppRoutes.infActiveHostProfileScreen,
@@ -111,7 +111,7 @@ class InfActiveHostsScreen extends StatelessWidget {
                                 "location": user.fullAddress,
                               },
                             );
-                          },
+                          }, socialMediaLinks: [],
                         );
                       },
                     ),

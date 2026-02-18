@@ -5,23 +5,34 @@ import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_button/custom_button_two.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../../../host_part/collaboration_screen/model/collaboration_single_model.dart';
 
 class CustomHostActiveCard extends StatelessWidget {
-  final String? name;
-  final String? username;
+  final String? profileImage;
+  final String? userName;
+  final String? userHandle;
+  final String? status;
+  final List<String>? tags;
   final String? location;
-  final String? imageUrl;
-  final VoidCallback? onViewProfile;
-  final VoidCallback? onSendMessage;
+  final VoidCallback? onViewDetailsTap;
+  final VoidCallback? onPaymentTap;
+  final VoidCallback? onApproveTap;
+  final VoidCallback? onDeclineTap;
+  final List<InfluencerSocialMedia> socialMediaLinks;
 
   const CustomHostActiveCard({
-     super.key,
-     this.name,
-     this.location,
-     this.username,
-     this.imageUrl,
-     this.onViewProfile,
-     this.onSendMessage,
+    super.key,
+    this.profileImage,
+    this.userName,
+    this.status,
+    this.userHandle,
+    this.tags,
+    this.location,
+    this.onViewDetailsTap,
+    this.onPaymentTap,
+    this.onApproveTap,
+    this.onDeclineTap,
+    required this.socialMediaLinks,
   });
 
   @override
@@ -33,7 +44,7 @@ class CustomHostActiveCard extends StatelessWidget {
           color: AppColors.white,
           boxShadow: [
             BoxShadow(
-              color: AppColors.black.withValues(alpha: 0.1),
+              color: AppColors.black.withOpacity(0.1),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
@@ -44,67 +55,199 @@ class CustomHostActiveCard extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
-              /// ===== Profile Row =====
+              // ===== User Info =====
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomNetworkImage(
-                    imageUrl: imageUrl ?? "",
-                    height: 64,
-                    width: 64,
-                    boxShape: BoxShape.circle,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        CustomNetworkImage(
+                          imageUrl: profileImage ?? "",
+                          height: 64,
+                          width: 64,
+                          boxShape: BoxShape.circle,
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: userName ?? "",
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+
+                              CustomText(
+                                text: "@${userHandle}" ?? "",
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                bottom: 10,
+                              ),
+                              Row(
+                                children: socialMediaLinks.isEmpty
+                                    ? []
+                                    : socialMediaLinks.map((item) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 8),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          _getPlatformIcon(item.platform ?? ""),
+                                          size: 18,
+                                          color: _getPlatformColor(item.platform ?? ""),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        CustomText(
+                                          text: item.followers ?? "0",
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.black,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+
+                            ],
+                          ),
+                        ),
+
+                      ],
+                    ),
                   ),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: name ?? "",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      CustomText(
-                        text: "@$username",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      CustomText(
-                        text: location ?? "",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primary2,
-                      ),
-                    ],
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: status== "accepted" ? Color(0xFFE8F5E9) : status == "rejected" ? Colors.red.withOpacity(0.1) :status== "ongoing" ? AppColors.primary.withOpacity(0.1) :Color(0xFFFFF3E0),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color:status== "accepted"? Colors.green : status== "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary  : Colors.orange, width: 1),
+                    ),
+                    child:  Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CustomText(text: status == "accepted" ? "Accepted" : status == "rejected" ? "Rejected" : status== "ongoing" ? "Ongoing"  : "Pending",
+                          color: status == "accepted" ? Colors.green : status == "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary  : Colors.orange,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
+
+              const SizedBox(height: 8),
+
+              // ===== Tags =====
+              if (tags != null && tags!.isNotEmpty)
+                Row(
+                  children: tags!.map((tag) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xffECFEFF),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: CustomText(
+                          text: tag,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+
+              const SizedBox(height: 10),
+
+              // ===== Location =====
+              if (location != null)
+                Row(
+                  children: [
+                    const Icon(Icons.home, size: 24, color: AppColors.textClr),
+                    CustomText(
+                      text: location ?? "",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ],
+                ),
+
               const SizedBox(height: 12),
 
-              // ===== Buttons =====
               Row(
                 children: [
-                  Flexible(
+                  Expanded(
+                    flex: 2,
                     child: CustomButtonTwo(
                       height: 40,
-                      onTap: onViewProfile,
-                      title: "View Profile",
+                      onTap: onViewDetailsTap,
+                      title: "View Details",
                       fontSize: 12,
                       borderRadius: 10,
                       isBorder: true,
                       fillColor: AppColors.white,
                       textColor: AppColors.black_02,
                       borderWidth: 1,
-                      borderColor: AppColors.primary2,
+                      borderColor: AppColors.primary,
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Flexible(
+                  ( status == "accepted")?
+                  Expanded(
+                    flex: 2,
                     child: CustomButtonTwo(
                       height: 40,
-                      onTap: onSendMessage,
-                      title: "Send Message",
+                      onTap: onPaymentTap,
+                      title: "Make Payment",
                       fontSize: 12,
                       borderRadius: 10,
-                      fillColor: AppColors.primary2,
+                      isBorder: true,
+                      fillColor: AppColors.primary,
+                      textColor: AppColors.white,
+                      borderWidth: 1,
+                      borderColor: AppColors.primary,
+                    ),
+                  )
+                      : SizedBox.shrink(),
+                  const SizedBox(width: 8),
+                  (status == "ongoing" || status == "rejected" || status == "accepted")?
+                  SizedBox.shrink()
+                      : Expanded(
+                    flex: 2,
+                    child: CustomButtonTwo(
+                      height: 40,
+                      onTap: onApproveTap,
+                      title: "Approve",
+                      fontSize: 12,
+                      borderRadius: 10,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  (status == "ongoing" || status == "rejected" || status == "accepted")?
+                  SizedBox.shrink()
+                      : Expanded(
+                    flex: 1,
+                    child: CustomButtonTwo(
+                      height: 40,
+                      fillColor: AppColors.red_02,
+                      onTap: onDeclineTap,
+                      title: "X",
+                      textColor: AppColors.white,
+                      fontSize: 12,
+                      borderRadius: 10,
                     ),
                   ),
                 ],
@@ -114,5 +257,39 @@ class CustomHostActiveCard extends StatelessWidget {
         ),
       ),
     );
+  }
+  IconData _getPlatformIcon(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'instagram':
+        return Icons.camera_alt;
+      case 'facebook':
+        return Icons.facebook;
+      case 'tiktok':
+        return Icons.music_note;
+      case 'youtube':
+        return Icons.play_circle_fill;
+      case 'x':
+      case 'twitter':
+        return Icons.alternate_email;
+      default:
+        return Icons.public;
+    }
+  }
+  Color _getPlatformColor(String platform) {
+    switch (platform.toLowerCase()) {
+      case 'instagram':
+        return const Color(0xFFE1306C); // pink
+      case 'facebook':
+        return const Color(0xFF1877F2); // blue
+      case 'tiktok':
+        return Colors.black;
+      case 'youtube':
+        return const Color(0xFFFF0000); // red
+      case 'x':
+      case 'twitter':
+        return Colors.black;
+      default:
+        return AppColors.primary;
+    }
   }
 }

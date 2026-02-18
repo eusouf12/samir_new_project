@@ -71,6 +71,7 @@ class InfHomeScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20),
+              //collaboration and Active host
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -79,15 +80,16 @@ class InfHomeScreen extends StatelessWidget {
                     title: "156",
                     subtitle: "Total\n Collaboration",
                     onTap: () {
-                      Get.toNamed(AppRoutes.infTotalDealsScreen);
+                      Get.toNamed(AppRoutes.hostCollaborationScreen);
                     },
                   ),
+                  //host
                   CustomInfHomeCard(
                     image: AppIcons.activeHostIcon,
                     title: "47",
                     subtitle: "Active Host",
                     onTap: () {
-                      Get.toNamed(AppRoutes.infActiveHostsScreen);
+                      Get.toNamed(AppRoutes.hostActiveInflue);
                     },
                   ),
                 ],

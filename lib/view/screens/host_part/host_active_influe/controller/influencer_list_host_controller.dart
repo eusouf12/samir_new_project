@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
@@ -57,11 +58,14 @@ class InfluencerListHostController extends GetxController {
   int totalPages = 1;
 
   Future<void> getInfluencers({bool loadMore = false}) async {
+    final role = await SharePrefsHelper.getString(AppConstants.role);
+
     if (loadMore) {
       if (isLoadMore.value || currentPage >= totalPages) return;
       isLoadMore.value = true;
       currentPage++;
-    } else {
+    }
+    else {
       influencerList.clear();
       isLoading.value = true;
       currentPage = 1;
@@ -69,7 +73,7 @@ class InfluencerListHostController extends GetxController {
     }
 
     try {
-      final response = await ApiClient.getData(ApiUrl.influencerList(page: currentPage.toString()));
+      final response = await ApiClient.getData(ApiUrl.influencerList(page: currentPage.toString(), role: role=="host" ? "influencer" : "host"));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);

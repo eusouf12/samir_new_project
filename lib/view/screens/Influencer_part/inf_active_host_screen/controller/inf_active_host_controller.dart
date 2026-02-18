@@ -64,7 +64,8 @@ class InfActiveHostController extends GetxController {
       if (isLoadMore.value || currentPage >= totalPages) return;
       isLoadMore.value = true;
       currentPage++;
-    } else {
+    }
+    else {
       hostList.clear();
       isLoading.value = true;
       currentPage = 1;

@@ -205,7 +205,7 @@ class DealsController extends GetxController {
   // Guest count stepper
   void incrementGuest() => guestCount.value++;
   void decrementGuest() {
-    if (guestCount.value > 1) guestCount.value--;
+    if (guestCount.value > 0) guestCount.value--;
   }
 
   // ================ create deals Controller ==============
