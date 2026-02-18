@@ -4,7 +4,6 @@ import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../core/app_routes/app_routes.dart';
-import '../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../service/api_url.dart';
 import '../../../../utils/app_const/app_const.dart';
 import '../../../components/custom_loader/custom_loader.dart';
@@ -17,11 +16,10 @@ class HostActiveInflue extends StatelessWidget {
   HostActiveInflue({super.key});
   final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
   final ChatListController chatListController = Get.put(ChatListController());
-  String? role;
+  final role  = Get.arguments;
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      role = await SharePrefsHelper.getString(AppConstants.role);
       influencerListHostController.getInfluencers();
     });
     return CustomGradient(
@@ -87,9 +85,11 @@ class HostActiveInflue extends StatelessWidget {
 
                         final user = listToShow[index];
                         return CustomActiveCard(
+                          founderMember: user.isFounderMember,
+                          averageRating: user.averageRating,
                           role: role,
                           name: user.name,
-                           nightCredits: user.nightCredits,
+                          nightCredits: user.nightCredits,
                           username: user.userName ?? '',
                           socialMediaLinks: user.socialMediaLinks,
                           imageUrl: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
@@ -123,6 +123,7 @@ class HostActiveInflue extends StatelessWidget {
                                 }).toList(),
                                 "founderMember": user.isFounderMember,
                                 "nightCredits": user.nightCredits,
+                                "rating": user.averageRating,
                                 "role": role,
                               },
                             );

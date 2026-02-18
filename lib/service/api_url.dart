@@ -57,7 +57,6 @@ class ApiUrl {
    static  String  acceptOrReject({required String id})=>"/api/v1/collaboration/accept-or-reject-collaboration/$id";
    static  String  myCollaborations({required String page})=>"/api/v1/collaboration/get-my-all-collaborations?page=$page&limit=10";
    static  String  myCollaborationsFilter({required String filter,required String page})=>"/api/v1/collaboration/get-my-all-collaborations?status=$filter&page=$page&limit=10";
-
    static String singleInfluencerCollaborations({String? filter, required String id,}) {
     if (filter != null && filter.isNotEmpty) {
      return "/api/v1/collaboration/get-collaboration-user/$id?status=$filter";

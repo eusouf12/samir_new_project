@@ -32,6 +32,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
     final List<dynamic> socialMediaLinks = args['socialMediaLinks'] ?? [];
     final bool founderMember = args['founderMember']??false;
     final int nightCredits = args['nightCredits']??0;
+    final double rating = args['rating']??0.0;
     final String role = args['role'] ;
     final String date = "2026-12-24T21:43:46.978Z";
 
@@ -104,9 +105,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                             right: 20,
                           ),
                           SizedBox(height: 4),
-                          Row(
-                            children: [
-                              founderMember==true?Container(
+                          founderMember==true?Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 10,
                                   vertical: 4,
@@ -134,10 +133,12 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                   ],
                                 ),
                               )
-                                  : SizedBox.shrink(),
-                              SizedBox(width: 8),
-                              role == "host"
-                              ? Container(
+                              : SizedBox.shrink(),
+                          SizedBox(height: 4),
+                          Row(
+                            children: [
+                              //rating
+                              Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                                 decoration: BoxDecoration(
                                   color: const Color(0xFFFFF9F2),
@@ -147,6 +148,31 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(Icons.star, color: Colors.orange, size: 16,),
+                                    SizedBox(width: 4),
+
+                                    Text(
+                                      "${rating} Average Rating",
+                                      style: TextStyle(
+                                        color: Color(0xFF1A237E),
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              role == "host"
+                                  ? Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFFF9F2),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.nightlight_round, color: Colors.orange, size: 16,),
                                     SizedBox(width: 4),
 
                                     Text(
@@ -160,7 +186,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                   ],
                                 ),
                               )
-                              : SizedBox.shrink(),
+                                  : SizedBox.shrink(),
                             ],
                           ),
                         ],

@@ -17,7 +17,7 @@ void showDeleteDialog({
           ),
           TextButton(
             onPressed: () {
-              onDelete(); // parent থেকে আসা logic call হবে
+              onDelete();
               Navigator.pop(context);
             },
             child: const Text(

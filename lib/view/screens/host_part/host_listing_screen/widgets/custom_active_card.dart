@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../utils/app_icons/app_icons.dart';
 import '../../../../components/custom_button/custom_button_two.dart';
+import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../host_active_influe/model/all_user_model.dart';
@@ -10,7 +10,9 @@ import '../../host_active_influe/model/all_user_model.dart';
 class CustomActiveCard extends StatelessWidget {
   final String name;
   final String? role;
+  final bool? founderMember;
   final int? nightCredits;
+  final double? averageRating;
   final String username;
   final String imageUrl;
   final List<String> tags;
@@ -23,7 +25,9 @@ class CustomActiveCard extends StatelessWidget {
     super.key,
     required this.socialMediaLinks,
     required this.name,
+    this.founderMember,
     this.nightCredits,
+    this.averageRating,
     required this.username,
     required this.imageUrl,
     this.tags = const [],
@@ -80,35 +84,95 @@ class CustomActiveCard extends StatelessWidget {
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                         ),
+                        SizedBox(height: 10),
+                        //founder
+                        founderMember == true?Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xffFACC15),
+                                Color(0xffEAB308),
+                                Color(0xffCA8A04),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomImage(imageSrc: AppIcons.king),
+                              CustomText(
+                                left: 6,
+                                text: "Founder Member",
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.white,
+                              ),
+                            ],
+                          ),
+                        )
+                            : SizedBox.shrink(),
                       ],
                     ),
                   ),
-                   SizedBox(width: 8),
-                  role == "host"
-                      ? Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFF9F2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                         Icon(Icons.star, color: Colors.orange, size: 16,),
-                         SizedBox(width: 4),
+                // night credits and ratting
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFF9F2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                             Icon(Icons.star, color: Colors.orange, size: 16,),
+                             SizedBox(width: 4),
 
-                        Text(
-                         "${nightCredits} Night Credits",
-                         style: TextStyle(
-                           color: Color(0xFF1A237E),
-                           fontSize: 11,
-                           fontWeight: FontWeight.bold,
-                         ),
-                                                    ),
-                      ],
-                    ),
-                  )
-                      : SizedBox.shrink(),
+                            Text(
+                             "${averageRating}",
+                             style: TextStyle(
+                               color: Color(0xFF1A237E),
+                               fontSize: 11,
+                               fontWeight: FontWeight.bold,
+                             ),
+                                                        ),
+                          ],
+                        ),
+                      ),
+                      //night credits
+                      role == "host"
+                          ? Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFF9F2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.nightlight_round, color: Colors.orange, size: 16,),
+                            SizedBox(width: 4),
+
+                            Text(
+                              "${nightCredits} ",
+                              style: TextStyle(
+                                color: Color(0xFF1A237E),
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                          : SizedBox.shrink(),
+                    ],
+                  ),
                 ],
               ),
 

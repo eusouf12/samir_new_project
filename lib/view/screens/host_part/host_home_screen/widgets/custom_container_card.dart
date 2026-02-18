@@ -16,7 +16,7 @@ const CustomContainerCard({super.key, this.title, this.number, this.onTap, this.
       onTap: onTap,
       child: Container(
         height: 96.w,
-        width: 100.w,
+        width: 105.w,
         decoration: BoxDecoration(
           color: color?? AppColors.primary,
           border: Border.all(color: AppColors.greyLight),

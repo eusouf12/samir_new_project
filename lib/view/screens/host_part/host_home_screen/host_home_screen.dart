@@ -79,22 +79,22 @@ class HostHomeScreen extends StatelessWidget {
                   ],
                 ),
                 // scroll 5 card
-                SizedBox(height: 16),
+                SizedBox(height: 25),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CustomContainerCard(
-                        title: "Deals",
-                        color: AppColors.white,
-                        textColor: AppColors.black,
-                        number: "${userData.value?.dealsTotal}",
-                        onTap: () {
-                          Get.toNamed(AppRoutes.hostDealsScreen);
-                        },
-                      ),
-                      SizedBox(width: 16),
+                      // CustomContainerCard(
+                      //   title: "Deals",
+                      //   color: AppColors.white,
+                      //   textColor: AppColors.black,
+                      //   number: "${userData.value?.dealsTotal}",
+                      //   onTap: () {
+                      //     Get.toNamed(AppRoutes.hostDealsScreen);
+                      //   },
+                      // ),
+                      // SizedBox(width: 16),
                       //Listings
                       CustomContainerCard(
                         title: "My\nListings",
@@ -109,7 +109,7 @@ class HostHomeScreen extends StatelessWidget {
                       //Influencer
                       CustomContainerCard(
                         onTap: () {
-                          Get.toNamed(AppRoutes.hostActiveInflue);
+                          Get.toNamed(AppRoutes.hostActiveInflue, arguments: collaborationController.singleUserProfile.value?.role);
                         },
                         title: "Active\nInfluencer",
                         color: AppColors.white,
@@ -140,15 +140,15 @@ class HostHomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
+                // SizedBox(height: 16),
                 // create and add
-                CustomButtonTwo(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.hostCreateDealScreen, arguments: {"page": "deal", "id": ""});
-                  },
-                  title: "Create Deal",
-                  borderRadius: 10,
-                ),
+                // CustomButtonTwo(
+                //   onTap: () {
+                //     Get.toNamed(AppRoutes.hostCreateDealScreen, arguments: {"page": "deal", "id": ""});
+                //   },
+                //   title: "Create Deal",
+                //   borderRadius: 10,
+                // ),
                 SizedBox(height: 16),
                 CustomButtonTwo(
                   onTap: () {
@@ -159,8 +159,8 @@ class HostHomeScreen extends StatelessWidget {
                   isBorder: true,
                   borderColor: AppColors.primary,
                   borderWidth: 1,
-                  fillColor: AppColors.white,
-                  textColor: AppColors.black,
+                  fillColor: AppColors.primary,
+                  textColor: AppColors.white,
                 ),
                 // Recent Activity
                 CustomText(

@@ -109,7 +109,7 @@ class InfHomeScreen extends StatelessWidget {
                     title: influencerListHostController.influencerList.length.toString(),
                     subtitle: "Active Host",
                     onTap: () {
-                      Get.toNamed(AppRoutes.hostActiveInflue);
+                      Get.toNamed(AppRoutes.hostActiveInflue ,arguments: collaborationController.singleUserProfile.value?.role);
                     },
                   ),
                 ],
