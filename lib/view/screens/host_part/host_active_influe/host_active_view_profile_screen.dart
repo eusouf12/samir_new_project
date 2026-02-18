@@ -42,7 +42,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Influencer Profile",),
+      appBar: CustomRoyelAppbar(leftIcon: true, titleName: role == "host" ?  "Influencer Profile" : "Host Profile"),
 
       body: Column(
         children: [
@@ -200,7 +200,8 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                   )
                   : SizedBox.shrink(),
                   SizedBox(height: 20),
-                  CustomButtonTwo(
+                  role == "host"
+                  ?CustomButtonTwo(
                     onTap: (){
                       Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: {"page": "Collaboration", "id": userId},);
                     },
@@ -211,7 +212,8 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                     fillColor: role == "host" ? AppColors.primary : AppColors.primary2,
                     textColor: AppColors.white,
                     fontWeight: FontWeight.w600,
-                    ),
+                    )
+                  : SizedBox.shrink(),
                 ],
               ),
             ),
@@ -227,17 +229,17 @@ class HostActiveViewProfileScreen extends StatelessWidget {
               final completedDeals = collaborationController.singleUserCollaborationList;
 
               if (completedDeals.isEmpty) {
-                return Column(children: const [SizedBox(height: 30), CustomText(text: "No past deals found", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textClr,),],);
+                return Column(children: const [SizedBox(height: 30), CustomText(text: "No past collabration found", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textClr,),],);
               }
 
               return Column(
                 children: [
-                  // Past Deals total
+                  // Past Collabration total
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const CustomText(
-                        text: "Past Deals",
+                        text: "Past Collabration",
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),

@@ -163,7 +163,7 @@ class ChatScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                         border:
-                        Border.all(color: const Color(0xFF4DB6AC)),
+                        Border.all(color:role == "host" ? AppColors.primary : AppColors.primary2),
                       ),
                       child: Row(
                         children: [
@@ -179,8 +179,8 @@ class ChatScreen extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.image_outlined,
-                                color: Color(0xFF4DB6AC)),
+                            icon: Icon(Icons.image_outlined,
+                                color: role == "host" ? AppColors.primary : AppColors.primary2),
                             onPressed:
                             controller.pickImagesFromGallery,
                           ),
@@ -197,11 +197,9 @@ class ChatScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border.all(
-                            color: const Color(0xFF4DB6AC)),
+                        border: Border.all(color: role == "host" ? AppColors.primary : AppColors.primary2),
                       ),
-                      child: const Icon(Icons.send_outlined,
-                          color: Color(0xFF4DB6AC)),
+                      child:  Icon(Icons.send_outlined, color: role == "host" ? AppColors.primary : AppColors.primary2),
                     ),
                   ),
                 ],
@@ -217,7 +215,8 @@ class ChatScreen extends StatelessWidget {
 
 class ChatBubble extends StatelessWidget {
   final Map<String, dynamic> msg;
-  const ChatBubble({super.key, required this.msg});
+  ChatBubble({super.key, required this.msg});
+  final Map<String, dynamic> args = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -225,6 +224,7 @@ class ChatBubble extends StatelessWidget {
     final String text = msg['text'] ?? '';
     final List images = msg['imageUrl'] ?? [];
     final DateTime? time = msg['createdAt'];
+    final String role = args['role'] ;
 
     return Column(
       crossAxisAlignment:
@@ -237,7 +237,7 @@ class ChatBubble extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 5),
             padding: images.isEmpty ? const EdgeInsets.all(10) : const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: isMe ? AppColors.primary : Colors.grey[300],
+              color: isMe ? role == "host" ? AppColors.primary : AppColors.primary2 : Colors.grey[300],
               borderRadius: BorderRadius.circular(images.isEmpty ? 5 : 23),
             ),
             child: Column(

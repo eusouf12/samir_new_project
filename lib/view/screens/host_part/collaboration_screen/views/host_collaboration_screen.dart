@@ -26,7 +26,7 @@ class HostCollaborationScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       controller.currentIndex.value = 0;
       String id = await SharePrefsHelper.getString(AppConstants.userId);
-      role = await SharePrefsHelper.getString(AppConstants.userId);
+      role = await SharePrefsHelper.getString(AppConstants.role);
       controller.getSingleUserCollaboration(id: id);
       controller.getSingleUser(userId: id);
     });
@@ -187,6 +187,7 @@ class HostCollaborationScreen extends StatelessWidget {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16),
                             child: CustomCollaborationCard(
+                              role: role,
                               profileImage: (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image! : "",
                               userName: collaboration.selectInfluencerOrHost?.name,
                               userHandle:  collaboration.selectInfluencerOrHost?.userName,

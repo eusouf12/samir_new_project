@@ -24,6 +24,7 @@ class InfHomeScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       String id = await SharePrefsHelper.getString(AppConstants.userId);
       collaborationController.getSingleUser(userId: id);
+      influencerListHostController.getInfluencers();
     });
     return CustomGradient(
       child: Scaffold(

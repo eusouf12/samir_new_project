@@ -35,7 +35,7 @@ class HostActiveInflue extends StatelessWidget {
                 isDens: true,
                 fillColor: const Color(0xffF5F5F5),
                 fieldFocusBorderColor:role == "host" ? AppColors.primary : AppColors.primary2,
-                hintText: "Search influencer by name ",
+                hintText:  role == "host" ? "Search influencer by name " :  "Search host by name ",
                 hintStyle: TextStyle(color: AppColors.textClr),
                 prefixIcon: Icon(Icons.search_rounded, size: 18, color: AppColors.textClr),
                 onChanged: (value) {
