@@ -29,6 +29,7 @@ class ChatScreen extends StatelessWidget {
     final String userName = args['userName'] ?? "";
     final String? userImage = args['userImage'] as String?;
     final String receiverId = args['receiverId'] ?? "";
+    final String role = args['role'] ;
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       controller.getChatMessages(id: conversationId);
       profileController.getUserProfile();
@@ -101,8 +102,8 @@ class ChatScreen extends StatelessWidget {
                 if (controller.messageList.isEmpty && controller.messages.isEmpty) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.chat_bubble_outline, size: 80, color: Color(0xFF4DB6AC)),
+                    children:  [
+                      Icon(Icons.chat_bubble_outline, size: 80, color: role == "host" ? Color(0xFF4DB6AC) : AppColors.primary2),
                       SizedBox(height: 15),
                       Text("Start your message", style: TextStyle(color: Colors.grey, fontSize: 16)),
                     ],

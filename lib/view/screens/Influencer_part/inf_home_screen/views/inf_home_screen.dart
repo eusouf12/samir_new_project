@@ -4,20 +4,39 @@ import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradien
 import 'package:samir_flutter_app/view/screens/Influencer_part/inf_home_screen/widgets/custom_inf_home_card.dart';
 
 import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../utils/app_const/app_const.dart';
 import '../../../../../utils/app_icons/app_icons.dart';
 import '../../../../components/custom_image/custom_image.dart';
+import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_nav_bar/inf_navbar.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../../../host_part/collaboration_screen/controller/collabration_controller.dart';
+import '../../../host_part/host_active_influe/controller/influencer_list_host_controller.dart';
 
 class InfHomeScreen extends StatelessWidget {
-  const InfHomeScreen({super.key});
-
+  InfHomeScreen({super.key});
+  final CollaborationController collaborationController = Get.put(CollaborationController());
+  final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      String id = await SharePrefsHelper.getString(AppConstants.userId);
+      collaborationController.getSingleUser(userId: id);
+    });
     return CustomGradient(
       child: Scaffold(
-        body: Padding(
+        body:Obx((){
+          if (collaborationController.rxGetSingleUserStatus.value == Status.loading) {
+            return const Center(child: CustomLoader());
+          }
+
+          if (collaborationController.singleUserProfile.value == null) {
+            return const Center(child: CustomText(text: "Profile not found", fontSize: 16,),);
+          }
+          final userData = collaborationController.singleUserProfile;
+          return Padding(
           padding: const EdgeInsets.only(top: 60, right: 20.0, left: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,12 +48,12 @@ class InfHomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: "Welcome! Sarah",
+                        text: "Welcome! ${userData.value?.name}",
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
                       CustomText(
-                        text: "Here's your overview today.",
+                        text: "Here's your overview .",
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textClr,
@@ -44,7 +63,7 @@ class InfHomeScreen extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      // Get.toNamed(AppRoutes.hostNotificationScreen);
+                      Get.toNamed(AppRoutes.hostNotificationScreen);
                     },
                     child: CustomImage(imageSrc: AppIcons.notifacationLoadIcon),
                   ),
@@ -77,7 +96,7 @@ class InfHomeScreen extends StatelessWidget {
                 children: [
                   CustomInfHomeCard(
                     image: AppIcons.dealsIcons,
-                    title: "156",
+                    title: "${userData.value?.collaborationStats?.total}",
                     subtitle: "Total\n Collaboration",
                     onTap: () {
                       Get.toNamed(AppRoutes.hostCollaborationScreen);
@@ -86,7 +105,7 @@ class InfHomeScreen extends StatelessWidget {
                   //host
                   CustomInfHomeCard(
                     image: AppIcons.activeHostIcon,
-                    title: "47",
+                    title: influencerListHostController.influencerList.length.toString(),
                     subtitle: "Active Host",
                     onTap: () {
                       Get.toNamed(AppRoutes.hostActiveInflue);
@@ -191,7 +210,8 @@ class InfHomeScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
+        );
+        }),
         bottomNavigationBar: InfNavbar(currentIndex: 0),
       ),
     );

@@ -6,6 +6,8 @@ import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_roy
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_messages_list_screen/widgets/custom_message_card.dart';
 import '../../../../../core/app_routes/app_routes.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
+import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_nav_bar/navbar.dart';
 import '../controller/chat_list_controller.dart';
@@ -14,10 +16,11 @@ class HostMessagesListScreen extends StatelessWidget {
   HostMessagesListScreen({super.key});
 
   final ChatListController controller = Get.put(ChatListController());
-
+ String? role ;
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      role = await SharePrefsHelper.getString(AppConstants.userId);
       controller.getConversations(loadMore: false);
     });
 
@@ -61,6 +64,8 @@ class HostMessagesListScreen extends StatelessWidget {
                             'userName': user.name,
                             'userImage': user.image,
                             'receiverId': user.id,
+                            'role': role,
+
                           },
                         );
                       },
