@@ -18,6 +18,8 @@ class HostCreateDealThreeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String page = args['page'];
     final String id = args['id'] ;
+    final int nightCredits = args['nightCredits'] ;
+    controller.setMaxNightCredits(nightCredits);
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: page == "deal" ? "Create Deal" : "Create Collaboration"),
       body: SingleChildScrollView(

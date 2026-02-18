@@ -9,6 +9,7 @@ class CustomCollaborationCard extends StatelessWidget {
   final String? profileImage;
   final String? role;
   final String? userName;
+  final bool? isMe;
   final String? userHandle;
   final String? status;
   final List<String>? tags;
@@ -24,6 +25,7 @@ class CustomCollaborationCard extends StatelessWidget {
     this.profileImage,
     this.userName,
     this.role,
+    this.isMe,
     this.status,
     this.userHandle,
     this.tags,
@@ -207,6 +209,8 @@ class CustomCollaborationCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
+                  //payment
+                  (isMe == false)?
                   ( status == "accepted")?
                        Expanded(
                     flex: 2,
@@ -223,8 +227,11 @@ class CustomCollaborationCard extends StatelessWidget {
                       borderColor: role == "host" ? AppColors.primary : AppColors.primary2,
                     ),
                   )
-                      : SizedBox.shrink(),
+                      : SizedBox.shrink()
+                  :SizedBox.shrink(),
                   const SizedBox(width: 8),
+                  //approve
+                  (isMe == false)?
                   (status == "ongoing" || status == "rejected" || status == "accepted")?
                   SizedBox.shrink()
                       : Expanded(
@@ -237,8 +244,10 @@ class CustomCollaborationCard extends StatelessWidget {
                       borderRadius: 10,
                       fillColor: role == "host" ? AppColors.primary : AppColors.primary2,
                     ),
-                  ),
+                  )
+                  :SizedBox.shrink(),
                   const SizedBox(width: 8),
+                  //rejected
                   (status == "ongoing" || status == "rejected" || status == "accepted")?
                     SizedBox.shrink()
                       : Expanded(

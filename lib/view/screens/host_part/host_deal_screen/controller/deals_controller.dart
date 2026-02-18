@@ -114,13 +114,13 @@ class DealsController extends GetxController {
 
     final follower = platformFollowers[selectedPlatform.value];
 
-    if (follower == null) {
-      showCustomSnackBar(
-        "Please add minimum followers for ${selectedPlatform.value}",
-        isError: true,
-      );
-      return;
-    }
+    // if (follower == null) {
+    //   showCustomSnackBar(
+    //     "Please add minimum followers for ${selectedPlatform.value}",
+    //     isError: true,
+    //   );
+    //   return;
+    // }
 
     final index = deliverables.indexWhere(
           (e) =>
@@ -141,7 +141,7 @@ class DealsController extends GetxController {
         "platform": selectedPlatform.value,
         "contentType": selectedContentType.value,
         "quantity": quantity.value,
-        "platformFollowers": followerMap,
+        // "platformFollowers": followerMap,
       });
     }
 
@@ -193,12 +193,30 @@ class DealsController extends GetxController {
     });
   }
 
+  int maxNightCredits = 0;
+
+  void setMaxNightCredits(int value) {
+    maxNightCredits = value;
+  }
+
+
   // Toggle Compensation Type
   void toggleNightCredits() => isNightCredits.value = !isNightCredits.value;
   void toggleDirectPayment() => isDirectPayment.value = !isDirectPayment.value;
 
   // Nights count
-  void incrementNights() => totalNights.value++;
+  void incrementNights() {
+    if (totalNights.value >= maxNightCredits) {
+      showCustomSnackBar(
+        "You only have $maxNightCredits night credits available",
+        isError: true,
+      );
+      return;
+    }
+
+    totalNights.value++;
+  }
+
   void decrementNights() {
     if (totalNights.value > 1) totalNights.value--;
   }

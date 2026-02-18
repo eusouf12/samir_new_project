@@ -21,6 +21,7 @@ class HostCreateDealScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String page = args['page'];
     final String id = args['id'] ;
+    final int nightCredits = args['nightCredits'] ;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       listingController.getVerifiedListings(loadMore: false);
     });
@@ -120,7 +121,7 @@ class HostCreateDealScreen extends StatelessWidget {
                       debugPrint('Check-in time: ${dealsController.checkInFormattedTime}');
                       debugPrint('Check-out date: ${dealsController.checkOutFormattedDate}');
                       debugPrint('Check-out time: ${dealsController.checkOutFormattedTime}');
-                      Get.toNamed(AppRoutes.hostCreateDealTwoScreen,arguments: {"page": page, "id": id});
+                      Get.toNamed(AppRoutes.hostCreateDealTwoScreen,arguments: {"page": page, "id": id, 'nightCredits': nightCredits});
                     },
                     title: "Next →",
                   ),

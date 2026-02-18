@@ -19,13 +19,15 @@ class HostCollaborationScreen extends StatelessWidget {
 
   final CollaborationController controller = Get.put(CollaborationController());
   String? role ;
+  String? myId ;
 
   @override
   Widget build(BuildContext context) {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       controller.currentIndex.value = 0;
-      String id = await SharePrefsHelper.getString(AppConstants.userId);
+      final id = await SharePrefsHelper.getString(AppConstants.userId);
+      myId = await SharePrefsHelper.getString(AppConstants.userId);
       role = await SharePrefsHelper.getString(AppConstants.role);
       controller.getSingleUserCollaboration(id: id);
       controller.getSingleUser(userId: id);
@@ -183,14 +185,16 @@ class HostCollaborationScreen extends StatelessWidget {
                         itemCount: controller.singleUserCollaborationList.length,
                         itemBuilder: (context, index) {
                           final collaboration = controller.singleUserCollaborationList[index];
+                          final isMe = collaboration.userId?.id == myId;
 
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16),
                             child: CustomCollaborationCard(
                               role: role,
-                              profileImage: (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image! : "",
-                              userName: collaboration.selectInfluencerOrHost?.name,
-                              userHandle:  collaboration.selectInfluencerOrHost?.userName,
+                              isMe: isMe,
+                              profileImage: isMe == true ? (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image! : "" :(collaboration.userId?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.userId!.image! : "",
+                              userName: isMe == true ? collaboration.selectInfluencerOrHost?.name : collaboration.userId?.name,
+                              userHandle: isMe == true ? collaboration.selectInfluencerOrHost?.userName : collaboration.userId?.userName,
                               status: collaboration.status,
                               location: collaboration.selectDeal?.title?.title ?? "",
                                socialMediaLinks: collaboration.selectInfluencerOrHost?.socialMediaLinks ?? [],
@@ -248,6 +252,7 @@ class HostCollaborationScreen extends StatelessWidget {
                                     "userId" : collaboration.selectInfluencerOrHost?.id,
                                     "collabrationId" : collaboration.id,
                                     "role" : role,
+                                    "isMe" : isMe,
                                   },
                                 );
                               },

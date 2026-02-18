@@ -39,6 +39,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
     final String userId = args["userId"] ?? "";
     final String collabrationId = args["collabrationId"] ?? "";
     final String role = args["role"] ;
+    final bool isMe = args["isMe"] ;
 
     // Amenities List logic
     final List<String> enabledAmenities = [];
@@ -162,23 +163,30 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                               onTap: () => controller.acceptRejected(action: 'reject', userId: userId, collabrationId: collabrationId),
                               title: "Decline", fillColor: AppColors.red_02)),
                           const SizedBox(width: 10),
+                          (isMe == false)?
                           Flexible(child: CustomButtonTwo(
                               onTap: () => controller.acceptRejected(action: 'accept', userId: userId, collabrationId: collabrationId),
-                              title: "Accept", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)),
+                              title: "Accept", fillColor: role == "host" ? AppColors.primary : AppColors.primary2))
+                          :SizedBox.shrink(),
                         ],
                       ),
 
                       const SizedBox(height: 10),
+                      //negotiation
+                      (isMe == false)?
                       (status == "ongoing" || status == "rejected" || status == "accepted")
                           ? const SizedBox.shrink()
                           : CustomButtonTwo(
                           onTap: () => Get.toNamed(AppRoutes.negotiationScreen, arguments: collabrationId),
-                          title: "Request to Negotiation", fillColor: role == "host" ? AppColors.primary : AppColors.primary2),
+                          title: "Request to Negotiation", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)
+                      :SizedBox.shrink(),
                       const SizedBox(height: 10),
-
+                      (isMe == false)?
                       (status == "accepted")
                           ? CustomButtonTwo(onTap: () => Get.back(), title: "Make Payment", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)
-                          : const SizedBox.shrink(),
+                          : const SizedBox.shrink()
+                      :SizedBox.shrink(),
+
                     ],
                   );
                 }),

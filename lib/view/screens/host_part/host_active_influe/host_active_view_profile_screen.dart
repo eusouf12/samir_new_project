@@ -229,7 +229,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                   role == "host"
                   ?CustomButtonTwo(
                     onTap: (){
-                      Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: {"page": "Collaboration", "id": userId},);
+                      Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: {"page": "Collaboration", "id": userId, 'nightCredits': nightCredits},);
                     },
                       height: 40,
                       title: "Send Collaboration Request",
