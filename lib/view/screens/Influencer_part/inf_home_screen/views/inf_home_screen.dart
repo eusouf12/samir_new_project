@@ -30,7 +30,7 @@ class InfHomeScreen extends StatelessWidget {
       child: Scaffold(
         body:Obx((){
           if (collaborationController.rxGetSingleUserStatus.value == Status.loading) {
-            return const Center(child: CustomLoader());
+            return  Center(child: CustomLoader(color: AppColors.primary2));
           }
 
           if (collaborationController.singleUserProfile.value == null) {

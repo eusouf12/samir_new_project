@@ -95,7 +95,7 @@ class ChatScreen extends StatelessWidget {
               child: Obx(() {
                 //===========  Loader===========
                 if (controller.rxStatus.value == Status.loading && controller.messageList.isEmpty) {
-                  return const Center(child: CustomLoader());
+                  return  Center(child: CustomLoader());
                 }
 
                 //=========== Empty ===========
@@ -125,7 +125,7 @@ class ChatScreen extends StatelessWidget {
 
                     itemBuilder: (_, index) {
                       if (index == controller.messageList.length + controller.messages.length) {
-                        return const Padding(
+                        return  Padding(
                           padding: EdgeInsets.all(10),
                           child: Center(child: CustomLoader()),
                         );

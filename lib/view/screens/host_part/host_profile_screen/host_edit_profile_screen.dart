@@ -28,16 +28,16 @@ class HostEditProfileScreen extends StatelessWidget {
           appBar: CustomRoyelAppbar(leftIcon: true, titleName: 'Edit Profile', color: AppColors.black,),
           body:Obx((){
             if (profileController.rxUserStatus.value == Status.loading) {
-              return const Center(child: CustomLoader());
+              return  Center(child: CustomLoader());
             }
 
             if (profileController.userData.value == null) {
-              return const Center(child: CustomText(text: "Profile not found", fontSize: 16,),);
+              return  Center(child: CustomText(text: "Profile not found", fontSize: 16,),);
             }
             final userData = profileController.userData.value!;
             return SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                padding:  EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                 child: Column(
                   children: [
                     Stack(
@@ -132,7 +132,7 @@ class HostEditProfileScreen extends StatelessWidget {
                     SizedBox(height: 20),
                     Obx((){
                       if (profileController.updateProfileLoading.value) {
-                        return const CustomLoader();
+                        return  CustomLoader();
                       }
                       return  CustomButton(
                         onTap: (){

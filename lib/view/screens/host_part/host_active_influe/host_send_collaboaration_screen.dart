@@ -208,7 +208,7 @@ class HostSendCollaboarationScreen extends StatelessWidget {
                   Expanded(
                     child: Obx(() {
                       if (dealsController.dealList.isEmpty && dealsController.isDealLoading.value) {
-                        return const Center(child: CustomLoader());
+                        return  Center(child: CustomLoader());
                       }
 
                       return NotificationListener<ScrollNotification>(
@@ -224,7 +224,7 @@ class HostSendCollaboarationScreen extends StatelessWidget {
                           separatorBuilder: (context, index) => Divider(height: 1, color: Colors.white),
                           itemBuilder: (context, index) {
                             if (index == dealsController.dealList.length) {
-                              return const Padding(padding: EdgeInsets.all(10),
+                              return  Padding(padding: EdgeInsets.all(10),
                                 child: Center(child: CustomLoader()),
                               );
                             }

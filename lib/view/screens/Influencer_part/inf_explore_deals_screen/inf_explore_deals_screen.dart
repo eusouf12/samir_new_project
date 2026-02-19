@@ -60,11 +60,11 @@ class InfExploreDealsScreen extends StatelessWidget {
 
                   // ========= Loader =========
                   if (!isSearching && dealsController.rxDealStatus.value == Status.loading) {
-                    return const Center(child: CustomLoader());
+                    return  Center(child: CustomLoader());
                   }
 
                   if (isSearching && dealsController.rxSearchDealStatus.value == Status.loading) {
-                    return const Center(child: CustomLoader());
+                    return  Center(child: CustomLoader());
                   }
 
                   // ========= Decide list =========
@@ -121,7 +121,7 @@ class InfExploreDealsScreen extends StatelessWidget {
                         }
                         else {
                           // pagination loader
-                          return const Padding(padding: EdgeInsets.all(12),
+                          return  Padding(padding: EdgeInsets.all(12),
                             child: Center(child: CustomLoader()),
                           );
                         }

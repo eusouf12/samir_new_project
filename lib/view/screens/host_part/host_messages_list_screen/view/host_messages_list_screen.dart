@@ -33,7 +33,7 @@ class HostMessagesListScreen extends StatelessWidget {
           child: Obx(() {
             //========= Loader =========
             if (controller.isLoading.value && controller.conversationList.isEmpty) {
-              return const Center(child: CustomLoader());
+              return  Center(child: CustomLoader());
             }
 
             if (controller.conversationList.isEmpty) {
@@ -79,7 +79,7 @@ class HostMessagesListScreen extends StatelessWidget {
                   }
 
                   /// ========= Pagination Loader =========
-                  return const Padding(
+                  return  Padding(
                     padding: EdgeInsets.all(12),
                     child: Center(child: CustomLoader()),
                   );

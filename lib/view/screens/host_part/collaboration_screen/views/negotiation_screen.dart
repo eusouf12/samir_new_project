@@ -33,7 +33,7 @@ class NegotiationScreen extends StatelessWidget {
           final coll = controller.selectedCollaboration.value;
 
           if (coll == null) {
-            return const Center(child: CustomLoader());
+            return  Center(child: CustomLoader());
           }
 
           final deliverables = coll.deliverables ?? [];
@@ -166,7 +166,7 @@ class NegotiationScreen extends StatelessWidget {
 
                 /// --- Submit Button ---
                 Obx(() => controller.isUpdateCollLoading.value
-                    ? const Center(child: CustomLoader())
+                    ?  Center(child: CustomLoader())
                     : CustomButton(
                   title: "Update Collaboration",
                   onTap: () => controller.updateCollabration(collId: collId),

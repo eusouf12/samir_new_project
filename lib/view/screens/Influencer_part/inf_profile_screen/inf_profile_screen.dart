@@ -39,7 +39,7 @@ class InfProfileScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Obx((){
               if (hostProfileController.rxUserStatus.value == Status.loading) {
-                return const Center(child: CustomLoader());
+                return  Center(child: CustomLoader(color: AppColors.primary2));
               }
 
               if (hostProfileController.userData.value == null) {

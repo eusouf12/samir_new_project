@@ -54,7 +54,7 @@ class HostUpdateListingScreen extends StatelessWidget {
         appBar: const CustomRoyelAppbar(leftIcon: true, titleName: "Update Listing",),
         body: Obx(() {
           if (listingController.rxSingleListingStatus.value == Status.loading) {
-            return const CustomLoader();
+            return  CustomLoader();
           }
 
           return SingleChildScrollView(
@@ -105,7 +105,7 @@ class HostUpdateListingScreen extends StatelessWidget {
                 // UPDATE BUTTON
                 Obx(() {
                   if (listingController.isUpdateListingLoading.value) {
-                    return const CustomLoader();
+                    return  CustomLoader();
                   }
 
                   return CustomButton(

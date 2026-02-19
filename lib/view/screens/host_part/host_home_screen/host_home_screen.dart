@@ -38,7 +38,7 @@ class HostHomeScreen extends StatelessWidget {
         body:
         Obx((){
           if (collaborationController.rxGetSingleUserStatus.value == Status.loading) {
-            return const Center(child: CustomLoader());
+            return  Center(child: CustomLoader());
           }
 
           if (collaborationController.singleUserProfile.value == null) {

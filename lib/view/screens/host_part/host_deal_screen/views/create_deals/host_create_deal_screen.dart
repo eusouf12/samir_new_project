@@ -274,7 +274,7 @@ class HostCreateDealScreen extends StatelessWidget {
                     child: Obx(() {
                       if (listingController.verifiedListingList.isEmpty &&
                           listingController.isVerifiedListingLoading.value) {
-                        return const Center(child: CustomLoader());
+                        return  Center(child: CustomLoader());
                       }
 
                       return NotificationListener<ScrollNotification>(
@@ -292,7 +292,7 @@ class HostCreateDealScreen extends StatelessWidget {
 
                           itemBuilder: (context, index) {
                             if (index == listingController.verifiedListingList.length) {
-                              return const Padding(
+                              return  Padding(
                                 padding: EdgeInsets.all(10),
                                 child: Center(child: CustomLoader()),
                               );

@@ -35,7 +35,7 @@ class HostProfileScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Obx((){
             if (hostProfileController.rxUserStatus.value == Status.loading) {
-              return const Center(child: CustomLoader());
+              return  Center(child: CustomLoader());
             }
           
             if (hostProfileController.userData.value == null) {

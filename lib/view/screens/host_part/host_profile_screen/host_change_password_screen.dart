@@ -39,7 +39,7 @@ class HostChangePasswordScreen extends StatelessWidget {
             Spacer(),
             Obx((){
               if (profileController.changePassLoading.value) {
-                return const CustomLoader();
+                return  CustomLoader();
               }
               return CustomButtonTwo(
                 onTap: () {

@@ -47,7 +47,7 @@ class HostDealOverviewScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: Obx((){
               if (dealsController.rxSingleDealStatus.value == Status.loading) {
-                return const Center(child: CustomLoader());
+                return  Center(child: CustomLoader());
               }
               if (dealsController.rxSingleDealStatus.value == Status.error) {
                 return const Center(child: Text("Something went wrong"));

@@ -200,7 +200,7 @@ class HostAddNewListingScreen extends StatelessWidget {
               const SizedBox(height: 10),
               Obx(() {
                 if (listingController.createListingLoading.value) {
-                  return const CustomLoader();
+                  return  CustomLoader();
                 }
       
                 return CustomButton(onTap: (){

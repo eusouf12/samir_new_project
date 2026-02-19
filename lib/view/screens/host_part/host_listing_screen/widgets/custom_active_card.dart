@@ -10,6 +10,7 @@ import '../../host_active_influe/model/all_user_model.dart';
 class CustomActiveCard extends StatelessWidget {
   final String name;
   final String? role;
+  final String? fullAddress;
   final bool? founderMember;
   final int? nightCredits;
   final double? averageRating;
@@ -26,6 +27,7 @@ class CustomActiveCard extends StatelessWidget {
     required this.socialMediaLinks,
     required this.name,
     this.founderMember,
+    this.fullAddress,
     this.nightCredits,
     this.averageRating,
     required this.username,
@@ -84,6 +86,14 @@ class CustomActiveCard extends StatelessWidget {
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                         ),
+                        //full address
+                        fullAddress!.isNotEmpty ?
+                        CustomText(
+                          text: "$fullAddress",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        )
+                        :SizedBox.shrink(),
                         SizedBox(height: 10),
                         //founder
                         founderMember == true?Container(

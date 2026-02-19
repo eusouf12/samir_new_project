@@ -38,7 +38,7 @@ class HostPastDealsScreen extends StatelessWidget {
             child: Obx(() {
               // loader
               if (collaborationController.singleUserCollaborationStatus.value == Status.loading) {
-                return const Center(child: CustomLoader());
+                return  Center(child: CustomLoader());
               }
 
               final completedDeals = collaborationController.singleUserCollaborationList;

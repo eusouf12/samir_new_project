@@ -104,8 +104,7 @@ class CollaborationController extends GetxController {
       final response = await ApiClient.getData(ApiUrl.singleInfluencerCollaborations(id: id,filter:filterName));
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse =
-        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+        final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
 
         final model = SingleUserCollaborationResponse.fromJson(jsonResponse);
 

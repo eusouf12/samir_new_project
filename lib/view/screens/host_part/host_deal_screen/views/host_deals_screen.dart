@@ -56,11 +56,11 @@ class HostDealsScreen extends StatelessWidget {
 
                 // ========= Loader =========
                 if (!isSearching && dealsController.rxDealStatus.value == Status.loading) {
-                  return const Center(child: CustomLoader());
+                  return  Center(child: CustomLoader());
                 }
 
                 if (isSearching && dealsController.rxSearchDealStatus.value == Status.loading) {
-                  return const Center(child: CustomLoader());
+                  return  Center(child: CustomLoader());
                 }
 
                 // ========= Decide list =========
@@ -126,7 +126,7 @@ class HostDealsScreen extends StatelessWidget {
                       }
                       else {
                         // pagination loader
-                        return const Padding(
+                        return  Padding(
                           padding: EdgeInsets.all(12),
                           child: Center(child: CustomLoader()),
                         );

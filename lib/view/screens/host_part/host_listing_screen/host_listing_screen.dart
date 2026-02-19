@@ -57,11 +57,11 @@ class HostListingScreen extends StatelessWidget {
 
                 // ========= Loader =========
                 if (!isSearching && controller.rxListingStatus.value == Status.loading) {
-                  return const Center(child: CustomLoader());
+                  return  Center(child: CustomLoader());
                 }
 
                 if (isSearching && controller.rxSearchListingStatus.value == Status.loading) {
-                  return const Center(child: CustomLoader());
+                  return  Center(child: CustomLoader());
                 }
 
                 // ========= Decide list =========
@@ -73,7 +73,8 @@ class HostListingScreen extends StatelessWidget {
                   );
                 }
 
-                return ListView.builder(
+                return
+                  ListView.builder(
                   controller: isSearching ? null : scrollController,
                   itemCount: listToShow.length + (!isSearching && controller.isLoadMoreLoading.value ? 1 : 0),
                   itemBuilder: (context, index) {
@@ -98,7 +99,7 @@ class HostListingScreen extends StatelessWidget {
                         },
                       );
                     } else {
-                      return const Padding(
+                      return  Padding(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         child: Center(child: CustomLoader()),
                       );

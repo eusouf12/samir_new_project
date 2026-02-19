@@ -211,7 +211,7 @@ class CustomCollaborationCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   //payment
                   (isMe == false)?
-                  ( status == "accepted")?
+                  ( status == "accepted" && role =="host")?
                        Expanded(
                     flex: 2,
                     child: CustomButtonTwo(

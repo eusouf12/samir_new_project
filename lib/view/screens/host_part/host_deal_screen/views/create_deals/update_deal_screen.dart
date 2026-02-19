@@ -23,7 +23,7 @@ class HostUpdateDealScreen extends StatelessWidget {
         appBar: CustomRoyelAppbar(titleName: "Update Deal",leftIcon: true,),
         body: Obx(() {
           if (controller.rxSingleDealStatus.value == Status.loading) {
-            return const Center(child: CustomLoader());
+            return  Center(child: CustomLoader());
           }
       
           if (controller.singleDealList.isEmpty) {
@@ -222,7 +222,7 @@ class HostUpdateDealScreen extends StatelessWidget {
                 // btn
                 Obx(() {
                   return controller.isUpdateListingLoading.value
-                      ? const Center(child: CustomLoader())
+                      ?  Center(child: CustomLoader())
                       : CustomButton(
                     title: "Update Deal",
                     onTap: () =>

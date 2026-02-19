@@ -183,7 +183,8 @@ class ListingController extends GetxController {
   int currentPage = 1;
   int totalPages = 1;
 
-  Future<void> getListings({bool loadMore = false}) async {
+  Future<void> getListings({bool loadMore = false, String? hostById}) async {
+    final role = await SharePrefsHelper.getString(AppConstants.role);
     if (loadMore) {
       if (isLoadMoreLoading.value || currentPage >= totalPages) return;
       isLoadMoreLoading.value = true;
@@ -196,7 +197,7 @@ class ListingController extends GetxController {
     }
 
     try {
-      final response = await ApiClient.getData(ApiUrl.getListing(page: currentPage.toString()),);
+      final response = await ApiClient.getData( role == "host" ? ApiUrl.getListing(page: currentPage.toString()): ApiUrl.getListingHostProperty(page: currentPage.toString(),hostId: hostById),);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> jsonResponse =

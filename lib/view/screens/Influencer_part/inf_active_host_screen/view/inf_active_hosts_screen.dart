@@ -51,11 +51,11 @@ class InfActiveHostsScreen extends StatelessWidget {
                   final bool isSearching = influencerListHostController.searchQuery.value.isNotEmpty;
 
                   if (!isSearching && influencerListHostController.rxStatus.value == Status.loading) {
-                    return const Center(child: CustomLoader());
+                    return  Center(child: CustomLoader());
                   }
 
                   if (isSearching && influencerListHostController.rxSearchHostStatus.value == Status.loading) {
-                    return const Center(child: CustomLoader());
+                    return  Center(child: CustomLoader());
                   }
 
                   final listToShow = isSearching ? influencerListHostController.searchHostList : influencerListHostController.hostList;
@@ -76,7 +76,7 @@ class InfActiveHostsScreen extends StatelessWidget {
                       itemCount: listToShow.length + (!isSearching && influencerListHostController.isLoadMore.value ? 1 : 0),
                       itemBuilder: (context, index) {
                         if (!isSearching && index == listToShow.length) {
-                          return const Padding(padding: EdgeInsets.all(12),
+                          return  Padding(padding: EdgeInsets.all(12),
                             child: Center(child: CustomLoader()),
                           );
                         }

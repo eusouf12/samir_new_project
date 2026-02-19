@@ -161,7 +161,7 @@ class HostCollaborationScreen extends StatelessWidget {
               Expanded(
                 child: Obx(() {
                   if (controller.singleUserCollaborationStatus.value == Status.loading ) {
-                    return const Center(child: CustomLoader());
+                    return Center(child: CustomLoader());
                   }
                   if (controller.singleUserCollaborationStatus.value == Status.error) {
                     return Center(

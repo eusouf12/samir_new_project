@@ -35,7 +35,7 @@ class InfMessagesListScreen extends StatelessWidget {
           child: Obx(() {
             //========= Loader =========
             if (controller.isLoading.value && controller.conversationList.isEmpty) {
-              return const Center(child: CustomLoader());
+              return  Center(child: CustomLoader(color: AppColors.primary2));
             }
 
             if (controller.conversationList.isEmpty) {

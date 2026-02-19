@@ -38,7 +38,7 @@ class ReviewAllScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: Obx(() {
               if (collaborationController.isReviewLoading.value) {
-                return const Center(child: CustomLoader());
+                return  Center(child: CustomLoader());
               }
               final reviews = collaborationController.userReviewsList;
 

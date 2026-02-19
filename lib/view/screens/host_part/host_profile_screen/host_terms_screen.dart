@@ -29,7 +29,7 @@ class HostTermsScreen extends StatelessWidget {
           child: Obx(() {
             switch (profileController.rxStatus.value) {
               case Status.loading:
-                return const Center(child: CustomLoader());
+                return  Center(child: CustomLoader());
               case Status.internetError:
                 return const Center(child: Text("No Internet Connection"));
               case Status.error:

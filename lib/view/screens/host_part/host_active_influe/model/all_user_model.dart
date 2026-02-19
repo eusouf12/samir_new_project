@@ -139,7 +139,7 @@ class AllUserModel {
       city: json['city'],
       state: json['state'],
       country: json['country'],
-      fullAddress: json['fullAddress'],
+      fullAddress: json['fullAddress'] ?? "",
       zipCode: json['zipCode'],
       phone: json['phone'],
       gender: json['gender'],

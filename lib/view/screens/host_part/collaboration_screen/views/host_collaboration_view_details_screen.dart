@@ -182,7 +182,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                       :SizedBox.shrink(),
                       const SizedBox(height: 10),
                       (isMe == false)?
-                      (status == "accepted")
+                      (status == "accepted" && role =="host")
                           ? CustomButtonTwo(onTap: () => Get.back(), title: "Make Payment", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)
                           : const SizedBox.shrink()
                       :SizedBox.shrink(),

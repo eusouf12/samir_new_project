@@ -53,11 +53,11 @@ class HostActiveInflue extends StatelessWidget {
                   final bool isSearching = influencerListHostController.searchQuery.value.isNotEmpty;
 
                   if (!isSearching && influencerListHostController.rxStatus.value == Status.loading) {
-                    return const Center(child: CustomLoader());
+                    return  Center(child: CustomLoader());
                   }
 
                   if (isSearching && influencerListHostController.rxSearchInfluencerStatus.value == Status.loading) {
-                    return const Center(child: CustomLoader());
+                    return  Center(child: CustomLoader());
                   }
 
                   final listToShow = isSearching ? influencerListHostController.searchInfluencerList : influencerListHostController.influencerList;
@@ -78,7 +78,7 @@ class HostActiveInflue extends StatelessWidget {
                       itemCount: listToShow.length + (!isSearching && influencerListHostController.isLoadMore.value ? 1 : 0),
                       itemBuilder: (context, index) {
                         if (!isSearching && index == listToShow.length) {
-                          return const Padding(padding: EdgeInsets.all(12),
+                          return Padding(padding: const EdgeInsets.all(12),
                             child: Center(child: CustomLoader()),
                           );
                         }
@@ -89,6 +89,7 @@ class HostActiveInflue extends StatelessWidget {
                           averageRating: user.averageRating,
                           role: role,
                           name: user.name,
+                          fullAddress: user.fullAddress,
                           nightCredits: user.nightCredits,
                           username: user.userName ?? '',
                           socialMediaLinks: user.socialMediaLinks,
@@ -125,6 +126,7 @@ class HostActiveInflue extends StatelessWidget {
                                 "nightCredits": user.nightCredits,
                                 "rating": user.averageRating,
                                 "role": role,
+                                "fullAddress": user.fullAddress,
                               },
                             );
                           },
