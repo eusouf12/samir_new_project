@@ -290,8 +290,8 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final deal = completedDeals[index];
                       return CustomPastDealsCard(
-                        imageUrl: (deal.selectDeal?.title?.images?.isNotEmpty ?? false) ? ApiUrl.baseUrl + deal.selectDeal!.title!.images!.first : "",
-                        title: deal.selectDeal?.title?.title,
+                        imageUrl: (deal.title?.images?.isNotEmpty ?? false) ? ApiUrl.baseUrl + deal.title!.images!.first : "",
+                        title: deal.title?.title,
                         hostName: deal.userId?.name,
                         //date: deal.createdAt,
                         // onSendRequest: () {

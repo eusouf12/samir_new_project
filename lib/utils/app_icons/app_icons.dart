@@ -42,5 +42,6 @@ class AppIcons {
   static const String terms = "$basePath/terms.svg";
   static const String privacyPolicy = "$basePath/privacyPolicy.svg";
   static const String infpaymentIcon = "$basePath/infpaymentIcon.svg";
+  static const String listingIcon = "$basePath/listing.svg";
 
 }

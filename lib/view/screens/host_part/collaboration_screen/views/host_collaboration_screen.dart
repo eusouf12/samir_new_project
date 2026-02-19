@@ -196,7 +196,7 @@ class HostCollaborationScreen extends StatelessWidget {
                               userName: isMe == true ? collaboration.selectInfluencerOrHost?.name : collaboration.userId?.name,
                               userHandle: isMe == true ? collaboration.selectInfluencerOrHost?.userName : collaboration.userId?.userName,
                               status: collaboration.status,
-                              location: collaboration.selectDeal?.title?.title ?? "",
+                              location: collaboration.title?.title ?? "",
                                socialMediaLinks: collaboration.selectInfluencerOrHost?.socialMediaLinks ?? [],
 
                               // ===== Dynamic Callbacks =====
@@ -210,20 +210,20 @@ class HostCollaborationScreen extends StatelessWidget {
 
                                 debugPrint("name: ${collaboration.selectInfluencerOrHost?.name}");
                                 debugPrint("userName: ${collaboration.selectInfluencerOrHost?.userName}");
-                                debugPrint("listingName: ${collaboration.selectDeal?.title?.title}");
+                                debugPrint("listingName: ${collaboration.title?.title}");
 
-                                debugPrint("listingImage: ${ (collaboration.selectDeal?.title?.images?.isNotEmpty ?? false)
-                                    ? ApiUrl.baseUrl + collaboration.selectDeal!.title!.images!.first
+                                debugPrint("listingImage: ${ (collaboration.title?.images?.isNotEmpty ?? false)
+                                    ? ApiUrl.baseUrl + collaboration.title!.images!.first
                                     : "" }");
 
                                 debugPrint("payment: ${collaboration.compensation?.paymentAmount}");
                                 debugPrint("nightStay: ${collaboration.compensation?.numberOfNights}");
                                 debugPrint("guestCount: ${collaboration.guestCount}");
 
-                                debugPrint("inTimeAndDate: ${collaboration.selectDeal?.inTimeAndDate}");
-                                debugPrint("outTimeAndDate: ${collaboration.selectDeal?.outTimeAndDate}");
+                                debugPrint("inTimeAndDate: ${collaboration.inTimeAndDate}");
+                                debugPrint("outTimeAndDate: ${collaboration.outTimeAndDate}");
 
-                                debugPrint("amenities: ${collaboration.selectDeal?.title?.amenities}");
+                                debugPrint("amenities: ${collaboration.title?.amenities}");
                                 debugPrint("deliverables: ${collaboration.deliverables}");
                                 debugPrint("socialMediaLinks: ${collaboration.selectInfluencerOrHost?.socialMediaLinks}");
 
@@ -238,14 +238,14 @@ class HostCollaborationScreen extends StatelessWidget {
                                     "image": (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image! : "",
                                     "name": collaboration.selectInfluencerOrHost?.name ?? "",
                                     "userName": collaboration.selectInfluencerOrHost?.userName ?? "",
-                                    "listingName": collaboration.selectDeal?.title?.title ?? "",
-                                    "listingImage": (collaboration.selectDeal?.title?.images?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectDeal!.title!.images!.first : "",
+                                    "listingName": collaboration.title?.title ?? "",
+                                    "listingImage": (collaboration.title?.images?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.title!.images!.first : "",
                                     "payment": collaboration.compensation?.paymentAmount ?? "0",
                                     "nightStay": collaboration.compensation?.numberOfNights ?? 0,
                                     "inTimeAndDate": collaboration.inTimeAndDate ?? "",
                                     "outTimeAndDate": collaboration.outTimeAndDate ?? "",
                                     "guestCount": collaboration.guestCount ?? 0,
-                                    "amenities": collaboration.selectDeal?.title?.amenities,
+                                    "amenities": collaboration.title?.amenities,
                                     "deliverables": collaboration.deliverables ?? [],
                                     "socialMediaLinks": collaboration.selectInfluencerOrHost?.socialMediaLinks ?? [],
                                     "status" : collaboration.status,

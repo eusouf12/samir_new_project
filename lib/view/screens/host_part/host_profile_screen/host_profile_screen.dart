@@ -114,13 +114,13 @@ class HostProfileScreen extends StatelessWidget {
                     },
                   ),
                   //Referrals
-                  CustomProfileCard(
-                    nameTitle: "Referrals",
-                    icons: AppIcons.giftIcon,
-                    onTap: (){
-                      Get.toNamed(AppRoutes.hostReferralsScreen,arguments: "host");
-                    },
-                  ),
+                  // CustomProfileCard(
+                  //   nameTitle: "Referrals",
+                  //   icons: AppIcons.giftIcon,
+                  //   onTap: (){
+                  //     Get.toNamed(AppRoutes.hostReferralsScreen,arguments: "host");
+                  //   },
+                  // ),
                   //Change Password
                   CustomProfileCard(
                     nameTitle: "Change Password",

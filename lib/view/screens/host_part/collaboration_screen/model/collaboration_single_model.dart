@@ -32,7 +32,7 @@ class SingleUserCollaborationData {
   final SingleUserInfo? selectInfluencerOrHost;
   final SingleUserCompensation? compensation;
   final List<SingleUserDeliverable>? deliverables;
-  final SingleUserDealInfo? selectDeal;
+  final SingleUserDealTitle? title;
   final String? description;
   final String? addAirbnbLink;
   final String? inTimeAndDate;
@@ -50,7 +50,7 @@ class SingleUserCollaborationData {
     this.selectInfluencerOrHost,
     this.compensation,
     this.deliverables,
-    this.selectDeal,
+    this.title,
     this.description,
     this.addAirbnbLink,
     this.inTimeAndDate,
@@ -82,8 +82,8 @@ class SingleUserCollaborationData {
           ?.map((e) => SingleUserDeliverable.fromJson(e))
           .toList(),
 
-      selectDeal: json['selectDeal'] != null
-          ? SingleUserDealInfo.fromJson(json['selectDeal'])
+      title: json['title'] != null
+          ? SingleUserDealTitle.fromJson(json['title'])
           : null,
 
       description: json['description'],
