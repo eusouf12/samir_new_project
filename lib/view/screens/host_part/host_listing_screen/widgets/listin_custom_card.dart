@@ -14,19 +14,24 @@ import '../model/listing_model.dart';
 class ListingCard extends StatelessWidget {
   final ListingItem listing;
   final bool btn;
+  final bool btn2;
   final String? staus;
   final VoidCallback? onTapAirbnb;
   final VoidCallback? onTapEdit;
+  final VoidCallback? onTapCollaboration;
   final VoidCallback? onTapDelete;
 
    ListingCard({
-    Key? key,
-    required this.listing,
-    this.onTapAirbnb,
-    this.onTapEdit,
-    this.staus,
-    required this.btn,
-    this.onTapDelete,
+     Key? key,
+     required this.listing,
+     this.onTapAirbnb,
+     this.onTapEdit,
+     required this.btn2,
+     this.staus,
+     required this.btn,
+     this.onTapDelete,
+     this.onTapCollaboration,
+
   }) : super(key: key);
 
   @override
@@ -242,8 +247,8 @@ class ListingCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 8),
-                btn == true
-                    ? Row(
+                btn == true ?
+                Row(
                   children: [
                     staus != "rejected" ? Flexible(
                       flex: 1,
@@ -274,7 +279,20 @@ class ListingCard extends StatelessWidget {
                     ),
                   ],
                 )
-                    : SizedBox.shrink(),
+                : SizedBox.shrink(),
+                btn2 == false
+                ?SizedBox(height: 8)
+                : SizedBox.shrink(),
+                btn2 == true
+                ? CustomButton(
+                  height: 34.h,
+                  onTap: onTapCollaboration,
+                  title: "Send Collaboration Request",
+                  fillColor: AppColors.primary2,
+                  borderRadius: 8,
+                  fontSize: 12,
+                )
+                : SizedBox.shrink(),
               ],
             ),
           ),

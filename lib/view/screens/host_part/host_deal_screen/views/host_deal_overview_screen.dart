@@ -76,6 +76,7 @@ class HostDealOverviewScreen extends StatelessWidget {
                    return ListingCard(
                       listing: listing,
                       btn: false,
+                      btn2: false,
                       onTapAirbnb: () async {
                         final link = listing.addAirbnbLink;
                         if (link.isEmpty) return;

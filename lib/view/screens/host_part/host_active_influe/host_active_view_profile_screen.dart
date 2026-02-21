@@ -15,6 +15,7 @@ import '../../../components/custom_button/custom_button_two.dart';
 import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../collaboration_screen/controller/collabration_controller.dart';
+import '../host_deal_screen/controller/deals_controller.dart';
 import '../host_listing_screen/controller/listing_controller.dart';
 import '../host_listing_screen/widgets/listin_custom_card.dart';
 import 'controller/influencer_list_host_controller.dart';
@@ -24,6 +25,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
   final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
   final CollaborationController collaborationController = Get.put(CollaborationController());
   final ListingController controller = Get.put(ListingController());
+  final DealsController dealsController = Get.put(DealsController());
   final Map<String, dynamic> args = Get.arguments;
 
   @override
@@ -45,6 +47,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
        collaborationController.getSingleUserCollaboration(id: userId,filterName: "completed");
        collaborationController.getUserReviews(userId: userId);
        controller.getListings(loadMore: false,hostById: userId);
+
     });
 
     return Scaffold(
@@ -246,7 +249,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                     role == "host"
                     ?CustomButtonTwo(
                       onTap: (){
-                        Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: {"page": "Collaboration", "id": userId, 'nightCredits': nightCredits},);
+                        Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: {"page": "Collaboration", "id": userId, 'nightCredits': nightCredits , 'role' : 'host'});
                       },
                         height: 40,
                         title: "Send Collaboration Request",
@@ -281,35 +284,34 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                 final listToShow = controller.listingList;
         
                 if (completedDeals.isEmpty) {
-                  return Column(children:  [SizedBox(height: 30), CustomText(text: role == "host" ? "No past collabration found" :  "No listings found", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textClr,),],);
+                  return Column(children:  [SizedBox(height: 30), CustomText(text: role == "host" ? "No past collaboration found" :  "No listings found", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textClr,),],);
                 }
                 final reviews = collaborationController.userReviewsList;
                 return Column(
                   children: [
-                    // Past Collabration total
+                    // Past Collaboration total
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                          CustomText(
-                          text: role == "host" ?  "Past Collabration" : "Verified Listing",
+                          text: role == "host" ?  "Past Collaboration" : "Verified Listing",
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                         ),
                         GestureDetector(
                           onTap: (){
-                            Get.toNamed(AppRoutes.hostPastDealsScreen,arguments: userId);
+                            Get.toNamed(role == "host" ? AppRoutes.hostPastDealsScreen : AppRoutes.infShowListingScreen,arguments: userId);
                           },
                           child: CustomText(
                             text: "view All",
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.primary,
+                            color:role =="host" ? AppColors.primary : AppColors.primary2 ,
                           ),
                         ),
                       ],
                     ),
-                    role == "host"
-                    ? ListView.builder(
+                    if (role == "host") ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -332,8 +334,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                           // },
                         );
                       },
-                    )
-                    :  ListView.builder(
+                    ) else ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: listToShow.isEmpty ? 0 : (listToShow.length > 2 ? 2 : listToShow.length),
@@ -343,19 +344,18 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                           return ListingCard(
                             listing: listing,
                             staus: listing.status,
-                            btn: true,
+                            btn: false,
+                            btn2: true,
                             onTapAirbnb: () async {
                               final link = listing.addAirbnbLink;
                               if (link.isEmpty) return;
-        
                               final uri = Uri.parse(link.startsWith('http') ? link : 'https://$link',);
                               await launchUrl(uri, mode: LaunchMode.externalApplication,);
                             },
-                            onTapEdit: (){
-                              Get.toNamed(AppRoutes.hostUpdateListingScreen,arguments: listing.id);
-                            },
-                            onTapDelete: (){
-                              controller.deleteListing(id: listing.id);
+                            onTapCollaboration: (){
+                              dealsController.selectedId.value = listing.id;
+                              dealsController.selectedTitleInf.text = listing.title;
+                              Get.toNamed(AppRoutes.hostCreateDealScreen,arguments: {"page": "Collaboration", "id": userId, 'nightCredits': nightCredits , 'role' : 'influencer'});
                             },
                           );
                       },
@@ -381,7 +381,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                     text: "view All",
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.primary,
+                                    color:role =="host" ? AppColors.primary : AppColors.primary2 ,
                                   ),
                                 ),
                               ],
@@ -398,7 +398,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                 final review = reviews[index];
                                 return CustomReviewCard(
                                   hostName: review.reviewer.name ,
-                                  comment: review.comment ?? "",
+                                  comment: review.comment,
                                   imageUrl:ApiUrl.baseUrl + review.reviewer.image,
                                   date: review.createdAt,
                                   rating: review.rating.toDouble() ?? 5.0,

@@ -17,6 +17,7 @@ class HostReviewConfirmScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String page = args['page'];
     final String id = args['id'] ;
+    final String role = args['role'] ;
     final followers = _collectPlatformFollowers();
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Review & Confirm"),
@@ -38,7 +39,7 @@ class HostReviewConfirmScreen extends StatelessWidget {
                     text: "Step 4 of 4",
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.primary,
+                    color: role=='host' ? AppColors.primary : AppColors.primary2,
                     bottom: 6,
                   ),
                   CustomText(
@@ -51,7 +52,7 @@ class HostReviewConfirmScreen extends StatelessWidget {
                     value: 1,
                     minHeight: 8,
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primary,
+                    color: role=='host' ? AppColors.primary : AppColors.primary2,
                     backgroundColor: AppColors.greyLight,
                   ),
                 ],
@@ -371,6 +372,7 @@ class HostReviewConfirmScreen extends StatelessWidget {
                          page == "deal" ? await dealsController.createDeal(pageName: page,) :await dealsController.createDeal(pageName: page,dealId:id);
                       },
                       title:page == "deal" ? "Publish Deal" : "Send Request",
+                      fillColor: role=='host' ? AppColors.primary : AppColors.primary2,
                     );
                   }),
                 ],

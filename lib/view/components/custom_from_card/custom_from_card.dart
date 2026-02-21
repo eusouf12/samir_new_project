@@ -25,6 +25,7 @@ class CustomFormCard extends StatelessWidget {
   final int? maxLine;
   final double? fillBorderRadius;
   final Color? fieldBorderColor;
+  final Color? fieldFocusBorderColor;
   final double? fontSize;
   final bool? enabled;
   final Color? titleColor;
@@ -52,6 +53,7 @@ class CustomFormCard extends StatelessWidget {
     this.onChanged,
     this.enabled,
     this.fillBorderRadius,
+    this.fieldFocusBorderColor,
     this.fieldBorderColor, this.inputTextColor, this.curserColor
   });
 
@@ -86,6 +88,7 @@ class CustomFormCard extends StatelessWidget {
           fieldBorderColor:fieldBorderColor ?? AppColors.grey_02,
           keyboardType: keyboardType ?? (isPassword ? TextInputType.visiblePassword : TextInputType.text),
           onTap: onTap,
+          fieldFocusBorderColor: fieldFocusBorderColor ?? AppColors.primary,
           maxLines: isPassword ? 1 : maxLine,
           fieldBorderRadius: fillBorderRadius ?? 16,
         ),

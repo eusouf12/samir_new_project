@@ -17,6 +17,8 @@ final CollaborationController collaborationController = Get.put(CollaborationCon
 class DealsController extends GetxController {
   RxList<ListingItem> listingList = <ListingItem>[].obs;
   RxString selectedTitle = ''.obs;
+  TextEditingController selectedTitleInf = TextEditingController();
+  RxString selectedIdInf = ''.obs;
   RxString selectedId = ''.obs;
   RxString selectedAirbnbLink = ''.obs;
 

@@ -19,13 +19,14 @@ class HostCreateDealTwoScreen extends StatelessWidget {
     final String page = args['page'];
     final String id = args['id'] ;
     final int nightCredits = args['nightCredits'] ;
+    final String role = args['role'] ;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar:  CustomRoyelAppbar(leftIcon: true, titleName: page == "deal" ? "Create Deal" : "Create Collaboration"),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHeader(),
+            _buildHeader(role: role),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
               child: Column(
@@ -35,7 +36,7 @@ class HostCreateDealTwoScreen extends StatelessWidget {
 
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(children: controller.platformNames.map((p) => _buildChoiceChip(p)).toList(),
+                    child: Row(children: controller.platformNames.map((p) => _buildChoiceChip(p, role: role)).toList(),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -119,18 +120,18 @@ class HostCreateDealTwoScreen extends StatelessWidget {
                   const CustomText(text: "How many contents should they create?", fontSize: 14, fontWeight: FontWeight.w500, bottom: 8),
                   Row(
                     children: [
-                      _stepButton(Icons.remove, () => controller.decrement()),
+                      _stepButton(Icons.remove, () => controller.decrement(), role: role),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Obx(() => CustomText(text: "${controller.quantity.value}", fontSize: 18, fontWeight: FontWeight.bold)),
                       ),
-                      _stepButton(Icons.add, () => controller.increment()),
+                      _stepButton(Icons.add, () => controller.increment(),role: role),
                       const Spacer(),
 
                       ElevatedButton(
                         onPressed: () => controller.addDeliverable(),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
+                          backgroundColor: role == 'host'? AppColors.primary : AppColors.primary2,
                           foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -187,9 +188,10 @@ class HostCreateDealTwoScreen extends StatelessWidget {
                         debugPrint(item.toString());
                       }
 
-                      Get.toNamed(AppRoutes.hostCreateDealThreeScreen,arguments: {"page": page, "id": id, 'nightCredits': nightCredits});
+                      Get.toNamed(AppRoutes.hostCreateDealThreeScreen,arguments: {"page": page, "id": id, 'nightCredits': nightCredits,'role':role} );
                     },
                     title: "Next →",
+                    fillColor: role == 'host'? AppColors.primary : AppColors.primary2,
                   ),
 
 
@@ -203,7 +205,7 @@ class HostCreateDealTwoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader({required String role}) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -211,13 +213,13 @@ class HostCreateDealTwoScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CustomText(text: "Step 2 of 4", fontSize: 14, color: AppColors.primary, bottom: 6),
+          CustomText(text: "Step 2 of 4", fontSize: 14, color: role == 'host'? AppColors.primary : AppColors.primary2, bottom: 6),
           const CustomText(text: "Deliverables", fontSize: 16, fontWeight: FontWeight.w700, bottom: 6),
           LinearProgressIndicator(
             value: 0.50,
             minHeight: 8,
             borderRadius: BorderRadius.circular(10),
-            color: AppColors.primary,
+            color: role == 'host'? AppColors.primary : AppColors.primary2,
             backgroundColor: AppColors.greyLight,
           )
         ],
@@ -225,7 +227,7 @@ class HostCreateDealTwoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildChoiceChip(String label) {
+  Widget _buildChoiceChip(String label, {required String role}) {
     return Obx(() {
       final bool isActive = label == controller.selectedPlatform.value;
 
@@ -238,9 +240,9 @@ class HostCreateDealTwoScreen extends StatelessWidget {
           margin: const EdgeInsets.only(right: 8),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: isActive ? AppColors.primary : Colors.transparent,
+            color: isActive ? role == 'host'? AppColors.primary : AppColors.primary2 : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: isActive ? AppColors.primary : Colors.grey.shade300,),
+            border: Border.all(color: isActive ? role == 'host'? AppColors.primary : AppColors.primary2 : Colors.grey.shade300,),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -280,12 +282,12 @@ class HostCreateDealTwoScreen extends StatelessWidget {
     );
   }
 
-  Widget _stepButton(IconData icon, VoidCallback onTap) {
+  Widget _stepButton(IconData icon, VoidCallback onTap,{required String role}) {
     return InkWell(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(6)),
+        decoration: BoxDecoration(color: role == 'host'? AppColors.primary : AppColors.primary2, borderRadius: BorderRadius.circular(6)),
         child: Icon(icon, color: Colors.white, size: 18),
       ),
     );

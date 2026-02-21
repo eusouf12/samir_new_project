@@ -27,6 +27,8 @@ class SingleUserProfileData {
   final String? userName;
   final String? role;
   final String? image;
+  final String? bio;
+  final String? aboutMe;
   final String? city;
   final String? country;
   final String? fullAddress;
@@ -35,8 +37,16 @@ class SingleUserProfileData {
   final String? dateOfBirth;
   final String? state;
   final String? zipCode;
+  final String? status;
+  final String? stripeAccountId;
+  final String? createdAt;
+  final String? updatedAt;
+
   final bool? isFounderMember;
   final bool? airbnbAccountLinked;
+  final bool? issn;
+  final bool? isStripeConnected;
+
   final int? totalReviews;
   final int? referralCount;
   final int? responseRate;
@@ -44,11 +54,21 @@ class SingleUserProfileData {
   final int? collaborationsTotal;
   final int? dealsTotal;
   final int? totalListings;
-  final String? status;
+  final int? completeDealsTotal;
+  final int? averageRating;
+  final int? nightCredits;
+  final int? totalRedeemStars;
+  final int? isNoMember;
 
   final List<String>? deals;
   final List<String>? listings;
+  final List<String>? collaborations;
+  final List<String>? completeDeals;
+  final List<String>? nicheTags;
+
   final List<SingleUserRedeemStar>? redeemStars;
+  final List<SingleUserSocialMedia>? socialMediaLinks;
+
   final SingleUserCollaborationStats? collaborationStats;
 
   SingleUserProfileData({
@@ -58,6 +78,8 @@ class SingleUserProfileData {
     this.userName,
     this.role,
     this.image,
+    this.bio,
+    this.aboutMe,
     this.city,
     this.country,
     this.fullAddress,
@@ -66,8 +88,14 @@ class SingleUserProfileData {
     this.dateOfBirth,
     this.state,
     this.zipCode,
+    this.status,
+    this.stripeAccountId,
+    this.createdAt,
+    this.updatedAt,
     this.isFounderMember,
     this.airbnbAccountLinked,
+    this.issn,
+    this.isStripeConnected,
     this.totalReviews,
     this.referralCount,
     this.responseRate,
@@ -75,10 +103,18 @@ class SingleUserProfileData {
     this.collaborationsTotal,
     this.dealsTotal,
     this.totalListings,
-    this.status,
+    this.completeDealsTotal,
+    this.averageRating,
+    this.nightCredits,
+    this.totalRedeemStars,
+    this.isNoMember,
     this.deals,
     this.listings,
+    this.collaborations,
+    this.completeDeals,
+    this.nicheTags,
     this.redeemStars,
+    this.socialMediaLinks,
     this.collaborationStats,
   });
 
@@ -90,6 +126,8 @@ class SingleUserProfileData {
       userName: json['userName'],
       role: json['role'],
       image: json['image'],
+      bio: json['bio'],
+      aboutMe: json['aboutMe'],
       city: json['city'],
       country: json['country'],
       fullAddress: json['fullAddress'],
@@ -98,8 +136,14 @@ class SingleUserProfileData {
       dateOfBirth: json['dateOfBirth'],
       state: json['state'],
       zipCode: json['zipCode'],
+      status: json['status'],
+      stripeAccountId: json['stripeAccountId'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
       isFounderMember: json['isFounderMember'],
       airbnbAccountLinked: json['airbnbAccountLinked'],
+      issn: json['issn'],
+      isStripeConnected: json['isStripeConnected'],
       totalReviews: json['totalReviews'],
       referralCount: json['referralCount'],
       responseRate: json['responseRate'],
@@ -107,11 +151,48 @@ class SingleUserProfileData {
       collaborationsTotal: json['collaborationsTotal'],
       dealsTotal: json['dealsTotal'],
       totalListings: json['totalListings'],
-      status: json['status'],
+      completeDealsTotal: json['completeDealsTotal'],
+      averageRating: json['averageRating'],
+      nightCredits: json['nightCredits'],
+      totalRedeemStars: json['totalRedeemStars'],
+      isNoMember: json['isNoMember'],
       deals: (json['deals'] as List?)?.cast<String>(),
       listings: (json['listings'] as List?)?.cast<String>(),
-      redeemStars: (json['redeemStars'] as List?)?.map((e) => SingleUserRedeemStar.fromJson(e)).toList(),
-      collaborationStats: json['collaborationStats'] != null ? SingleUserCollaborationStats.fromJson(json['collaborationStats']) : null,
+      collaborations: (json['collaborations'] as List?)?.cast<String>(),
+      completeDeals: (json['completeDeals'] as List?)?.cast<String>(),
+      nicheTags: (json['nicheTags'] as List?)?.cast<String>(),
+      redeemStars: (json['redeemStars'] as List?)
+          ?.map((e) => SingleUserRedeemStar.fromJson(e))
+          .toList(),
+      socialMediaLinks: (json['socialMediaLinks'] as List?)
+          ?.map((e) => SingleUserSocialMedia.fromJson(e))
+          .toList(),
+      collaborationStats: json['collaborationStats'] != null
+          ? SingleUserCollaborationStats.fromJson(json['collaborationStats'])
+          : null,
+    );
+  }
+}
+
+class SingleUserSocialMedia {
+  final String? id;
+  final String? platform;
+  final String? url;
+  final String? followers;
+
+  SingleUserSocialMedia({
+    this.id,
+    this.platform,
+    this.url,
+    this.followers,
+  });
+
+  factory SingleUserSocialMedia.fromJson(Map<String, dynamic> json) {
+    return SingleUserSocialMedia(
+      id: json['_id'],
+      platform: json['platform'],
+      url: json['url'],
+      followers: json['followers'],
     );
   }
 }

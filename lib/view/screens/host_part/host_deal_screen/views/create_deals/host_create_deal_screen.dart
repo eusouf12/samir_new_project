@@ -22,8 +22,11 @@ class HostCreateDealScreen extends StatelessWidget {
     final String page = args['page'];
     final String id = args['id'] ;
     final int nightCredits = args['nightCredits'] ;
+    final String role = args['role'] ;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      listingController.getVerifiedListings(loadMore: false);
+      if(role =='host' ){
+        listingController.getVerifiedListings(loadMore: false);
+      }
     });
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -43,13 +46,13 @@ class HostCreateDealScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CustomText(text: "Step 1 of 4", fontSize: 14, fontWeight: FontWeight.w500, color: AppColors.primary, bottom: 6),
+                  CustomText(text: "Step 1 of 4", fontSize: 14, fontWeight: FontWeight.w500, color: role == 'host'? AppColors.primary : AppColors.primary2, bottom: 6),
                   const CustomText(text: "Deal Basics", fontSize: 16, fontWeight: FontWeight.w700, bottom: 6),
                   LinearProgressIndicator(
                     value: 0.25,
                     minHeight: 8,
                     borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primary,
+                    color:role == 'host'? AppColors.primary : AppColors.primary2,
                     backgroundColor: Colors.grey.shade300,
                   )
                 ],
@@ -62,8 +65,11 @@ class HostCreateDealScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //  Title
-                  const CustomText(text: "Title", fontSize: 14, fontWeight: FontWeight.w600, bottom: 8),
-                  Obx(() => GestureDetector(
+                  role == 'host'
+                  ?CustomText(text: "Title", fontSize: 14, fontWeight: FontWeight.w600, bottom: 8)
+                  : SizedBox.shrink(),
+                   role == 'host'
+                   ?Obx(() => GestureDetector(
                     onTap: () {
                       if (listingController.verifiedListingList.isEmpty) {
                         listingController.getVerifiedListings();
@@ -98,18 +104,26 @@ class HostCreateDealScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                  )),
-
+                  ))
+                   : CustomFormCard(
+                    title: "Title",
+                    hintText: "selected title....",
+                    maxLine: 3,
+                    readOnly: true,
+                    controller: dealsController.selectedTitleInf,
+                       fieldFocusBorderColor: AppColors.primary2,
+                  ),
+                  // ========  Description =========
                   SizedBox(height: 16),
-                  //  Description
                   CustomFormCard(
                     title: "Description",
                     hintText: "Description what you expect from the influencer....",
                     maxLine: 3,
+                    fieldFocusBorderColor: AppColors.primary2,
                     controller: dealsController.titleDescriptionController.value,
                   ),
-                  buildDateTimeRow("Check In", isCheckIn: true,),
-                  buildDateTimeRow("Check Out", isCheckIn: false,),
+                  buildDateTimeRow("Check In", isCheckIn: true, role: role,),
+                  buildDateTimeRow("Check Out", isCheckIn: false, role: role,),
                   const SizedBox(height: 16),
                   const SizedBox(height: 50),
                   CustomButtonTwo(
@@ -121,9 +135,10 @@ class HostCreateDealScreen extends StatelessWidget {
                       debugPrint('Check-in time: ${dealsController.checkInFormattedTime}');
                       debugPrint('Check-out date: ${dealsController.checkOutFormattedDate}');
                       debugPrint('Check-out time: ${dealsController.checkOutFormattedTime}');
-                      Get.toNamed(AppRoutes.hostCreateDealTwoScreen,arguments: {"page": page, "id": id, 'nightCredits': nightCredits});
+                      Get.toNamed(AppRoutes.hostCreateDealTwoScreen,arguments: {"page": page, "id": id, 'nightCredits': nightCredits,'role':role});
                     },
                     title: "Next →",
+                    fillColor: role == 'host'? AppColors.primary : AppColors.primary2,
                   ),
 
                   const SizedBox(height: 20),
@@ -136,7 +151,7 @@ class HostCreateDealScreen extends StatelessWidget {
     );
   }
 
-  Widget buildDateTimeRow(String label, {required bool isCheckIn}) {
+  Widget buildDateTimeRow(String label, {required bool isCheckIn,required String role}) {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,8 +200,8 @@ class HostCreateDealScreen extends StatelessWidget {
                                   : dealsController.checkOutFormattedTime,
                               style: TextStyle(color: hasTime ? AppColors.black : Colors.black54,),
                             ),
-                            const Icon(
-                              Icons.keyboard_arrow_down, color: AppColors.primary,
+                            Icon(
+                              Icons.keyboard_arrow_down, color: role=='host' ? AppColors.primary : AppColors.primary2,
                             ),
                           ],
                         ),
@@ -227,7 +242,7 @@ class HostCreateDealScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             Icon(
-                              Icons.calendar_month_outlined, color: AppColors.primary,
+                              Icons.calendar_month_outlined, color:role=='host' ? AppColors.primary : AppColors.primary2,
                               size: 20,
                             ),
                             const SizedBox(width: 8),

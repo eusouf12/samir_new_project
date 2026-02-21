@@ -19,12 +19,13 @@ class HostCreateDealThreeScreen extends StatelessWidget {
     final String page = args['page'];
     final String id = args['id'] ;
     final int nightCredits = args['nightCredits'] ;
+    final String role = args['role'] ;
     controller.setMaxNightCredits(nightCredits);
     return Scaffold(
       appBar: CustomRoyelAppbar(leftIcon: true, titleName: page == "deal" ? "Create Deal" : "Create Collaboration"),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          padding:  EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -32,7 +33,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                 text: "Step 3 of 4",
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: AppColors.primary,
+                color: role=='host' ? AppColors.primary : AppColors.primary2,
                 bottom: 6,
               ),
               CustomText(
@@ -45,12 +46,11 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                 value: 0.75,
                 minHeight: 8,
                 borderRadius: BorderRadius.circular(10),
-                color: AppColors.primary,
+                color: role == 'host'? AppColors.primary : AppColors.primary2,
                 backgroundColor: AppColors.greyLight,
               ),
               const SizedBox(height: 24),
 
-              /// Compensation Selection
               const Text(
                 "Choose Compensation Type",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -69,7 +69,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                     subtitle: "Offer free nights at your property as compensation",
                     isActive: controller.isNightCredits.value,
                     onTap: controller.toggleNightCredits,
-                    child: _buildNightsStepper(),
+                    child: _buildNightsStepper(), role: role,
                   ),
                   const SizedBox(height: 16),
                   _buildCompCard(
@@ -77,7 +77,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                     subtitle: "Pay the influencer a monetary amount",
                     isActive: controller.isDirectPayment.value,
                     onTap: controller.toggleDirectPayment,
-                    child: _buildPaymentInput(),
+                    child: _buildPaymentInput(), role: role,
                   ),
                 ],
               )),
@@ -111,6 +111,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
               const SizedBox(height: 50),
 
               CustomButtonTwo(
+                fillColor: role=='host' ? AppColors.primary : AppColors.primary2,
                 title: "Next →",
                 onTap: () {
                   debugPrint("page == ${page} == id = ${id}");
@@ -124,7 +125,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                     debugPrint("$platform : $followers");
                   });
 
-                  Get.toNamed(AppRoutes.hostReviewConfirmScreen,arguments: {"page": page, "id": id});
+                  Get.toNamed(AppRoutes.hostReviewConfirmScreen,arguments: {"page": page, "id": id,'role':role});
                 },
               ),
             ],
@@ -137,6 +138,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
   /// Compensation Card
   Widget _buildCompCard({
     required String title,
+    required String role,
     required String subtitle,
     required bool isActive,
     required VoidCallback onTap,
@@ -150,7 +152,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: isActive ? Colors.teal : Colors.grey.shade300, width: isActive ? 2 : 1),
+          border: Border.all(color: isActive ? role=='host' ? AppColors.primary : AppColors.primary2 : Colors.grey.shade300, width: isActive ? 2 : 1),
           boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2))],
         ),
         child: Column(
@@ -158,7 +160,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(isActive ? Icons.check_circle : Icons.radio_button_off, color: isActive ? Colors.teal : Colors.grey),
+                Icon(isActive ? Icons.check_circle : Icons.radio_button_off, color: isActive ? role=='host' ? AppColors.primary : AppColors.primary2 : Colors.grey),
                 const SizedBox(width: 8),
                 Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ],

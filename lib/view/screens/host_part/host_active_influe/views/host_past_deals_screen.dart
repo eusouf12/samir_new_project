@@ -13,7 +13,6 @@ import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../collaboration_screen/controller/collabration_controller.dart';
 
-
 class HostPastDealsScreen extends StatelessWidget {
   HostPastDealsScreen({super.key});
   final CollaborationController collaborationController = Get.put(CollaborationController());
@@ -51,7 +50,7 @@ class HostPastDealsScreen extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                itemCount: completedDeals.isEmpty ? 0 : (completedDeals.length > 5 ? 5 : completedDeals.length),
+                itemCount: completedDeals.isEmpty ? 0 :  completedDeals.length,
                 itemBuilder: (context, index) {
                   final deal = completedDeals[index];
                   return CustomPastDealsCard(

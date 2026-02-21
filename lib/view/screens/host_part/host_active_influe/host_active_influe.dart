@@ -16,9 +16,11 @@ class HostActiveInflue extends StatelessWidget {
   HostActiveInflue({super.key});
   final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
   final ChatListController chatListController = Get.put(ChatListController());
-  final role  = Get.arguments;
+  final Map<String, dynamic> args = Get.arguments;
   @override
   Widget build(BuildContext context) {
+    final String role = args['role'];
+    final int myNightCredits = args['myNightCredits']?? 0;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       influencerListHostController.getInfluencers();
     });
@@ -63,7 +65,7 @@ class HostActiveInflue extends StatelessWidget {
                   final listToShow = isSearching ? influencerListHostController.searchInfluencerList : influencerListHostController.influencerList;
 
                   if (listToShow.isEmpty) {
-                    return const Center(child: Text("No influencers found"),
+                    return  Center(child: Text(role == "host" ? "No influencers found" : "No hosts found"),
                     );
                   }
 
@@ -109,7 +111,8 @@ class HostActiveInflue extends StatelessWidget {
                           },
                           onViewProfile: () {
                             debugPrint("user.userName, === ${user.image}");
-                            debugPrint("user.isFounderMember === ${user.isFounderMember}");
+                            debugPrint("user.nightCredits if host=== ${user.nightCredits}");
+                            debugPrint("user.nightCredits if influencer=== ${myNightCredits}");
                             Get.toNamed(AppRoutes.hostActiveViewProfileScreen,
                               arguments: {
                                 "id": user.id,
@@ -123,7 +126,7 @@ class HostActiveInflue extends StatelessWidget {
                                   "_id": e.id,
                                 }).toList(),
                                 "founderMember": user.isFounderMember,
-                                "nightCredits": user.nightCredits,
+                                "nightCredits": role == "host" ? user.nightCredits : myNightCredits,
                                 "rating": user.averageRating,
                                 "role": role,
                                 "fullAddress": user.fullAddress,

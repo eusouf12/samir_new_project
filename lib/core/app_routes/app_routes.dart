@@ -21,6 +21,7 @@ import '../../view/screens/host_part/host_active_influe/host_active_influe.dart'
 import '../../view/screens/host_part/host_active_influe/host_active_view_profile_screen.dart';
 import '../../view/screens/host_part/host_active_influe/host_send_collaboaration_screen.dart';
 import '../../view/screens/host_part/host_active_influe/views/host_past_deals_screen.dart';
+import '../../view/screens/host_part/host_active_influe/views/inf_show_listin_screen.dart';
 import '../../view/screens/host_part/host_active_influe/views/review_all_screen.dart';
 import '../../view/screens/host_part/host_deal_screen/views/create_deals/update_deal_screen.dart';
 import '../../view/screens/host_part/host_deal_screen/views/host_deals_screen.dart';
@@ -118,6 +119,7 @@ class AppRoutes {
  static const String infTotalDealsScreen = "/InfTotalDealsScreen";
  static const String infActiveHostsScreen = "/InfActiveHostsScreen";
  static const String infActiveHostProfileScreen = "/InfActiveHostProfileScreen";
+ static const String infShowListingScreen = "/InfShowListingScreen";
 
 
   static List<GetPage> routes = [
@@ -183,6 +185,7 @@ class AppRoutes {
     GetPage(name: infActiveHostProfileScreen, page: () => InfActiveHostProfileScreen()),
     GetPage(name: hostPastDealsScreen, page: () => HostPastDealsScreen()),
     GetPage(name: reviewAllScreen, page: () => ReviewAllScreen()),
+    GetPage(name: infShowListingScreen, page: () => InfShowListingScreen()),
 
   ];
 }

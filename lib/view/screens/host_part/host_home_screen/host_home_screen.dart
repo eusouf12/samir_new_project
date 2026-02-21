@@ -109,7 +109,7 @@ class HostHomeScreen extends StatelessWidget {
                       //Influencer
                       CustomContainerCard(
                         onTap: () {
-                          Get.toNamed(AppRoutes.hostActiveInflue, arguments: collaborationController.singleUserProfile.value?.role);
+                          Get.toNamed(AppRoutes.hostActiveInflue, arguments: { "role" : collaborationController.singleUserProfile.value?.role, "myNightCredits" : userData.value?.nightCredits});
                         },
                         title: "Active\nInfluencer",
                         color: AppColors.white,

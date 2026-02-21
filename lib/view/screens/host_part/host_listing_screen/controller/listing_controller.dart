@@ -259,11 +259,9 @@ class ListingController extends GetxController {
       final response = await ApiClient.getData(ApiUrl.getVerifiedListings(page: verifiedCurrentPage.toString()));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final Map<String, dynamic> jsonResponse =
-        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+        final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
 
-        final VerifiedListingsResponse model =
-        VerifiedListingsResponse.fromJson(jsonResponse);
+        final VerifiedListingsResponse model = VerifiedListingsResponse.fromJson(jsonResponse);
 
         verifiedTotalPages = model.data.pagination.totalPages;
 
