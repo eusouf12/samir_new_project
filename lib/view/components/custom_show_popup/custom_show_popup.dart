@@ -57,6 +57,8 @@ class CustomShowDialog extends StatelessWidget {
   final bool? showColumnButton;
   final bool? showCloseButton;
   final Color? textColor;
+  final Color? textColorBtn;
+  final Color? borderColor;
   const CustomShowDialog(
       {super.key,
         required this.title,
@@ -68,6 +70,8 @@ class CustomShowDialog extends StatelessWidget {
         this.showRowButton = false,
         this.showColumnButton = false,
         this.textColor = Colors.black,
+        this.borderColor,
+        this.textColorBtn,
         this.showCloseButton = true, this.dateTime});
 
   @override
@@ -81,17 +85,13 @@ class CustomShowDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           showCloseButton == true
-              ? Padding(
-            padding: EdgeInsets.only(right: 10.0, top: 0.h),
-            child: Align(
-                alignment: Alignment.topRight,
+              ? Padding(padding: EdgeInsets.only(right: 10.0, top: 0.h),
+               child: Align(alignment: Alignment.topRight,
                 child: GestureDetector(
                     onTap: () => Navigator.of(context).pop(),
-                    child: Icon(
-                      Icons.close,
-                      color: textColor ?? AppColors.black,
-                    ))),
-          )
+                    child: Icon(Icons.close, color: textColor ?? AppColors.black,)
+                )
+            ),)
               : SizedBox(),
           CustomText(
             top: 10.h,
@@ -119,8 +119,7 @@ class CustomShowDialog extends StatelessWidget {
             maxLines: 10,
           ),*/
           showRowButton == true
-              ? Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              ? Padding(padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Row(
               children: [
                 Flexible(
@@ -129,6 +128,7 @@ class CustomShowDialog extends StatelessWidget {
                     title: leftTextButton ?? "Yes",
                     height: 50.h,
                     textColor: textColor ?? AppColors.black_80,
+                    borderColor : borderColor ?? AppColors.primary,
                     // fillColor:  widget.textColor ?? AppColors.black_80,
                   ),
                 ),
@@ -160,8 +160,9 @@ class CustomShowDialog extends StatelessWidget {
                   onTap: leftOnTap ?? () => Navigator.of(context).pop(),
                   title: leftTextButton ?? "Yes",
                   height: 45.h,
-                  textColor: AppColors.primary,
+                  textColor:textColorBtn ?? AppColors.primary,
                   fillColor: AppColors.white,
+                  borderColor : borderColor ?? AppColors.primary,
                   isBorder: true,
                   borderWidth: 1,
                 ),
@@ -174,6 +175,7 @@ class CustomShowDialog extends StatelessWidget {
                   height: 45.h,
                   fillColor: AppColors.white,
                   textColor: AppColors.red,
+                  borderColor : borderColor ?? AppColors.primary,
                   isBorder: true,
                   borderWidth: 1,
                 )

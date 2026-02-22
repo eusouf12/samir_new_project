@@ -125,7 +125,7 @@ class InfProfileScreen extends StatelessWidget {
                         Get.to(ShareProfileScreen());
                       },
                     ),
-                    //referrals
+                    //===== referrals ====
                     CustomProfileCard(
                       nameTitle: "Referrals",
                       icons: AppIcons.giftIcon,
@@ -134,7 +134,7 @@ class InfProfileScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.hostReferralsScreen,arguments: "inf");
                       },
                     ),
-                    //Change Password
+                    //=== Change Password ====
                     CustomProfileCard(
                       nameTitle: "Change Password",
                       icons: AppIcons.changePass,
@@ -143,7 +143,7 @@ class InfProfileScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.hostChangePasswordScreen,arguments: "inf");
                       },
                     ),
-                    //Terms of services
+                    //===== Terms of services =======
                     CustomProfileCard(
                       nameTitle: "Terms of services",
                       icons: AppIcons.terms,
@@ -152,7 +152,7 @@ class InfProfileScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.hostTermsScreen,arguments: "inf");
                       },
                     ),
-                    //Privacy Policy
+                    // === Privacy Policy =======
                     CustomProfileCard(
                       nameTitle: "Privacy Policy",
                       icons: AppIcons.privacyPolicy,
@@ -161,7 +161,7 @@ class InfProfileScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.hostPrivacyScreen,arguments: "inf");
                       },
                     ),
-                    //About us
+                    //==== About us =========
                     CustomProfileCard(
                       nameTitle: "About us",
                       icons: AppIcons.aboutUs,
@@ -170,7 +170,7 @@ class InfProfileScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.hostAboutScreen,arguments: "inf");
                       },
                     ),
-                    //delete account
+                    //==== delete account =======
                     CustomProfileCard(
                         nameTitle: "Delete Account",
                         icons: AppIcons.logoutIcon,
@@ -213,8 +213,7 @@ class InfProfileScreen extends StatelessWidget {
                         onTap: () {
                           showDialog(
                             context: context,
-                            builder:
-                                (ctx) =>
+                            builder: (ctx) =>
                                 AlertDialog(
                                   backgroundColor: AppColors.white,
                                   insetPadding: EdgeInsets.all(8),
@@ -223,10 +222,12 @@ class InfProfileScreen extends StatelessWidget {
                                     width: MediaQuery.sizeOf(context).width,
                                     child: CustomShowDialog(
                                       textColor: AppColors.black,
+                                      textColorBtn : AppColors.primary2,
                                       title: "Logout Your Account",
                                       discription: "Are You Sure Logout",
                                       showColumnButton: true,
                                       showCloseButton: true,
+                                      borderColor: AppColors.primary2,
                                       rightOnTap: () {
                                         Get.back();
                                       },

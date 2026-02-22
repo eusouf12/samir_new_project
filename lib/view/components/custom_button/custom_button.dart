@@ -52,15 +52,12 @@ class CustomButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 0.0),
-        margin: EdgeInsets.symmetric(
-            vertical: marginVertical, horizontal: marginHorizontal),
+        margin: EdgeInsets.symmetric(vertical: marginVertical, horizontal: marginHorizontal),
         alignment: Alignment.center,
         height: height,
         width: width,
         decoration: BoxDecoration(
-          border: isBorder
-              ? Border.all(color: borderColor, width: borderWidth ?? .05)
-              : null,
+          border: isBorder ? Border.all( color: borderColor, width: borderWidth ?? .05) : null,
           borderRadius: BorderRadius.circular(borderRadius ?? 12),
           color: fillColor,
         ),
