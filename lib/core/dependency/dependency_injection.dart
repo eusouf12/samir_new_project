@@ -11,7 +11,6 @@ class DependencyInjection extends Bindings {
     ///==========================Default Custom Controller ==================
     Get.lazyPut(() => HostProfileController(), fenix: true);
     Get.lazyPut(() => HostHomeController(), fenix: true);
-    Get.lazyPut(() => InfHomeController(), fenix: true);
     Get.lazyPut(() => OnboardingController(), fenix: true);
     Get.lazyPut(() => ListingController(), fenix: true);
 

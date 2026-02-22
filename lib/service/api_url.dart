@@ -29,6 +29,7 @@ class ApiUrl {
 
 
    ///========================= Host =========================createListing
+   static const String getRedeemStars = "/api/v1/redeem/my-stars";
    static const String createListing = "/api/v1/listing/create-listing";
    static  String sendCollaboration ({required String id})=> "/api/v1/collaboration/create-collaboration-web/$id";
    static const String createDeal = "/api/v1/deal/create-deal";

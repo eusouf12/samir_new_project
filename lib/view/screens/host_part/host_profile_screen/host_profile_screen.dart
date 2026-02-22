@@ -17,6 +17,7 @@ import '../../../components/custom_loader/custom_loader.dart';
 import '../../../components/custom_nav_bar/navbar.dart';
 import '../../../components/custom_show_popup/custom_show_popup.dart';
 import '../../../components/custom_text/custom_text.dart';
+import '../../Influencer_part/inf_profile_screen/share_your_profile.dart';
 import 'controller/host_profile_controller.dart';
 
 class HostProfileScreen extends StatelessWidget {
@@ -113,14 +114,15 @@ class HostProfileScreen extends StatelessWidget {
                       Get.toNamed(AppRoutes.hostEditProfileScreen,arguments: "host");
                     },
                   ),
-                  //Referrals
-                  // CustomProfileCard(
-                  //   nameTitle: "Referrals",
-                  //   icons: AppIcons.giftIcon,
-                  //   onTap: (){
-                  //     Get.toNamed(AppRoutes.hostReferralsScreen,arguments: "host");
-                  //   },
-                  // ),
+                  //share
+                  CustomProfileCard(
+                    nameTitle: "Share your profile",
+                    icons: AppIcons.mdi_share,
+                    color: AppColors.primary,
+                    onTap: (){
+                      Get.to(ShareProfileScreen(),arguments: "host");
+                    },
+                  ),
                   //Change Password
                   CustomProfileCard(
                     nameTitle: "Change Password",

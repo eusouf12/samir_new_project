@@ -4,7 +4,6 @@ import '../../view/screens/Influencer_part/inf_explore_listing_screen/inf_explor
 import '../../view/screens/Influencer_part/inf_home_screen/inf_earnings_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/views/inf_home_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/inf_night_credits_screen.dart';
-import '../../view/screens/Influencer_part/inf_home_screen/inf_total_deals_screen.dart';
 import '../../view/screens/Influencer_part/inf_profile_screen/inf_profile_screen.dart';
 import '../../view/screens/authentication/views/auth_screen/forgot_screen/forgot_screen.dart';
 import '../../view/screens/authentication/views/auth_screen/login_screen/login_screen.dart';
@@ -178,7 +177,6 @@ class AppRoutes {
     GetPage(name: infExploreDealsScreen, page: () => InfExploreDealsScreen()),
     GetPage(name: infNightCreditsScreen, page: () => InfNightCreditsScreen()),
     GetPage(name: infEarningsScreen, page: () => InfEarningsScreen()),
-    GetPage(name: infTotalDealsScreen, page: () => InfTotalDealsScreen()),
     GetPage(name: hostPastDealsScreen, page: () => HostPastDealsScreen()),
     GetPage(name: reviewAllScreen, page: () => ReviewAllScreen()),
     GetPage(name: infShowListingScreen, page: () => InfShowListingScreen()),

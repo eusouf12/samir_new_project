@@ -13,6 +13,7 @@ class ShareProfileScreen extends StatelessWidget {
   ShareProfileScreen({super.key});
   final HostProfileController hostProfileController = Get.put(HostProfileController());
 
+
   void _copyToClipboard(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context).showSnackBar(
@@ -34,6 +35,7 @@ class ShareProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String role = Get.arguments;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       hostProfileController.shareProfile();
     });
@@ -94,7 +96,7 @@ class ShareProfileScreen extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFF7E67),
+                          backgroundColor:role=='host'? AppColors.primary : AppColors.primary2,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),

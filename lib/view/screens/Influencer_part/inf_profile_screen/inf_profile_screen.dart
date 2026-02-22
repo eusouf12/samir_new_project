@@ -122,7 +122,7 @@ class InfProfileScreen extends StatelessWidget {
                       icons: AppIcons.mdi_share,
                       color: AppColors.primary2,
                       onTap: (){
-                        Get.to(ShareProfileScreen());
+                        Get.to(ShareProfileScreen(),arguments: "inf");
                       },
                     ),
                     //===== referrals ====

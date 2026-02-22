@@ -147,20 +147,26 @@ class HostProfileController extends GetxController {
   //========== Update Profile ==========
   RxBool updateProfileLoading = false.obs;
   Future<void> updateProfile() async {
+    final role = await SharePrefsHelper.getString(AppConstants.role);
     updateProfileLoading.value = true;
     refresh();
 
     try {
       Map<String, dynamic> body = {
-        "name":nameController.value.text,
+        "name": nameController.value.text,
         "userName": userNameController.value.text,
         "phone": phoneNumberController.value.text,
         "dateOfBirth": dateOfBirthController.value.text,
-        "country":countryController.value.text,
-        "fullAddress":fullAddress.value.text,
+        "country": countryController.value.text,
+        "fullAddress": fullAddress.value.text,
         "gender": genderController.value.text,
-        "socialMediaLinks": socialLinks.map((e) => e.toJson()).toList(),
       };
+
+      /// Only influencer gets social links
+      if (role != "host") {
+        body["socialMediaLinks"] =
+            socialLinks.map((e) => e.toJson()).toList();
+      }
 
       dynamic response;
       if (selectedImage.value != null) {
