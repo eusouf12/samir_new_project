@@ -34,7 +34,7 @@ class InfShowListingScreen extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 if (controller.rxListingStatus.value == Status.loading) {
-                  return  Center(child: CustomLoader());
+                  return  Center(child: CustomLoader(color: AppColors.primary2,));
                 }
                 final listToShow =  controller.listingList;
 

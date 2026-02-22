@@ -282,9 +282,23 @@ class HostActiveViewProfileScreen extends StatelessWidget {
         
                 final completedDeals = collaborationController.singleUserCollaborationList;
                 final listToShow = controller.listingList;
-        
-                if (completedDeals.isEmpty) {
-                  return Column(children:  [SizedBox(height: 30), CustomText(text: role == "host" ? "No past collaboration found" :  "No listings found", fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textClr,),],);
+
+                if (role == "host" && completedDeals.isEmpty) {
+                  return Column(
+                    children: [
+                      SizedBox(height: 30),
+                      CustomText(text: "No past collaboration found", fontSize: 14,),
+                    ],
+                  );
+                }
+
+                if (role != "host" && listToShow.isEmpty) {
+                  return Column(
+                    children: [
+                      SizedBox(height: 30),
+                      CustomText(text: "No listings found", fontSize: 14,),
+                    ],
+                  );
                 }
                 final reviews = collaborationController.userReviewsList;
                 return Column(

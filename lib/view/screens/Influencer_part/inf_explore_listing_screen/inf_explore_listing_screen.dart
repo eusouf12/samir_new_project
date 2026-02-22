@@ -28,10 +28,7 @@ class InfExploreDealsScreen extends StatelessWidget {
     });
 
     scrollController.addListener(() {
-      if (scrollController.position.pixels >=
-          scrollController.position.maxScrollExtent - 100) {
-        controller.getVerifiedAllListings(loadMore: true);
-      }
+      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 100) {controller.getVerifiedAllListings(loadMore: true);}
     });
 
     return CustomGradient(
@@ -49,13 +46,10 @@ class InfExploreDealsScreen extends StatelessWidget {
               CustomTextField(
                 isDens: true,
                 fillColor: const Color(0xffF5F5F5),
+                fieldFocusBorderColor: AppColors.primary2,
                 hintText: "Search",
                 hintStyle: TextStyle(color: AppColors.textClr),
-                prefixIcon: Icon(
-                  Icons.search_rounded,
-                  size: 18,
-                  color: AppColors.textClr,
-                ),
+                prefixIcon: Icon(Icons.search_rounded, size: 18, color: AppColors.textClr,),
                 onChanged: (value) {
                   controller.searchQuery.value = value;
 
@@ -74,11 +68,11 @@ class InfExploreDealsScreen extends StatelessWidget {
 
                   final bool isSearching = controller.searchQuery.value.isNotEmpty;
                   if (!isSearching && controller.rxVerifiedAllListingStatus.value == Status.loading) {
-                    return Center(child: CustomLoader());
+                    return Center(child: CustomLoader(color: AppColors.primary2));
                   }
 
                   if (isSearching && controller.rxSearchListingStatus.value == Status.loading) {
-                    return Center(child: CustomLoader());
+                    return Center(child: CustomLoader(color: AppColors.primary2,));
                   }
 
                   final listToShow = isSearching ? controller.searchListingList : controller.verifiedAllListingList;

@@ -154,8 +154,13 @@ class ListingController extends GetxController {
         final ListingsResponse model = ListingsResponse.fromJson(jsonResponse);
 
         // Filter by query
+        // final filteredListings = model.data.listings.where((listing) {
+        //   return listing.title.toLowerCase().contains(query.toLowerCase());
+        // }).toList();
+        //
         final filteredListings = model.data.listings.where((listing) {
-          return listing.title.toLowerCase().contains(query.toLowerCase());
+          return listing.title.toLowerCase().contains(query.toLowerCase()) ||
+              listing.location.toLowerCase().contains(query.toLowerCase());
         }).toList();
 
         searchListingList.assignAll(filteredListings);
