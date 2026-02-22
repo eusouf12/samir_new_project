@@ -293,43 +293,6 @@ class ListingController extends GetxController {
   final rxSingleListingStatus = Status.loading.obs;
   void setSingleListingStatus(Status status) => rxSingleListingStatus.value = status;
 
-  // Future<void> singleGetListing({required String id}) async {
-  //   setSingleListingStatus(Status.loading);
-  //   singleListingList.clear();
-  //
-  //   try {
-  //     final response =
-  //     await ApiClient.getData(ApiUrl.getSingleListing(id: id));
-  //
-  //     if (response.statusCode == 200 || response.statusCode == 201) {
-  //       final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
-  //
-  //       final List listingsJson = jsonResponse['data']['listings'];
-  //       final ListingItem listing = ListingItem.fromJson(listingsJson.first);
-  //       //==================== update variable setup ==================
-  //       updateTitleController.value.text = listing.title;
-  //       updateTitleDescriptionController.value.text = listing.description;
-  //       updateLocationController.value.text = listing.location;
-  //       updateAirbnbController.value.text = listing.addAirbnbLink;
-  //       updateSelectedPropertyType.value = listing.propertyType;
-  //       updateAmenities.updateAll((key, value) => listing.amenities[key] ?? false,);
-  //       updateCustomAmenities.assignAll(listing.customAmenities);
-  //       updateImageUrls.assignAll(listing.images);
-  //       //================= end update ======================
-  //       singleListingList.assignAll([listing]);
-  //
-  //       setSingleListingStatus(Status.completed);
-  //     } else {
-  //       setSingleListingStatus(Status.error);
-  //       showCustomSnackBar("Failed to load listing", isError: true);
-  //     }
-  //   } catch (e) {
-  //     setSingleListingStatus(Status.error);
-  //     showCustomSnackBar("Error: ${e.toString()}", isError: true);
-  //   }
-  // }
-
-// ================= Single Get Listing =================
   Future<void> singleGetListing({required String id}) async {
     setSingleListingStatus(Status.loading);
     singleListingList.clear();
@@ -464,6 +427,67 @@ class ListingController extends GetxController {
     } catch (e) {
       debugPrint("Error deleting Listing: $e");
       showCustomSnackBar("Something went wrong!", isError: true);
+    }
+  }
+
+  //===== get all listing for host=============
+
+  RxList<ListingItem> verifiedAllListingList = <ListingItem>[].obs;
+
+  final isVerifiedAllListingLoading = false.obs;
+  final isVerifiedAllLoadMoreLoading = false.obs;
+
+  final rxVerifiedAllListingStatus = Status.loading.obs;
+  void setVerifiedAllListingStatus(Status status) => rxVerifiedAllListingStatus.value = status;
+
+  int verifiedAllCurrentPage = 1;
+  int verifiedAllTotalPages = 1;
+
+  Future<void> getVerifiedAllListings({bool loadMore = false}) async {
+
+    if (loadMore) {
+      if (isVerifiedAllLoadMoreLoading.value || verifiedAllCurrentPage >= verifiedAllTotalPages) return;
+
+      isVerifiedAllLoadMoreLoading.value = true;
+      verifiedAllCurrentPage++;
+    } else {
+      verifiedAllListingList.clear();
+      isVerifiedAllListingLoading.value = true;
+      setVerifiedAllListingStatus(Status.loading);
+      verifiedAllCurrentPage = 1;
+    }
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.getAllVerifiedListing(page: verifiedAllCurrentPage.toString()),);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+
+        final Map<String, dynamic> jsonResponse =
+        response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final ListingsResponse model = ListingsResponse.fromJson(jsonResponse);
+
+        verifiedAllTotalPages = model.totalPages;
+
+        final existingIds = verifiedAllListingList.map((e) => e.id).toSet();
+
+        for (final item in model.data.listings) {
+          if (!existingIds.contains(item.id)) {
+            verifiedAllListingList.add(item);
+          }
+        }
+
+        setVerifiedAllListingStatus(Status.completed);
+      } else {
+        setVerifiedAllListingStatus(Status.error);
+        showCustomSnackBar("Failed to load verified all listings", isError: true);
+      }
+    } catch (e) {
+      setVerifiedAllListingStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+    } finally {
+      isVerifiedAllListingLoading.value = false;
+      isVerifiedAllLoadMoreLoading.value = false;
     }
   }
 }
