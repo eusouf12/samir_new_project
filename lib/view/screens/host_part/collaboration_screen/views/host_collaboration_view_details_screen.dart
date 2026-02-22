@@ -43,6 +43,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
     final String address = args["address"] ??"" ;
     final String myId = args["myId"] ;
     final String negotiationMessage = args["negotiationMessage"] ;
+    final String influencerId = args["influencerId"] ;
 
     // Amenities List logic
     final List<String> enabledAmenities = [];
@@ -181,7 +182,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                       (status == "ongoing" || status == "rejected" || status == "accepted")
                           ? const SizedBox.shrink()
                           : CustomButtonTwo(
-                          onTap: () => Get.toNamed(AppRoutes.negotiationScreen, arguments:{ 'collaborationId': collabrationId, 'role': role, 'negotiationMessage': negotiationMessage}),
+                          onTap: () => Get.toNamed(AppRoutes.negotiationScreen, arguments:{ 'collaborationId': collabrationId, 'role': role, 'negotiationMessage': negotiationMessage, 'influencerId':influencerId}),
                           title: "Request to Negotiation", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)
                       :SizedBox.shrink(),
                       const SizedBox(height: 10),

@@ -191,6 +191,7 @@ class HostCollaborationScreen extends StatelessWidget {
                           final userName = isMe == true ? collaboration.selectInfluencerOrHost?.userName : collaboration.userId?.userName;
                           final userId = isMe == true ? collaboration.selectInfluencerOrHost?.id : collaboration.userId?.id;
                           final address = isMe == true ? collaboration.selectInfluencerOrHost?.fullAddress : collaboration.userId?.fullAddress;
+                          final influencerId =  collaboration.selectInfluencerOrHost?.role == 'influencer' ? collaboration.selectInfluencerOrHost?.id  : collaboration.userId?.id;
 
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16),
@@ -253,6 +254,7 @@ class HostCollaborationScreen extends StatelessWidget {
                                     "address" : address,
                                     "myId" : myId,
                                     "negotiationMessage" : collaboration.negotiationMessage ?? "",
+                                    "influencerId" : influencerId ?? "",
                                   },
                                 );
                               },

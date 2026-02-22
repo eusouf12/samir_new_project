@@ -255,12 +255,27 @@ class CollaborationController extends GetxController {
 
   //=========== update collabration ==============
   RxInt updateNightsColl = 0.obs;
+  int maxNightCredits = 0;
   RxInt updateGuestColl = 0.obs;
   RxDouble updatePaymentAmountColl = 0.0.obs;
   Rx<TextEditingController> reasonController = TextEditingController().obs;
   RxMap<String, int> updateDeliverableQtyColl = <String, int>{}.obs;
   final isUpdateCollLoading = false.obs;
   RxList<SingleUserDeliverable> updatedDeliverables = <SingleUserDeliverable>[].obs;
+
+  void incrementNight() {
+    if (updateNightsColl.value >= maxNightCredits) {
+      showCustomSnackBar(" only have $maxNightCredits night credits available", isError: true,);
+      return;
+    }
+
+    updateNightsColl.value++;
+  }
+  void decrementNight() {
+    if (updateNightsColl.value > 1) {
+      updateNightsColl.value--;
+    }
+  }
 
   Rx<SingleUserCollaborationData?> selectedCollaboration = Rx<SingleUserCollaborationData?>(null);
 

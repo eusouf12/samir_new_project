@@ -21,9 +21,11 @@ class NegotiationScreen extends StatelessWidget {
     final String collId = args["collaborationId"] ?? "";
     final String role = args["role"] ?? "";
     final String negotiationMessage = args["negotiationMessage"] ?? "";
+    final String influencerId = args["influencerId"] ?? "";
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.selectedCollaboration.value = null;
       controller.setSelectedCollaboration(collId);
+      controller.getSingleUser(userId: influencerId);
     });
 
     return CustomGradient(
@@ -35,6 +37,8 @@ class NegotiationScreen extends StatelessWidget {
         ),
         body: Obx(() {
           final coll = controller.selectedCollaboration.value;
+          final infNightCredits = controller.singleUserProfile.value?.nightCredits ?? 0;
+          controller.maxNightCredits = infNightCredits;
 
           if (coll == null) {
             return  Center(child: CustomLoader());
@@ -63,8 +67,9 @@ class NegotiationScreen extends StatelessWidget {
                         label: "Night Stay",
                         icon: Icons.nightlight_round,
                         value: controller.updateNightsColl,
-                        onMinus: () => controller.updateNightsColl.value > 1 ? controller.updateNightsColl.value-- : null,
-                        onPlus: () => controller.updateNightsColl.value++, role: role,
+                        onMinus: controller.decrementNight,
+                        onPlus: controller.incrementNight,
+                        role: role,
                       ),
                       const Divider(height: 32),
                       _buildModernStepperRow(
