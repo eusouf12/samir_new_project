@@ -161,15 +161,9 @@ class SingleUserProfileData {
       collaborations: (json['collaborations'] as List?)?.cast<String>(),
       completeDeals: (json['completeDeals'] as List?)?.cast<String>(),
       nicheTags: (json['nicheTags'] as List?)?.cast<String>(),
-      redeemStars: (json['redeemStars'] as List?)
-          ?.map((e) => SingleUserRedeemStar.fromJson(e))
-          .toList(),
-      socialMediaLinks: (json['socialMediaLinks'] as List?)
-          ?.map((e) => SingleUserSocialMedia.fromJson(e))
-          .toList(),
-      collaborationStats: json['collaborationStats'] != null
-          ? SingleUserCollaborationStats.fromJson(json['collaborationStats'])
-          : null,
+      redeemStars: (json['redeemStars'] as List?)?.map((e) => SingleUserRedeemStar.fromJson(e)).toList(),
+      socialMediaLinks: (json['socialMediaLinks'] as List?)?.map((e) => SingleUserSocialMedia.fromJson(e)).toList(),
+      collaborationStats: json['collaborationStats'] != null ? SingleUserCollaborationStats.fromJson(json['collaborationStats']) : null,
     );
   }
 }

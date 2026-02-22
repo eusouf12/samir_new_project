@@ -35,6 +35,7 @@ class HostProfileController extends GetxController {
 
   //============== my profile controller============
   Rxn<UserData> userData = Rxn<UserData>();
+  RxList<UserSocialMedia> socialLinks = <UserSocialMedia>[].obs;
   final isUserLoading = false.obs;
   final rxUserStatus = Status.loading.obs;
   void setUserStatus(Status status) => rxUserStatus.value = status;
@@ -56,8 +57,11 @@ class HostProfileController extends GetxController {
         if (nameController.value.text.isEmpty) {
           nameController.value.text = userData.value?.name ??"";
         }
+        if (fullAddress.value.text.isEmpty) {
+          fullAddress.value.text = userData.value?.fullAddress ??"";
+        }
         if (countryController.value.text.isEmpty) {
-          countryController.value.text = userData.value?.fullAddress ??"";
+          countryController.value.text = userData.value?.country ??"";
         }
         emailController.value.text = userData.value?.email ??"";
 
@@ -73,6 +77,11 @@ class HostProfileController extends GetxController {
         if (genderController.value.text.isEmpty) {
           genderController.value.text = userData.value?.gender ?? "";
         }
+        if (userData.value?.socialMediaLinks != null) {
+          socialLinks.assignAll(userData.value!.socialMediaLinks!);
+        } else {
+          socialLinks.clear();
+        }
         setUserStatus(Status.completed);
       }
       else {
@@ -87,11 +96,47 @@ class HostProfileController extends GetxController {
     }
   }
 
+  // update social media
+  void addOrUpdateSocialLink({required String platform, required String url, required String followers,}) {
+    if (platform.trim().isEmpty) return;
+
+    int index = socialLinks.indexWhere((element) => (element.platform ?? '').toLowerCase().trim() == platform.toLowerCase().trim(),);
+
+    if (index != -1) {
+      socialLinks[index].url = url;
+      socialLinks[index].followers = followers;
+    }
+    else {
+      socialLinks.add(
+        UserSocialMedia(
+          platform: platform,
+          url: url,
+          followers: followers,
+        ),
+      );
+    }
+
+    socialLinks.refresh();
+  }
+  final List<String> availablePlatforms = [
+    "facebook",
+    "instagram",
+    "youtube",
+    "tiktok",
+    "x",
+  ];
+
+  // Controller এর ভিতর এই ভ্যারিয়েবলগুলো নিশ্চিত করুন
+  RxString selectedPlatform = "".obs;
+  final TextEditingController socialUrlController = TextEditingController();
+  final TextEditingController followersCountController = TextEditingController();
+
   // Text controllers
   Rx<TextEditingController> nameController = TextEditingController().obs;
   Rx<TextEditingController> userNameController = TextEditingController().obs;
   Rx<TextEditingController> emailController = TextEditingController().obs;
   Rx<TextEditingController> countryController = TextEditingController().obs;
+  Rx<TextEditingController> fullAddress = TextEditingController().obs;
   Rx<TextEditingController> phoneNumberController = TextEditingController().obs;
   Rx<TextEditingController> dateOfBirthController = TextEditingController().obs;
   Rx<TextEditingController> genderController = TextEditingController().obs;
@@ -103,13 +148,15 @@ class HostProfileController extends GetxController {
     refresh();
 
     try {
-      Map<String, String> body = {
+      Map<String, dynamic> body = {
         "name":nameController.value.text,
         "userName": userNameController.value.text,
         "phone": phoneNumberController.value.text,
         "dateOfBirth": dateOfBirthController.value.text,
-        "fullAddress":countryController.value.text,
+        "country":countryController.value.text,
+        "fullAddress":fullAddress.value.text,
         "gender": genderController.value.text,
+        "socialMediaLinks": socialLinks.map((e) => e.toJson()).toList(),
       };
 
       dynamic response;

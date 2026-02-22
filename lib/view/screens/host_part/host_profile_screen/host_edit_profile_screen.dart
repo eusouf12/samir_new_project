@@ -122,13 +122,84 @@ class HostEditProfileScreen extends StatelessWidget {
                       hintText: 'United State',
                       controller: profileController.countryController.value,
                     )),
+                    //fullAddress
+                    Obx(() => CustomFormCard(
+                      title: 'Full Address',
+                      hintText: 'Farmgate,Dhaka',
+                      controller: profileController.fullAddress.value,
+                    )),
                     //phone
                     Obx(() => CustomFormCard(
                       title: 'Phone Number',
                       hintText: 'Enter Your Phone Number',
                       controller: profileController.phoneNumberController.value,
                     )),
+                    //social
+                    // --- Select Platform Title ---
+                    SizedBox(height: 20.h),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: CustomText(text: "Select Platform", fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 12.h),
 
+// --- প্ল্যাটফর্ম আইটেম লিস্ট (৫টি প্ল্যাটফর্ম) ---
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          _buildPlatformItem("Instagram", Icons.camera_alt, Colors.pink),
+                          _buildPlatformItem("TikTok", Icons.music_note, Colors.black),
+                          _buildPlatformItem("YouTube", Icons.play_circle_fill, Colors.red),
+                          _buildPlatformItem("Facebook", Icons.facebook, Colors.blue),
+                          _buildPlatformItem("X", Icons.close, Colors.black), // Twitter/X
+                        ],
+                      ),
+                    ),
+
+// --- ডায়নামিক ইনপুট ফিল্ড এবং আপডেট বাটন ---
+                    Obx(() => profileController.selectedPlatform.value.isNotEmpty
+                        ? Column(
+                      children: [
+                        SizedBox(height: 20.h),
+                        // URL ফিল্ড
+                        CustomFormCard(
+                          title: "${profileController.selectedPlatform.value} URL",
+                          hintText: 'Enter link',
+                          controller: profileController.socialUrlController,
+                        ),
+                        // Followers ফিল্ড
+                        CustomFormCard(
+                          title: "Followers Count",
+                          hintText: 'e.g. 10k',
+                          controller: profileController.followersCountController,
+                        ),
+                        SizedBox(height: 15.h),
+                        // Add or Update বাটন
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF4CAF50),
+                                minimumSize: Size(150.w, 40.h),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                            ),
+                            onPressed: () {
+                              // কন্ট্রোলারের মেথড কল করে লিস্ট আপডেট করা
+                              profileController.addOrUpdateSocialLink(
+                                  platform: profileController.selectedPlatform.value,
+                                  url: profileController.socialUrlController.text,
+                                  followers: profileController.followersCountController.text
+                              );
+                              // ইউজার ফিডব্যাক
+                              Get.rawSnackbar(message: "${profileController.selectedPlatform.value} updated in list");
+                            },
+                            child: Text("Add/Update to List", style: TextStyle(color: Colors.white))
+                        ),
+                      ],
+                    )
+                        : SizedBox(height: 20.h) // কিছু সিলেক্ট না থাকলে খালি জায়গা
+                    ),
+
+                    // ==== Save btn ========
                     SizedBox(height: 20),
                     Obx((){
                       if (profileController.updateProfileLoading.value) {
@@ -152,5 +223,56 @@ class HostEditProfileScreen extends StatelessWidget {
           })
       ),
     );
+  }
+  Widget _buildPlatformItem(String name, IconData icon, Color color) {
+    return Obx(() {
+      bool isSelected = profileController.selectedPlatform.value == name;
+
+      return GestureDetector(
+        onTap: () {
+          profileController.selectedPlatform.value = name;
+
+          // চেক করা হচ্ছে এই প্ল্যাটফর্মের ডাটা socialLinks লিস্টে আছে কি না
+          var existingLink = profileController.socialLinks.firstWhereOrNull(
+                  (e) => (e.platform ?? '').toLowerCase() == name.toLowerCase()
+          );
+
+          if (existingLink != null) {
+            // ডাটা থাকলে ফিল্ডে সেট হবে
+            profileController.socialUrlController.text = existingLink.url ?? "";
+            profileController.followersCountController.text = existingLink.followers ?? "";
+          } else {
+            // ডাটা না থাকলে ফিল্ড খালি হবে
+            profileController.socialUrlController.clear();
+            profileController.followersCountController.clear();
+          }
+        },
+        child: Container(
+          margin: EdgeInsets.only(right: 12.w),
+          width: 80.w,
+          height: 80.h,
+          decoration: BoxDecoration(
+            color: isSelected ? Color(0xFF3FBBAC) : Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.grey.withOpacity(0.2)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: isSelected ? Colors.white : color, size: 28.sp),
+              SizedBox(height: 5.h),
+              Text(
+                  name,
+                  style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500
+                  )
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

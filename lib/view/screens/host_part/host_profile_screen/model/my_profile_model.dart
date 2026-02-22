@@ -39,7 +39,11 @@ class UserData {
   final List<dynamic> nicheTags;
   final int responseRate;
   final String fullAddress;
+  final String country;
   final String image;
+  final List<UserRedeemStar>? redeemStars;
+  final List<UserSocialMedia>? socialMediaLinks;
+  final UserCollaborationStats? collaborationStats;
 
   UserData({
     required this.id,
@@ -66,7 +70,11 @@ class UserData {
     required this.nicheTags,
     required this.responseRate,
     required this.fullAddress,
+    required this.country,
     required this.image,
+    this.redeemStars,
+    this.socialMediaLinks,
+    this.collaborationStats,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -95,7 +103,132 @@ class UserData {
       nicheTags: List<dynamic>.from(json['nicheTags'] ?? []),
       responseRate: json['responseRate'] ?? 0,
       fullAddress: json['fullAddress'] ?? '',
+      country: json['country'] ?? '',
       image: json['image'] ?? '',
+      redeemStars: (json['redeemStars'] as List?)?.map((e) => UserRedeemStar.fromJson(e)).toList(),
+      socialMediaLinks: (json['socialMediaLinks'] as List?)?.map((e) => UserSocialMedia.fromJson(e)).toList(),
+      collaborationStats: json['collaborationStats'] != null ? UserCollaborationStats.fromJson(json['collaborationStats']) : null,
+    );
+  }
+}
+
+class UserSocialMedia {
+  String? id;
+  String? platform;
+  String? url;
+  String? followers;
+
+  UserSocialMedia({
+    this.id,
+    this.platform,
+    this.url,
+    this.followers,
+  });
+
+  factory UserSocialMedia.fromJson(Map<String, dynamic> json) {
+    return UserSocialMedia(
+      id: json['_id'],
+      platform: json['platform'] ?? '',
+      url: json['url'] ?? '',
+      followers: json['followers'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "platform": platform,
+      "url": url,
+      "followers": followers,
+    };
+  }
+}
+
+class UserCollaborationStats {
+  final int? total;
+  final UserCollaborationStatItem? pending;
+  final UserCollaborationStatItem? negotiating;
+  final UserCollaborationStatItem? accepted;
+  final UserCollaborationStatItem? ongoing;
+  final UserCollaborationStatItem? completed;
+  final UserCollaborationStatItem? rejected;
+
+  UserCollaborationStats({
+    this.total,
+    this.pending,
+    this.negotiating,
+    this.accepted,
+    this.ongoing,
+    this.completed,
+    this.rejected,
+  });
+
+  factory UserCollaborationStats.fromJson(Map<String, dynamic> json) {
+    return UserCollaborationStats(
+      total: json['total'],
+      pending: json['pending'] != null
+          ? UserCollaborationStatItem.fromJson(json['pending'])
+          : null,
+      negotiating: json['negotiating'] != null
+          ? UserCollaborationStatItem.fromJson(json['negotiating'])
+          : null,
+      accepted: json['accepted'] != null
+          ? UserCollaborationStatItem.fromJson(json['accepted'])
+          : null,
+      ongoing: json['ongoing'] != null
+          ? UserCollaborationStatItem.fromJson(json['ongoing'])
+          : null,
+      completed: json['completed'] != null
+          ? UserCollaborationStatItem.fromJson(json['completed'])
+          : null,
+      rejected: json['rejected'] != null
+          ? UserCollaborationStatItem.fromJson(json['rejected'])
+          : null,
+    );
+  }
+}
+
+class UserRedeemStar {
+  final String? id;
+  final String? collaborationId;
+  final String? createdAt;
+
+  UserRedeemStar({
+    this.id,
+    this.collaborationId,
+    this.createdAt,
+  });
+
+  factory UserRedeemStar.fromJson(Map<String, dynamic> json) {
+    return UserRedeemStar(
+      id: json['_id'],
+      collaborationId: json['collaborationId'],
+      createdAt: json['createdAt'],
+    );
+  }
+}
+
+class UserCollaborationStatItem {
+  final int? count;
+  final int? totalCompensation;
+  final int? totalNights;
+  final int? avgCompensation;
+  final int? avgNights;
+
+  UserCollaborationStatItem({
+    this.count,
+    this.totalCompensation,
+    this.totalNights,
+    this.avgCompensation,
+    this.avgNights,
+  });
+
+  factory UserCollaborationStatItem.fromJson(Map<String, dynamic> json) {
+    return UserCollaborationStatItem(
+      count: json['count'],
+      totalCompensation: json['totalCompensation'],
+      totalNights: json['totalNights'],
+      avgCompensation: json['avgCompensation'],
+      avgNights: json['avgNights'],
     );
   }
 }
