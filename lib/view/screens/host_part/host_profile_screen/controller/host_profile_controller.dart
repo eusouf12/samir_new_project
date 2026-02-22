@@ -8,6 +8,7 @@ import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
+import '../../../Influencer_part/inf_profile_screen/model/share_profile_model.dart';
 import '../model/about_us_model.dart';
 import '../model/my_profile_model.dart';
 import '../model/terms _model.dart';
@@ -390,6 +391,40 @@ class HostProfileController extends GetxController {
     }
   }
 
+  // ======== share profile ========== shareProfile
+  Rxn<ShareableData> shareProfileData = Rxn<ShareableData>();
+  final isShareProfileLoading = false.obs;
+  final rxShareProfileStatus = Status.loading.obs;
 
+  void setShareProfileStatus(Status status) => rxShareProfileStatus.value = status;
 
+  Future<void> shareProfile() async {
+    isShareProfileLoading.value = true;
+    setShareProfileStatus(Status.loading);
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.shareProfile);
+
+      final Map<String, dynamic> jsonResponse;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final ShareableLinkResponse model =
+        ShareableLinkResponse.fromJson(jsonResponse);
+
+        shareProfileData.value = model.data;
+
+        setShareProfileStatus(Status.completed);
+      } else {
+        setShareProfileStatus(Status.error);
+        showCustomSnackBar("Error, Failed to load share profile", isError: true,);
+      }
+    } catch (e) {
+      setShareProfileStatus(Status.error);
+      showCustomSnackBar("Error, ${e.toString()}", isError: true,);
+    } finally {
+      isShareProfileLoading.value = false;
+    }
+  }
 }

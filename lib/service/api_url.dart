@@ -14,6 +14,7 @@ class ApiUrl {
 
    ///========================= My Profile =========================
    static const String myProfile = "/api/v1/auth/my-profile";
+   static const String shareProfile = "/api/v1/auth/share-profile";
    static const String updateProfile = "/api/v1/user/update-profile";
    static const String termsCondition = "/api/v1/legalDoc/get-doc/termsAndCondition";
    static const String aboutUs = "/api/v1/legalDoc/get-doc/aboutUs";
