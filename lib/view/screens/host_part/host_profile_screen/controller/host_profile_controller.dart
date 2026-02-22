@@ -13,11 +13,9 @@ import '../model/my_profile_model.dart';
 import '../model/terms _model.dart';
 
 class HostProfileController extends GetxController {
-  ///========= Image Picker GetX Controller Code ===========//
   final Rx<File?> selectedImage = Rx<File?>(null);
   final ImagePicker _picker = ImagePicker();
 
-// Pick an image from the gallery
   Future<void> pickImageFromGallery() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -100,24 +98,29 @@ class HostProfileController extends GetxController {
   void addOrUpdateSocialLink({required String platform, required String url, required String followers,}) {
     if (platform.trim().isEmpty) return;
 
-    int index = socialLinks.indexWhere((element) => (element.platform ?? '').toLowerCase().trim() == platform.toLowerCase().trim(),);
+    final cleanPlatform = platform.toLowerCase().trim();
+    final cleanUrl = url.startsWith("http") ? url : "https://${url.trim()}";
+    final cleanFollowers = followers.replaceAll(" ", "").trim();
+
+    int index = socialLinks.indexWhere((element) => (element.platform ?? '').toLowerCase().trim() == cleanPlatform,);
 
     if (index != -1) {
-      socialLinks[index].url = url;
-      socialLinks[index].followers = followers;
+      socialLinks[index].url = cleanUrl;
+      socialLinks[index].followers = cleanFollowers;
     }
     else {
       socialLinks.add(
         UserSocialMedia(
-          platform: platform,
-          url: url,
-          followers: followers,
+          platform: cleanPlatform,
+          url: cleanUrl,
+          followers: cleanFollowers,
         ),
       );
     }
 
     socialLinks.refresh();
   }
+
   final List<String> availablePlatforms = [
     "facebook",
     "instagram",
@@ -126,7 +129,6 @@ class HostProfileController extends GetxController {
     "x",
   ];
 
-  // Controller এর ভিতর এই ভ্যারিয়েবলগুলো নিশ্চিত করুন
   RxString selectedPlatform = "".obs;
   final TextEditingController socialUrlController = TextEditingController();
   final TextEditingController followersCountController = TextEditingController();
@@ -173,27 +175,23 @@ class HostProfileController extends GetxController {
       updateProfileLoading.value = false;
       refresh();
 
-      Map<String, dynamic> jsonResponse = response.body is String
-          ? jsonDecode(response.body)
-          : response.body as Map<String, dynamic>;
+      Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : response.body as Map<String, dynamic>;
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Profile updated successfully!", isError: false,);
-        getUserProfile();
-        Get.back();
-      } else {
-        showCustomSnackBar(
-          jsonResponse['message']?.toString() ?? "Update failed",
-          isError: true,
-        );
+          getUserProfile();
+
+           Navigator.of(Get.context!).pop();
+          Future.delayed(const Duration(milliseconds: 100), () {
+            showCustomSnackBar(jsonResponse['message']?.toString() ?? "Profile updated successfully!", isError: false,);
+          });
+      }
+      else {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Update failed", isError: true,);
       }
     } catch (e) {
       updateProfileLoading.value = false;
       refresh();
-      showCustomSnackBar(
-        "An error occurred. Please try again.",
-        isError: true,
-      );
+      showCustomSnackBar("An error occurred. Please try again.", isError: true,);
       debugPrint("Profile update error: $e");
     }
   }

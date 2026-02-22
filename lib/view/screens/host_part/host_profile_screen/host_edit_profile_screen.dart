@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../../../../utils/app_const/app_const.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../service/api_url.dart';
+import '../../../../utils/ToastMsg/toast_message.dart';
 import '../../../components/custom_button/custom_button.dart';
 import '../../../components/custom_from_card/custom_from_card.dart';
 import '../../../components/custom_gradient/custom_gradient.dart';
@@ -136,68 +137,77 @@ class HostEditProfileScreen extends StatelessWidget {
                     )),
                     //social
                     // --- Select Platform Title ---
-                    SizedBox(height: 20.h),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: CustomText(text: "Select Platform", fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 12.h),
-
-// --- প্ল্যাটফর্ম আইটেম লিস্ট (৫টি প্ল্যাটফর্ম) ---
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          _buildPlatformItem("Instagram", Icons.camera_alt, Colors.pink),
-                          _buildPlatformItem("TikTok", Icons.music_note, Colors.black),
-                          _buildPlatformItem("YouTube", Icons.play_circle_fill, Colors.red),
-                          _buildPlatformItem("Facebook", Icons.facebook, Colors.blue),
-                          _buildPlatformItem("X", Icons.close, Colors.black), // Twitter/X
-                        ],
-                      ),
-                    ),
-
-// --- ডায়নামিক ইনপুট ফিল্ড এবং আপডেট বাটন ---
-                    Obx(() => profileController.selectedPlatform.value.isNotEmpty
-                        ? Column(
+                    userData.role != "host" ?
+                    Column(
                       children: [
                         SizedBox(height: 20.h),
-                        // URL ফিল্ড
-                        CustomFormCard(
-                          title: "${profileController.selectedPlatform.value} URL",
-                          hintText: 'Enter link',
-                          controller: profileController.socialUrlController,
+
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomText(text: "Select Platform", fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        // Followers ফিল্ড
-                        CustomFormCard(
-                          title: "Followers Count",
-                          hintText: 'e.g. 10k',
-                          controller: profileController.followersCountController,
+                        SizedBox(height: 12.h),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              _buildPlatformItem("instagram", Icons.camera_alt, Colors.pink),
+                              _buildPlatformItem("tiktok", Icons.music_note, Colors.black),
+                              _buildPlatformItem("youtube", Icons.play_circle_fill, Colors.red),
+                              _buildPlatformItem("facebook", Icons.facebook, Colors.blue),
+                              _buildPlatformItem("x", Icons.close, Colors.black),
+                            ],
+                          ),
                         ),
-                        SizedBox(height: 15.h),
-                        // Add or Update বাটন
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xFF4CAF50),
-                                minimumSize: Size(150.w, 40.h),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+
+                        Obx(() => profileController.selectedPlatform.value.isNotEmpty
+                            ? Column(
+                          children: [
+                            SizedBox(height: 20.h),
+                            //========= URL ===========
+                            CustomFormCard(
+                              title: "${profileController.selectedPlatform.value} URL",
+                              hintText: 'Enter link',
+                              controller: profileController.socialUrlController,
                             ),
-                            onPressed: () {
-                              // কন্ট্রোলারের মেথড কল করে লিস্ট আপডেট করা
-                              profileController.addOrUpdateSocialLink(
+                            //============ Followers ===========
+                            CustomFormCard(
+                              title: "Followers Count",
+                              hintText: 'e.g. 10k',
+                              controller: profileController.followersCountController,
+                            ),
+                            SizedBox(height: 15.h),
+                            // ===== Add or Update ==============
+                            CustomButton(
+                              onTap: (){
+                                profileController.addOrUpdateSocialLink(
                                   platform: profileController.selectedPlatform.value,
                                   url: profileController.socialUrlController.text,
-                                  followers: profileController.followersCountController.text
-                              );
-                              // ইউজার ফিডব্যাক
-                              Get.rawSnackbar(message: "${profileController.selectedPlatform.value} updated in list");
-                            },
-                            child: Text("Add/Update to List", style: TextStyle(color: Colors.white))
-                        ),
+                                  followers: profileController.followersCountController.text,
+                                );
+
+                                print(profileController.socialLinks.map((e) => e.toJson()).toList());
+
+                                showCustomSnackBar( "${profileController.selectedPlatform.value} updated in list", isError: false,);
+
+                                profileController.socialUrlController.clear();
+                                profileController.followersCountController.clear();
+                                profileController.selectedPlatform.value = "";
+                              },
+                              title: 'Add/Update to List',
+                              textColor: AppColors.white,
+                              borderRadius: 50,
+                              fillColor: AppColors.primary2,
+                              width: 150.w,
+                              height: 40.h,
+                              fontSize: 12,
+                            ),
+                          ],
+                        )
+                            : SizedBox(height: 20.h)),
                       ],
                     )
-                        : SizedBox(height: 20.h) // কিছু সিলেক্ট না থাকলে খালি জায়গা
-                    ),
+                    :SizedBox.shrink(),
 
                     // ==== Save btn ========
                     SizedBox(height: 20),
@@ -232,17 +242,13 @@ class HostEditProfileScreen extends StatelessWidget {
         onTap: () {
           profileController.selectedPlatform.value = name;
 
-          // চেক করা হচ্ছে এই প্ল্যাটফর্মের ডাটা socialLinks লিস্টে আছে কি না
-          var existingLink = profileController.socialLinks.firstWhereOrNull(
-                  (e) => (e.platform ?? '').toLowerCase() == name.toLowerCase()
-          );
+          var existingLink = profileController.socialLinks.firstWhereOrNull((e) => (e.platform ?? '').toLowerCase() == name.toLowerCase());
 
           if (existingLink != null) {
-            // ডাটা থাকলে ফিল্ডে সেট হবে
             profileController.socialUrlController.text = existingLink.url ?? "";
             profileController.followersCountController.text = existingLink.followers ?? "";
-          } else {
-            // ডাটা না থাকলে ফিল্ড খালি হবে
+          }
+          else {
             profileController.socialUrlController.clear();
             profileController.followersCountController.clear();
           }
@@ -252,7 +258,7 @@ class HostEditProfileScreen extends StatelessWidget {
           width: 80.w,
           height: 80.h,
           decoration: BoxDecoration(
-            color: isSelected ? Color(0xFF3FBBAC) : Colors.white,
+            color: isSelected ? AppColors.primary2 : Colors.white,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Colors.grey.withOpacity(0.2)),
           ),
@@ -261,13 +267,7 @@ class HostEditProfileScreen extends StatelessWidget {
             children: [
               Icon(icon, color: isSelected ? Colors.white : color, size: 28.sp),
               SizedBox(height: 5.h),
-              Text(
-                  name,
-                  style: TextStyle(
-                      color: isSelected ? Colors.white : Colors.black,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500
-                  )
+              Text(name, style: TextStyle(color: isSelected ? Colors.white : Colors.black,fontSize: 12.sp, fontWeight: FontWeight.w500)
               ),
             ],
           ),
