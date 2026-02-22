@@ -10,21 +10,24 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String? rightIcon;
   final Color? color;
   final Color? leftIconColor;
-  //final void Function()? leftOnTap;
+  // final void Function()? leftOnTap;
   final void Function()? rightOnTap;
   final bool? leftIcon;
   final bool? centerTitleEnable;
+  final String? customRouteName;
 
   const CustomRoyelAppbar({
     super.key,
     this.titleName,
     this.color,
     this.leftIconColor,
-    // this.leftOnTap,
+    //this.leftOnTap,
     this.rightIcon,
     this.rightOnTap,
     this.leftIcon = false,
     this.centerTitleEnable = true,
+    this.customRouteName,
+
   });
 
   @override
@@ -40,9 +43,9 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
               onPressed: () {
                 rightOnTap!();
               },
-              icon: rightIcon == null
-                  ? SizedBox()
-                  : CustomImage(
+              icon: rightIcon == null ?
+              SizedBox()
+             : CustomImage(
                 imageSrc: rightIcon!,
                 height: 24,
                 width: 24,
@@ -50,8 +53,20 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
               )),
         ],
         backgroundColor: Colors.transparent,
-        leading: leftIcon == true ? BackButton(color: leftIconColor ?? Colors.black,) : SizedBox.shrink(),
         leadingWidth: leftIcon == true ? kToolbarHeight : 0,
+        leading: leftIcon == true ?
+        BackButton(
+          color: leftIconColor ?? Colors.black,
+          onPressed: () {
+            if (customRouteName != null) {
+              Navigator.pushReplacementNamed(context, customRouteName!);
+            } else {
+              Navigator.pop(context);
+            }
+          },
+        )
+        : SizedBox.shrink(),
+
 
       title: Align( alignment: centerTitleEnable == true ? Alignment.center : Alignment.centerLeft,
         child: CustomText(

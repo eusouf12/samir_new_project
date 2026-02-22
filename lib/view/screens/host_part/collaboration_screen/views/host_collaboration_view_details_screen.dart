@@ -40,6 +40,9 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
     final String collabrationId = args["collabrationId"] ?? "";
     final String role = args["role"] ;
     final bool isMe = args["isMe"] ;
+    final String address = args["address"] ??"" ;
+    final String myId = args["myId"] ;
+    final String negotiationMessage = args["negotiationMessage"] ;
 
     // Amenities List logic
     final List<String> enabledAmenities = [];
@@ -72,7 +75,8 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(text: name, fontSize: 14, fontWeight: FontWeight.w600),
-                        CustomText(text: userName, fontSize: 12, fontWeight: FontWeight.w400, bottom: 10),
+                        CustomText(text: userName, fontSize: 12, fontWeight: FontWeight.w400),
+                        role == "host" ?SizedBox.shrink(): CustomText(text: address, fontSize: 14, fontWeight: FontWeight.w500, bottom: 10),
                         role == "host"
                         ?Row(
                           children: socialMediaLinks.map((item) {
@@ -160,7 +164,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                           : Row(
                         children: [
                           Flexible(child: CustomButtonTwo(
-                              onTap: () => controller.acceptRejected(action: 'reject', userId: userId, collabrationId: collabrationId),
+                              onTap: () => controller.acceptRejected(action: 'reject', userId: myId, collabrationId: collabrationId),
                               title: "Decline", fillColor: AppColors.red_02)),
                           const SizedBox(width: 10),
                           (isMe == false)?
@@ -177,15 +181,13 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                       (status == "ongoing" || status == "rejected" || status == "accepted")
                           ? const SizedBox.shrink()
                           : CustomButtonTwo(
-                          onTap: () => Get.toNamed(AppRoutes.negotiationScreen, arguments: collabrationId),
+                          onTap: () => Get.toNamed(AppRoutes.negotiationScreen, arguments:{ 'collaborationId': collabrationId, 'role': role, 'negotiationMessage': negotiationMessage}),
                           title: "Request to Negotiation", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)
                       :SizedBox.shrink(),
                       const SizedBox(height: 10),
-                      (isMe == false)?
                       (status == "accepted" && role =="host")
                           ? CustomButtonTwo(onTap: () => Get.back(), title: "Make Payment", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)
                           : const SizedBox.shrink()
-                      :SizedBox.shrink(),
 
                     ],
                   );
@@ -243,7 +245,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
-                child: CustomText(text: amenity, fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.primary),
+                child: CustomText(text: amenity, fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.primary),
               );
             }).toList(),
           ),

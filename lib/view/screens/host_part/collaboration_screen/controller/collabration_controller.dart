@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:samir_flutter_app/core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
@@ -256,6 +257,7 @@ class CollaborationController extends GetxController {
   RxInt updateNightsColl = 0.obs;
   RxInt updateGuestColl = 0.obs;
   RxDouble updatePaymentAmountColl = 0.0.obs;
+  Rx<TextEditingController> reasonController = TextEditingController().obs;
   RxMap<String, int> updateDeliverableQtyColl = <String, int>{}.obs;
   final isUpdateCollLoading = false.obs;
   RxList<SingleUserDeliverable> updatedDeliverables = <SingleUserDeliverable>[].obs;
@@ -285,18 +287,17 @@ class CollaborationController extends GetxController {
     }
   }
 
-  @override
-  void onClose() {
-    paymentController.dispose();
-    super.onClose();
-  }
-
-
-
   Future<void> updateCollabration({required String collId}) async {
     isUpdateCollLoading.value = true;
 
     try {
+      // ===== Validation =====
+      if (reasonController.value.text.trim().isEmpty) {
+        showCustomSnackBar("Please write your negotiation reason", isError: true);
+        return;
+      }
+
+      // ===== Deliverables Build =====
       final List<Map<String, dynamic>> deliverableBody = [];
 
       for (final d in selectedCollaboration.value?.deliverables ?? []) {
@@ -305,10 +306,11 @@ class CollaborationController extends GetxController {
         deliverableBody.add({
           "platform": d.platform,
           "contentType": d.contentType,
-          "quantity": updateDeliverableQtyColl[key] ?? d.quantity,
+          "quantity": updateDeliverableQtyColl[key] ?? d.quantity ?? 1,
         });
       }
 
+      // ===== Request Body =====
       final body = {
         "compensation": {
           "numberOfNights": updateNightsColl.value,
@@ -316,16 +318,33 @@ class CollaborationController extends GetxController {
         },
         "deliverables": deliverableBody,
         "guestCount": updateGuestColl.value,
+        "negotiationMessage": reasonController.value.text.trim(),
       };
 
+      print("=== UPDATE BODY ===");
+      print(body);
+
+      // ===== API Call =====
       final response = await ApiClient.patchData(ApiUrl.updateCollabration(id: collId), jsonEncode(body),);
 
-      final jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+      // ===== Safe Response Parsing =====
+      final dynamic responseData = response.body;
 
+      final Map<String, dynamic> jsonResponse = responseData is String ? jsonDecode(responseData) : responseData as Map<String, dynamic>;
+
+      print("=== UPDATE RESPONSE ===");
+      print(jsonResponse);
+
+      // ===== Status Check =====
       if (response.statusCode == 200 || response.statusCode == 201) {
+
+        if (jsonResponse["data"] == null) {
+          throw Exception("Data is null in response");
+        }
+
         final updatedModel = SingleUserCollaborationData.fromJson(jsonResponse["data"]);
 
-        // update list
+        // ===== Update List =====
         final index = singleUserCollaborationList.indexWhere((e) => e.id == updatedModel.id);
 
         if (index != -1) {
@@ -333,20 +352,30 @@ class CollaborationController extends GetxController {
           singleUserCollaborationList.refresh();
         }
 
+        // ===== Update Selected =====
         selectedCollaboration.value = updatedModel;
-        selectedCollaboration.refresh();
+
         updatedDeliverables.assignAll(updatedModel.deliverables ?? []);
+
         updatePaymentAmountColl.value = double.tryParse(updatedModel.compensation?.paymentAmount ?? "0") ?? 0.0;
-        updateNightsColl.value = updatedModel.compensation?.numberOfNights ?? 0;
+
+        updateNightsColl.value = updatedModel.compensation?.numberOfNights ?? 1;
 
         showCustomSnackBar(jsonResponse['message'] ?? "Updated successfully", isError: false,);
 
-        Get.back();
-      } else {
+        // ===== Navigation =====
+        Get.offAllNamed(AppRoutes.hostCollaborationScreen);
+
+      }
+      else {
         showCustomSnackBar(jsonResponse['message'] ?? "Update failed", isError: true,);
       }
-    } catch (e) {
-      showCustomSnackBar("Something went wrong", isError: true,);
+
+    } catch (e, stackTrace) {
+      print("UPDATE ERROR: $e");
+      print("STACK TRACE: $stackTrace");
+
+      showCustomSnackBar("Something went wrong", isError: true);
     } finally {
       isUpdateCollLoading.value = false;
     }

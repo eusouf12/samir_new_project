@@ -89,7 +89,7 @@ class HostReviewConfirmScreen extends StatelessWidget {
                           bottom: 8,
                         ),
                         CustomText(
-                          text: "${dealsController.selectedTitle}",
+                          text:role == 'host' ? "${dealsController.selectedTitle}" : dealsController.selectedTitleInf.value.text.toString(),
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w600,
                           color: Colors.grey,

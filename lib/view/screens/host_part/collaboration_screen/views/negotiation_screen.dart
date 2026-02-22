@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:samir_flutter_app/view/components/custom_from_card/custom_from_card.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
+import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_field.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_button/custom_button.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
@@ -12,11 +14,13 @@ class NegotiationScreen extends StatelessWidget {
   NegotiationScreen({super.key});
 
   final CollaborationController controller = Get.find<CollaborationController>();
-  final String collId = Get.arguments;
+  final args = Get.arguments as Map<String, dynamic>;
 
   @override
   Widget build(BuildContext context) {
-
+    final String collId = args["collaborationId"] ?? "";
+    final String role = args["role"] ?? "";
+    final String negotiationMessage = args["negotiationMessage"] ?? "";
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.selectedCollaboration.value = null;
       controller.setSelectedCollaboration(collId);
@@ -43,7 +47,7 @@ class NegotiationScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /// --- Quick Stats Card ---
+                // --- Night Stay and Guest ---
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -60,7 +64,7 @@ class NegotiationScreen extends StatelessWidget {
                         icon: Icons.nightlight_round,
                         value: controller.updateNightsColl,
                         onMinus: () => controller.updateNightsColl.value > 1 ? controller.updateNightsColl.value-- : null,
-                        onPlus: () => controller.updateNightsColl.value++,
+                        onPlus: () => controller.updateNightsColl.value++, role: role,
                       ),
                       const Divider(height: 32),
                       _buildModernStepperRow(
@@ -68,15 +72,14 @@ class NegotiationScreen extends StatelessWidget {
                         icon: Icons.people_alt_rounded,
                         value: controller.updateGuestColl,
                         onMinus: () => controller.updateGuestColl.value > 1 ? controller.updateGuestColl.value-- : null,
-                        onPlus: () => controller.updateGuestColl.value++,
+                        onPlus: () => controller.updateGuestColl.value++, role: role,
                       ),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 24),
 
-                /// --- Payment Amount ---
+                // --- Payment Amount ---
                 const CustomText(text: "Compensation", fontSize: 16, fontWeight: FontWeight.w700, bottom: 12),
                 Container(
                   decoration: BoxDecoration(
@@ -88,7 +91,7 @@ class NegotiationScreen extends StatelessWidget {
                     keyboardType: TextInputType.number,
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.attach_money_rounded, color: AppColors.primary),
+                      prefixIcon: Icon(Icons.attach_money_rounded, color: role =='host'? AppColors.primary : AppColors.primary2),
                       hintText: "0.00",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -96,11 +99,11 @@ class NegotiationScreen extends StatelessWidget {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.grey.shade200),
+                        borderSide: BorderSide(color: Colors.grey.shade400),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                        borderSide: BorderSide(color:role == 'host'? AppColors.primary : AppColors.primary2, width: 2),
                       ),
                       filled: true,
                       fillColor: Colors.white,
@@ -110,7 +113,6 @@ class NegotiationScreen extends StatelessWidget {
                     },
                   ),
                 ),
-
                 const SizedBox(height: 24),
 
                 /// --- Deliverables ---
@@ -131,7 +133,7 @@ class NegotiationScreen extends StatelessWidget {
                         CircleAvatar(
                           radius: 20,
                           backgroundColor: AppColors.primary.withOpacity(0.1),
-                          child: Icon(_getPlatformIcon(d.platform ?? ""), size: 20, color: AppColors.primary),
+                          child: Icon(_getPlatformIcon(d.platform ?? ""), size: 20, color: role =='host'? AppColors.primary : AppColors.primary2),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -161,14 +163,27 @@ class NegotiationScreen extends StatelessWidget {
                     ),
                   );
                 }).toList(),
+                // ===== write your reason =========
+                const SizedBox(height: 24),
+                const CustomText(text: "Reason for Negotiation", fontSize: 16, fontWeight: FontWeight.w700, bottom: 12),
+                CustomTextField(
+                  textEditingController: controller.reasonController.value,
+                  hintText: "Write your reason here....",
+                  hintStyle: TextStyle(color: Colors.grey.shade600),
+                  maxLines: 5,
+                  fieldFocusBorderColor: role== 'host'? AppColors.primary : AppColors.primary2,
+                  fieldBorderColor:  Colors.grey.shade400,
+                  fillColor: Colors.transparent,
+                ),
 
                 const SizedBox(height: 40),
 
-                /// --- Submit Button ---
+                // --- Submit Button ---
                 Obx(() => controller.isUpdateCollLoading.value
                     ?  Center(child: CustomLoader())
                     : CustomButton(
                   title: "Update Collaboration",
+                  fillColor: role =='host'? AppColors.primary : AppColors.primary2,
                   onTap: () => controller.updateCollabration(collId: collId),
                 )),
                 const SizedBox(height: 20),
@@ -187,10 +202,11 @@ class NegotiationScreen extends StatelessWidget {
     required RxInt value,
     required VoidCallback onMinus,
     required VoidCallback onPlus,
+    required String role,
   }) {
     return Row(
       children: [
-        Icon(icon, color: Colors.grey.shade700, size: 22),
+        Icon(icon, color:role =='host'? AppColors.primary : AppColors.primary2, size: 22),
         const SizedBox(width: 12),
         Expanded(child: Text(label, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500))),
         _smallStepper(onMinus: onMinus, onPlus: onPlus,

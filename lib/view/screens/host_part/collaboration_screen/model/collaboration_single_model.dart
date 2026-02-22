@@ -41,6 +41,7 @@ class SingleUserCollaborationData {
   final String? status;
   final String? negotiationStatus;
   final String? paymentStatus;
+  final String? negotiationMessage;
 
   final SingleUserSocialMediaLinks? socialMediaLinks;
 
@@ -59,47 +60,29 @@ class SingleUserCollaborationData {
     this.status,
     this.negotiationStatus,
     this.paymentStatus,
+    this.negotiationMessage,
     this.socialMediaLinks,
   });
 
   factory SingleUserCollaborationData.fromJson(Map<String, dynamic> json) {
     return SingleUserCollaborationData(
       id: json['_id'],
-
-      userId: json['userId'] != null
-          ? SingleUserInfo.fromJson(json['userId'])
-          : null,
-
-      selectInfluencerOrHost: json['selectInfluencerOrHost'] != null
-          ? SingleUserInfo.fromJson(json['selectInfluencerOrHost'])
-          : null,
-
-      compensation: json['compensation'] != null
-          ? SingleUserCompensation.fromJson(json['compensation'])
-          : null,
-
-      deliverables: (json['deliverables'] as List?)
-          ?.map((e) => SingleUserDeliverable.fromJson(e))
-          .toList(),
-
-      title: json['title'] != null
-          ? SingleUserDealTitle.fromJson(json['title'])
-          : null,
-
+      userId: json['userId'] is Map<String, dynamic> ? SingleUserInfo.fromJson(json['userId']) : null,
+      selectInfluencerOrHost: json['selectInfluencerOrHost'] != null ? SingleUserInfo.fromJson(json['selectInfluencerOrHost']) : null,
+      compensation: json['compensation'] != null ? SingleUserCompensation.fromJson(json['compensation']) : null,
+      deliverables: (json['deliverables'] as List?)?.map((e) => SingleUserDeliverable.fromJson(e)).toList(),
+      title: json['title'] is Map<String, dynamic> ? SingleUserDealTitle.fromJson(json['title']) : null,
       description: json['description'],
       addAirbnbLink: json['addAirbnbLink'],
-
       inTimeAndDate: json['inTimeAndDate'],
       outTimeAndDate: json['outTimeAndDate'],
       guestCount: json['guestCount'],
-
       status: json['status'],
       negotiationStatus: json['negotiationStatus'],
       paymentStatus: json['paymentStatus'],
+      negotiationMessage: json['negotiationMessage'] ??"",
 
-      socialMediaLinks: json['socialMediaLinks'] != null
-          ? SingleUserSocialMediaLinks.fromJson(json['socialMediaLinks'])
-          : null,
+      socialMediaLinks: json['socialMediaLinks'] != null ? SingleUserSocialMediaLinks.fromJson(json['socialMediaLinks']) : null,
     );
   }
 }

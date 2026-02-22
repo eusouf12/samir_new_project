@@ -35,7 +35,7 @@ class HostCollaborationScreen extends StatelessWidget {
 
     return CustomGradient(
       child: Scaffold(
-        appBar: CustomRoyelAppbar(leftIcon: true,titleName: "My Collaborations",),
+        appBar: CustomRoyelAppbar(leftIcon: true,titleName: "My Collaborations",customRouteName:role == 'host' ?AppRoutes.hostHomeScreen : AppRoutes.infHomeScreen,),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -161,7 +161,7 @@ class HostCollaborationScreen extends StatelessWidget {
               Expanded(
                 child: Obx(() {
                   if (controller.singleUserCollaborationStatus.value == Status.loading ) {
-                    return Center(child: CustomLoader());
+                    return Center(child: CustomLoader(color: role=='host'? AppColors.primary : AppColors.primary2,));
                   }
                   if (controller.singleUserCollaborationStatus.value == Status.error) {
                     return Center(
@@ -186,58 +186,55 @@ class HostCollaborationScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final collaboration = controller.singleUserCollaborationList[index];
                           final isMe = collaboration.userId?.id == myId;
+                          final profilePic = isMe == true ? (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image! : "" :(collaboration.userId?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.userId!.image! : "";
+                          final name = isMe == true ? collaboration.selectInfluencerOrHost?.name : collaboration.userId?.name;
+                          final userName = isMe == true ? collaboration.selectInfluencerOrHost?.userName : collaboration.userId?.userName;
+                          final userId = isMe == true ? collaboration.selectInfluencerOrHost?.id : collaboration.userId?.id;
+                          final address = isMe == true ? collaboration.selectInfluencerOrHost?.fullAddress : collaboration.userId?.fullAddress;
 
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16),
                             child: CustomCollaborationCard(
                               role: role,
                               isMe: isMe,
-                              profileImage: isMe == true ? (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image! : "" :(collaboration.userId?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.userId!.image! : "",
-                              userName: isMe == true ? collaboration.selectInfluencerOrHost?.name : collaboration.userId?.name,
-                              userHandle: isMe == true ? collaboration.selectInfluencerOrHost?.userName : collaboration.userId?.userName,
+                              fullAddress: address,
+                              profileImage: profilePic,
+                              userName: name,
+                              userHandle: userName,
                               status: collaboration.status,
                               location: collaboration.title?.title ?? "",
                                socialMediaLinks: collaboration.selectInfluencerOrHost?.socialMediaLinks ?? [],
 
                               // ===== Dynamic Callbacks =====
                               onViewDetailsTap: () {
-
+                                controller.reasonController.value.text= collaboration.negotiationMessage ?? "";
                                 debugPrint("=========== COLLABORATION DETAILS ===========");
 
-                                debugPrint("image: ${ (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false)
-                                    ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image!
-                                    : "" }");
-
-                                debugPrint("name: ${collaboration.selectInfluencerOrHost?.name}");
-                                debugPrint("userName: ${collaboration.selectInfluencerOrHost?.userName}");
+                                debugPrint("profilePic == $profilePic");
+                                debugPrint("name: $name");
+                                debugPrint("userName: $userName");
                                 debugPrint("listingName: ${collaboration.title?.title}");
-
-                                debugPrint("listingImage: ${ (collaboration.title?.images?.isNotEmpty ?? false)
-                                    ? ApiUrl.baseUrl + collaboration.title!.images!.first
-                                    : "" }");
-
+                                debugPrint("listingImage: ${ (collaboration.title?.images?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.title!.images!.first : "" }");
                                 debugPrint("payment: ${collaboration.compensation?.paymentAmount}");
                                 debugPrint("nightStay: ${collaboration.compensation?.numberOfNights}");
                                 debugPrint("guestCount: ${collaboration.guestCount}");
-
                                 debugPrint("inTimeAndDate: ${collaboration.inTimeAndDate}");
                                 debugPrint("outTimeAndDate: ${collaboration.outTimeAndDate}");
-
                                 debugPrint("amenities: ${collaboration.title?.amenities}");
                                 debugPrint("deliverables: ${collaboration.deliverables}");
                                 debugPrint("socialMediaLinks: ${collaboration.selectInfluencerOrHost?.socialMediaLinks}");
-
                                 debugPrint("status: ${collaboration.status}");
-                                debugPrint("userId: ${collaboration.selectInfluencerOrHost?.id}");
+                                debugPrint("userId: $userId");
                                 debugPrint("collabrationId: ${collaboration.id}");
-
+                                debugPrint("controller.reasonController.value: ${controller.reasonController.value.text}");
                                 debugPrint("=============================================");
+
                                 Get.toNamed(
                                   AppRoutes.hostCollaborationViewDetailsScreen,
                                   arguments: {
-                                    "image": (collaboration.selectInfluencerOrHost?.image?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.selectInfluencerOrHost!.image! : "",
-                                    "name": collaboration.selectInfluencerOrHost?.name ?? "",
-                                    "userName": collaboration.selectInfluencerOrHost?.userName ?? "",
+                                    "image": profilePic,
+                                    "name": name ?? "",
+                                    "userName": userName ?? "",
                                     "listingName": collaboration.title?.title ?? "",
                                     "listingImage": (collaboration.title?.images?.isNotEmpty ?? false) ? ApiUrl.baseUrl + collaboration.title!.images!.first : "",
                                     "payment": collaboration.compensation?.paymentAmount ?? "0",
@@ -249,10 +246,13 @@ class HostCollaborationScreen extends StatelessWidget {
                                     "deliverables": collaboration.deliverables ?? [],
                                     "socialMediaLinks": collaboration.selectInfluencerOrHost?.socialMediaLinks ?? [],
                                     "status" : collaboration.status,
-                                    "userId" : collaboration.selectInfluencerOrHost?.id,
+                                    "userId" : userId,
                                     "collabrationId" : collaboration.id,
                                     "role" : role,
                                     "isMe" : isMe,
+                                    "address" : address,
+                                    "myId" : myId,
+                                    "negotiationMessage" : collaboration.negotiationMessage ?? "",
                                   },
                                 );
                               },
@@ -263,10 +263,10 @@ class HostCollaborationScreen extends StatelessWidget {
                                 },
                               onApproveTap: () {
 
-                                 controller.acceptRejected(action: 'accept', userId: collaboration.selectInfluencerOrHost?.id ?? "", collabrationId: collaboration.id ?? "");
+                                 controller.acceptRejected(action: 'accept', userId: userId ?? "", collabrationId: collaboration.id ?? "");
                               },
                               onDeclineTap: () {
-                                controller.acceptRejected(action: 'reject', userId: collaboration.selectInfluencerOrHost?.id ?? "", collabrationId: collaboration.id ?? "");
+                                controller.acceptRejected(action: 'reject', userId: myId ?? userId ??"", collabrationId: collaboration.id ?? "");
                               },
                             ),
                           );

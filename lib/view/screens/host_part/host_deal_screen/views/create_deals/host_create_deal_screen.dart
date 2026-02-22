@@ -111,7 +111,7 @@ class HostCreateDealScreen extends StatelessWidget {
                     maxLine: 3,
                     readOnly: true,
                     controller: dealsController.selectedTitleInf,
-                       fieldFocusBorderColor: AppColors.primary2,
+                     fieldFocusBorderColor: AppColors.primary2,
                   ),
                   // ========  Description =========
                   SizedBox(height: 16),

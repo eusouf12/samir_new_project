@@ -231,6 +231,8 @@ class DealsController extends GetxController {
   // ================ create deals Controller ==============
   var isCreatingDeal = false.obs;
   Future<void> createDeal({required String pageName, String? dealId}) async {
+    final role = await SharePrefsHelper.getString(AppConstants.role);
+
     final body = {
       "title": selectedId.value,
       "description": titleDescriptionController.value.text,
@@ -275,7 +277,8 @@ class DealsController extends GetxController {
         collaborationController.getSingleUser(userId: id);
         await getDeals(loadMore: false);
         isCreatingDeal.value = false;
-        Get.toNamed(AppRoutes.hostHomeScreen);
+        (role == "host")
+        ? Get.toNamed(AppRoutes.hostHomeScreen) : Get.toNamed(AppRoutes.infHomeScreen);
       }
       else {
         showCustomSnackBar(jsonResponse['error']?.toString() ?? "Failed to create deal", isError: true,);

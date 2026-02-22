@@ -9,6 +9,7 @@ class CustomCollaborationCard extends StatelessWidget {
   final String? profileImage;
   final String? role;
   final String? userName;
+  final String? fullAddress;
   final bool? isMe;
   final String? userHandle;
   final String? status;
@@ -24,6 +25,7 @@ class CustomCollaborationCard extends StatelessWidget {
     super.key,
     this.profileImage,
     this.userName,
+    this.fullAddress,
     this.role,
     this.isMe,
     this.status,
@@ -88,8 +90,14 @@ class CustomCollaborationCard extends StatelessWidget {
                                 text: "@${userHandle}" ?? "",
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
-                                bottom: 10,
                               ),
+                              role != "host" ?
+                              CustomText(
+                                text: fullAddress ?? "",
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                bottom: 10,
+                              ): SizedBox.shrink(),
                               role == "host"
                               ?Row(
                                 children: socialMediaLinks.isEmpty
@@ -149,30 +157,30 @@ class CustomCollaborationCard extends StatelessWidget {
               const SizedBox(height: 8),
 
               // ===== Tags =====
-              if (tags != null && tags!.isNotEmpty)
-                Row(
-                  children: tags!.map((tag) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xffECFEFF),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: CustomText(
-                          text: tag,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
+              // if (tags != null && tags!.isNotEmpty)
+              //   Row(
+              //     children: tags!.map((tag) {
+              //       return Padding(
+              //         padding: const EdgeInsets.only(right: 8.0),
+              //         child: Container(
+              //           padding: const EdgeInsets.symmetric(
+              //             horizontal: 12,
+              //             vertical: 4,
+              //           ),
+              //           decoration: BoxDecoration(
+              //             color: const Color(0xffECFEFF),
+              //             borderRadius: BorderRadius.circular(10),
+              //           ),
+              //           child: CustomText(
+              //             text: tag,
+              //             fontSize: 12,
+              //             fontWeight: FontWeight.w600,
+              //             color: AppColors.primary,
+              //           ),
+              //         ),
+              //       );
+              //     }).toList(),
+              //   ),
 
               const SizedBox(height: 10),
 
@@ -210,7 +218,6 @@ class CustomCollaborationCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   //payment
-                  (isMe == false)?
                   ( status == "accepted" && role =="host")?
                        Expanded(
                     flex: 2,
@@ -227,16 +234,15 @@ class CustomCollaborationCard extends StatelessWidget {
                       borderColor: role == "host" ? AppColors.primary : AppColors.primary2,
                     ),
                   )
-                      : SizedBox.shrink()
-                  :SizedBox.shrink(),
+                      : SizedBox.shrink(),
                   const SizedBox(width: 8),
                   //approve
                   (isMe == false)?
                   (status == "ongoing" || status == "rejected" || status == "accepted")?
                   SizedBox.shrink()
                       : Expanded(
-                    flex: 2,
-                    child: CustomButtonTwo(
+                     flex: 2,
+                     child: CustomButtonTwo(
                       height: 40,
                       onTap: onApproveTap,
                       title: "Approve",
@@ -251,8 +257,8 @@ class CustomCollaborationCard extends StatelessWidget {
                   (status == "ongoing" || status == "rejected" || status == "accepted")?
                     SizedBox.shrink()
                       : Expanded(
-                    flex: 1,
-                    child: CustomButtonTwo(
+                     flex: 1,
+                     child: CustomButtonTwo(
                       height: 40,
                       fillColor: AppColors.red_02,
                       onTap: onDeclineTap,
