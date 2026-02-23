@@ -98,33 +98,7 @@ class CustomCollaborationCard extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 bottom: 10,
                               ): SizedBox.shrink(),
-                              role == "host"
-                              ?Row(
-                                children: socialMediaLinks.isEmpty
-                                    ? []
-                                    : socialMediaLinks.map((item) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(right: 8),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          _getPlatformIcon(item.platform ?? ""),
-                                          size: 18,
-                                          color: _getPlatformColor(item.platform ?? ""),
-                                        ),
-                                        const SizedBox(width: 4),
-                                        CustomText(
-                                          text: item.followers ?? "0",
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.black,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                              )
-                              :SizedBox.shrink(),
+
 
                             ],
                           ),
@@ -154,6 +128,34 @@ class CustomCollaborationCard extends StatelessWidget {
                 ],
               ),
 
+              const SizedBox(height: 8),
+              role == "host"
+                  ?Row(
+                children: socialMediaLinks.isEmpty
+                    ? []
+                    : socialMediaLinks.map((item) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 15),
+                    child: Row(
+                      children: [
+                        Icon(
+                          _getPlatformIcon(item.platform ?? ""),
+                          size: 18,
+                          color: _getPlatformColor(item.platform ?? ""),
+                        ),
+                        const SizedBox(width: 4),
+                        CustomText(
+                          text: item.followers ?? "0",
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black,
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              )
+                  :SizedBox.shrink(),
               const SizedBox(height: 8),
 
               // ===== Tags =====

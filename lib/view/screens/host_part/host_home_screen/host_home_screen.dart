@@ -130,7 +130,7 @@ class HostHomeScreen extends StatelessWidget {
                       // SizedBox(width: 16),
                       CustomContainerCard(
                         onTap: () {
-                          Get.toNamed(AppRoutes.hostCollaborationScreen);
+                          Get.toNamed(AppRoutes.hostCollaborationScreen,arguments: userData.value?.role ?? "");
                         },
                         title: "Total\n Collaboration",
                         color: AppColors.white,

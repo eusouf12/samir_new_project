@@ -18,8 +18,8 @@ class HostCollaborationScreen extends StatelessWidget {
   HostCollaborationScreen({super.key});
 
   final CollaborationController controller = Get.put(CollaborationController());
-  String? role ;
   String? myId ;
+  final String role = Get.arguments ;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +28,13 @@ class HostCollaborationScreen extends StatelessWidget {
       controller.currentIndex.value = 0;
       final id = await SharePrefsHelper.getString(AppConstants.userId);
       myId = await SharePrefsHelper.getString(AppConstants.userId);
-      role = await SharePrefsHelper.getString(AppConstants.role);
       controller.getSingleUserCollaboration(id: id);
       controller.getSingleUser(userId: id);
     });
 
     return CustomGradient(
       child: Scaffold(
-        appBar: CustomRoyelAppbar(leftIcon: true,titleName: "My Collaborations",customRouteName:role == 'host' ?AppRoutes.hostHomeScreen : AppRoutes.infHomeScreen,),
+        appBar: CustomRoyelAppbar(leftIcon: true,titleName: "My Collaborations",customRouteName: role == 'host' ?AppRoutes.hostHomeScreen : AppRoutes.infHomeScreen,),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
