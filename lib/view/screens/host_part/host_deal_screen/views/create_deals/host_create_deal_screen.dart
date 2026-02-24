@@ -119,7 +119,7 @@ class HostCreateDealScreen extends StatelessWidget {
                     title: "Description",
                     hintText: "Description what you expect from the influencer....",
                     maxLine: 3,
-                    fieldFocusBorderColor: AppColors.primary2,
+                    fieldFocusBorderColor: role == 'host'? AppColors.primary : AppColors.primary2,
                     controller: dealsController.titleDescriptionController.value,
                   ),
                   buildDateTimeRow("Check In", isCheckIn: true, role: role,),

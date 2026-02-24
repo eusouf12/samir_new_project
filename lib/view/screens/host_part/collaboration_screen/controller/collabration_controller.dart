@@ -13,7 +13,7 @@ import '../model/single_user_model.dart';
 
 
 class CollaborationController extends GetxController {
-  RxList<String> collaborationTabList = <String>['All','Pending','Accepted','Ongoing','Declined','Completed'].obs;
+  RxList<String> collaborationTabList = <String>['All','Pending','Negotiating','Accepted','Ongoing','Declined','Completed'].obs;
   RxInt currentIndex = 0.obs;
 
   // Function to call based on tab index
@@ -28,15 +28,18 @@ class CollaborationController extends GetxController {
         getSingleUserCollaboration(id: id,filterName: "pending");
         break;
       case 2:
-        getSingleUserCollaboration(id: id,filterName: "accepted");
+        getSingleUserCollaboration(id: id,filterName: "negotiating");
         break;
       case 3:
-        getSingleUserCollaboration(id: id,filterName : "ongoing");
+        getSingleUserCollaboration(id: id,filterName: "accepted");
         break;
       case 4:
-        getSingleUserCollaboration(id: id,filterName : "rejected");
+        getSingleUserCollaboration(id: id,filterName : "ongoing");
         break;
       case 5:
+        getSingleUserCollaboration(id: id,filterName : "rejected");
+        break;
+      case 6:
         getSingleUserCollaboration(id: id,filterName : "completed");
         break;
     }
@@ -131,7 +134,6 @@ class CollaborationController extends GetxController {
   final isGetSingleUserLoading = false.obs;
   final rxGetSingleUserStatus = Status.loading.obs;
   void setGetSingleUserStatus(Status status) => rxGetSingleUserStatus.value = status;
-  // SingleUserProfileData? singleUserProfile;
   Rxn<SingleUserProfileData> singleUserProfile = Rxn<SingleUserProfileData>();
 
   Future<void> getSingleUser({required String userId}) async {
@@ -165,8 +167,6 @@ class CollaborationController extends GetxController {
   final isReviewLoadMore = false.obs;
   final rxReviewStatus = Status.loading.obs;
   void setReviewStatus(Status status) => rxReviewStatus.value = status;
-
-  // ==================== Reviews List ====================
   RxList<ReviewModel> userReviewsList = <ReviewModel>[].obs;
   int currentReviewPage = 1;
   int totalReviewPages = 1;
