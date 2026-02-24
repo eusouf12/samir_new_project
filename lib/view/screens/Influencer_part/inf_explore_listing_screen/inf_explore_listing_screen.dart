@@ -86,23 +86,19 @@ class InfExploreDealsScreen extends StatelessWidget {
                     isSearching ? null : scrollController,
                     itemCount: listToShow.length + (!isSearching && controller.isVerifiedAllLoadMoreLoading.value ? 1 : 0),
                     itemBuilder: (context, index) {
-
                       if (index < listToShow.length) {
-
                         final listing = listToShow[index];
 
                         return ListingCard(
                           listing: listing,
                           staus: listing.status,
-                          btn: true,
+                          btn: false,
                           btn2: false,
                           onTapAirbnb: () async {
                             final link = listing.addAirbnbLink;
                             if (link.isEmpty) return;
 
-                            final uri = Uri.parse(
-                              link.startsWith('http') ? link : 'https://$link',
-                            );
+                            final uri = Uri.parse(link.startsWith('http') ? link : 'https://$link');
 
                             await launchUrl(uri, mode: LaunchMode.externalApplication);
                           },
@@ -115,7 +111,7 @@ class InfExploreDealsScreen extends StatelessWidget {
                         );
                       } else {
                         return Padding(padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Center(child: CustomLoader()),
+                          child: Center(child: CustomLoader(color: AppColors.primary2)),
                         );
                       }
                     },

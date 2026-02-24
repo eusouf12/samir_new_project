@@ -95,7 +95,7 @@ class ChatScreen extends StatelessWidget {
               child: Obx(() {
                 //===========  Loader===========
                 if (controller.rxStatus.value == Status.loading && controller.messageList.isEmpty) {
-                  return  Center(child: CustomLoader());
+                  return  Center(child: CustomLoader(color:  role=='host'?AppColors.primary : AppColors.primary2));
                 }
 
                 //=========== Empty ===========

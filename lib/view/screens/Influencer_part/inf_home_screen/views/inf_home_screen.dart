@@ -100,7 +100,8 @@ class InfHomeScreen extends StatelessWidget {
                     title: "${userData.value?.collaborationStats?.total}",
                     subtitle: "Total\n Collaboration",
                     onTap: () {
-                      Get.toNamed(AppRoutes.hostCollaborationScreen,arguments: userData.value?.role ?? "");
+                      Get.toNamed(AppRoutes.hostCollaborationScreen,arguments: userData.value?.role ?? ""
+                      );
                     },
                   ),
                   //host

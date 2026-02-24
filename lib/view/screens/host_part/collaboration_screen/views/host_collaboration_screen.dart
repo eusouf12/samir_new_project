@@ -47,8 +47,7 @@ class HostCollaborationScreen extends StatelessWidget {
                 bottom: 8,
               ),
               CustomText(
-                text:
-                "Review requests from influencers who want to collaborate on your listings.",
+                text: "Review requests from influencers who want to collaborate on your listings.",
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: AppColors.textClr,
@@ -65,6 +64,7 @@ class HostCollaborationScreen extends StatelessWidget {
               final approved = userData.value?.collaborationStats?.ongoing?.count ?? 0;
               final declined = userData.value?.collaborationStats?.rejected?.count ?? 0;
               final accepted = userData.value?.collaborationStats?.accepted?.count ?? 0;
+              final completed = userData.value?.collaborationStats?.completed?.count ?? 0;
 
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -143,6 +143,21 @@ class HostCollaborationScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  Column(
+                    children: [
+                      CustomText(
+                        text: "$completed",
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xffEF4444),
+                      ),
+                      CustomText(
+                        text: "Completed",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ],
+                  ),
                 ],
               );
             }),
@@ -206,7 +221,9 @@ class HostCollaborationScreen extends StatelessWidget {
                                socialMediaLinks: collaboration.selectInfluencerOrHost?.socialMediaLinks ?? [],
 
                               // ===== Dynamic Callbacks =====
-                              onViewDetailsTap: () {
+                              onViewDetailsTap: () async {
+                                final id = await SharePrefsHelper.getString(AppConstants.userId);
+                                controller.getSingleUser(userId: id );
                                 controller.reasonController.value.text= collaboration.negotiationMessage ?? "";
                                 debugPrint("=========== COLLABORATION DETAILS ===========");
 
@@ -262,11 +279,14 @@ class HostCollaborationScreen extends StatelessWidget {
                                   //     AppRoutes.hostCollaborationViewDetailsScreen,
                                   // );
                                 },
-                              onApproveTap: () {
-
+                              onApproveTap: () async {
+                                final id = await SharePrefsHelper.getString(AppConstants.userId);
+                                controller.getSingleUser(userId: id );
                                  controller.acceptRejected(action: 'accept', userId: userId ?? "", collabrationId: collaboration.id ?? "");
                               },
-                              onDeclineTap: () {
+                              onDeclineTap: () async {
+                                final id = await SharePrefsHelper.getString(AppConstants.userId);
+                                controller.getSingleUser(userId: id );
                                 controller.acceptRejected(action: 'reject', userId: myId ?? userId ??"", collabrationId: collaboration.id ?? "");
                               },
                             ),

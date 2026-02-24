@@ -6,10 +6,13 @@ import 'package:samir_flutter_app/view/components/custom_button/custom_button_tw
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
+import '../../../../../helper/shared_prefe/shared_prefe.dart';
+import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../controller/collabration_controller.dart';
 import '../model/collaboration_single_model.dart';
+import '../widget/status_task_card.dart';
 
 class HostCollaborationViewDetailsScreen extends StatelessWidget {
   HostCollaborationViewDetailsScreen({super.key});
@@ -25,6 +28,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
         controller.updateNightsColl.value = args["nightStay"] ?? 0;
         controller.updatedDeliverables.assignAll(args["deliverables"] ?? []);
         controller.updateGuestColl.value = args["guestCount"] ?? 0;
+        controller.fetchCollaborations(colId: args["collabrationId"]);
       });
     }
 
@@ -59,6 +63,12 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
       if (amenities.hotTub) enabledAmenities.add("HotTub");
     }
 
+    final List<SingleUserSocialMediaLinks> socialPosts = (args["socialMediaLinks"] as List?)?.map((e)
+    {if (e is SingleUserSocialMediaLinks) {return e;
+          } else if (e is Map<String, dynamic>) {return SingleUserSocialMediaLinks.fromJson(e);} else {
+            return null;
+          }}).whereType<SingleUserSocialMediaLinks>().toList() ?? [];
+
     return CustomGradient(
       child: Scaffold(
         appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Request Details"),
@@ -76,8 +86,14 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(text: name, fontSize: 14, fontWeight: FontWeight.w600),
-                        CustomText(text: userName, fontSize: 12, fontWeight: FontWeight.w400),
-                        role == "host" ?SizedBox.shrink(): CustomText(text: address, fontSize: 14, fontWeight: FontWeight.w500, bottom: 10),
+                        CustomText(text: "@${userName}", fontSize: 12, fontWeight: FontWeight.w400),
+                        role == "host" ?SizedBox.shrink(): Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.location_on,size: 16,color: Colors.grey,),
+                            CustomText(text: address, fontSize: 14, fontWeight: FontWeight.w500,color: Colors.black26),
+                          ],
+                        ) ,
                         role == "host"
                         ?Row(
                           children: socialMediaLinks.map((item) {
@@ -135,9 +151,8 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
 
                 const SizedBox(height: 20),
                 _amenitiesContainer(enabledAmenities),
-
+               // =========offer ========
                 const SizedBox(height: 20),
-
                 Obx(() => Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
@@ -152,42 +167,98 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 )),
-
+                //======= assigned contents ============
                 const SizedBox(height: 60),
+                Obx(() {
+                  if (controller.isCollabLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
+                  if (controller.collabList.isEmpty) {
+                    return const CustomText(
+                      text: "No assigned content yet",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    );
+                  }
 
+                  final collab = controller.collabList.first;
+                  final socialPosts = collab.socialMediaLinks ?? [];
+
+                  if (socialPosts.isEmpty) {
+                    return const CustomText(
+                      text: "No assigned content yet",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    );
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: socialPosts.length,
+                    itemBuilder: (context, index) {
+                      final post = socialPosts[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: StatusTaskCard(
+                          title:
+                          "${post.platform ?? "Unknown"} - ${post.postType ?? ""}",
+                          isSubmitted: post.status == "completed",
+                        ),
+                      );
+                    },
+                  );
+                }),
+                //======= btn
+                const SizedBox(height: 20),
                 Obx(() {
                   final status = controller.currentStatus.value;
                   return Column(
                     children: [
-                      (status == "ongoing" || status == "rejected" || status == "accepted")
+                      (status == "ongoing" || status == "rejected" || status == "accepted"|| status == "completed")
                           ? const SizedBox.shrink()
                           : Row(
                         children: [
                           Flexible(child: CustomButtonTwo(
-                              onTap: () => controller.acceptRejected(action: 'reject', userId: myId, collabrationId: collabrationId),
+                              onTap: ()  async {
+                                final id = await SharePrefsHelper.getString(AppConstants.userId);
+                                controller.getSingleUser(userId: id);
+                                controller.acceptRejected(action: 'reject', userId: myId, collabrationId: collabrationId);
+                              },
                               title: "Decline", fillColor: AppColors.red_02)),
                           const SizedBox(width: 10),
                           (isMe == false)?
                           Flexible(child: CustomButtonTwo(
-                              onTap: () => controller.acceptRejected(action: 'accept', userId: userId, collabrationId: collabrationId),
-                              title: "Accept", fillColor: role == "host" ? AppColors.primary : AppColors.primary2))
-                          :SizedBox.shrink(),
+                              onTap: () async {
+                                final id = await SharePrefsHelper.getString(AppConstants.userId);
+                                controller.getSingleUser(userId: id);
+                                controller.acceptRejected(action: 'accept', userId: userId, collabrationId: collabrationId);
+                              },title: "Accept", fillColor: role == "host" ? AppColors.primary : AppColors.primary2))
+                              :SizedBox.shrink(),
                         ],
                       ),
 
                       const SizedBox(height: 10),
                       //negotiation
                       (isMe == false)?
-                      (status == "ongoing" || status == "rejected" || status == "accepted")
+                      (status == "ongoing" || status == "rejected" || status == "accepted" || status == "completed")
                           ? const SizedBox.shrink()
                           : CustomButtonTwo(
                           onTap: () => Get.toNamed(AppRoutes.negotiationScreen, arguments:{ 'collaborationId': collabrationId, 'role': role, 'negotiationMessage': negotiationMessage, 'influencerId':influencerId}),
                           title: "Request to Negotiation", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)
-                      :SizedBox.shrink(),
+                          :SizedBox.shrink(),
                       const SizedBox(height: 10),
-                      (status == "accepted" && role =="host")
-                          ? CustomButtonTwo(onTap: () => Get.back(), title: "Make Payment", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)
+                      (status == "accepted" && role =="host") ?
+                      CustomButtonTwo(
+                          onTap: () async {
+                            final id = await SharePrefsHelper.getString(AppConstants.userId);
+                            controller.getSingleUser(userId: id );
+                            Get.back();
+                          },
+                          title: "Make Payment", fillColor: role == "host" ? AppColors.primary : AppColors.primary2
+                      )
                           : const SizedBox.shrink()
 
                     ],

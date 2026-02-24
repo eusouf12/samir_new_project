@@ -60,7 +60,7 @@ class ApiUrl {
    static  String  singleUserInfo({required String id})=>"/api/v1/user/single-user/$id";
    static  String  acceptOrReject({required String id})=>"/api/v1/collaboration/accept-or-reject-collaboration/$id";
    static  String  myCollaborations({required String page})=>"/api/v1/collaboration/get-my-all-collaborations?page=$page&limit=10";
-   static  String  myCollaborationsFilter({required String filter,required String page})=>"/api/v1/collaboration/get-my-all-collaborations?status=$filter&page=$page&limit=10";
+   static  String  singleCollaborations({required String colId})=>"/api/v1/collaboration/get-single-collaboration/$colId";
    static String singleInfluencerCollaborations({String? filter, required String id,}) {
     if (filter != null && filter.isNotEmpty) {
      return "/api/v1/collaboration/get-collaboration-user/$id?status=$filter";

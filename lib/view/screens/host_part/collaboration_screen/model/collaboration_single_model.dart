@@ -42,8 +42,7 @@ class SingleUserCollaborationData {
   final String? negotiationStatus;
   final String? paymentStatus;
   final String? negotiationMessage;
-
-  final SingleUserSocialMediaLinks? socialMediaLinks;
+  final List<SingleUserSocialMediaLinks>? socialMediaLinks;
 
   SingleUserCollaborationData({
     this.id,
@@ -81,8 +80,7 @@ class SingleUserCollaborationData {
       negotiationStatus: json['negotiationStatus'],
       paymentStatus: json['paymentStatus'],
       negotiationMessage: json['negotiationMessage'] ??"",
-
-      socialMediaLinks: json['socialMediaLinks'] != null ? SingleUserSocialMediaLinks.fromJson(json['socialMediaLinks']) : null,
+      socialMediaLinks: (json['socialMediaLinks'] as List?)?.map((e) => SingleUserSocialMediaLinks.fromJson(e)).toList(),
     );
   }
 }
@@ -294,69 +292,37 @@ class SingleUserDeliverable {
 }
 
 class SingleUserSocialMediaLinks {
-  final List<SocialPost>? instagram;
-  final List<SocialPost>? facebook;
-  final List<SocialPost>? twitter;
-  final List<SocialPost>? youtube;
-  final List<SocialPost>? tiktok;
+  final String? id;
+  final String? url;
+  final String? postType;
+  final int? totalItems;
+  final String? platform;
+  final DateTime? postDate;
+  final String? status;
 
   SingleUserSocialMediaLinks({
-    this.instagram,
-    this.facebook,
-    this.twitter,
-    this.youtube,
-    this.tiktok,
+    this.id,
+    this.url,
+    this.postType,
+    this.totalItems,
+    this.platform,
+    this.postDate,
+    this.status,
   });
 
   factory SingleUserSocialMediaLinks.fromJson(Map<String, dynamic> json) {
     return SingleUserSocialMediaLinks(
-      instagram: (json['instagram'] as List?)
-          ?.where((e) => e is Map<String, dynamic>)
-          .map((e) => SocialPost.fromJson(e))
-          .toList(),
-
-      facebook: (json['facebook'] as List?)
-          ?.where((e) => e is Map<String, dynamic>)
-          .map((e) => SocialPost.fromJson(e))
-          .toList(),
-
-      twitter: (json['twitter'] as List?)
-          ?.where((e) => e is Map<String, dynamic>)
-          .map((e) => SocialPost.fromJson(e))
-          .toList(),
-
-      youtube: (json['youtube'] as List?)
-          ?.where((e) => e is Map<String, dynamic>)
-          .map((e) => SocialPost.fromJson(e))
-          .toList(),
-
-      tiktok: (json['tiktok'] as List?)
-          ?.where((e) => e is Map<String, dynamic>)
-          .map((e) => SocialPost.fromJson(e))
-          .toList(),
-    );
-  }
-}
-
-class SocialPost {
-  final String? id;
-  final String? url;
-  final String? contentType;
-  final String? postDate;
-
-  SocialPost({
-    this.id,
-    this.url,
-    this.contentType,
-    this.postDate,
-  });
-
-  factory SocialPost.fromJson(Map<String, dynamic> json) {
-    return SocialPost(
-      id: json['_id'],
-      url: json['url'],
-      contentType: json['contentType'],
-      postDate: json['postDate'],
+      id: json['_id']?.toString(),
+      url: json['url']?.toString(),
+      postType: json['postType']?.toString(),
+      totalItems: json['totalItems'] is int
+          ? json['totalItems']
+          : int.tryParse(json['totalItems']?.toString() ?? ''),
+      platform: json['platform']?.toString(),
+      postDate: json['postDate'] != null
+          ? DateTime.tryParse(json['postDate'])
+          : null,
+      status: json['status']?.toString(),
     );
   }
 }

@@ -73,7 +73,7 @@ class CustomCollaborationCard extends StatelessWidget {
                           width: 64,
                           boxShape: BoxShape.circle,
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,14 +90,21 @@ class CustomCollaborationCard extends StatelessWidget {
                                 text: "@${userHandle}" ?? "",
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
+                                bottom: 4,
                               ),
                               role != "host" ?
-                              CustomText(
-                                text: fullAddress ?? "",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                bottom: 10,
-                              ): SizedBox.shrink(),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.location_on,size: 14,color: Colors.grey,),
+                                  CustomText(
+                                    text: fullAddress ?? "",
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  )
+                                ],
+                              )
+                              : SizedBox.shrink(),
 
 
                             ],
@@ -110,15 +117,15 @@ class CustomCollaborationCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                     decoration: BoxDecoration(
-                      color: status== "accepted" ? Color(0xFFE8F5E9) : status == "rejected" ? Colors.red.withOpacity(0.1) :status== "ongoing" ? AppColors.primary.withOpacity(0.1) :Color(0xFFFFF3E0),
+                      color: status== "accepted" ? Color(0xFFE8F5E9) : status == "rejected" ? Colors.red.withOpacity(0.1) :status== "ongoing" ? AppColors.primary.withOpacity(0.1):status== "completed"? Colors.purple.withOpacity(0.1) :Color(0xFFFFF3E0),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color:status== "accepted"? Colors.green : status== "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary  : Colors.orange, width: 1),
+                      border: Border.all(color:status== "accepted"? Colors.green : status== "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary : status== "completed"? Colors.purple : Colors.orange, width: 1),
                     ),
                     child:  Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CustomText(text: status == "accepted" ? "Accepted" : status == "rejected" ? "Rejected" : status== "ongoing" ? "Ongoing"  : "Pending",
-                          color: status == "accepted" ? Colors.green : status == "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary  : Colors.orange,
+                        CustomText(text: status == "accepted" ? "Accepted" : status == "rejected" ? "Rejected" : status== "ongoing" ? "Ongoing" :status== "completed"? "Completed"  : "Pending",
+                          color: status == "accepted" ? Colors.green : status == "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary:status== "completed"? Colors.purple : Colors.orange,
                           fontWeight: FontWeight.bold,
                           fontSize: 10,
                         ),
@@ -130,7 +137,7 @@ class CustomCollaborationCard extends StatelessWidget {
 
               const SizedBox(height: 8),
               role == "host"
-                  ?Row(
+              ? Row(
                 children: socialMediaLinks.isEmpty
                     ? []
                     : socialMediaLinks.map((item) {
@@ -155,7 +162,7 @@ class CustomCollaborationCard extends StatelessWidget {
                   );
                 }).toList(),
               )
-                  :SizedBox.shrink(),
+              : SizedBox.shrink(),
               const SizedBox(height: 8),
 
               // ===== Tags =====
@@ -240,7 +247,7 @@ class CustomCollaborationCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   //approve
                   (isMe == false)?
-                  (status == "ongoing" || status == "rejected" || status == "accepted")?
+                  (status == "ongoing" || status == "rejected" || status == "accepted" || status == "completed")?
                   SizedBox.shrink()
                       : Expanded(
                      flex: 2,
@@ -256,7 +263,7 @@ class CustomCollaborationCard extends StatelessWidget {
                   :SizedBox.shrink(),
                   const SizedBox(width: 8),
                   //rejected
-                  (status == "ongoing" || status == "rejected" || status == "accepted")?
+                  (status == "ongoing" || status == "rejected" || status == "accepted" || status == "completed")?
                     SizedBox.shrink()
                       : Expanded(
                      flex: 1,

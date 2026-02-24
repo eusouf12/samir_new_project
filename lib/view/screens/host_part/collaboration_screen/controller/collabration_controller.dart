@@ -13,7 +13,7 @@ import '../model/single_user_model.dart';
 
 
 class CollaborationController extends GetxController {
-  RxList<String> collaborationTabList = <String>['All','Pending','Accepted','Ongoing','Declined'].obs;
+  RxList<String> collaborationTabList = <String>['All','Pending','Accepted','Ongoing','Declined','Completed'].obs;
   RxInt currentIndex = 0.obs;
 
   // Function to call based on tab index
@@ -35,6 +35,9 @@ class CollaborationController extends GetxController {
         break;
       case 4:
         getSingleUserCollaboration(id: id,filterName : "rejected");
+        break;
+      case 5:
+        getSingleUserCollaboration(id: id,filterName : "completed");
         break;
     }
   }
@@ -301,12 +304,12 @@ class CollaborationController extends GetxController {
       updateDeliverableQtyColl[key] = d.quantity ?? 0;
     }
   }
-
+//======= negotiation reason
   Future<void> updateCollabration({required String collId}) async {
+    final role = await SharePrefsHelper.getString(AppConstants.role);
     isUpdateCollLoading.value = true;
 
     try {
-      // ===== Validation =====
       if (reasonController.value.text.trim().isEmpty) {
         showCustomSnackBar("Please write your negotiation reason", isError: true);
         return;
@@ -336,21 +339,11 @@ class CollaborationController extends GetxController {
         "negotiationMessage": reasonController.value.text.trim(),
       };
 
-      print("=== UPDATE BODY ===");
-      print(body);
-
-      // ===== API Call =====
       final response = await ApiClient.patchData(ApiUrl.updateCollabration(id: collId), jsonEncode(body),);
-
-      // ===== Safe Response Parsing =====
       final dynamic responseData = response.body;
 
       final Map<String, dynamic> jsonResponse = responseData is String ? jsonDecode(responseData) : responseData as Map<String, dynamic>;
 
-      print("=== UPDATE RESPONSE ===");
-      print(jsonResponse);
-
-      // ===== Status Check =====
       if (response.statusCode == 200 || response.statusCode == 201) {
 
         if (jsonResponse["data"] == null) {
@@ -358,8 +351,6 @@ class CollaborationController extends GetxController {
         }
 
         final updatedModel = SingleUserCollaborationData.fromJson(jsonResponse["data"]);
-
-        // ===== Update List =====
         final index = singleUserCollaborationList.indexWhere((e) => e.id == updatedModel.id);
 
         if (index != -1) {
@@ -367,7 +358,6 @@ class CollaborationController extends GetxController {
           singleUserCollaborationList.refresh();
         }
 
-        // ===== Update Selected =====
         selectedCollaboration.value = updatedModel;
 
         updatedDeliverables.assignAll(updatedModel.deliverables ?? []);
@@ -378,8 +368,7 @@ class CollaborationController extends GetxController {
 
         showCustomSnackBar(jsonResponse['message'] ?? "Updated successfully", isError: false,);
 
-        // ===== Navigation =====
-        Get.offAllNamed(AppRoutes.hostCollaborationScreen);
+        Get.offAllNamed(AppRoutes.hostCollaborationScreen,arguments: role);
 
       }
       else {
@@ -388,14 +377,51 @@ class CollaborationController extends GetxController {
 
     } catch (e, stackTrace) {
       print("UPDATE ERROR: $e");
-      print("STACK TRACE: $stackTrace");
-
       showCustomSnackBar("Something went wrong", isError: true);
     } finally {
       isUpdateCollLoading.value = false;
     }
   }
 
+// ================== Fetch Collaborations ==================
+
+  final isCollabLoading = false.obs;
+  final collabStatus = Status.loading.obs;
+  void setCollabStatus(Status status) => collabStatus.value = status;
+  RxList<SingleUserCollaborationData> collabList = <SingleUserCollaborationData>[].obs;
+
+  Future<void> fetchCollaborations({required String colId}) async {
+    isCollabLoading.value = true;
+    setCollabStatus(Status.loading);
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.singleCollaborations(colId: colId)) ;
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final model = SingleUserCollaborationResponse.fromJson(jsonResponse);
+
+        collabList.assignAll(model.data ?? []);
+
+        setCollabStatus(Status.completed);
+      } else {
+        setCollabStatus(Status.error);
+        showCustomSnackBar(
+          "Failed to load collaborations",
+          isError: true,
+        );
+      }
+    } catch (e) {
+      setCollabStatus(Status.error);
+      showCustomSnackBar(
+        "Error: ${e.toString()}",
+        isError: true,
+      );
+    } finally {
+      isCollabLoading.value = false;
+    }
+  }
 
 }
 
