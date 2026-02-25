@@ -41,13 +41,12 @@ class InfExploreDealsScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
-
               //======= Search ===========
               CustomTextField(
                 isDens: true,
                 fillColor: const Color(0xffF5F5F5),
                 fieldFocusBorderColor: AppColors.primary2,
-                hintText: "Search",
+                hintText: "Search by Country, City & Listing Name",
                 hintStyle: TextStyle(color: AppColors.textClr),
                 prefixIcon: Icon(Icons.search_rounded, size: 18, color: AppColors.textClr,),
                 onChanged: (value) {

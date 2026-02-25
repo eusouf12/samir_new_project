@@ -1,6 +1,6 @@
 class ApiUrl {
-   static const String baseUrl = "http://10.0.2.2:3000";
-   // static const String baseUrl = "https://washington-unsigned-maintain-catalyst.trycloudflare.com";
+    // static const String baseUrl = "http://10.0.2.2:3000";
+   static const String baseUrl = "https://encountered-remind-dreams-pregnancy.trycloudflare.com";
   static const String imageUrl = baseUrl;
   static String socketUrl = baseUrl;
 
@@ -62,6 +62,8 @@ class ApiUrl {
    static  String  myCollaborations({required String page})=>"/api/v1/collaboration/get-my-all-collaborations?page=$page&limit=10";
    static  String  singleCollaborations({required String colId})=>"/api/v1/collaboration/get-single-collaboration/$colId";
    static  String  singleCollaborationsUpdate({required String colId})=>"/api/v1/collaboration/update-collaboration/$colId";
+   static  String  hostPayment({required String colId})=>"/api/v1/payment/checkout-session/$colId";
+   //
    static String singleInfluencerCollaborations({String? filter, required String id,}) {
     if (filter != null && filter.isNotEmpty) {
      return "/api/v1/collaboration/get-collaboration-user/$id?status=$filter";

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:samir_flutter_app/core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
+import '../../../../../service/api_check.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
@@ -10,6 +11,8 @@ import '../../../../../utils/app_const/app_const.dart';
 import '../../host_active_influe/model/review_model.dart';
 import '../model/collaboration_single_model.dart';
 import '../model/single_user_model.dart';
+import '../views/stripe_web_view_create_screen.dart';
+import '../views/stripe_web_view_screen.dart';
 
 
 class CollaborationController extends GetxController {
@@ -457,6 +460,44 @@ class CollaborationController extends GetxController {
       refresh();
       showCustomSnackBar("Something went wrong. Try again.", isError: true,);
       debugPrint("Submit link error: $e");
+    }
+  }
+
+  // ================== Payment api for host ===============
+  RxBool hostPaymentLoading = false.obs;
+
+  Future<void> hostPayment({required String colId}) async {
+    hostPaymentLoading.value = true;
+    refresh();
+
+    final Map<String, dynamic> body = {"description": "Payment for collaboration",};
+
+    try {
+      var response = await ApiClient.postData(ApiUrl.hostPayment(colId: colId), jsonEncode(body),);
+
+      hostPaymentLoading.value = false;
+      refresh();
+      Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : response.body as Map<String, dynamic>;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final checkoutUrl = jsonResponse["data"]?["checkoutUrl"];
+
+        if (checkoutUrl != null) {
+          showCustomSnackBar(jsonResponse['message']?.toString() ?? "Redirecting to payment...", isError: false,);
+          Get.to(() => StripeWebViewCreateScreen( checkoutUrl:checkoutUrl,));
+        } else {
+          showCustomSnackBar("Payment session created but no URL returned.", isError: true);
+        }
+
+      } else {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Payment session creation failed.", isError: true,);
+        ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      hostPaymentLoading.value = false;
+      refresh();
+      showCustomSnackBar("Something went wrong. Please try again.", isError: true,);
+      debugPrint("Host Payment Error: $e");
     }
   }
 

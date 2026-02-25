@@ -275,9 +275,7 @@ class HostCollaborationScreen extends StatelessWidget {
                                 );
                               },
                               onPaymentTap: (){
-                                  // Get.toNamed(
-                                  //     AppRoutes.hostCollaborationViewDetailsScreen,
-                                  // );
+                                  controller.hostPayment(colId: collaboration.id ?? "");
                                 },
                               onApproveTap: () async {
                                 final id = await SharePrefsHelper.getString(AppConstants.userId);
