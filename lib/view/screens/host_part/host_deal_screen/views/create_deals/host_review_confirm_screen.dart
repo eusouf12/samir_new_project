@@ -366,7 +366,7 @@ class HostReviewConfirmScreen extends StatelessWidget {
                   Obx((){
                     debugPrint("page == ${page} == id = ${id}");
                     return dealsController.isCreatingDeal.value
-                        ? CustomLoader()
+                        ? CustomLoader(color: role=='host' ? AppColors.primary : AppColors.primary2,)
                         : CustomButton(
                        onTap: () async {
                          page == "deal" ? await dealsController.createDeal(pageName: page,) :await dealsController.createDeal(pageName: page,dealId:id);

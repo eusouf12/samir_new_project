@@ -105,8 +105,6 @@ class CustomCollaborationCard extends StatelessWidget {
                                 ],
                               )
                               : SizedBox.shrink(),
-
-
                             ],
                           ),
                         ),
@@ -117,15 +115,15 @@ class CustomCollaborationCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                     decoration: BoxDecoration(
-                      color: status== "accepted" ? Color(0xFFE8F5E9) : status == "rejected" ? Colors.red.withOpacity(0.1) :status== "ongoing" ? AppColors.primary.withOpacity(0.1):status== "completed"? Colors.purple.withOpacity(0.1) :Color(0xFFFFF3E0),
+                      color: status== "accepted" ? Color(0xFFE8F5E9) : status == "rejected" ? Colors.red.withOpacity(0.1) :status== "ongoing" ? AppColors.primary.withOpacity(0.1):status== "completed"? Colors.purple.withOpacity(0.1) :status == "negotiating" ?AppColors.primary2.withOpacity(0.1)  :Color(0xFFFFF3E0),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color:status== "accepted"? Colors.green : status== "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary : status== "completed"? Colors.purple : Colors.orange, width: 1),
+                      border: Border.all(color:status== "accepted"? Colors.green : status== "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary : status== "completed"? Colors.purple : status == "negotiating" ?AppColors.primary2 : Colors.orange, width: 1),
                     ),
                     child:  Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        CustomText(text: status == "accepted" ? "Accepted" : status == "rejected" ? "Rejected" : status== "ongoing" ? "Ongoing" :status== "completed"? "Completed"  : "Pending",
-                          color: status == "accepted" ? Colors.green : status == "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary:status== "completed"? Colors.purple : Colors.orange,
+                        CustomText(text: status == "accepted" ? "Accepted" : status == "rejected" ? "Rejected" : status== "ongoing" ? "Ongoing" :status== "completed"? "Completed" :status == "negotiating" ? 'Negotiating' : "Pending",
+                          color: status == "accepted" ? Colors.green : status == "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary:status== "completed"? Colors.purple : status == "negotiating" ?AppColors.primary2 : Colors.orange,
                           fontWeight: FontWeight.bold,
                           fontSize: 10,
                         ),
@@ -134,7 +132,7 @@ class CustomCollaborationCard extends StatelessWidget {
                   ),
                 ],
               ),
-
+             //inf socialMediaLinks
               const SizedBox(height: 8),
               role == "host"
               ? Row(
@@ -247,7 +245,7 @@ class CustomCollaborationCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   //approve
                   (isMe == false)?
-                  (status == "ongoing" || status == "rejected" || status == "accepted" || status == "completed")?
+                  (status == "ongoing" || status == "rejected" || status == "accepted" || status == "completed" || status == "negotiating" )?
                   SizedBox.shrink()
                       : Expanded(
                      flex: 2,
@@ -261,6 +259,19 @@ class CustomCollaborationCard extends StatelessWidget {
                     ),
                   )
                   :SizedBox.shrink(),
+                  (isMe == true && status == "negotiating")?
+                  Expanded(
+                    flex: 2,
+                    child: CustomButtonTwo(
+                      height: 40,
+                      onTap: onApproveTap,
+                      title: "Approve",
+                      fontSize: 12,
+                      borderRadius: 10,
+                      fillColor: role == "host" ? AppColors.primary : AppColors.primary2,
+                    ),
+                  )
+                  : SizedBox.shrink(),
                   const SizedBox(width: 8),
                   //rejected
                   (status == "ongoing" || status == "rejected" || status == "accepted" || status == "completed")?

@@ -55,11 +55,11 @@ class HostActiveInflue extends StatelessWidget {
                   final bool isSearching = influencerListHostController.searchQuery.value.isNotEmpty;
 
                   if (!isSearching && influencerListHostController.rxStatus.value == Status.loading) {
-                    return  Center(child: CustomLoader());
+                    return  Center(child: CustomLoader(color: role == "host" ? AppColors.primary : AppColors.primary2));
                   }
 
                   if (isSearching && influencerListHostController.rxSearchInfluencerStatus.value == Status.loading) {
-                    return  Center(child: CustomLoader());
+                    return  Center(child: CustomLoader(color: role == "host" ? AppColors.primary : AppColors.primary2));
                   }
 
                   final listToShow = isSearching ? influencerListHostController.searchInfluencerList : influencerListHostController.influencerList;

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:samir_flutter_app/core/app_routes/app_routes.dart';
+import 'package:samir_flutter_app/view/components/custom_button/custom_button.dart';
 import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
+import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
@@ -115,7 +117,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-
+               //'Collaboration Overview
                 Obx(() => Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
@@ -171,21 +173,17 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                 const SizedBox(height: 60),
                 Obx(() {
                   if (controller.isCollabLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(child: CustomLoader(color: role == 'host'? AppColors.primary : AppColors.primary2,),);
                   }
 
                   if (controller.collabList.isEmpty) {
-                    return const CustomText(
-                      text: "No assigned content yet",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    );
+                    return const CustomText(text: "No collaboration found", fontSize: 14, fontWeight: FontWeight.w400,);
                   }
 
                   final collab = controller.collabList.first;
-                  final socialPosts = collab.socialMediaLinks ?? [];
+                  final deliverables = collab.deliverables ?? [];
 
-                  if (socialPosts.isEmpty) {
+                  if (deliverables.isEmpty) {
                     return const CustomText(
                       text: "No assigned content yet",
                       fontSize: 14,
@@ -196,16 +194,27 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: socialPosts.length,
+                    itemCount: deliverables.length,
                     itemBuilder: (context, index) {
-                      final post = socialPosts[index];
+                      final item = deliverables[index];
+
+                      final int urlCount = item.urls?.length ?? 0;
+                      final int requiredQuantity = item.quantity ?? 0;
+                      final bool isSubmitted = urlCount >= requiredQuantity && requiredQuantity != 0;
 
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: StatusTaskCard(
-                          title:
-                          "${post.platform ?? "Unknown"} - ${post.postType ?? ""}",
-                          isSubmitted: post.status == "completed",
+                          title: "${item.platform ?? ""} - ${item.contentType ?? ""} ($urlCount/$requiredQuantity)",
+                          isSubmitted: isSubmitted,
+                          onEditTap: () {
+                            showSubmitDialog(
+                                context,
+                                item.platform ?? "Unknown",
+                                item.contentType ?? "Unknown"
+                            );
+                          }, status: collab.status ?? ""
+                            "",
                         ),
                       );
                     },
@@ -229,7 +238,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                               },
                               title: "Decline", fillColor: AppColors.red_02)),
                           const SizedBox(width: 10),
-                          (isMe == false)?
+                          (isMe == false && status != "negotiating" || (isMe == true && status == "negotiating"))?
                           Flexible(child: CustomButtonTwo(
                               onTap: () async {
                                 final id = await SharePrefsHelper.getString(AppConstants.userId);
@@ -243,7 +252,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       //negotiation
                       (isMe == false)?
-                      (status == "ongoing" || status == "rejected" || status == "accepted" || status == "completed")
+                      (status == "ongoing" || status == "rejected" || status == "accepted" || status == "completed" ||status == "negotiating")
                           ? const SizedBox.shrink()
                           : CustomButtonTwo(
                           onTap: () => Get.toNamed(AppRoutes.negotiationScreen, arguments:{ 'collaborationId': collabrationId, 'role': role, 'negotiationMessage': negotiationMessage, 'influencerId':influencerId}),
@@ -259,6 +268,39 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                           },
                           title: "Make Payment", fillColor: role == "host" ? AppColors.primary : AppColors.primary2
                       )
+                          : const SizedBox.shrink(),
+                      //give review and report and night credit
+                      (status == "completed" ) ?
+                      Row(
+                        children: [
+                          Flexible(child: CustomButtonTwo(
+                              onTap: ()  async {
+                                // final id = await SharePrefsHelper.getString(AppConstants.userId);
+                                // controller.getSingleUser(userId: id);
+                                // controller.acceptRejected(action: 'reject', userId: myId, collabrationId: collabrationId);
+                              },
+                              title: " Give Review", fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,)
+                          ),
+                          const SizedBox(width: 10),
+                          Flexible(child: CustomButtonTwo(
+                              onTap: () async {
+                                // final id = await SharePrefsHelper.getString(AppConstants.userId);
+                                // controller.getSingleUser(userId: id);
+                                // controller.acceptRejected(action: 'accept', userId: userId, collabrationId: collabrationId);
+                              },title: "Report", fillColor:AppColors.red))
+
+                        ],
+                      ) :
+                      const SizedBox.shrink(),
+                      const SizedBox(height: 10),
+                      (status == "completed" && role =='host') ?
+                      CustomButtonTwo(
+                              onTap: ()  async {
+                                // final id = await SharePrefsHelper.getString(AppConstants.userId);
+                                // controller.getSingleUser(userId: id);
+                                // controller.acceptRejected(action: 'reject', userId: myId, collabrationId: collabrationId);
+                              },
+                              title: " Give Night Credits", fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,)
                           : const SizedBox.shrink()
 
                     ],
@@ -349,5 +391,43 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
       case 'youtube': return const Color(0xFFFF0000);
       default: return AppColors.primary;
     }
+  }
+  //link submit
+  void showSubmitDialog(BuildContext context, String platform, String contentType) {
+    final TextEditingController urlController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Submit Link for $platform"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Platform: $platform", style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("Type: $contentType"),
+            const SizedBox(height: 10),
+            TextField(
+              controller: urlController,
+              decoration: const InputDecoration(
+                hintText: "Enter your content URL here",
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+          ElevatedButton(
+            onPressed: () {
+              // এখানে আপনার কন্ট্রোলার কল করুন লিস্ট আপডেট করার জন্য
+              // controller.submitLink(urlController.text, platform, contentType);
+              Navigator.pop(context);
+            },
+            child: const Text("Submit"),
+          )
+        ],
+      ),
+    );
   }
 }

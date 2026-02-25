@@ -272,13 +272,13 @@ class SingleUserDeliverable {
   final String? platform;
   final String? contentType;
   final int? quantity;
-  final Map<String, dynamic>? platformFollowers;
+  final List<String>? urls;
 
   SingleUserDeliverable({
     this.platform,
     this.contentType,
     this.quantity,
-    this.platformFollowers,
+    this.urls,
   });
 
   factory SingleUserDeliverable.fromJson(Map<String, dynamic> json) {
@@ -286,8 +286,19 @@ class SingleUserDeliverable {
       platform: json['platform'],
       contentType: json['contentType'],
       quantity: json['quantity'],
-      platformFollowers: json['platformFollowers'],
+      urls: json['urls'] != null
+          ? List<String>.from(json['urls'])
+          : [],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "platform": platform,
+      "contentType": contentType,
+      "quantity": quantity,
+      "urls": urls,
+    };
   }
 }
 
