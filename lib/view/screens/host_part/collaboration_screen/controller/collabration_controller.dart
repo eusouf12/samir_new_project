@@ -266,9 +266,9 @@ class CollaborationController extends GetxController {
   final isUpdateCollLoading = false.obs;
   RxList<SingleUserDeliverable> updatedDeliverables = <SingleUserDeliverable>[].obs;
 
-  void incrementNight() {
+  void incrementNight({required String role}) {
     if (updateNightsColl.value >= maxNightCredits) {
-      showCustomSnackBar(" only have $maxNightCredits night credits available", isError: true,);
+      showCustomSnackBar(role == "host" ? "You have exceeded the night credits available for this influencer." : "You only have $maxNightCredits night credits available.", isError: true);
       return;
     }
 

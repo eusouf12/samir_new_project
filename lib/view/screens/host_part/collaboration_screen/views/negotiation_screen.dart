@@ -68,7 +68,7 @@ class NegotiationScreen extends StatelessWidget {
                         icon: Icons.nightlight_round,
                         value: controller.updateNightsColl,
                         onMinus: controller.decrementNight,
-                        onPlus: controller.incrementNight,
+                        onPlus: () {controller.incrementNight(role: role);},
                         role: role,
                       ),
                       const Divider(height: 32),

@@ -207,12 +207,9 @@ class DealsController extends GetxController {
   void toggleDirectPayment() => isDirectPayment.value = !isDirectPayment.value;
 
   // Nights count
-  void incrementNights() {
+  void incrementNights({required String role}) {
     if (totalNights.value >= maxNightCredits) {
-      showCustomSnackBar(
-        "You only have $maxNightCredits night credits available",
-        isError: true,
-      );
+      showCustomSnackBar(role == "host" ? "You have exceeded the night credits available for this influencer." : "You only have $maxNightCredits night credits available.", isError: true);
       return;
     }
 

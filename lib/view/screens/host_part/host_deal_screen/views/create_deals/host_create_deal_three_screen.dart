@@ -69,7 +69,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                     subtitle: "Offer free nights at your property as compensation",
                     isActive: controller.isNightCredits.value,
                     onTap: controller.toggleNightCredits,
-                    child: _buildNightsStepper(), role: role,
+                    child: _buildNightsStepper(role: role), role: role,
                   ),
                   const SizedBox(height: 16),
                   _buildCompCard(
@@ -176,7 +176,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
   }
 
   /// Night Credits Stepper
-  Widget _buildNightsStepper() {
+  Widget _buildNightsStepper({required String role}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -191,7 +191,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
               child: Text("${controller.totalNights.value}", style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             ),
           ),
-          GestureDetector(onTap: controller.incrementNights, child: _stepButton("+")),
+          GestureDetector(onTap: (){controller.incrementNights(role: role);}, child: _stepButton("+")),
         ],
       ),
     );
