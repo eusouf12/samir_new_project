@@ -116,6 +116,16 @@ class InfProfileScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.hostEditProfileScreen,arguments: "inf");
                       },
                     ),
+                    //onboarding
+                    //Edit profile
+                    CustomProfileCard(
+                      nameTitle: "Onboarding",
+                      icons: AppIcons.infpaymentIcon,
+                      color: AppColors.primary2,
+                      onTap: (){
+                        hostProfileController.influencerOnboarding();
+                      },
+                    ),
                     //Share your profile
                     CustomProfileCard(
                       nameTitle: "Share your profile",

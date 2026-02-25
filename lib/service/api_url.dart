@@ -63,6 +63,7 @@ class ApiUrl {
    static  String  singleCollaborations({required String colId})=>"/api/v1/collaboration/get-single-collaboration/$colId";
    static  String  singleCollaborationsUpdate({required String colId})=>"/api/v1/collaboration/update-collaboration/$colId";
    static  String  hostPayment({required String colId})=>"/api/v1/payment/checkout-session/$colId";
+   static const  String  infPayment ="/api/v1/payment/stripe-account-onboarding";
    //
    static String singleInfluencerCollaborations({String? filter, required String id,}) {
     if (filter != null && filter.isNotEmpty) {

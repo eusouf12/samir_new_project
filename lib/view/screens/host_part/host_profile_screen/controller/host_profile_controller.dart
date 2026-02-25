@@ -9,6 +9,7 @@ import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../../../Influencer_part/inf_profile_screen/model/share_profile_model.dart';
+import '../../collaboration_screen/views/stripe_web_view_create_screen.dart';
 import '../model/about_us_model.dart';
 import '../model/my_profile_model.dart';
 import '../model/terms _model.dart';
@@ -431,6 +432,42 @@ class HostProfileController extends GetxController {
       showCustomSnackBar("Error, ${e.toString()}", isError: true,);
     } finally {
       isShareProfileLoading.value = false;
+    }
+  }
+
+  // inf payment
+
+  RxBool infPaymentLoading = false.obs;
+
+  Future<void> influencerOnboarding() async {
+    infPaymentLoading.value = true;
+    update();
+
+    try {
+      var response = await ApiClient.postData(ApiUrl.infPayment, jsonEncode({}),);
+
+      infPaymentLoading.value = false;
+      Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : response.body as Map<String, dynamic>;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final onboardingUrl = jsonResponse["onboardingLink"];
+
+        if (onboardingUrl != null && onboardingUrl.toString().isNotEmpty) {
+          showCustomSnackBar(jsonResponse['message']?.toString() ?? "Redirecting to Stripe...", isError: false,);
+
+          Get.to(() => StripeWebViewCreateScreen(checkoutUrl: onboardingUrl));
+        } else {
+          showCustomSnackBar(jsonResponse['message']?.toString()??"Onboarding link not found.", isError: true);
+        }
+      } else {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Verification failed.", isError: true,);
+      }
+    } catch (e) {
+      infPaymentLoading.value = false;
+      showCustomSnackBar("Something went wrong.", isError: true);
+      debugPrint("Influencer Onboarding Error: $e");
+    } finally {
+      update();
     }
   }
 }
