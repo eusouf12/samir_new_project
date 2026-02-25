@@ -155,22 +155,30 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                 _amenitiesContainer(enabledAmenities),
                // =========offer ========
                 const SizedBox(height: 20),
-                Obx(() => Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(12),
-                  decoration: _boxDecoration(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CustomText(text: "Offers", fontSize: 16, fontWeight: FontWeight.w600, bottom: 16),
-                      _infoRowWithColor("Total Payment", "\$${controller.updatePaymentAmountColl.value}", AppColors.primary),
-                      const SizedBox(height: 8),
-                      _infoRowWithColor("Night Stay", "${controller.updateNightsColl.value}", const Color(0xffF59E0B)),
-                      const SizedBox(height: 8),
-                      controller.collabList.first.status == 'accepted' ?_infoRowWithColor("Host Payment", "${controller.collabList.first.paymentStatus}", const Color(0xffF59E0B)) : SizedBox.shrink(),
-                    ],
-                  ),
-                )),
+                Obx(() {
+                  if (controller.collabList.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+
+                  final collab = controller.collabList.first;
+
+                  return  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: _boxDecoration(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CustomText(text: "Offers", fontSize: 16, fontWeight: FontWeight.w600, bottom: 16),
+                        _infoRowWithColor("Total Payment", "\$${controller.updatePaymentAmountColl.value}", AppColors.primary),
+                        const SizedBox(height: 8),
+                        _infoRowWithColor("Night Stay", "${controller.updateNightsColl.value}", const Color(0xffF59E0B)),
+                        const SizedBox(height: 8),
+                        controller.collabList.first.status == 'accepted' ?_infoRowWithColor("Host Payment", "${controller.collabList.first.paymentStatus}", const Color(0xffF59E0B)) : SizedBox.shrink(),
+                      ],
+                    ),
+                  );
+                }),
                 //======= assigned contents ============
                 Obx(() {
                   if (controller.currentStatus.value == 'pending') {
@@ -301,11 +309,12 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                               onTap: ()  async {
                                 // final id = await SharePrefsHelper.getString(AppConstants.userId);
                                 // controller.getSingleUser(userId: id);
-                                // controller.acceptRejected(action: 'reject', userId: myId, collabrationId: collabrationId);
+                                showRateInfluencerDialog(context, name, image, collabrationId);
                               },
                               title: " Give Review", fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,fontSize: 14)
                           ),
                           const SizedBox(width: 10),
+                          //report
                           Flexible(child: CustomButtonTwo(
                               onTap: () async {
                                 // final id = await SharePrefsHelper.getString(AppConstants.userId);
@@ -449,6 +458,79 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
             child: CustomText(text: "Submit", fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.primary2,),
           )
         ],
+      ),
+    );
+  }
+
+  // give review
+  void showRateInfluencerDialog(BuildContext context, String influencerName, String imageUrl, String userId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("Rate Influencer", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              Text("How was your experience with $influencerName?",
+                  textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
+              const SizedBox(height: 16),
+              CircleAvatar(radius: 40, backgroundImage: NetworkImage(imageUrl)),
+              const SizedBox(height: 16),
+
+              // স্টার রেটিং সেকশন
+              Obx(() => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(5, (index) {
+                  return GestureDetector(
+                    onTap: () => controller.selectedRating.value = index + 1,
+                    child: Icon(
+                      Icons.star,
+                      size: 40,
+                      color: index < controller.selectedRating.value ? Colors.orange : Colors.grey.shade300,
+                    ),
+                  );
+                }),
+              )),
+
+              const SizedBox(height: 8),
+              Text("Tap to rate", style: TextStyle(color: Colors.grey)),
+              Text("Higher rating increases Night Credits", style: TextStyle(fontSize: 12, color: Colors.blueGrey)),
+              const SizedBox(height: 20),
+
+              Align(alignment: Alignment.centerLeft, child: Text("Write review", style: TextStyle(fontWeight: FontWeight.bold))),
+              const SizedBox(height: 8),
+
+              // রিভিউ বক্স
+              TextField(
+                controller: controller.reviewController,
+                maxLines: 4,
+                decoration: InputDecoration(
+                  hintText: "Great collaboration! The content was.........",
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // সাবমিট বাটন
+              Obx(() => ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                onPressed: controller.isReviewLoading.value
+                    ? null
+                    : () => controller.submitReview(userId: userId),
+                child: controller.isReviewLoading.value
+                    ? CircularProgressIndicator(color: Colors.white)
+                    : const Text("Submit Review", style: TextStyle(color: Colors.white)),
+              )),
+            ],
+          ),
+        ),
       ),
     );
   }

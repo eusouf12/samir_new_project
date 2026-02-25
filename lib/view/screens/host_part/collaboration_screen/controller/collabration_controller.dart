@@ -501,5 +501,46 @@ class CollaborationController extends GetxController {
     }
   }
 
+  // ================== review api ==============
+
+  RxInt selectedRating = 0.obs;
+  TextEditingController reviewController = TextEditingController();
+  RxBool isGiveReviewLoading = false.obs;
+
+  Future<void> submitReview({required String userId}) async {
+    // if (selectedRating.value == 0) {
+    //   showCustomSnackBar("Please select a rating", isError: true);
+    //   return;
+    // }
+
+    isGiveReviewLoading.value = true;
+    update();
+
+    final Map<String, dynamic> body = {
+      "rating": selectedRating.value,
+      "comment": reviewController.text.trim(),
+      "reviewType": "host_to_influencer"
+    };
+
+    try {
+      var response = await ApiClient.postData(ApiUrl.giveReview(userId: userId), jsonEncode(body));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar("Review submitted successfully!", isError: false);
+        Get.back();
+        selectedRating.value = 0;
+        reviewController.clear();
+      } else {
+        ApiChecker.checkApi(response);
+      }
+    } catch (e) {
+      debugPrint("Review Error: $e");
+      showCustomSnackBar("Failed to submit review", isError: true);
+    } finally {
+      isGiveReviewLoading.value = false;
+      update();
+    }
+  }
+
 }
 
