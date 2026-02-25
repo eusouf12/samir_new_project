@@ -170,56 +170,79 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                   ),
                 )),
                 //======= assigned contents ============
-                const SizedBox(height: 60),
-                Obx(() {
-                  if (controller.isCollabLoading.value) {
-                    return Center(child: CustomLoader(color: role == 'host'? AppColors.primary : AppColors.primary2,),);
-                  }
+              Obx(() {
+              if (controller.currentStatus.value == 'pending') {
+                return const SizedBox.shrink();
+              }
 
-                  if (controller.collabList.isEmpty) {
-                    return const CustomText(text: "No collaboration found", fontSize: 14, fontWeight: FontWeight.w400,);
-                  }
+              return Column(
+                      children: [
+                        const SizedBox(height: 60),
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(12),
+                          decoration: _boxDecoration(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const CustomText(text: "Assigned Contents", fontSize: 16, fontWeight: FontWeight.w600, bottom: 16),
+                              Obx(() {
+                                if (controller.isCollabLoading.value) {
+                                  return Center(child: CustomLoader(color: role == 'host'? AppColors.primary : AppColors.primary2,),);
+                                }
 
-                  final collab = controller.collabList.first;
-                  final deliverables = collab.deliverables ?? [];
+                                if (controller.collabList.isEmpty) {
+                                  return const CustomText(text: "No collaboration found", fontSize: 14, fontWeight: FontWeight.w400,);
+                                }
 
-                  if (deliverables.isEmpty) {
-                    return const CustomText(
-                      text: "No assigned content yet",
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                                final collab = controller.collabList.first;
+                                final deliverables = collab.deliverables ?? [];
+
+                                if (deliverables.isEmpty) {
+                                  return const CustomText(
+                                    text: "No assigned content yet",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  );
+                                }
+
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: deliverables.length,
+                                  itemBuilder: (context, index) {
+                                    final item = deliverables[index];
+
+                                    final int urlCount = item.urls?.length ?? 0;
+                                    final int requiredQuantity = item.quantity ?? 0;
+                                    final bool isSubmitted = urlCount >= requiredQuantity && requiredQuantity != 0;
+
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 12),
+                                      child: StatusTaskCard(
+                                        title: "${item.platform ?? ""} - ${item.contentType ?? ""} ($urlCount/$requiredQuantity)",
+                                        isSubmitted: isSubmitted,
+                                        onEditTap: () {
+                                          showSubmitDialog(
+                                              context,
+                                              item.platform ?? "Unknown",
+                                              item.contentType ?? "Unknown",
+                                              collab.id ?? ""
+                                          );
+                                        }, status: collab.status ?? ""
+                                          "",
+                                      ),
+                                    );
+                                  },
+                                );
+                              }),
+                            ],
+                          ),
+                        )
+                      ],
                     );
-                  }
+              }),
 
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: deliverables.length,
-                    itemBuilder: (context, index) {
-                      final item = deliverables[index];
-
-                      final int urlCount = item.urls?.length ?? 0;
-                      final int requiredQuantity = item.quantity ?? 0;
-                      final bool isSubmitted = urlCount >= requiredQuantity && requiredQuantity != 0;
-
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: StatusTaskCard(
-                          title: "${item.platform ?? ""} - ${item.contentType ?? ""} ($urlCount/$requiredQuantity)",
-                          isSubmitted: isSubmitted,
-                          onEditTap: () {
-                            showSubmitDialog(
-                                context,
-                                item.platform ?? "Unknown",
-                                item.contentType ?? "Unknown"
-                            );
-                          }, status: collab.status ?? ""
-                            "",
-                        ),
-                      );
-                    },
-                  );
-                }),
                 //======= btn
                 const SizedBox(height: 20),
                 Obx(() {
@@ -236,7 +259,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                                 controller.getSingleUser(userId: id);
                                 controller.acceptRejected(action: 'reject', userId: myId, collabrationId: collabrationId);
                               },
-                              title: "Decline", fillColor: AppColors.red_02)),
+                              title: "Decline", fillColor: AppColors.red_02,fontSize: 14,)),
                           const SizedBox(width: 10),
                           (isMe == false && status != "negotiating" || (isMe == true && status == "negotiating"))?
                           Flexible(child: CustomButtonTwo(
@@ -244,7 +267,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                                 final id = await SharePrefsHelper.getString(AppConstants.userId);
                                 controller.getSingleUser(userId: id);
                                 controller.acceptRejected(action: 'accept', userId: userId, collabrationId: collabrationId);
-                              },title: "Accept", fillColor: role == "host" ? AppColors.primary : AppColors.primary2))
+                              },title: "Accept", fillColor: role == "host" ? AppColors.primary : AppColors.primary2,fontSize: 14,))
                               :SizedBox.shrink(),
                         ],
                       ),
@@ -256,7 +279,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                           ? const SizedBox.shrink()
                           : CustomButtonTwo(
                           onTap: () => Get.toNamed(AppRoutes.negotiationScreen, arguments:{ 'collaborationId': collabrationId, 'role': role, 'negotiationMessage': negotiationMessage, 'influencerId':influencerId}),
-                          title: "Request to Negotiation", fillColor: role == "host" ? AppColors.primary : AppColors.primary2)
+                          title: "Request to Negotiation", fillColor: role == "host" ? AppColors.primary : AppColors.primary2,fontSize: 14)
                           :SizedBox.shrink(),
                       const SizedBox(height: 10),
                       (status == "accepted" && role =="host") ?
@@ -266,7 +289,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                             controller.getSingleUser(userId: id );
                             Get.back();
                           },
-                          title: "Make Payment", fillColor: role == "host" ? AppColors.primary : AppColors.primary2
+                          title: "Make Payment", fillColor: role == "host" ? AppColors.primary : AppColors.primary2,fontSize: 14
                       )
                           : const SizedBox.shrink(),
                       //give review and report and night credit
@@ -279,7 +302,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                                 // controller.getSingleUser(userId: id);
                                 // controller.acceptRejected(action: 'reject', userId: myId, collabrationId: collabrationId);
                               },
-                              title: " Give Review", fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,)
+                              title: " Give Review", fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,fontSize: 14)
                           ),
                           const SizedBox(width: 10),
                           Flexible(child: CustomButtonTwo(
@@ -287,7 +310,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                                 // final id = await SharePrefsHelper.getString(AppConstants.userId);
                                 // controller.getSingleUser(userId: id);
                                 // controller.acceptRejected(action: 'accept', userId: userId, collabrationId: collabrationId);
-                              },title: "Report", fillColor:AppColors.red))
+                              },title: "Report", fillColor:AppColors.red,fontSize: 14))
 
                         ],
                       ) :
@@ -300,7 +323,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                                 // controller.getSingleUser(userId: id);
                                 // controller.acceptRejected(action: 'reject', userId: myId, collabrationId: collabrationId);
                               },
-                              title: " Give Night Credits", fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,)
+                              title: " Give Night Credits",fontSize: 14, fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,)
                           : const SizedBox.shrink()
 
                     ],
@@ -393,19 +416,18 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
     }
   }
   //link submit
-  void showSubmitDialog(BuildContext context, String platform, String contentType) {
+  void showSubmitDialog(BuildContext context, String platform, String contentType,String collabrationId) {
     final TextEditingController urlController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Submit Link for $platform"),
+        title: CustomText(text: "Submit Link for $platform", fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.black,textAlign: TextAlign.start,),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Platform: $platform", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text("Type: $contentType"),
+            CustomText(text: "Type: $contentType", fontSize: 12, fontWeight: FontWeight.w600, textAlign: TextAlign.start,),
             const SizedBox(height: 10),
             TextField(
               controller: urlController,
@@ -417,14 +439,13 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+          TextButton(onPressed: () => Navigator.pop(context), child: CustomText(text: "Cancel", fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.black,),),
           ElevatedButton(
             onPressed: () {
-              // এখানে আপনার কন্ট্রোলার কল করুন লিস্ট আপডেট করার জন্য
-              // controller.submitLink(urlController.text, platform, contentType);
+               controller.submitLinkColleboration(collabrationId: collabrationId, urls: [urlController.text], platform: platform, contentType: contentType);
               Navigator.pop(context);
             },
-            child: const Text("Submit"),
+            child: CustomText(text: "Submit", fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.primary2,),
           )
         ],
       ),

@@ -384,7 +384,6 @@ class CollaborationController extends GetxController {
   }
 
 // ================== Fetch Collaborations ==================
-
   final isCollabLoading = false.obs;
   final collabStatus = Status.loading.obs;
   void setCollabStatus(Status status) => collabStatus.value = status;
@@ -407,19 +406,57 @@ class CollaborationController extends GetxController {
         setCollabStatus(Status.completed);
       } else {
         setCollabStatus(Status.error);
-        showCustomSnackBar(
-          "Failed to load collaborations",
-          isError: true,
-        );
+        showCustomSnackBar("Failed to load collaborations", isError: true,);
       }
     } catch (e) {
       setCollabStatus(Status.error);
-      showCustomSnackBar(
-        "Error: ${e.toString()}",
-        isError: true,
-      );
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
     } finally {
       isCollabLoading.value = false;
+    }
+  }
+
+  //================== Submit Link =====================
+  RxBool submitLinkLoading = false.obs;
+  Future<void> submitLinkColleboration({required String collabrationId, required List<String> urls, required String platform, required String contentType}) async {
+    final id = await SharePrefsHelper.getString(AppConstants.userId);
+    submitLinkLoading.value = true;
+    refresh();
+
+    try {
+      final Map<String, dynamic> body = {
+        "deliverables": [
+          {
+            "urls": urls,
+            "platform": platform,
+            "contentType": contentType,
+          }
+        ]
+      };
+
+      final response = await ApiClient.patchData(ApiUrl.singleCollaborationsUpdate(colId: collabrationId), jsonEncode(body),);
+
+      submitLinkLoading.value = false;
+      refresh();
+
+      final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : response.body as Map<String, dynamic>;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Link submitted successfully!", isError: false,);
+
+        // refresh collaboration data
+        fetchCollaborations(colId: collabrationId);
+        getSingleUserCollaboration(id: id);
+
+      } else {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Submission failed", isError: true,);
+      }
+    } catch (e) {
+      submitLinkLoading.value = false;
+      refresh();
+      showCustomSnackBar("Something went wrong. Try again.", isError: true,);
+      debugPrint("Submit link error: $e");
     }
   }
 
