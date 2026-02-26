@@ -509,12 +509,12 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                 maxLines: 4,
                 decoration: InputDecoration(
                   hintText: "Great collaboration! The content was.........",
+                  hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
               const SizedBox(height: 20),
 
-              // সাবমিট বাটন
               Obx(() => ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,

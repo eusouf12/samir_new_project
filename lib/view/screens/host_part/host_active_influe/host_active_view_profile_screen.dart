@@ -348,7 +348,8 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                           // },
                         );
                       },
-                    ) else ListView.builder(
+                    )
+                    else ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: listToShow.isEmpty ? 0 : (listToShow.length > 2 ? 2 : listToShow.length),
@@ -389,7 +390,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    Get.toNamed(AppRoutes.reviewAllScreen, arguments: userId);
+                                    Get.toNamed(AppRoutes.reviewAllScreen, arguments:{ "userId" :userId ,"role":role});
                                   },
                                   child: CustomText(
                                     text: "view All",

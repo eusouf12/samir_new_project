@@ -519,23 +519,28 @@ class CollaborationController extends GetxController {
     final Map<String, dynamic> body = {
       "rating": selectedRating.value,
       "comment": reviewController.text.trim(),
-      "reviewType": "host_to_influencer"
+     // "reviewType": "host_to_influencer"
     };
 
     try {
       var response = await ApiClient.postData(ApiUrl.giveReview(userId: userId), jsonEncode(body));
+      Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : response.body as Map<String, dynamic>;
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        showCustomSnackBar("Review submitted successfully!", isError: false);
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Review submitted successfully!", isError: false);
         Get.back();
         selectedRating.value = 0;
         reviewController.clear();
       } else {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Failed to submit review.", isError: true);
         ApiChecker.checkApi(response);
+        selectedRating.value = 0;
+        reviewController.clear();
+        Get.back();
       }
     } catch (e) {
       debugPrint("Review Error: $e");
-      showCustomSnackBar("Failed to submit review", isError: true);
+      showCustomSnackBar("Something went wrong. Please try again.", isError: true);
     } finally {
       isGiveReviewLoading.value = false;
       update();

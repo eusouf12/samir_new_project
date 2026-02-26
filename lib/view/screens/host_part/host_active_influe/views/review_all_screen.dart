@@ -19,10 +19,12 @@ import '../widgets/custom_review_card.dart';
 class ReviewAllScreen extends StatelessWidget {
   ReviewAllScreen({super.key});
   final CollaborationController collaborationController = Get.put(CollaborationController());
-  final userId = Get.arguments;
+  final args = Get.arguments as Map<String, dynamic>;
 
   @override
   Widget build(BuildContext context) {
+    final String userId = args["userId"] ?? "";
+    final String role = args["role"] ?? "";
     WidgetsBinding.instance.addPostFrameCallback((_) {
       collaborationController.getUserReviews(userId: userId);
     });
@@ -38,7 +40,7 @@ class ReviewAllScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             child: Obx(() {
               if (collaborationController.isReviewLoading.value) {
-                return  Center(child: CustomLoader());
+                return  Center(child: CustomLoader(color: role=="host" ? AppColors.primary : AppColors.primary2));
               }
               final reviews = collaborationController.userReviewsList;
 
