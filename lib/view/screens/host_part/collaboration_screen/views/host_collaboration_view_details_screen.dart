@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:samir_flutter_app/core/app_routes/app_routes.dart';
-import 'package:samir_flutter_app/view/components/custom_button/custom_button.dart';
 import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
@@ -307,8 +306,6 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                         children: [
                           Flexible(child: CustomButtonTwo(
                               onTap: ()  async {
-                                // final id = await SharePrefsHelper.getString(AppConstants.userId);
-                                // controller.getSingleUser(userId: id);
                                 showRateInfluencerDialog(context, name, image, collabrationId,role);
                               },
                               title: " Give Review", fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,fontSize: 14)
@@ -317,11 +314,9 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                           //report
                           Flexible(child: CustomButtonTwo(
                               onTap: () async {
-                                // final id = await SharePrefsHelper.getString(AppConstants.userId);
-                                // controller.getSingleUser(userId: id);
-                                // controller.acceptRejected(action: 'accept', userId: userId, collabrationId: collabrationId);
-                              },title: "Report", fillColor:AppColors.red,fontSize: 14))
-
+                                showReportDialog(context: context, userId: userId);
+                              },title: "Report", fillColor:AppColors.red,fontSize: 14)
+                          )
                         ],
                       ) :
                       const SizedBox.shrink(),
@@ -538,6 +533,126 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+  //report
+  void showReportDialog({required BuildContext context, required String userId}) {
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: const Center(
+          child: Text(
+            "Report User",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Select the issue you've encountered",
+                  style: TextStyle(fontSize: 13, color: Colors.grey)),
+              const SizedBox(height: 16),
+
+              /// Report Type Dropdown
+              Obx(() => DropdownButtonFormField<String>(
+                value: controller.selectedReportType.value.isEmpty ? null : controller.selectedReportType.value,
+                items: controller.reportTypes.map((type) => DropdownMenuItem(
+                  value: type,
+                  child: Text(type, style: const TextStyle(fontSize: 14)),
+                ),
+                ).toList(),
+                onChanged: (value) => controller.selectedReportType.value = value ?? "",
+                icon: const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                decoration: _inputDecoration("Report Type", Icons.flag_outlined),
+              )),
+
+              const SizedBox(height: 16),
+
+              /// Reason
+              TextField(
+                controller: controller.reportReasonController,
+                decoration: _inputDecoration("Reason", Icons.info_outline),
+              ),
+
+              const SizedBox(height: 16),
+
+              /// Description
+              TextField(
+                controller: controller.descriptionController,
+                maxLines: 3,
+                decoration: _inputDecoration("Description", Icons.description_outlined).copyWith(
+                  alignLabelWithHint: true,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+        actions: [
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  onPressed: () => Get.back(),
+                  child: const Text("Cancel", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600)),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Obx(() => ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.redAccent,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  ),
+                  onPressed: controller.isReportLoading.value
+                      ? null
+                      : () => controller.submitReport(id: userId),
+                  child: controller.isReportLoading.value
+                      ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                  )
+                      : const Text("Submit", style: TextStyle(fontWeight: FontWeight.bold)),
+                )),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+// Helper Decoration for cleaner code
+  InputDecoration _inputDecoration(String label, IconData icon) {
+    return InputDecoration(
+      labelText: label,
+      prefixIcon: Icon(icon, size: 20, color: Colors.grey),
+      labelStyle: const TextStyle(fontSize: 14, color: Colors.grey),
+      filled: true,
+      fillColor: Colors.grey.shade50,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey.shade200),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
       ),
     );
   }

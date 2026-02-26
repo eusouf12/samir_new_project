@@ -495,7 +495,6 @@ class CollaborationController extends GetxController {
 
   // ================== Payment api for host ===============
   RxBool hostPaymentLoading = false.obs;
-
   Future<void> hostPayment({required String colId}) async {
     hostPaymentLoading.value = true;
     refresh();
@@ -532,11 +531,9 @@ class CollaborationController extends GetxController {
   }
 
   // ================== review api ==============
-
   RxInt selectedRating = 0.obs;
   TextEditingController reviewController = TextEditingController();
   RxBool isGiveReviewLoading = false.obs;
-
   Future<void> submitReview({required String userId}) async {
     isGiveReviewLoading.value = true;
     update();
@@ -568,6 +565,57 @@ class CollaborationController extends GetxController {
     } finally {
       isGiveReviewLoading.value = false;
       update();
+    }
+  }
+
+// ================== report api ==============
+  final List<String> reportTypes = [
+    "payment_issue",
+    "content_issue",
+    "behavior_issue",
+    "fraud",
+    "spam",
+    "other",
+  ];
+  RxString selectedReportType = "".obs;
+  TextEditingController reportReasonController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  RxBool isReportLoading = false.obs;
+
+  Future<void> submitReport({required String id}) async {
+    isReportLoading.value = true;
+
+    final Map<String, dynamic> body = {
+      "reportType": selectedReportType.value,
+      "reason": reportReasonController.text.trim(),
+      "description": descriptionController.text.trim(),
+    };
+
+    try {
+      var response = await ApiClient.postData(ApiUrl.createReport(id: id), jsonEncode(body));
+
+      Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : response.body as Map<String, dynamic>;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Report submitted successfully!", isError: false,);
+
+        Get.back();
+        selectedReportType.value = "";
+        reportReasonController.clear();
+        descriptionController.clear();
+
+      } else {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Failed to submit report.", isError: true);
+        ApiChecker.checkApi(response);
+      }
+
+    } catch (e) {
+      debugPrint("Report Error: $e");
+      showCustomSnackBar("Something went wrong. Please try again.", isError: true,);
+
+    } finally {
+      isReportLoading.value = false;
     }
   }
 
