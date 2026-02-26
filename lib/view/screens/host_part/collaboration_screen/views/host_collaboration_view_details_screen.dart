@@ -309,7 +309,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                               onTap: ()  async {
                                 // final id = await SharePrefsHelper.getString(AppConstants.userId);
                                 // controller.getSingleUser(userId: id);
-                                showRateInfluencerDialog(context, name, image, collabrationId);
+                                showRateInfluencerDialog(context, name, image, collabrationId,role);
                               },
                               title: " Give Review", fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,fontSize: 14)
                           ),
@@ -463,7 +463,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
   }
 
   // give review
-  void showRateInfluencerDialog(BuildContext context, String influencerName, String imageUrl, String userId) {
+  void showRateInfluencerDialog(BuildContext context, String influencerName, String imageUrl, String userId,String role) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -472,7 +472,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Rate Influencer", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              CustomText(text: role== 'host' ?"Rate Influencer" : "Rate Host",fontSize: 20, fontWeight: FontWeight.bold),
               const SizedBox(height: 8),
               Text("How was your experience with $influencerName?",
                   textAlign: TextAlign.center, style: TextStyle(color: Colors.grey)),
@@ -480,7 +480,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
               CircleAvatar(radius: 40, backgroundImage: NetworkImage(imageUrl)),
               const SizedBox(height: 16),
 
-              // স্টার রেটিং সেকশন
+              // rating section
               Obx(() => Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(5, (index) {
@@ -502,8 +502,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
 
               Align(alignment: Alignment.centerLeft, child: Text("Write review", style: TextStyle(fontWeight: FontWeight.bold))),
               const SizedBox(height: 8),
-
-              // রিভিউ বক্স
+              //
               TextField(
                 controller: controller.reviewController,
                 maxLines: 4,
@@ -511,22 +510,30 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                   hintText: "Great collaboration! The content was.........",
                   hintStyle: TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Colors.grey, width: 1,),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: role=="host" ?AppColors.primary : AppColors.primary2, width: 2,),
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
 
               Obx(() => ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
+                  backgroundColor:role== 'host' ? AppColors.primary : AppColors.primary2,
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                onPressed: controller.isReviewLoading.value
+                onPressed: controller.isGiveReviewLoading.value
                     ? null
                     : () => controller.submitReview(userId: userId),
-                child: controller.isReviewLoading.value
-                    ? CircularProgressIndicator(color: Colors.white)
-                    : const Text("Submit Review", style: TextStyle(color: Colors.white)),
+                child: controller.isGiveReviewLoading.value
+                    ? CustomLoader(color: role=="host" ? AppColors.primary : AppColors.primary2,)
+                    :  Text("Submit Review", style: TextStyle(color: Colors.white)),
               )),
             ],
           ),

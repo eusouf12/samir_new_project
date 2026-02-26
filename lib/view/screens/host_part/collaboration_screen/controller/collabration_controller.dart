@@ -508,18 +508,12 @@ class CollaborationController extends GetxController {
   RxBool isGiveReviewLoading = false.obs;
 
   Future<void> submitReview({required String userId}) async {
-    // if (selectedRating.value == 0) {
-    //   showCustomSnackBar("Please select a rating", isError: true);
-    //   return;
-    // }
-
     isGiveReviewLoading.value = true;
     update();
 
     final Map<String, dynamic> body = {
       "rating": selectedRating.value,
       "comment": reviewController.text.trim(),
-     // "reviewType": "host_to_influencer"
     };
 
     try {
