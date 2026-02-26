@@ -278,8 +278,38 @@ class CollaborationController extends GetxController {
     updateNightsColl.value++;
   }
   void decrementNight() {
-    if (updateNightsColl.value > 1) {
+    if (updateNightsColl.value > 0) {
       updateNightsColl.value--;
+    }
+  }
+
+  void incrementGuest({required String role}) {
+
+    if (maxNightCredits == 0) {
+      showCustomSnackBar(
+        role == "host"
+            ? "This influencer has 0 night credits, so you cannot add any guest."
+            : "You cannot add any guest.",
+        isError: true,
+      );
+      return;
+    }
+
+    if (updateGuestColl.value >= maxNightCredits) {
+      showCustomSnackBar(
+        role == "host"
+            ? "Guest count cannot exceed the influencer's night credits."
+            : "Guest count cannot exceed your available night credits.",
+        isError: true,
+      );
+      return;
+    }
+
+    updateGuestColl.value++;
+  }
+  void decrementGuest() {
+    if (updateGuestColl.value > 0) {
+      updateGuestColl.value--;
     }
   }
 

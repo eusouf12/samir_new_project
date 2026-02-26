@@ -66,10 +66,11 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                 children: [
                   _buildCompCard(
                     title: "Night Stay",
-                    subtitle: "Offer free nights at your property as compensation",
+                    subtitle: nightCredits <=0 ? "" : "Offer free nights at your property as compensation",
                     isActive: controller.isNightCredits.value,
                     onTap: controller.toggleNightCredits,
-                    child: _buildNightsStepper(role: role), role: role,
+                    role: role,
+                    child: nightCredits <=0 ? CustomText(text: role== "host"? "The influencer has no night credits available." : "You do not have any night credits available.",color: Colors.red,):_buildNightsStepper(role: role),
                   ),
                   const SizedBox(height: 16),
                   _buildCompCard(
@@ -87,6 +88,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
               /// Guest Count
               const Text("Guest Count", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
+              nightCredits <=0 ? CustomText(text: role== "host"? "The influencer has no night credits available." : "You do not have any night credits available.",color: Colors.red,):
               Obx(() => Row(
                 children: [
                   GestureDetector(
@@ -135,7 +137,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
     );
   }
 
-  /// Compensation Card
+  //======= Compensation Card
   Widget _buildCompCard({
     required String title,
     required String role,
@@ -175,7 +177,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
     );
   }
 
-  /// Night Credits Stepper
+  //===== Night Credits Stepper
   Widget _buildNightsStepper({required String role}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -199,7 +201,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
 
   }
 
-  /// Direct Payment Input
+  //======== Direct Payment Input
   Widget _buildPaymentInput() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
