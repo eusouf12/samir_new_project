@@ -619,5 +619,42 @@ class CollaborationController extends GetxController {
     }
   }
 
+  // =========== Gift Night Credits ==========
+  RxInt selectedStars = 0.obs;
+  RxBool isGiftLoading = false.obs;
+  Future<void> sendGift({required String id}) async {
+    if (selectedStars.value <= 0 || selectedStars.value > 3) {
+      showCustomSnackBar("You can select maximum 3 night credits.", isError: true);
+      return;
+    }
+
+    isGiftLoading.value = true;
+
+    final Map<String, dynamic> body = {
+      "stars": selectedStars.value,
+    };
+
+    try {
+      var response = await ApiClient.postData(ApiUrl.createGift(id: id), jsonEncode(body),);
+
+      Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : response.body as Map<String, dynamic>;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        showCustomSnackBar(jsonResponse['message']?.toString() ?? "Gift sent successfully!", isError: false,);
+        Get.back();
+        selectedStars.value = 0;
+
+      } else {
+        showCustomSnackBar(
+          jsonResponse['message']?.toString() ?? "Failed to send gift.", isError: true,);
+      }
+
+    } catch (e) {
+      showCustomSnackBar("Something went wrong.", isError: true,);
+    } finally {
+      isGiftLoading.value = false;
+    }
+  }
+
 }
 

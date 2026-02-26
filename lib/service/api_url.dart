@@ -66,6 +66,7 @@ class ApiUrl {
    static  String  giveReview({required String userId})=>"/api/v1/review/create-review/$userId";
    static const  String  infPayment ="/api/v1/payment/stripe-account-onboarding";
    static String createReport({required String id}) => "/api/v1/report/create-report/$id";
+   static String createGift({required String id}) => "/api/v1/gift/create-redeem/$id";
    //
    static String singleInfluencerCollaborations({String? filter, required String id,}) {
     if (filter != null && filter.isNotEmpty) {

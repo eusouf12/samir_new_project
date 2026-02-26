@@ -323,13 +323,11 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       (status == "completed" && role =='host') ?
                       CustomButtonTwo(
-                              onTap: ()  async {
-                                // final id = await SharePrefsHelper.getString(AppConstants.userId);
-                                // controller.getSingleUser(userId: id);
-                                // controller.acceptRejected(action: 'reject', userId: myId, collabrationId: collabrationId);
-                              },
-                              title: " Give Night Credits",fontSize: 14, fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,)
-                          : const SizedBox.shrink()
+                        onTap: ()  async {
+                          showGiftDialog(context: context, userId: collabrationId,);
+                          },
+                        title: " Give Night Credits",fontSize: 14, fillColor: AppColors.primary,borderColor: role == "host" ? AppColors.primary : AppColors.primary2,isBorder: true,)
+                      : const SizedBox.shrink()
 
                     ],
                   );
@@ -653,6 +651,62 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: const BorderSide(color: Colors.redAccent, width: 1.5),
+      ),
+    );
+  }
+
+  //gift
+  void showGiftDialog({required BuildContext context, required String userId,}) {
+    Get.dialog(
+      AlertDialog(
+        title: const Text("Send Night Credits"),
+        content: Obx(() => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+
+            /// Counter UI
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: controller.selectedStars.value > 0 ? () =>  controller.selectedStars.value-- : null,
+                  icon: const Icon(Icons.remove),
+                ),
+
+                Text(
+                  controller.selectedStars.value.toString(),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                IconButton(
+                  onPressed: () =>  controller.selectedStars.value++,
+                  icon: const Icon(Icons.add),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 16),
+
+            ElevatedButton(
+              onPressed:  controller.isGiftLoading.value
+                  ? null
+                  : () =>  controller.sendGift(id: userId),
+              child:  controller.isGiftLoading.value
+                  ? const SizedBox(
+                height: 18,
+                width: 18,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
+                  : const Text("Send"),
+            ),
+          ],
+        )),
       ),
     );
   }
