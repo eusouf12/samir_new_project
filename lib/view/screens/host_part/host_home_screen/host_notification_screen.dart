@@ -28,32 +28,89 @@ class HostNotificationScreen extends StatelessWidget {
 
     return Scaffold(
       appBar:CustomRoyelAppbar(titleName: "Notifications",leftIcon: true,),
-      body: Obx(() {
+      body:
+
+      Obx(() {
 
         if (controller.isNotificationLoading.value) {
-          return Center(child: CustomLoader(color:role=="host" ? AppColors.primary : AppColors.primary2));
+          return Center(
+            child: CustomLoader(color: role == "host" ? AppColors.primary : AppColors.primary2,),
+          );
         }
 
         if (controller.notificationList.isEmpty) {
-          return const Center(child: Text("No notifications found"));
+          return const Center(child: Text("No notifications found"),);
         }
 
-        return ListView.builder(
-          controller: scrollController,
-          itemCount: controller.notificationList.length + 1,
-          itemBuilder: (context, index) {
-            if (index == controller.notificationList.length) {
-              return Obx(() => controller.isNotificationLoadMoreLoading.value ?  Padding(padding: EdgeInsets.all(16),
-                child: Center(child: CustomLoader(color:role=="host" ? AppColors.primary : AppColors.primary2),
-                ),
-              )
-                  : const SizedBox.shrink());
-            }
-            final item = controller.notificationList[index];
-            return _notificationCard(item);
-          },
+        return Column(
+          children: [
+
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 10),
+              child: Row(
+                mainAxisAlignment:
+                MainAxisAlignment.spaceBetween,
+                children: [
+
+                  const CustomText(
+                    text: "",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+
+                  GestureDetector(
+                    onTap: () {
+                     // controller.markAllAsRead();
+                    },
+                    child: CustomText(
+                      text: "Read All",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: role == "host" ? AppColors.primary : AppColors.primary2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Expanded(
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount:
+                controller.notificationList.length + 1,
+                itemBuilder: (context, index) {
+
+                  if (index ==
+                      controller.notificationList.length) {
+                    return Obx(() =>
+                    controller
+                        .isNotificationLoadMoreLoading
+                        .value
+                        ? Padding(
+                      padding:
+                      const EdgeInsets.all(16),
+                      child: Center(
+                        child: CustomLoader(
+                          color: role == "host"
+                              ? AppColors.primary
+                              : AppColors.primary2,
+                        ),
+                      ),
+                    )
+                        : const SizedBox.shrink());
+                  }
+
+                  final item =
+                  controller.notificationList[index];
+
+                  return _notificationCard(item);
+                },
+              ),
+            ),
+          ],
         );
-      }),
+      })
     );
   }
 
@@ -66,7 +123,7 @@ class HostNotificationScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 6,
           ),
         ],
@@ -75,7 +132,7 @@ class HostNotificationScreen extends StatelessWidget {
         crossAxisAlignment:
         CrossAxisAlignment.start,
         children: [
-          CustomText(text:item.title ?? "",fontSize: 14, color: Colors.grey,fontWeight: FontWeight.w600,),
+          CustomText(text:item.title ?? "",fontSize: 14, color: Colors.black,fontWeight: FontWeight.w600,),
           const SizedBox(height: 6),
           CustomText(text:item.message ?? "",fontSize: 13, color: Colors.grey),
           const SizedBox(height: 8),

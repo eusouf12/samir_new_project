@@ -123,58 +123,29 @@ class InfHomeScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 24),
-              Container(
-                padding: EdgeInsets.all(10),
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.black.withValues(alpha: 0.1),
-                      blurRadius: 2,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: "Recent Activity",
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        bottom: 20,
-                      ),
-                      Obx(() {
+
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(text: "Recent Activity", fontSize: 18, fontWeight: FontWeight.w600, bottom: 20,),
+                    Expanded(
+                      child: Obx(() {
+
                         if (notificationController.isNotificationLoading.value) {
-                          return  Center(
-                            child: Center(child: CustomLoader()),
-                          );
+                          return  Center(child: CustomLoader(color: AppColors.primary2,));
                         }
 
-                        // if (notificationController.notificationList.isEmpty) {
-                        //   return
-                        //     CustomActivityCard(
-                        //     onTap: () {
-                        //       Get.toNamed(AppRoutes.hostNotificationScreen);
-                        //     },
-                        //     icon: AppIcons.collaboraIcon,
-                        //     title: "No Notifications",
-                        //     time: "",
-                        //   );
-                        // }
+                        final firstFour = notificationController.notificationList.take(4).toList();
 
-                        final firstFive = notificationController.notificationList.take(4).toList();
+                        if (firstFour.isEmpty) {return const Center(child: CustomText(text: "No activity found"),);
+                        }
 
-                        return Column(
-                          children: firstFive.map((item) {
-                            final unreadCount = notificationController.notificationList.where((e) => e.isRead == false).length;
-
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
+                        return ListView.builder(
+                          itemCount: firstFour.length,
+                          itemBuilder: (context, index) {
+                            final item = firstFour[index];
+                            return Padding(padding: const EdgeInsets.only(bottom: 10),
                               child: CustomActivityCard(
                                 icon: AppIcons.collaboraIcon,
                                 message: item.message ?? "",
@@ -182,13 +153,14 @@ class InfHomeScreen extends StatelessWidget {
                                 time: _timeAgo(item.createdAt),
                               ),
                             );
-                          }).toList(),
+                          },
                         );
-                      })
-                    ],
-                  ),
+                      }),
+                    ),
+                  ],
                 ),
               ),
+
             ],
           ),
         );
