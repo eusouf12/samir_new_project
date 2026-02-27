@@ -7,10 +7,10 @@ import '../../../../components/custom_text/custom_text.dart';
 class CustomActivityCard extends StatelessWidget {
   final String? icon;
   final String? title;
+  final String? message;
   final String? time;
-  final String? number;
   final Function()? onTap;
-  const CustomActivityCard({super.key, this.icon, this.title, this.time, this.number, this.onTap});
+  const CustomActivityCard({super.key, this.icon, this.title,this.message, this.time, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -38,21 +38,29 @@ class CustomActivityCard extends StatelessWidget {
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
+                       CustomText(
+                          text: message??" ",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.textClr,
+                         top: 3,
+                        ),
                         CustomText(
                           text: time??" ",
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color: AppColors.textClr,
+                          top: 3,
                         ),
                       ],
                     ),
                   ],
                 ),
-                CircleAvatar(
-                  backgroundColor: AppColors.primary,
-                  radius: 12,
-                  child: CustomText(text: number?? " ",color: AppColors.white,),
-                )
+                // CircleAvatar(
+                //   backgroundColor: AppColors.primary,
+                //   radius: 12,
+                //   child: CustomText(text: number?? " ",color: AppColors.white,),
+                // )
               ],
             ),
           ),

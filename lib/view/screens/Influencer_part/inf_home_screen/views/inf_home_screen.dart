@@ -14,17 +14,21 @@ import '../../../../components/custom_nav_bar/inf_navbar.dart';
 import '../../../../components/custom_text/custom_text.dart';
 import '../../../host_part/collaboration_screen/controller/collabration_controller.dart';
 import '../../../host_part/host_active_influe/controller/influencer_list_host_controller.dart';
+import '../../../host_part/host_home_screen/controller/notification_controller.dart';
+import '../../../host_part/host_home_screen/widgets/custom_activity_card.dart';
 
 class InfHomeScreen extends StatelessWidget {
   InfHomeScreen({super.key});
   final CollaborationController collaborationController = Get.put(CollaborationController());
   final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
+  final NotificationController notificationController = Get.put(NotificationController());
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       String id = await SharePrefsHelper.getString(AppConstants.userId);
       collaborationController.getSingleUser(userId: id);
       influencerListHostController.getInfluencers();
+      notificationController.getNotifications();
     });
     return CustomGradient(
       child: Scaffold(
@@ -64,7 +68,7 @@ class InfHomeScreen extends StatelessWidget {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed(AppRoutes.hostNotificationScreen);
+                      Get.toNamed(AppRoutes.hostNotificationScreen,arguments: userData.value?.role);
                     },
                     child: CustomImage(imageSrc: AppIcons.notifacationLoadIcon),
                   ),
@@ -144,71 +148,43 @@ class InfHomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         bottom: 20,
                       ),
-                      Row(
-                        children: [
-                          CustomImage(imageSrc: AppIcons.rightIcon2),
-                          SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: "Order #1234 completed",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                      Obx(() {
+                        if (notificationController.isNotificationLoading.value) {
+                          return  Center(
+                            child: Center(child: CustomLoader()),
+                          );
+                        }
+
+                        // if (notificationController.notificationList.isEmpty) {
+                        //   return
+                        //     CustomActivityCard(
+                        //     onTap: () {
+                        //       Get.toNamed(AppRoutes.hostNotificationScreen);
+                        //     },
+                        //     icon: AppIcons.collaboraIcon,
+                        //     title: "No Notifications",
+                        //     time: "",
+                        //   );
+                        // }
+
+                        final firstFive = notificationController.notificationList.take(4).toList();
+
+                        return Column(
+                          children: firstFive.map((item) {
+                            final unreadCount = notificationController.notificationList.where((e) => e.isRead == false).length;
+
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: CustomActivityCard(
+                                icon: AppIcons.collaboraIcon,
+                                message: item.message ?? "",
+                                title: item.title ?? "",
+                                time: _timeAgo(item.createdAt),
                               ),
-                              CustomText(
-                                text: "2 minutes ago",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16,),
-                      Row(
-                        children: [
-                          CustomImage(imageSrc: AppIcons.newAddIcon),
-                          SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: "New customer registered",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              CustomText(
-                                text: "12 minutes ago",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16,),
-                      Row(
-                        children: [
-                          CustomImage(imageSrc: AppIcons.starCircular),
-                          SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(
-                                text: "5 credits earned",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              CustomText(
-                                text: "1 hour ago",
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            );
+                          }).toList(),
+                        );
+                      })
                     ],
                   ),
                 ),
@@ -220,5 +196,18 @@ class InfHomeScreen extends StatelessWidget {
         bottomNavigationBar: InfNavbar(currentIndex: 0),
       ),
     );
+  }
+  String _timeAgo(DateTime? dateTime) {
+    if (dateTime == null) return "";
+
+    final difference = DateTime.now().difference(dateTime);
+
+    if (difference.inMinutes < 60) {
+      return "${difference.inMinutes} minutes ago";
+    } else if (difference.inHours < 24) {
+      return "${difference.inHours} hours ago";
+    } else {
+      return "${difference.inDays} days ago";
+    }
   }
 }

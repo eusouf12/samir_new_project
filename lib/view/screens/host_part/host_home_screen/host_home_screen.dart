@@ -16,6 +16,7 @@ import '../../../components/custom_nav_bar/navbar.dart';
 import '../collaboration_screen/controller/collabration_controller.dart';
 import '../host_active_influe/controller/influencer_list_host_controller.dart';
 import '../host_listing_screen/controller/listing_controller.dart';
+import 'controller/notification_controller.dart';
 
 class HostHomeScreen extends StatelessWidget {
   HostHomeScreen({super.key});
@@ -23,6 +24,7 @@ class HostHomeScreen extends StatelessWidget {
   final CollaborationController collaborationController = Get.put(CollaborationController());
   final ListingController listingController = Get.put(ListingController());
   final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
+  final NotificationController notificationController = Get.put(NotificationController());
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class HostHomeScreen extends StatelessWidget {
       collaborationController.getSingleUser(userId: id);
       listingController.getListings(loadMore: false);
       influencerListHostController.getInfluencers();
+      notificationController.getNotifications();
     });
     return CustomGradient(
       child: Scaffold(
@@ -45,161 +48,177 @@ class HostHomeScreen extends StatelessWidget {
             return const Center(child: CustomText(text: "Profile not found", fontSize: 16,),);
           }
           final userData = collaborationController.singleUserProfile;
-          return Padding(
-            padding: const EdgeInsets.only(top: 60, right: 20.0, left: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //Header
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: "Welcome! ${userData.value?.name}",
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        CustomText(
-                          text: "Here's your overview .",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textClr,
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(AppRoutes.hostNotificationScreen);
-                      },
-                      child: CustomImage(imageSrc: AppIcons.notifacationLoadIcon),
-                    ),
-                  ],
-                ),
-                // scroll 5 card
-                SizedBox(height: 25),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          return Padding(padding: const EdgeInsets.only(top: 60, right: 20.0, left: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //Header
+                  Row(
                     children: [
-                      // CustomContainerCard(
-                      //   title: "Deals",
-                      //   color: AppColors.white,
-                      //   textColor: AppColors.black,
-                      //   number: "${userData.value?.dealsTotal}",
-                      //   onTap: () {
-                      //     Get.toNamed(AppRoutes.hostDealsScreen);
-                      //   },
-                      // ),
-                      // SizedBox(width: 16),
-                      //Listings
-                      CustomContainerCard(
-                        title: "My\nListings",
-                        color: AppColors.white,
-                        textColor: AppColors.black,
-                        number: "${userData.value?.totalListings}",
-                        onTap: () {
-                          Get.toNamed(AppRoutes.hostListingScreen);
-                        },
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text: "Welcome! ${userData.value?.name}",
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          CustomText(
+                            text: "Here's your overview .",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textClr,
+                          ),
+                        ],
                       ),
-                      SizedBox(width: 16),
-                      //Influencer
-                      CustomContainerCard(
+                      const Spacer(),
+                      GestureDetector(
                         onTap: () {
-                          Get.toNamed(AppRoutes.hostActiveInflue, arguments: { "role" : collaborationController.singleUserProfile.value?.role, "myNightCredits" : userData.value?.nightCredits});
+                          Get.toNamed(AppRoutes.hostNotificationScreen,arguments: userData.value?.role);
                         },
-                        title: "Active\nInfluencer",
-                        color: AppColors.white,
-                        textColor: AppColors.black,
-                        number: influencerListHostController.influencerList.length.toString(),
-                      ),
-                      SizedBox(width: 16),
-                      //Redeem Requests
-                      // CustomContainerCard(
-                      //   title: "Redeem\n Requests",
-                      //   color: AppColors.white,
-                      //   textColor: AppColors.black,
-                      //   number: "0",
-                      //   onTap: () {
-                      //     Get.toNamed(AppRoutes.hostListingScreen);
-                      //   },
-                      // ),
-                      // SizedBox(width: 16),
-                      CustomContainerCard(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.hostCollaborationScreen,arguments: userData.value?.role ?? "");
-                        },
-                        title: "Total\n Collaboration",
-                        color: AppColors.white,
-                        textColor: AppColors.black,
-                        number: "${userData.value?.collaborationStats?.total}",
+                        child: CustomImage(imageSrc: AppIcons.notifacationLoadIcon),
                       ),
                     ],
                   ),
-                ),
-                // SizedBox(height: 16),
-                // create and add
-                // CustomButtonTwo(
-                //   onTap: () {
-                //     Get.toNamed(AppRoutes.hostCreateDealScreen, arguments: {"page": "deal", "id": ""});
-                //   },
-                //   title: "Create Deal",
-                //   borderRadius: 10,
-                // ),
-                SizedBox(height: 16),
-                CustomButtonTwo(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.hostAddNewListingScreen);
-                  },
-                  title: "Add Listing",
-                  borderRadius: 10,
-                  isBorder: true,
-                  borderColor: AppColors.primary,
-                  borderWidth: 1,
-                  fillColor: AppColors.primary,
-                  textColor: AppColors.white,
-                ),
-                // Recent Activity
-                CustomText(
-                  top: 20,
-                  text: "Recent Activity",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                  bottom: 16,
-                ),
-                CustomActivityCard(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.hostCollaborationScreen);
-                  },
-                  icon: AppIcons.collaboraIcon,
-                  title: "Collaboration",
-                  time: "2 hours ago",
-                  number: "5",
-                ),
-                CustomActivityCard(
-                  onTap: (){
-                    Get.toNamed(AppRoutes.hostRedeemRequestScreen);
-                  },
-                  title: "Redeem Night Requests",
-                  icon: AppIcons.redeemIcon,
-                  time: "1 day ago",
-                  number: "1",
-                ),
-                CustomActivityCard(
-                  title: "Payment Processed",
-                  icon: AppIcons.paymentIcon,
-                  time: "2 day ago",
-                  number: "3",
-                ),
-              ],
+                  // scroll 5 card
+                  SizedBox(height: 25),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // CustomContainerCard(
+                        //   title: "Deals",
+                        //   color: AppColors.white,
+                        //   textColor: AppColors.black,
+                        //   number: "${userData.value?.dealsTotal}",
+                        //   onTap: () {
+                        //     Get.toNamed(AppRoutes.hostDealsScreen);
+                        //   },
+                        // ),
+                        // SizedBox(width: 16),
+                        //Listings
+                        CustomContainerCard(
+                          title: "My\nListings",
+                          color: AppColors.white,
+                          textColor: AppColors.black,
+                          number: "${userData.value?.totalListings}",
+                          onTap: () {
+                            Get.toNamed(AppRoutes.hostListingScreen);
+                          },
+                        ),
+                        SizedBox(width: 16),
+                        //Influencer
+                        CustomContainerCard(
+                          onTap: () {
+                            Get.toNamed(AppRoutes.hostActiveInflue, arguments: { "role" : collaborationController.singleUserProfile.value?.role, "myNightCredits" : userData.value?.nightCredits});
+                          },
+                          title: "Active\nInfluencer",
+                          color: AppColors.white,
+                          textColor: AppColors.black,
+                          number: influencerListHostController.influencerList.length.toString(),
+                        ),
+                        SizedBox(width: 16),
+                        CustomContainerCard(
+                          onTap: () {
+                            Get.toNamed(AppRoutes.hostCollaborationScreen,arguments: userData.value?.role ?? "");
+                          },
+                          title: "Total\n Collaboration",
+                          color: AppColors.white,
+                          textColor: AppColors.black,
+                          number: "${userData.value?.collaborationStats?.total}",
+                        ),
+                      ],
+                    ),
+                  ),
+                  // SizedBox(height: 16),
+                  // create and add
+                  // CustomButtonTwo(
+                  //   onTap: () {
+                  //     Get.toNamed(AppRoutes.hostCreateDealScreen, arguments: {"page": "deal", "id": ""});
+                  //   },
+                  //   title: "Create Deal",
+                  //   borderRadius: 10,
+                  // ),
+                  SizedBox(height: 16),
+                  CustomButtonTwo(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.hostAddNewListingScreen);
+                    },
+                    title: "Add Listing",
+                    borderRadius: 10,
+                    isBorder: true,
+                    borderColor: AppColors.primary,
+                    borderWidth: 1,
+                    fillColor: AppColors.primary,
+                    textColor: AppColors.white,
+                  ),
+                  // Recent Activity
+                  CustomText(
+                    top: 20,
+                    text: "Recent Activity",
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    bottom: 16,
+                  ),
+                  Obx(() {
+                    if (notificationController.isNotificationLoading.value) {
+                      return  Center(
+                        child: Center(child: CustomLoader()),
+                      );
+                    }
+              
+                    // if (notificationController.notificationList.isEmpty) {
+                    //   return
+                    //     CustomActivityCard(
+                    //     onTap: () {
+                    //       Get.toNamed(AppRoutes.hostNotificationScreen);
+                    //     },
+                    //     icon: AppIcons.collaboraIcon,
+                    //     title: "No Notifications",
+                    //     time: "",
+                    //   );
+                    // }
+              
+                    final firstFive = notificationController.notificationList.take(4).toList();
+              
+                    return Column(
+                      children: firstFive.map((item) {
+                        final unreadCount = notificationController.notificationList.where((e) => e.isRead == false).length;
+              
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: CustomActivityCard(
+                            icon: AppIcons.collaboraIcon,
+                            message: item.message ?? "",
+                            title: item.title ?? "",
+                            time: _timeAgo(item.createdAt),
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  })
+                ],
+              ),
             ),
           );
         }),
         bottomNavigationBar: HostNavbar(currentIndex: 0),
       ),
     );
+  }
+}
+String _timeAgo(DateTime? dateTime) {
+  if (dateTime == null) return "";
+
+  final difference = DateTime.now().difference(dateTime);
+
+  if (difference.inMinutes < 60) {
+    return "${difference.inMinutes} minutes ago";
+  } else if (difference.inHours < 24) {
+    return "${difference.inHours} hours ago";
+  } else {
+    return "${difference.inDays} days ago";
   }
 }
