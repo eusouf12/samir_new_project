@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:samir_flutter_app/utils/app_icons/app_icons.dart';
 import 'package:samir_flutter_app/view/screens/Influencer_part/inf_profile_screen/inf_profile_screen.dart';
 import '../../../utils/app_colors/app_colors.dart';
+import '../../screens/Influencer_part/inf_calender_screen/views/calender_screen.dart';
 import '../../screens/Influencer_part/inf_explore_listing_screen/inf_explore_listing_screen.dart';
 import '../../screens/Influencer_part/inf_home_screen/views/inf_home_screen.dart';
 import '../../screens/Influencer_part/inf_messages_list_screen/inf_messages_list_screen.dart';
@@ -110,7 +111,7 @@ class _UserNavBarState extends State<InfNavbar> {
           Get.offAll(() => InfHomeScreen());
           break;
         case 1:
-          Get.offAll(() => InfHomeScreen());
+          Get.offAll(() => CalenderScreen());
           break;
         case 2:
           Get.offAll(() => InfExploreDealsScreen());

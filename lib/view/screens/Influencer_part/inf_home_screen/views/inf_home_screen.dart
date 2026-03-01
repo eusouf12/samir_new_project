@@ -95,6 +95,7 @@ class InfHomeScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 8),
+              //collaboration and Active host
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -121,35 +122,7 @@ class InfHomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 8),
-              //collaboration and Active host
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     CustomInfHomeCard(
-              //       image: AppIcons.dealsIcons,
-              //       title: "${userData.value?.collaborationStats?.total}",
-              //       subtitle: "Total\n Collaboration",
-              //       onTap: () {
-              //         Get.toNamed(AppRoutes.hostCollaborationScreen,arguments: userData.value?.role ?? ""
-              //         );
-              //       },
-              //     ),
-              //     //host
-              //     CustomInfHomeCard(
-              //       image: AppIcons.activeHostIcon,
-              //       title: influencerListHostController.influencerList.length.toString(),
-              //       subtitle: "Active Host",
-              //       onTap: () {
-              //         debugPrint("myNightCredits : ${userData.value?.nightCredits}");
-              //         Get.toNamed(AppRoutes.hostActiveInflue ,
-              //             arguments: { "role" : collaborationController.singleUserProfile.value?.role, "myNightCredits" : userData.value?.nightCredits}
-              //         );
-              //       },
-              //     ),
-              //   ],
-              // ),
-              SizedBox(height: 24),
+              SizedBox(height: 20),
 
               Expanded(
                 child: Column(
