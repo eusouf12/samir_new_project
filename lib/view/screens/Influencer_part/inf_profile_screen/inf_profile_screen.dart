@@ -33,7 +33,7 @@ class InfProfileScreen extends StatelessWidget {
     return CustomGradient(
       child: Scaffold(
         appBar: CustomRoyelAppbar(leftIcon: false, titleName: "My Profile"),
-        bottomNavigationBar: InfNavbar(currentIndex: 3),
+        bottomNavigationBar: InfNavbar(currentIndex: 4),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),

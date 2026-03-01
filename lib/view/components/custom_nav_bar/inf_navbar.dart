@@ -23,6 +23,7 @@ class _UserNavBarState extends State<InfNavbar> {
 
   final List<String> icons = [
     AppIcons.navHome,
+    AppIcons.calender,
     AppIcons.listingIcon,
     AppIcons.navChat,
     AppIcons.navProfile,
@@ -109,12 +110,15 @@ class _UserNavBarState extends State<InfNavbar> {
           Get.offAll(() => InfHomeScreen());
           break;
         case 1:
-          Get.offAll(() => InfExploreDealsScreen());
+          Get.offAll(() => InfHomeScreen());
           break;
         case 2:
-          Get.offAll(() => InfMessagesListScreen());
+          Get.offAll(() => InfExploreDealsScreen());
           break;
         case 3:
+          Get.offAll(() => InfMessagesListScreen());
+          break;
+        case 4:
           Get.offAll(() => InfProfileScreen());
           break;
       }

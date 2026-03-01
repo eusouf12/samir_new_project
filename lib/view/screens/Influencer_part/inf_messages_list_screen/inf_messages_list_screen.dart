@@ -90,7 +90,7 @@ class InfMessagesListScreen extends StatelessWidget {
           }),
         ),
 
-        bottomNavigationBar: InfNavbar(currentIndex: 2),
+        bottomNavigationBar: InfNavbar(currentIndex: 3),
       ),
     );
   }
