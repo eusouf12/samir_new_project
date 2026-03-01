@@ -75,7 +75,7 @@ class InfHomeScreen extends StatelessWidget {
                 ],
               ),
               //Body
-              SizedBox(height: 16),
+              SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -94,7 +94,34 @@ class InfHomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomInfHomeCard(
+                    image: AppIcons.dealsIcons,
+                    title: "${userData.value?.collaborationStats?.total}",
+                    subtitle: "Total\n Collaboration",
+                    onTap: () {
+                      Get.toNamed(AppRoutes.hostCollaborationScreen,arguments: userData.value?.role ?? ""
+                      );
+                    },
+                  ),
+                  //host
+                  CustomInfHomeCard(
+                    image: AppIcons.activeHostIcon,
+                    title: influencerListHostController.influencerList.length.toString(),
+                    subtitle: "Active Host",
+                    onTap: () {
+                      debugPrint("myNightCredits : ${userData.value?.nightCredits}");
+                      Get.toNamed(AppRoutes.hostActiveInflue ,
+                          arguments: { "role" : collaborationController.singleUserProfile.value?.role, "myNightCredits" : userData.value?.nightCredits}
+                      );
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 8),
               //collaboration and Active host
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -128,7 +155,7 @@ class InfHomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(text: "Recent Activity", fontSize: 18, fontWeight: FontWeight.w600, bottom: 20,),
+                    CustomText(text: "Recent Activity", fontSize: 18, fontWeight: FontWeight.w600,bottom: 10,),
                     Expanded(
                       child: Obx(() {
 
@@ -142,6 +169,7 @@ class InfHomeScreen extends StatelessWidget {
                         }
 
                         return ListView.builder(
+                          padding: EdgeInsets.zero,
                           itemCount: firstFour.length,
                           itemBuilder: (context, index) {
                             final item = firstFour[index];
