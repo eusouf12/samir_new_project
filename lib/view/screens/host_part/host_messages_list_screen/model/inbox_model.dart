@@ -43,7 +43,7 @@ class ChatData {
 class MessageModel {
   final String id;
   final String text;
-  final List<String> imageUrl;
+  final List<MessageImage> imageUrl;
   final String? audioUrl;
   final bool seen;
   final UserModel msgByUser;
@@ -67,7 +67,7 @@ class MessageModel {
     return MessageModel(
       id: json['_id'] ?? '',
       text: json['text'] ?? '',
-      imageUrl: (json['imageUrl'] as List<dynamic>? ?? []).map((e) => e.toString()).toList(),
+      imageUrl: (json['imageUrl'] as List<dynamic>? ?? []).map((e) => MessageImage.fromJson(e)).toList(),
       audioUrl: json['audioUrl'],
       seen: json['seen'] ?? false,
       msgByUser: UserModel.fromJson(json['msgByUserId'] ?? {}),

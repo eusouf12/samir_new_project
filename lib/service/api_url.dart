@@ -73,6 +73,7 @@ class ApiUrl {
    static String readSingleNotification({required String id})=>"/api/v1/notification/mark/$id";
    static String createReport({required String id}) => "/api/v1/report/create-report/$id";
    static String createGift({required String id}) => "/api/v1/gift/create-redeem/$id";
+   static String sendImage({required String id}) => "/api/v1/message/send-message/$id";
    //
    static String singleInfluencerCollaborations({String? filter, required String id,}) {
     if (filter != null && filter.isNotEmpty) {

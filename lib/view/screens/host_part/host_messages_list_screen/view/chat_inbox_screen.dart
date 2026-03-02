@@ -183,7 +183,7 @@ class ChatScreen extends StatelessWidget {
                         msg: {
                           "isMe": msg.msgByUser.id == profileController.userData.value?.id,
                           "text": msg.text,
-                          "imageUrl": msg.imageUrl,
+                          "imageUrl": msg.imageUrl.map((e) => ApiUrl.baseUrl + e.url).toList(),
                           "createdAt": msg.createdAt,
                         },
                       );
@@ -194,58 +194,85 @@ class ChatScreen extends StatelessWidget {
             ),
 
             // ================== INPUT ==================
-            Padding(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border:
-                        Border.all(color:role == "host" ? AppColors.primary : AppColors.primary2),
-                      ),
-                      child: Row(
+            Column(
+              children: [
+                Obx(() => controller.selectedImages.isNotEmpty
+                    ? Container(
+                  height: 70,
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: controller.selectedImages.length,
+                    itemBuilder: (context, index) {
+                      return Stack(
                         children: [
-                          Expanded(
-                            child: TextField(
-                              controller: controller.messageController,
-                              decoration: const InputDecoration(
-                                hintText: "Type something...",
-                                border: InputBorder.none,
-                                contentPadding:
-                                EdgeInsets.symmetric(horizontal: 15),
-                              ),
+                          Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(File(controller.selectedImages[index].path), width: 60, height: 60, fit: BoxFit.cover),
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(Icons.image_outlined,
-                                color: role == "host" ? AppColors.primary : AppColors.primary2),
-                            onPressed:
-                            controller.pickImagesFromGallery,
-                          ),
+                          Positioned(
+                            top: 0, right: 5,
+                            child: GestureDetector(
+                              onTap: () => controller.selectedImages.removeAt(index),
+                              child: const Icon(Icons.cancel, color: Colors.red, size: 20),
+                            ),
+                          )
                         ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {
-                      controller.sendMessage(receiverId: receiverId);
+                      );
                     },
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: role == "host" ? AppColors.primary : AppColors.primary2),
-                      ),
-                      child:  Icon(Icons.send_outlined, color: role == "host" ? AppColors.primary : AppColors.primary2),
-                    ),
                   ),
-                ],
-              ),
-            ),
+                )
+                    : const SizedBox.shrink()),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: role == "host" ? AppColors.primary : AppColors.primary2),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: controller.messageController,
+                                  decoration: const InputDecoration(
+                                    hintText: "Type something...",
+                                    border: InputBorder.none,
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.image_outlined, color: role == "host" ? AppColors.primary : AppColors.primary2),
+                                onPressed: controller.pickImagesFromGallery,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () => controller.sendMessage(receiverId: receiverId),
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: role == "host" ? AppColors.primary : AppColors.primary2),
+                          ),
+                          child: Icon(Icons.send_outlined, color: role == "host" ? AppColors.primary : AppColors.primary2),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),

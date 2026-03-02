@@ -35,6 +35,7 @@ class ConversationData {
     );
   }
 }
+
 class ConversationModel {
   final String id;
   final List<Participant> participants;
@@ -104,7 +105,7 @@ class Participant {
 class LastMessage {
   final String id;
   final String text;
-  final List<String> imageUrl;
+  final List<MessageImage> imageUrl;
   final String audioUrl;
   final bool seen;
   final String msgByUserId;
@@ -128,7 +129,7 @@ class LastMessage {
     return LastMessage(
       id: json['_id'] ?? '',
       text: json['text'] ?? '',
-      imageUrl: List<String>.from(json['imageUrl'] ?? []),
+      imageUrl: (json['imageUrl'] as List<dynamic>? ?? []).map((e) => MessageImage.fromJson(e)).toList(),
       audioUrl: json['audioUrl'] ?? '',
       seen: json['seen'] ?? false,
       msgByUserId: json['msgByUserId'] ?? '',
@@ -162,6 +163,29 @@ class Pagination {
       totalPages: json['totalPages'] ?? 1,
       totalConversations: json['totalConversations'] ?? 0,
       conversationsPerPage: json['conversationsPerPage'] ?? 10,
+    );
+  }
+}
+
+class MessageImage {
+  final String url;
+  final String type;
+  final String filename;
+  final int size;
+
+  MessageImage({
+    required this.url,
+    required this.type,
+    required this.filename,
+    required this.size,
+  });
+
+  factory MessageImage.fromJson(Map<String, dynamic> json) {
+    return MessageImage(
+      url: json['url'] ?? '',
+      type: json['type'] ?? '',
+      filename: json['filename'] ?? '',
+      size: json['size'] ?? 0,
     );
   }
 }

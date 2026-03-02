@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,6 +9,7 @@ import 'package:samir_flutter_app/view/screens/host_part/host_messages_list_scre
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../service/socket_service.dart';
+import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../../host_profile_screen/controller/host_profile_controller.dart';
 import '../model/inbox_model.dart';
@@ -29,17 +33,12 @@ class MessageController extends GetxController {
   void listenMessage() {
     SocketApi.on('single-chat-message', (data) {
       debugPrint("📩 New Message Received: $data");
-
-      // ডাটা ফরম্যাট অনুযায়ী ম্যাপ করে লিস্টে অ্যাড করা
-      // মনে রাখবেন, সার্ভার থেকে আসা 'text' বা 'message' কী (key) চেক করে নিবেন
       Map<String, dynamic> incomingMsg = {
-        "isMe": false, // যেহেতু অন্য কেউ পাঠিয়েছে
+        "isMe": false,
         "text": data['text'] ?? data['message'] ?? "",
         "imageUrl": data['imageUrl'] ?? [],
         "createdAt": DateTime.now(),
       };
-
-      // UI তে মেসেজ দেখানোর জন্য messages লিস্টে অ্যাড করা
       messages.insert(0, incomingMsg);
     });
   }
@@ -47,8 +46,13 @@ class MessageController extends GetxController {
   // ================== SEND TEXT VIA SOCKET ==================
   Future<void> sendMessage({required String receiverId}) async {
     final text = messageController.text.trim();
-    if (text.isEmpty) return;
+    if (selectedImages.isNotEmpty) {
+      postImageSend(receiverId: receiverId, images: selectedImages);
+      selectedImages.clear();
+      messageController.clear();
+    }
 
+    else if (text.isNotEmpty) {
     final body = {
       "receiverId": receiverId,
       "text": text,
@@ -68,22 +72,85 @@ class MessageController extends GetxController {
 
     // 3️⃣ clear input
     messageController.clear();
+     }
   }
-
-
   // ================== PICK IMAGE ==================
+  RxList<XFile> selectedImages = <XFile>[].obs;
   Future<void> pickImagesFromGallery() async {
-    final List<XFile>? images = await _imagePicker.pickMultiImage(imageQuality: 80);
+    final ImagePicker picker = ImagePicker();
+    final List<XFile> pickedImages = await picker.pickMultiImage();
 
-    if (images != null && images.isNotEmpty) {
-      messages.insert(0, {
-        "isMe": true,
-        "text": "",
-        "imageUrl": images.map((e) => e.path).toList(),
-        "createdAt": DateTime.now(),
-      });
+    if (pickedImages.isNotEmpty) {
+      selectedImages.addAll(pickedImages);
     }
   }
+  //========== send pic ==================
+
+  Future<void> postImageSend({required String receiverId, required List<XFile> images,}) async {
+    try {
+      List<MultipartBody> multipartImages = [];
+
+      for (var xFile in images) {
+        multipartImages.add(
+          MultipartBody(
+            'images',
+            File(xFile.path),
+          ),
+        );
+      }
+
+      final body = {"text": ""};
+
+      final response = await ApiClient.postMultipartData(ApiUrl.sendImage(id: receiverId), body, multipartBody: multipartImages,);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> res =
+        response.body is String
+            ? jsonDecode(response.body)
+            : response.body;
+
+        final messageData =
+        res['data']?['data']?['message'];
+
+        if (messageData == null) {
+          debugPrint("Message data null");
+          return;
+        }
+
+        final List imageList =
+            messageData['imageUrl'] ?? [];
+
+        final List<String> imageUrls =
+        imageList
+            .map<String>((e) =>
+        ApiUrl.baseUrl +
+            e['url'].toString())
+            .toList();
+
+        messages.insert(0, {
+          "isMe": true,
+          "text": messageData['text'] ?? "",
+          "imageUrl": imageUrls,
+          "createdAt":
+          DateTime.parse(messageData['createdAt']),
+        });
+        chatListController.getConversations();
+
+      } else {
+        showCustomSnackBar(
+            "Image send failed",
+            isError: true);
+      }
+    } catch (e) {
+      debugPrint("Image Send Error: $e");
+      showCustomSnackBar(
+          "Something went wrong",
+          isError: true);
+    }
+  }
+
+
+
   //================ API CHAT ==================
   final rxStatus = Status.loading.obs;
   void setStatus(Status status) => rxStatus.value = status;
