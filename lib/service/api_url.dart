@@ -65,7 +65,12 @@ class ApiUrl {
    static  String  hostPayment({required String colId})=>"/api/v1/payment/checkout-session/$colId";
    static  String  giveReview({required String userId})=>"/api/v1/review/create-review/$userId";
    static const  String  infPayment ="/api/v1/payment/stripe-account-onboarding";
-   static  String  getNotification({required String page})=>"/api/v1/notification/collaboration?page=$page&limit=10";
+   static String getNotification({required String page})=>"/api/v1/notification/collaboration?page=$page&limit=10";
+   static const String realAllNotification = "/api/v1/notification/mark-all";
+   static const String getCalenderDate = "/api/v1/calender/get-date-influencer";
+   static const String createCalendar = "/api/v1/calender/create-calender";
+   static  String updateCalendar({required String id}) => "/api/v1/calender/update-calender/$id";
+   static String readSingleNotification({required String id})=>"/api/v1/notification/mark/$id";
    static String createReport({required String id}) => "/api/v1/report/create-report/$id";
    static String createGift({required String id}) => "/api/v1/gift/create-redeem/$id";
    //

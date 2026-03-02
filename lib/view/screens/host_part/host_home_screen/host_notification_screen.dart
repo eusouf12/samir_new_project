@@ -61,7 +61,7 @@ class HostNotificationScreen extends StatelessWidget {
 
                   GestureDetector(
                     onTap: () {
-                     // controller.markAllAsRead();
+                      controller.readAllNotification();
                     },
                     child: CustomText(
                       text: "Read All",
@@ -81,28 +81,14 @@ class HostNotificationScreen extends StatelessWidget {
                 controller.notificationList.length + 1,
                 itemBuilder: (context, index) {
 
-                  if (index ==
-                      controller.notificationList.length) {
+                  if (index == controller.notificationList.length) {
                     return Obx(() =>
-                    controller
-                        .isNotificationLoadMoreLoading
-                        .value
-                        ? Padding(
-                      padding:
-                      const EdgeInsets.all(16),
-                      child: Center(
-                        child: CustomLoader(
-                          color: role == "host"
-                              ? AppColors.primary
-                              : AppColors.primary2,
-                        ),
-                      ),
-                    )
-                        : const SizedBox.shrink());
+                    controller.isNotificationLoadMoreLoading.value ? Padding(padding: const EdgeInsets.all(16),
+                      child: Center(child: CustomLoader(color: role == "host" ? AppColors.primary : AppColors.primary2,),),
+                    ) : const SizedBox.shrink());
                   }
 
-                  final item =
-                  controller.notificationList[index];
+                  final item = controller.notificationList[index];
 
                   return _notificationCard(item);
                 },
@@ -121,22 +107,51 @@ class HostNotificationScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: item.isRead == true ? Colors.white : const Color(0xffF5F9FF),
         borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 6,
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 6,),],
       ),
-      child: Column(
-        crossAxisAlignment:
-        CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(text:item.title ?? "",fontSize: 14, color: Colors.black,fontWeight: FontWeight.w600,),
-          const SizedBox(height: 6),
-          CustomText(text:item.message ?? "",fontSize: 13, color: Colors.grey),
-          const SizedBox(height: 8),
-          CustomText(text: _timeAgo(item.createdAt),fontSize: 11, color: Colors.black),
+          Expanded(
+            child: Column(
+              crossAxisAlignment:
+              CrossAxisAlignment.start,
+              children: [
+                CustomText(text:item.title ?? "",fontSize: 14, color: Colors.black,fontWeight: FontWeight.w600,),
+                const SizedBox(height: 6),
+                CustomText(text:item.message ?? "",fontSize: 13, color: Colors.grey),
+                const SizedBox(height: 8),
+                CustomText(text: _timeAgo(item.createdAt),fontSize: 11, color: Colors.black),
+              ],
+            ),
+          ),
+          //Green Dot
+         // if (item.isRead == false)
+         //    Container(
+         //      margin: const EdgeInsets.only(left: 8, top: 4),
+         //      width: 10,
+         //      height: 10,
+         //      decoration: const BoxDecoration(
+         //        color: Colors.green,
+         //        shape: BoxShape.circle,
+         //      ),
+         //    ),
+          //read btn
+          if (item.isRead == false)
+          GestureDetector(
+            onTap: () {
+              controller.singleReadNotification(id: item.id ?? "");
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Text("UnRead", style: TextStyle(fontSize: 10, color: Colors.white,),
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -94,26 +94,33 @@ class AppNotification {
     this.updatedAt,
   });
 
+  AppNotification copyWith({bool? isRead,}) {
+    return AppNotification(
+      id: id,
+      type: type,
+      title: title,
+      message: message,
+      collaborationId: collaborationId,
+      receiverId: receiverId,
+      receiverRole: receiverRole,
+      isRead: isRead ?? this.isRead,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+  }
+
   factory AppNotification.fromJson(Map<String, dynamic> json) {
     return AppNotification(
       id: json['_id'],
       type: json['type'],
       title: json['title'],
       message: json['message'],
-      collaborationId: json['collaborationId'] != null
-          ? CollaborationId.fromJson(json['collaborationId'])
-          : null,
-      receiverId: json['receiverId'] != null
-          ? Receiver.fromJson(json['receiverId'])
-          : null,
+      collaborationId: json['collaborationId'] != null ? CollaborationId.fromJson(json['collaborationId']) : null,
+      receiverId: json['receiverId'] != null ? Receiver.fromJson(json['receiverId']) : null,
       receiverRole: json['receiverRole'],
       isRead: json['isRead'],
-      createdAt: json['createdAt'] != null
-          ? DateTime.parse(json['createdAt'])
-          : null,
-      updatedAt: json['updatedAt'] != null
-          ? DateTime.parse(json['updatedAt'])
-          : null,
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
 }
@@ -154,3 +161,5 @@ class Receiver {
     );
   }
 }
+
+
