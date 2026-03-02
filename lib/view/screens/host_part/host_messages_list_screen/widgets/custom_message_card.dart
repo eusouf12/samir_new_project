@@ -9,6 +9,8 @@ class CustomMessageCard extends StatelessWidget {
   final String name;
   final String lastMessage;
   final DateTime? time;
+  final bool isActive;
+  final String? lastSeen;
 
   const CustomMessageCard({
     super.key,
@@ -16,6 +18,8 @@ class CustomMessageCard extends StatelessWidget {
     required this.name,
     required this.lastMessage,
     this.time,
+    required this.isActive,
+    this.lastSeen,
   });
 
   @override
@@ -50,16 +54,38 @@ class CustomMessageCard extends StatelessWidget {
                         width: 40,
                         boxShape: BoxShape.circle,
                       ),
-                      // if (isOnline)
-                      //   const Positioned(
-                      //     bottom: -2,
-                      //     right: -2,
-                      //     child: Icon(
-                      //       Icons.circle_rounded,
-                      //       color: AppColors.green,
-                      //       size: 12,
-                      //     ),
-                      //   ),
+
+                      if (isActive)
+                        const Positioned(
+                          bottom: -2,
+                          right: -2,
+                          child: Icon(
+                            Icons.circle,
+                            color: AppColors.green,
+                            size: 12,
+                          ),
+                        )
+                      else if (getShortLastSeen(lastSeen).isNotEmpty)
+                        Positioned(
+                          bottom: -4,
+                          right: -4,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.black87,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              getShortLastSeen(lastSeen),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 8,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                   const SizedBox(width: 8),
@@ -105,4 +131,45 @@ String formatChatTime(DateTime? dateTime) {
 
   final localTime = dateTime.toLocal();
   return DateFormat('hh:mm a').format(localTime);
+}
+
+String formatLastSeen(String? isoString) {
+  if (isoString == null || isoString.isEmpty) return '';
+
+  final DateTime lastSeen =
+  DateTime.parse(isoString).toLocal();
+
+  final Duration diff =
+  DateTime.now().difference(lastSeen);
+
+  if (diff.inSeconds < 60) {
+    return "just now";
+  } else if (diff.inMinutes < 60) {
+    return "${diff.inMinutes}m ago";
+  } else if (diff.inHours < 24) {
+    return "${diff.inHours}h ago";
+  } else if (diff.inDays < 30) {
+    return "${diff.inDays}d ago";
+  } else if (diff.inDays < 365) {
+    return "${(diff.inDays / 30).floor()}mo ago";
+  } else {
+    return "${(diff.inDays / 365).floor()}y ago";
+  }
+}
+
+String getShortLastSeen(String? isoString) {
+  if (isoString == null || isoString.isEmpty) return '';
+
+  final lastSeen = DateTime.parse(isoString).toLocal();
+  final diff = DateTime.now().difference(lastSeen);
+
+  if (diff.inMinutes < 1) {
+    return "1m";
+  } else if (diff.inMinutes < 60) {
+    return "${diff.inMinutes}m";
+  } else if (diff.inHours < 24) {
+    return "${diff.inHours}h";
+  } else {
+    return ""; // days বা month হলে কিছুই না
+  }
 }

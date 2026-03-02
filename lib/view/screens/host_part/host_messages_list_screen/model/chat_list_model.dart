@@ -77,12 +77,16 @@ class Participant {
   final String name;
   final String email;
   final String? image;
+  final String? updatedAt;
+  final bool isActive;
 
   Participant({
     required this.id,
     required this.name,
     required this.email,
     this.image,
+    this.updatedAt,
+    this.isActive = false,
   });
 
   factory Participant.fromJson(Map<String, dynamic> json) {
@@ -91,10 +95,11 @@ class Participant {
       name: json['name'] ?? '',
       email: json['email'] ?? '',
       image: json['image'] ?? '',
+      updatedAt: json['updatedAt'],
+      isActive: json['isActive'] ?? false,
     );
   }
 }
-
 
 class LastMessage {
   final String id;

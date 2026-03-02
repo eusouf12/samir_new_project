@@ -75,6 +75,8 @@ class InfMessagesListScreen extends StatelessWidget {
                         name: user.name ?? '',
                         lastMessage: conversation.lastMessage?.text ?? '',
                         time: conversation.createdAt,
+                        isActive: user.isActive,
+                        lastSeen: user.updatedAt,
                       ),
                     );
                   }

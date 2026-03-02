@@ -20,7 +20,7 @@ class HostMessagesListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      role = await SharePrefsHelper.getString(AppConstants.userId);
+      role = await SharePrefsHelper.getString(AppConstants.role);
       controller.getConversations(loadMore: false);
     });
 
@@ -74,6 +74,8 @@ class HostMessagesListScreen extends StatelessWidget {
                         name: user.name ?? '',
                         lastMessage: conversation.lastMessage?.text ?? '',
                         time: conversation.createdAt,
+                        isActive: user.isActive,
+                        lastSeen: user.updatedAt,
                       ),
                     );
                   }

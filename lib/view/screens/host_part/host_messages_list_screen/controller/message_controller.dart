@@ -76,8 +76,6 @@ class MessageController extends GetxController {
     final List<XFile>? images = await _imagePicker.pickMultiImage(imageQuality: 80);
 
     if (images != null && images.isNotEmpty) {
-      // ইমেজ পাঠানোর জন্য আপনার সার্ভারে আলাদা ইভেন্ট থাকতে পারে
-      // আপাতত লোকালি দেখাচ্ছি
       messages.insert(0, {
         "isMe": true,
         "text": "",
@@ -89,17 +87,13 @@ class MessageController extends GetxController {
   //================ API CHAT ==================
   final rxStatus = Status.loading.obs;
   void setStatus(Status status) => rxStatus.value = status;
-
   RxList<MessageModel> messageList = <MessageModel>[].obs;
+  Rx<OtherParticipant?> otherParticipant = Rx<OtherParticipant?>(null);
   Rx<Pagination?> pagination = Rx<Pagination?>(null);
-
   int currentPage = 1;
   bool hasMore = true;
 
-  Future<void> getChatMessages({
-    bool loadMore = false,
-    required String id,
-  }) async {
+  Future<void> getChatMessages({bool loadMore = false, required String id,}) async {
     if (loadMore && !hasMore) return;
     if (loadMore) {
       currentPage++;
@@ -120,6 +114,7 @@ class MessageController extends GetxController {
         messageList.addAll(model.data.messages);
 
         pagination.value = model.data.pagination;
+        otherParticipant.value = model.data.otherParticipant;
 
         hasMore = model.data.pagination.currentPage < model.data.pagination.totalPages;
         await chatListController.getConversations();

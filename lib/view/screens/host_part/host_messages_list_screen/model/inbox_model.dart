@@ -1,3 +1,5 @@
+import 'chat_list_model.dart';
+
 class ChatListResponse {
   final bool success;
   final String message;
@@ -17,24 +19,27 @@ class ChatListResponse {
     );
   }
 }
+
 class ChatData {
   final List<MessageModel> messages;
   final Pagination pagination;
+  final OtherParticipant? otherParticipant;
 
   ChatData({
     required this.messages,
     required this.pagination,
+    this.otherParticipant,
   });
 
   factory ChatData.fromJson(Map<String, dynamic> json) {
     return ChatData(
-      messages: (json['messages'] as List<dynamic>? ?? [])
-          .map((e) => MessageModel.fromJson(e))
-          .toList(),
+      messages: (json['messages'] as List<dynamic>? ?? []).map((e) => MessageModel.fromJson(e)).toList(),
       pagination: Pagination.fromJson(json['pagination'] ?? {}),
+      otherParticipant: json['otherParticipant'] != null ? OtherParticipant.fromJson(json['otherParticipant']) : null,
     );
   }
 }
+
 class MessageModel {
   final String id;
   final String text;
@@ -117,6 +122,35 @@ class Pagination {
       totalPages: json['totalPages'] ?? 1,
       totalMessages: json['totalMessages'] ?? 0,
       messagesPerPage: json['messagesPerPage'] ?? 10,
+    );
+  }
+}
+
+class OtherParticipant {
+  final String id;
+  final String name;
+  final String email;
+  final String? image;
+  final String? updatedAt;
+  final bool isActive;
+
+  OtherParticipant({
+    required this.id,
+    required this.name,
+    required this.email,
+    this.image,
+    this.updatedAt,
+    this.isActive = false,
+  });
+
+  factory OtherParticipant.fromJson(Map<String, dynamic> json) {
+    return OtherParticipant(
+      id: json['_id'] ?? '',
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      image: json['image'] ?? '',
+      updatedAt: json['updatedAt'],
+      isActive: json['isActive'] ?? false,
     );
   }
 }

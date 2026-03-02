@@ -41,45 +41,87 @@ class ChatScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: IconButton(icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-            onPressed: () async{
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
+            onPressed: () async {
               await chatListController.getConversations();
-            Get.back();
+              Get.back();
             },
           ),
-          title: Row(
-            children:  [
-              CircleAvatar(
-                backgroundImage: (userImage != null && userImage.isNotEmpty)
-                    ? NetworkImage("${ApiUrl.baseUrl}$userImage") : NetworkImage("${AppConstants.profileImage2}"),
-                radius: 20,
-              ),
-              SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text( userName,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold)),
-                  //Text("Active Now", style: TextStyle(color: Colors.grey, fontSize: 12)),
-                ],
-              ),
-            ],
-          ),
+
+          title: Obx(() {
+            final user = controller.otherParticipant.value;
+
+            final bool isActive = user?.isActive ?? false;
+            final String? lastSeen = user?.updatedAt;
+
+            return Row(
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: (user?.image != null && user!.image!.isNotEmpty)
+                          ? NetworkImage("${ApiUrl.baseUrl}${user.image}")
+                          : NetworkImage(AppConstants.profileImage2),
+                      radius: 20,
+                    ),
+
+                    if (isActive)
+                      const Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Icon(
+                          Icons.circle,
+                          color: Colors.green,
+                          size: 15,
+                        ),
+                      ),
+                  ],
+                ),
+
+                const SizedBox(width: 10),
+
+                Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user?.name ?? "",
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    !isActive && formatLastSeen(lastSeen).isNotEmpty ?
+                    CustomText(text: formatLastSeen(lastSeen),color: Colors.grey, fontSize: 12,)
+                    :CustomText(text: "Active Now",color: Colors.black, fontSize: 12,)
+                  ],
+                ),
+              ],
+            );
+          }),
+
           actions: [
             PopupMenuButton<String>(
-              icon: const Icon(Icons.more_horiz, color: Colors.black),
+              icon: const Icon(Icons.more_horiz,
+                  color: Colors.black),
               itemBuilder: (_) => [
                 const PopupMenuItem(
                   value: 'delete',
                   child: Row(
                     children: [
-                      Icon(Icons.delete_outline, color: Colors.red, size: 15),
+                      Icon(Icons.delete_outline,
+                          color: Colors.red, size: 15),
                       SizedBox(width: 5),
-                      Text('Delete Conversation',
-                          style: TextStyle(color: Colors.red, fontSize: 12)),
+                      Text(
+                        'Delete Conversation',
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 12),
+                      ),
                     ],
                   ),
                 )
@@ -95,7 +137,7 @@ class ChatScreen extends StatelessWidget {
               child: Obx(() {
                 //===========  Loader===========
                 if (controller.rxStatus.value == Status.loading && controller.messageList.isEmpty) {
-                  return  Center(child: CustomLoader(color:  role=='host'?AppColors.primary : AppColors.primary2));
+                  return  Center(child: CustomLoader(color:role=='host'?AppColors.primary : AppColors.primary2));
                 }
 
                 //=========== Empty ===========
@@ -125,8 +167,7 @@ class ChatScreen extends StatelessWidget {
 
                     itemBuilder: (_, index) {
                       if (index == controller.messageList.length + controller.messages.length) {
-                        return  Padding(
-                          padding: EdgeInsets.all(10),
+                        return  Padding(padding: EdgeInsets.all(10),
                           child: Center(child: CustomLoader()),
                         );
                       }
@@ -372,5 +413,27 @@ class FullScreenImage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+String formatLastSeen(String? isoString) {
+  if (isoString == null || isoString.isEmpty) return '';
+
+  final lastSeen = DateTime.parse(isoString).toLocal();
+  final diff = DateTime.now().difference(lastSeen);
+
+  if (diff.inSeconds < 60) {
+    return "Active just now";
+  } else if (diff.inMinutes < 60) {
+    return "Active ${diff.inMinutes}m ago";
+  } else if (diff.inHours < 24) {
+    return "Active ${diff.inHours}h ago";
+  } else if (diff.inDays < 30) {
+    return "Active ${diff.inDays}d ago";
+  } else if (diff.inDays < 365) {
+    final months = (diff.inDays / 30).floor();
+    return "Active ${months}mo ago";
+  } else {
+    final years = (diff.inDays / 365).floor();
+    return "Active ${years}y ago";
   }
 }
