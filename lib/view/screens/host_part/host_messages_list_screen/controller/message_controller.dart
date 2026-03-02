@@ -69,8 +69,6 @@ class MessageController extends GetxController {
       "imageUrl": <String>[],
       "createdAt": DateTime.now(),
     });
-
-    // 3️⃣ clear input
     messageController.clear();
      }
   }
@@ -99,33 +97,22 @@ class MessageController extends GetxController {
         );
       }
 
-      final body = {"text": ""};
+      final body = {"text": messageController.text.trim()};
 
       final response = await ApiClient.postMultipartData(ApiUrl.sendImage(id: receiverId), body, multipartBody: multipartImages,);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final Map<String, dynamic> res =
-        response.body is String
-            ? jsonDecode(response.body)
-            : response.body;
+        final Map<String, dynamic> res = response.body is String ? jsonDecode(response.body) : response.body;
 
-        final messageData =
-        res['data']?['data']?['message'];
+        final messageData = res['data']?['data']?['message'];
 
-        if (messageData == null) {
-          debugPrint("Message data null");
+        if (messageData == null) {debugPrint("Message data null");
           return;
         }
 
-        final List imageList =
-            messageData['imageUrl'] ?? [];
+        final List imageList = messageData['imageUrl'] ?? [];
 
-        final List<String> imageUrls =
-        imageList
-            .map<String>((e) =>
-        ApiUrl.baseUrl +
-            e['url'].toString())
-            .toList();
+        final List<String> imageUrls = imageList.map<String>((e) => ApiUrl.baseUrl + e['url'].toString()).toList();
 
         messages.insert(0, {
           "isMe": true,
@@ -135,17 +122,13 @@ class MessageController extends GetxController {
           DateTime.parse(messageData['createdAt']),
         });
         chatListController.getConversations();
+        messageController.clear();
 
-      } else {
-        showCustomSnackBar(
-            "Image send failed",
-            isError: true);
+      } else {showCustomSnackBar("Image send failed", isError: true);
       }
     } catch (e) {
       debugPrint("Image Send Error: $e");
-      showCustomSnackBar(
-          "Something went wrong",
-          isError: true);
+      showCustomSnackBar("Something went wrong", isError: true);
     }
   }
 
