@@ -52,13 +52,7 @@ class HostNotificationScreen extends StatelessWidget {
                 mainAxisAlignment:
                 MainAxisAlignment.spaceBetween,
                 children: [
-
-                  const CustomText(
-                    text: "",
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-
+                  const CustomText(text: "", fontSize: 16, fontWeight: FontWeight.w600,),
                   GestureDetector(
                     onTap: () {
                       controller.readAllNotification();
@@ -77,8 +71,7 @@ class HostNotificationScreen extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 controller: scrollController,
-                itemCount:
-                controller.notificationList.length + 1,
+                itemCount: controller.notificationList.length + 1,
                 itemBuilder: (context, index) {
 
                   if (index == controller.notificationList.length) {
@@ -117,11 +110,33 @@ class HostNotificationScreen extends StatelessWidget {
               crossAxisAlignment:
               CrossAxisAlignment.start,
               children: [
-                CustomText(text:item.title ?? "",fontSize: 14, color: Colors.black,fontWeight: FontWeight.w600,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(text:item.title ?? "",fontSize: 14, color: Colors.black,fontWeight: FontWeight.w600,),
+                    //read btn
+                    item.isRead == false ?
+                    GestureDetector(
+                        onTap: () {
+                          controller.singleReadNotification(id: item.id ?? "");
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Text("UnRead", style: TextStyle(fontSize: 10, color: Colors.white,),
+                          ),
+                        ),
+                      )
+                    : SizedBox.shrink(),
+                  ],
+                ),
                 const SizedBox(height: 6),
-                CustomText(text:item.message ?? "",fontSize: 13, color: Colors.grey),
+                CustomText(text:item.message ?? "",fontSize: 13, color: Colors.grey,maxLines: 5,textAlign: TextAlign.start,),
                 const SizedBox(height: 8),
-                CustomText(text: _timeAgo(item.createdAt),fontSize: 11, color: Colors.black),
+                CustomText(text: _timeAgo(item.createdAt),fontSize: 11,fontWeight: FontWeight.w500, color: Colors.black),
               ],
             ),
           ),
@@ -136,22 +151,7 @@ class HostNotificationScreen extends StatelessWidget {
          //        shape: BoxShape.circle,
          //      ),
          //    ),
-          //read btn
-          if (item.isRead == false)
-          GestureDetector(
-            onTap: () {
-              controller.singleReadNotification(id: item.id ?? "");
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Text("UnRead", style: TextStyle(fontSize: 10, color: Colors.white,),
-              ),
-            ),
-          ),
+
         ],
       ),
     );

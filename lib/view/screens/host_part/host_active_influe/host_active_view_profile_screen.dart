@@ -224,10 +224,13 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 8),
                           child: Row(
                             children: [
-                              Icon(
-                                _getPlatformIcon(item['platform'] ?? ''),
-                                size: 20,
-                                color: _getPlatformColor(item['platform'] ?? ''),
+                              InkWell(
+                                onTap: () => _launchURL(item['url'] ?? ''),
+                                child: Icon(
+                                  _getPlatformIcon(item['platform'] ?? ''),
+                                  size: 20,
+                                  color: _getPlatformColor(item['platform'] ?? ''),
+                                ),
                               ),
                               const SizedBox(width: 8),
                               CustomText(
@@ -468,5 +471,17 @@ class HostActiveViewProfileScreen extends StatelessWidget {
       default:
         return AppColors.primary;
     }
+  }
+  Future<void> _launchURL(String url) async {
+    if (!url.startsWith('http')) {
+      url = 'https://$url';
+    }
+
+    final Uri uri = Uri.parse(url);
+
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
   }
 }

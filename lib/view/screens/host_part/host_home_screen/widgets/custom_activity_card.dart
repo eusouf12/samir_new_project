@@ -24,43 +24,38 @@ class CustomActivityCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    CustomImage(imageSrc: icon?? AppIcons.collaboraIcon),
-                    SizedBox(width: 8,),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: title?? " ",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                       CustomText(
-                          text: message??" ",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textClr,
-                         top: 3,
-                        ),
-                        CustomText(
-                          text: time??" ",
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textClr,
-                          top: 3,
-                        ),
-                      ],
-                    ),
-                  ],
+                CustomImage(imageSrc: icon?? AppIcons.collaboraIcon),
+                SizedBox(width: 8,),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: title?? " ",
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                     CustomText(
+                        text: message??" ",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.textClr,
+                       maxLines: 5,
+                       textAlign: TextAlign.start,
+                       top: 3,
+                       overflow: TextOverflow.ellipsis,
+                      ),
+                      CustomText(
+                        text: time??" ",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.black,
+                        top: 3,
+                      ),
+                    ],
+                  ),
                 ),
-                // CircleAvatar(
-                //   backgroundColor: AppColors.primary,
-                //   radius: 12,
-                //   child: CustomText(text: number?? " ",color: AppColors.white,),
-                // )
               ],
             ),
           ),

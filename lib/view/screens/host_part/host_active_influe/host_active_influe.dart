@@ -81,7 +81,7 @@ class HostActiveInflue extends StatelessWidget {
                       itemBuilder: (context, index) {
                         if (!isSearching && index == listToShow.length) {
                           return Padding(padding: const EdgeInsets.all(12),
-                            child: Center(child: CustomLoader()),
+                            child: Center(child: CustomLoader(color: role == "host" ? AppColors.primary : AppColors.primary2,)),
                           );
                         }
 

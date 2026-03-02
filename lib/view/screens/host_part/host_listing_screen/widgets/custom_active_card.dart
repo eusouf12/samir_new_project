@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../utils/app_icons/app_icons.dart';
 import '../../../../components/custom_button/custom_button_two.dart';
@@ -217,19 +218,19 @@ class CustomActiveCard extends StatelessWidget {
               // ====== platform followers ===========
               role == "host"
               ?Row(
-                children: (socialMediaLinks ?? []).isEmpty
-                    ? [
-                  SizedBox.shrink()
-                ]
-                    : (socialMediaLinks!).map((item) {
+                children: (socialMediaLinks ?? []).isEmpty ? [SizedBox.shrink()]
+                 : (socialMediaLinks!).map((item) {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Row(
                       children: [
-                        Icon(
-                          _getPlatformIcon(item.platform),
-                          size: 18,
-                          color: _getPlatformColor(item.platform),
+                        InkWell(
+                          onTap: () => _launchURL(item.url),
+                          child: Icon(
+                            _getPlatformIcon(item.platform),
+                            size: 18,
+                            color: _getPlatformColor(item.platform),
+                          ),
                         ),
                         const SizedBox(width: 8),
                         CustomText(
@@ -316,6 +317,18 @@ class CustomActiveCard extends StatelessWidget {
       default:
         return AppColors.primary;
     }
+  }
+  Future<void> _launchURL(String url) async {
+    if (!url.startsWith('http')) {
+      url = 'https://$url';
+    }
+
+    final Uri uri = Uri.parse(url);
+
+    await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
   }
 
 
