@@ -96,6 +96,10 @@ class HostActiveInflue extends StatelessWidget {
                           username: user.userName ?? '',
                           socialMediaLinks: user.socialMediaLinks,
                           imageUrl: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
+                          isFavourite: user.isFavorite,
+                          onToggleFavourite: () {
+                           influencerListHostController.toggleInfFavourite(infId: user.id);
+                          },
                           onViewMessage: () async {
                             final conversationId = await chatListController.checkChatListExist(id: user.id);
 

@@ -68,6 +68,7 @@ class AllUserModel {
 
   final bool airbnbAccountLinked;
   final bool isFounderMember;
+  final bool isFavorite;
   final bool isStripeConnected;
 
   final double averageRating;
@@ -96,6 +97,7 @@ class AllUserModel {
     required this.status,
     required this.airbnbAccountLinked,
     required this.isFounderMember,
+    required this.isFavorite,
     required this.isStripeConnected,
     required this.averageRating,
     required this.responseRate,
@@ -147,6 +149,7 @@ class AllUserModel {
 
       airbnbAccountLinked: json['airbnbAccountLinked'] ?? false,
       isFounderMember: json['isFounderMember'] ?? false,
+      isFavorite: json['isFavorite'] ?? false,
       isStripeConnected: json['isStripeConnected'] ?? false,
 
       averageRating: (json['averageRating'] ?? 0).toDouble(),
@@ -181,6 +184,47 @@ class AllUserModel {
 
       createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
       updatedAt: DateTime.tryParse(json['updatedAt'] ?? '') ?? DateTime.now(),
+    );
+  }
+  AllUserModel copyWith({
+    bool? isFavorite,
+  }) {
+    return AllUserModel(
+      id: id,
+      name: name,
+      nightCredits: nightCredits,
+      email: email,
+      role: role,
+      status: status,
+      userName: userName,
+      image: image,
+      bio: bio,
+      aboutMe: aboutMe,
+      city: city,
+      state: state,
+      country: country,
+      fullAddress: fullAddress,
+      zipCode: zipCode,
+      phone: phone,
+      gender: gender,
+      dateOfBirth: dateOfBirth,
+      airbnbAccountLinked: airbnbAccountLinked,
+      isFounderMember: isFounderMember,
+      isFavorite: isFavorite ?? this.isFavorite,
+      isStripeConnected: isStripeConnected,
+      averageRating: averageRating,
+      responseRate: responseRate,
+      avgResponseTime: avgResponseTime,
+      totalReviews: totalReviews,
+      referralCount: referralCount,
+      nicheTags: nicheTags,
+      collaborations: collaborations,
+      deals: deals,
+      listings: listings,
+      redeemStars: redeemStars,
+      socialMediaLinks: socialMediaLinks,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
     );
   }
 }

@@ -141,7 +141,46 @@ class InfluencerListHostController extends GetxController {
     }
   }
 
-  // ================= GET MY COLLABORATIONS =================
+  //============  Add Inf Favourite ================
+  RxBool favouriteLoading = false.obs;
+  Future<void> toggleInfFavourite({required String infId}) async {
 
+    final index = influencerList.indexWhere((e) => e.id == infId);
+
+    if (index != -1) {
+      final currentUser = influencerList[index];
+
+      influencerList[index] = currentUser.copyWith(
+        isFavorite: !currentUser.isFavorite,
+      );
+
+      influencerList.refresh();
+    }
+
+    try {
+      dynamic response = await ApiClient.patchData(ApiUrl.addFavouriteInf(infId: infId), null,);
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+
+        if (index != -1) {
+          final currentUser = influencerList[index];
+          influencerList[index] = currentUser.copyWith(isFavorite: !currentUser.isFavorite,
+          );
+          influencerList.refresh();
+        }
+        showCustomSnackBar("Failed to update favourite", isError: true);
+      }
+
+    } catch (e) {
+
+      if (index != -1) {
+        final currentUser = influencerList[index];
+        influencerList[index] = currentUser.copyWith(isFavorite: !currentUser.isFavorite,);
+        influencerList.refresh();
+      }
+
+      showCustomSnackBar("An error occurred.", isError: true);
+    }
+  }
 }
 

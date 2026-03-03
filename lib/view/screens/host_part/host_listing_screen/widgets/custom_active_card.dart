@@ -22,6 +22,8 @@ class CustomActiveCard extends StatelessWidget {
   final VoidCallback onViewProfile;
   final VoidCallback onViewMessage;
   final VoidCallback? onSendRequest;
+  final bool isFavourite;
+  final VoidCallback? onToggleFavourite;
 
   const CustomActiveCard({
     super.key,
@@ -38,6 +40,8 @@ class CustomActiveCard extends StatelessWidget {
     required this.onViewMessage,
     this.onSendRequest,
     this.role,
+    required this.isFavourite,
+    this.onToggleFavourite,
   });
 
   @override
@@ -60,6 +64,7 @@ class CustomActiveCard extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: [
+
               // ===== Profile Row =====
               Row(
                 children: [
@@ -133,6 +138,18 @@ class CustomActiveCard extends StatelessWidget {
                 // night credits and ratting
                   Column(
                     children: [
+                      if (role == "host")
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: InkWell(
+                            onTap: onToggleFavourite,
+                            child: Icon(
+                              isFavourite ? Icons.favorite : Icons.favorite_border, color: isFavourite ? Colors.red : Colors.grey,
+                              size: 22,
+                            ),
+                          ),
+                        ),
+                      //rating
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                         decoration: BoxDecoration(
