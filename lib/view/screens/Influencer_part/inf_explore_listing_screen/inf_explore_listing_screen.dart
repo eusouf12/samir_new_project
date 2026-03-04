@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
 import 'package:samir_flutter_app/utils/app_const/app_const.dart';
+import 'package:samir_flutter_app/utils/app_icons/app_icons.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
@@ -36,6 +37,7 @@ class InfExploreDealsScreen extends StatelessWidget {
         appBar: CustomRoyelAppbar(
           leftIcon: false,
           titleName: "Explore Listing",
+          rightIcon: AppIcons.favourite,
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),

@@ -44,5 +44,6 @@ class AppIcons {
   static const String infpaymentIcon = "$basePath/infpaymentIcon.svg";
   static const String listingIcon = "$basePath/listing.svg";
   static const String calender = "$basePath/calender.svg";
+  static const String favourite = "$basePath/heart-Bold.svg";
 
 }

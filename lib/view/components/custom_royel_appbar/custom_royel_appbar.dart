@@ -40,16 +40,14 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
         scrolledUnderElevation: 0,
         actions: [
           IconButton(
-              onPressed: () {
-                rightOnTap!();
-              },
+              onPressed: rightOnTap ?? () {},
               icon: rightIcon == null ?
               SizedBox()
              : CustomImage(
                 imageSrc: rightIcon!,
                 height: 24,
                 width: 24,
-                imageColor: AppColors.black,
+                imageColor: AppColors.green,
               )),
         ],
         backgroundColor: Colors.transparent,
