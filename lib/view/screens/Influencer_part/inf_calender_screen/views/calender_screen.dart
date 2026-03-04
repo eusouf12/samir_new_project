@@ -36,11 +36,12 @@ class CalenderScreen extends StatelessWidget {
               SizedBox(height: 30,),
               Obx(() {
                 if (calenderController.isCalendarLoading.value) {
-                  return Center(child: CustomLoader(),);
+                  return Center(child: CustomLoader(color: AppColors.primary2,));
                 }
 
                 return TableCalendar(
                   calendarStyle: CalendarStyle(
+                    cellMargin: EdgeInsets.only(top: 12),
                     markersMaxCount: 0,
                     markerSize: 0,
                     markerMargin: EdgeInsets.zero,
@@ -64,6 +65,7 @@ class CalenderScreen extends StatelessWidget {
                   locale: "en_US",
                   rowHeight: 90,
                   headerStyle: HeaderStyle(
+                    headerMargin: EdgeInsets.only(bottom: 20),
                     titleTextStyle: TextStyle(
                         color: AppColors.primary2,
                         fontSize: 24.w,
@@ -116,21 +118,13 @@ class CalenderScreen extends StatelessWidget {
                     },
                     todayBuilder: (context, day, focusedDay) {
 
-                      final normalized =
-                      DateTime(day.year, day.month, day.day);
+                      final normalized = DateTime(day.year, day.month, day.day);
 
-                      final events =
-                      calenderController.eventMap[normalized];
+                      final events = calenderController.eventMap[normalized];
 
-                      final hasEvent =
-                          events != null && events.isNotEmpty;
+                      final hasEvent = events != null && events.isNotEmpty;
 
-                      return _buildDateBox(
-                        day,
-                        hasEvent,
-                        true,
-                        events: events,
-                      );
+                      return _buildDateBox(day, hasEvent, true, events: events,);
                     },
                    //other day
                     defaultBuilder: (context, day, focusedDay) {
