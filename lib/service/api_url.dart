@@ -54,7 +54,11 @@ class ApiUrl {
    static String getChatMessages({required String id, required String page})=> "/api/v1/message/get-chat-list/$id?page=$page&limit=10";
    static String getReview({required String userId, required String page})=> "/api/v1/review/user/$userId?page=$page&limit=10";
    static String checkChatList({required String id})=> "/api/v1/message/get-message-by-receiverId/$id";
-   static  String  influencerList({required String page,required String role})=>"/api/v1/user/all-users?role=$role&page=$page&limit=10";
+   static String influencerList({required String page, required String role, bool? favourite,}) {
+     String url = "/api/v1/user/all-users?role=$role&page=$page&limit=10";
+     if (favourite != null) {url += "&favourite=$favourite";}
+     return url;
+   }
    static  String  hostList({required String page})=>"/api/v1/user/all-users?role=host&page=$page&limit=10";
    static String influencerSearch({required String query})=> "/api/v1/search/specific?query=users&searchType=$query";
    static  String  singleUserInfo({required String id})=>"/api/v1/user/single-user/$id";

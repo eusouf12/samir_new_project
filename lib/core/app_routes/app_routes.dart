@@ -17,6 +17,7 @@ import '../../view/screens/host_part/collaboration_screen/views/negotiation_scre
 import '../../view/screens/host_part/host_active_influe/host_active_influe.dart';
 import '../../view/screens/host_part/host_active_influe/host_active_view_profile_screen.dart';
 import '../../view/screens/host_part/host_active_influe/host_send_collaboaration_screen.dart';
+import '../../view/screens/host_part/host_active_influe/views/favourite_inf_screen.dart';
 import '../../view/screens/host_part/host_active_influe/views/host_past_deals_screen.dart';
 import '../../view/screens/host_part/host_active_influe/views/inf_show_listin_screen.dart';
 import '../../view/screens/host_part/host_active_influe/views/review_all_screen.dart';
@@ -117,6 +118,7 @@ class AppRoutes {
  static const String infActiveHostsScreen = "/InfActiveHostsScreen";
  static const String infActiveHostProfileScreen = "/InfActiveHostProfileScreen";
  static const String infShowListingScreen = "/InfShowListingScreen";
+ static const String favouriteInfScreen = "/FavouriteInfScreen";
 
 
   static List<GetPage> routes = [
@@ -168,6 +170,7 @@ class AppRoutes {
     GetPage(name: hostRedeemRequestScreen, page: () => HostRedeemRequestScreen()),
     GetPage(name: chatScreen, page: () => ChatScreen()),
     GetPage(name: negotiationScreen, page: () => NegotiationScreen()),
+    GetPage(name: favouriteInfScreen, page: () => FavouriteInfScreen()),
 
 
 

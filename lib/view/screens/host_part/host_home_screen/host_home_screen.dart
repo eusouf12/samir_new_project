@@ -20,7 +20,6 @@ import 'controller/notification_controller.dart';
 
 class HostHomeScreen extends StatelessWidget {
   HostHomeScreen({super.key});
- // final HostProfileController hostProfileController = Get.put(HostProfileController());
   final CollaborationController collaborationController = Get.put(CollaborationController());
   final ListingController listingController = Get.put(ListingController());
   final InfluencerListHostController influencerListHostController = Get.put(InfluencerListHostController());
@@ -30,7 +29,6 @@ class HostHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
       String id = await SharePrefsHelper.getString(AppConstants.userId);
-     // hostProfileController.getUserProfile();
       collaborationController.getSingleUser(userId: id);
       listingController.getListings(loadMore: false);
       influencerListHostController.getInfluencers();
@@ -87,16 +85,6 @@ class HostHomeScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // CustomContainerCard(
-                      //   title: "Deals",
-                      //   color: AppColors.white,
-                      //   textColor: AppColors.black,
-                      //   number: "${userData.value?.dealsTotal}",
-                      //   onTap: () {
-                      //     Get.toNamed(AppRoutes.hostDealsScreen);
-                      //   },
-                      // ),
-                      // SizedBox(width: 16),
                       //Listings
                       CustomContainerCard(
                         title: "My\nListings",
@@ -108,7 +96,17 @@ class HostHomeScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(width: 16),
-                      //Influencer
+                      //Favourite Influencer
+                      CustomContainerCard(
+                        onTap: () {
+                          Get.toNamed(AppRoutes.favouriteInfScreen, arguments: { "role" : collaborationController.singleUserProfile.value?.role, "myNightCredits" : userData.value?.nightCredits});
+                        },
+                        title: "Favourite\nInfluencer",
+                        color: AppColors.white,
+                        textColor: AppColors.black,
+                        number: influencerListHostController.influencerList.length.toString(),
+                      ),
+                      //Active Influencer
                       CustomContainerCard(
                         onTap: () {
                           Get.toNamed(AppRoutes.hostActiveInflue, arguments: { "role" : collaborationController.singleUserProfile.value?.role, "myNightCredits" : userData.value?.nightCredits});

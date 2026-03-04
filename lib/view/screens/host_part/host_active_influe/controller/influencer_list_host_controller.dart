@@ -57,7 +57,7 @@ class InfluencerListHostController extends GetxController {
   int currentPage = 1;
   int totalPages = 1;
 
-  Future<void> getInfluencers({bool loadMore = false}) async {
+  Future<void> getInfluencers({bool loadMore = false,bool? favourite}) async {
     final role = await SharePrefsHelper.getString(AppConstants.role);
 
     if (loadMore) {
@@ -73,7 +73,7 @@ class InfluencerListHostController extends GetxController {
     }
 
     try {
-      final response = await ApiClient.getData(ApiUrl.influencerList(page: currentPage.toString(), role: role=="host" ? "influencer" : "host"));
+      final response = await ApiClient.getData(ApiUrl.influencerList(page: currentPage.toString(), role: role=="host" ? "influencer" : "host",favourite: favourite));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
@@ -164,8 +164,7 @@ class InfluencerListHostController extends GetxController {
 
         if (index != -1) {
           final currentUser = influencerList[index];
-          influencerList[index] = currentUser.copyWith(isFavorite: !currentUser.isFavorite,
-          );
+          influencerList[index] = currentUser.copyWith(isFavorite: !currentUser.isFavorite,);
           influencerList.refresh();
         }
         showCustomSnackBar("Failed to update favourite", isError: true);
