@@ -47,7 +47,7 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
                 imageSrc: rightIcon!,
                 height: 24,
                 width: 24,
-                imageColor: AppColors.green,
+                imageColor: AppColors.red,
               )),
         ],
         backgroundColor: Colors.transparent,

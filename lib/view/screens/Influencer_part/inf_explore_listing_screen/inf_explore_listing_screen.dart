@@ -38,6 +38,9 @@ class InfExploreDealsScreen extends StatelessWidget {
           leftIcon: false,
           titleName: "Explore Listing",
           rightIcon: AppIcons.favourite,
+          rightOnTap: () {
+           // Get.toNamed(AppRoutes.infActiveHostsScreen);
+          },
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
