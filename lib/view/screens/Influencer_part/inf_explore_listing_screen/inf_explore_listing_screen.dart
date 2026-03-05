@@ -37,7 +37,7 @@ class InfExploreDealsScreen extends StatelessWidget {
         appBar: CustomRoyelAppbar(
           leftIcon: false,
           titleName: "Explore Listing",
-          rightIcon: AppIcons.favourite,
+          //rightIcon: AppIcons.favourite,
           rightOnTap: () {
            // Get.toNamed(AppRoutes.infActiveHostsScreen);
           },
@@ -98,6 +98,7 @@ class InfExploreDealsScreen extends StatelessWidget {
                           staus: listing.status,
                           btn: false,
                           btn2: false,
+                          isFavourite:listing.isFavorite,
                           onTapAirbnb: () async {
                             final link = listing.addAirbnbLink;
                             if (link.isEmpty) return;
@@ -111,6 +112,9 @@ class InfExploreDealsScreen extends StatelessWidget {
                           },
                           onTapDelete: () {
                             controller.deleteListing(id: listing.id);
+                          },
+                          onTapFavourite: (){
+                            controller.toggleHostListingFavourite(listingId: listing.id);
                           },
                         );
                       } else {

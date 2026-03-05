@@ -76,6 +76,8 @@ class ApiUrl {
    static String createGift({required String id}) => "/api/v1/gift/create-redeem/$id";
    static String sendImage({required String id}) => "/api/v1/message/send-message/$id";
    static String addFavouriteInf({required String infId}) => "/api/v1/auth/toggle-favorite/$infId";
+   static String addFavouriteListing({required String listingId}) => "/api/v1/listing/toggle-favorite/$listingId";
+   static String myFavouriteListing = "/api/v1/listing/my-all-favorites";
    //
    static String singleInfluencerCollaborations({String? filter, required String id,}) {
     if (filter != null && filter.isNotEmpty) {

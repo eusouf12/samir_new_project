@@ -495,4 +495,56 @@ class ListingController extends GetxController {
       isVerifiedAllLoadMoreLoading.value = false;
     }
   }
+
+  //========== toggle fav or not apply . ===========================
+
+  Future<void> toggleHostListingFavourite({required String listingId}) async {
+
+    final index = verifiedAllListingList.indexWhere((e) => e.id == listingId);
+    if (index == -1) return;
+
+    final originalItem = verifiedAllListingList[index];
+    final bool wasFavorite = originalItem.isFavorite;
+    verifiedAllListingList[index] = originalItem.copyWith(isFavorite: !wasFavorite);
+    verifiedAllListingList.refresh();
+
+    try {
+      final response = await ApiClient.patchData(ApiUrl.addFavouriteListing(listingId: listingId), null,);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint("Success toggle favourite for listing");
+        // getFavouriteInfluencers();
+      } else {
+        throw Exception("Failed to update");
+      }
+    } catch (e) {
+      verifiedAllListingList[index] = originalItem.copyWith(isFavorite: wasFavorite);
+      verifiedAllListingList.refresh();
+      showCustomSnackBar("Failed to update favourite", isError: true);
+    }
+  }
+
+  // ============  Remove Listing From Favorite List ================
+  Future<void> removeHostListingFromFavorite({required String listingId}) async {
+    final index = verifiedAllListingList.indexWhere((e) => e.id == listingId);
+    if (index == -1) return;
+
+    final removedItem = verifiedAllListingList[index];
+
+    verifiedAllListingList.removeAt(index);
+    verifiedAllListingList.refresh();
+
+    try {
+      final response = await ApiClient.patchData(ApiUrl.addFavouriteInf(infId: listingId), null,);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+      } else {
+        throw Exception("Server Error");
+      }
+    } catch (e) {
+      verifiedAllListingList.insert(index, removedItem);
+      verifiedAllListingList.refresh();
+      showCustomSnackBar("Failed to remove from list", isError: true);
+    }
+  }
 }
