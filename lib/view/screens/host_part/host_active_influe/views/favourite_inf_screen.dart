@@ -24,11 +24,11 @@ class FavouriteInfScreen extends StatelessWidget {
     final String role = args['role'];
     final int myNightCredits = args['myNightCredits']?? 0;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      influencerListHostController.getInfluencers(favourite: true);
+      influencerListHostController.getFavouriteInfluencers();
     });
     return CustomGradient(
       child: Scaffold(
-        appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Favourite Influencers" ),
+        appBar: CustomRoyelAppbar(leftIcon: true, titleName: "Favourite Influencers",customRouteName: AppRoutes.hostHomeScreen,),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -56,7 +56,7 @@ class FavouriteInfScreen extends StatelessWidget {
                 child: Obx(() {
                   final bool isSearching = influencerListHostController.searchQuery.value.isNotEmpty;
 
-                  if (!isSearching && influencerListHostController.rxStatus.value == Status.loading) {
+                  if (!isSearching && influencerListHostController.rxFavouriteStatus.value == Status.loading){
                     return  Center(child: CustomLoader(color: role == "host" ? AppColors.primary : AppColors.primary2));
                   }
 
@@ -67,19 +67,19 @@ class FavouriteInfScreen extends StatelessWidget {
                   final listToShow = isSearching ? influencerListHostController.searchInfluencerList : influencerListHostController.influencerList;
 
                   if (listToShow.isEmpty) {
-                    return  Center(child: Text(role == "host" ? "No influencers found" : "No hosts found"),
+                    return  Center(child: Text( "No Favourite influencers found"),
                     );
                   }
 
                   return NotificationListener<ScrollNotification>(
                     onNotification: (scrollInfo) {
-                      if (!isSearching && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !influencerListHostController.isLoadMore.value) {
-                        influencerListHostController.getInfluencers(loadMore: true);
+                      if (!isSearching && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !influencerListHostController.isFavouriteLoadMore.value) {
+                        influencerListHostController.getFavouriteInfluencers(loadMore: true);
                       }
                       return false;
                     },
                     child: ListView.builder(
-                      itemCount: listToShow.length + (!isSearching && influencerListHostController.isLoadMore.value ? 1 : 0),
+                      itemCount: listToShow.length + (!isSearching && influencerListHostController.isFavouriteLoadMore.value ? 1 : 0),
                       itemBuilder: (context, index) {
                         if (!isSearching && index == listToShow.length) {
                           return Padding(padding: const EdgeInsets.all(12),
@@ -100,7 +100,7 @@ class FavouriteInfScreen extends StatelessWidget {
                           imageUrl: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
                           isFavourite: user.isFavorite,
                           onToggleFavourite: () {
-                            influencerListHostController.toggleInfFavourite(infId: user.id);
+                            influencerListHostController.removeFavouriteFromList(infId: user.id);
                           },
                           onViewMessage: () async {
                             final conversationId = await chatListController.checkChatListExist(id: user.id);

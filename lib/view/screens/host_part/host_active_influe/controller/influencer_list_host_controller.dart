@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:samir_flutter_app/view/screens/host_part/collaboration_screen/controller/collabration_controller.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
@@ -14,10 +15,10 @@ class InfluencerListHostController extends GetxController {
   // ================= SEARCH INFLUENCER =================
   RxList<AllUserModel> searchInfluencerList = <AllUserModel>[].obs;
   RxString searchQuery = ''.obs;
+  final CollaborationController collaborationController = Get.put(CollaborationController());
 
   final rxSearchInfluencerStatus = Status.completed.obs;
-  void setSearchInfluencerStatus(Status status) =>
-      rxSearchInfluencerStatus.value = status;
+  void setSearchInfluencerStatus(Status status) => rxSearchInfluencerStatus.value = status;
 
   Future<void> searchInfluencer({required String query}) async {
     searchQuery.value = query;
@@ -56,8 +57,9 @@ class InfluencerListHostController extends GetxController {
 
   int currentPage = 1;
   int totalPages = 1;
+  int totaInfluencer = 0;
 
-  Future<void> getInfluencers({bool loadMore = false,bool? favourite}) async {
+  Future<void> getInfluencers({bool loadMore = false}) async {
     final role = await SharePrefsHelper.getString(AppConstants.role);
 
     if (loadMore) {
@@ -73,13 +75,13 @@ class InfluencerListHostController extends GetxController {
     }
 
     try {
-      final response = await ApiClient.getData(ApiUrl.influencerList(page: currentPage.toString(), role: role=="host" ? "influencer" : "host",favourite: favourite));
+      final response = await ApiClient.getData(ApiUrl.influencerList(page: currentPage.toString(), role: role=="host" ? "influencer" : "host"));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
 
         final model = AllUsersResponse.fromJson(jsonResponse);
-
+        totaInfluencer = model.pagination.totalUsers;
         totalPages = model.pagination.totalPages;
 
         // duplicate avoid
@@ -101,6 +103,60 @@ class InfluencerListHostController extends GetxController {
     } finally {
       isLoading.value = false;
       isLoadMore.value = false;
+    }
+  }
+
+  // ========== GetFavourite Inf list ===========
+  final isFavouriteLoading = false.obs;
+  final isFavouriteLoadMore = false.obs;
+  final rxFavouriteStatus = Status.loading.obs;
+  void setFavouriteStatus(Status status) => rxFavouriteStatus.value = status;
+  int favouriteCurrentPage = 1;
+  int favouriteTotalPages = 1;
+  int totalFavouriteInfluencer = 0;
+
+  Future<void> getFavouriteInfluencers({bool loadMore = false}) async {
+
+    if (loadMore) {
+      if (isFavouriteLoadMore.value || favouriteCurrentPage >= favouriteTotalPages) return;
+      isFavouriteLoadMore.value = true;
+      favouriteCurrentPage++;
+    } else {
+      influencerList.clear();
+      isFavouriteLoading.value = true;
+      favouriteCurrentPage = 1;
+      setFavouriteStatus(Status.loading);
+    }
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.favouriteInfluencerList(page: favouriteCurrentPage.toString(),),);
+
+      if (response.statusCode == 200) {
+
+        final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final model = AllUsersResponse.fromJson(jsonResponse);
+
+        totalFavouriteInfluencer = model.pagination.totalUsers;
+        favouriteTotalPages = model.pagination.totalPages;
+
+        final existingIds = influencerList.map((e) => e.id).toSet();
+
+        influencerList.addAll(model.data.where((e) => !existingIds.contains(e.id)),);
+
+        setFavouriteStatus(Status.completed);
+
+      } else {
+        setFavouriteStatus(Status.error);
+        showCustomSnackBar("Failed to load favourites", isError: true);
+      }
+
+    } catch (e) {
+      setFavouriteStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true);
+    } finally {
+      isFavouriteLoading.value = false;
+      isFavouriteLoadMore.value = false;
     }
   }
 
@@ -161,7 +217,7 @@ class InfluencerListHostController extends GetxController {
       dynamic response = await ApiClient.patchData(ApiUrl.addFavouriteInf(infId: infId), null,);
 
       if (response.statusCode != 200 && response.statusCode != 201) {
-
+        getFavouriteInfluencers();
         if (index != -1) {
           final currentUser = influencerList[index];
           influencerList[index] = currentUser.copyWith(isFavorite: !currentUser.isFavorite,);
@@ -179,6 +235,39 @@ class InfluencerListHostController extends GetxController {
       }
 
       showCustomSnackBar("An error occurred.", isError: true);
+    }
+  }
+
+  //remove
+  Future<void> removeFavouriteFromList({required String infId}) async {
+
+    final index = influencerList.indexWhere((e) => e.id == infId);
+    if (index == -1) return;
+
+    final removedUser = influencerList[index];
+
+    /// UI instantly remove
+    influencerList.removeAt(index);
+    influencerList.refresh();
+
+    try {
+
+      final response = await ApiClient.patchData(ApiUrl.addFavouriteInf(infId: infId), null,);
+
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        String id = await SharePrefsHelper.getString(AppConstants.userId);
+        collaborationController.getSingleUser(userId: id);
+        influencerList.insert(index, removedUser);
+        influencerList.refresh();
+
+        showCustomSnackBar("Failed to remove favourite", isError: true,);
+      }
+
+    } catch (e) {
+      influencerList.insert(index, removedUser);
+      influencerList.refresh();
+
+      showCustomSnackBar("Something went wrong", isError: true,);
     }
   }
 }

@@ -26,7 +26,7 @@ class HostActiveInflue extends StatelessWidget {
     });
     return CustomGradient(
       child: Scaffold(
-        appBar: CustomRoyelAppbar(leftIcon: true, titleName: role == "host" ? "Active Influencers" : "Active Host"),
+        appBar: CustomRoyelAppbar(leftIcon: true, titleName: role == "host" ? "Active Influencers" : "Active Host",customRouteName: AppRoutes.hostHomeScreen,),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(

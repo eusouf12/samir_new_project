@@ -32,6 +32,7 @@ class HostHomeScreen extends StatelessWidget {
       collaborationController.getSingleUser(userId: id);
       listingController.getListings(loadMore: false);
       influencerListHostController.getInfluencers();
+      influencerListHostController.getFavouriteInfluencers();
       notificationController.getNotifications();
     });
     return CustomGradient(
@@ -104,7 +105,7 @@ class HostHomeScreen extends StatelessWidget {
                         title: "Favourite\nInfluencer",
                         color: AppColors.white,
                         textColor: AppColors.black,
-                        number: influencerListHostController.influencerList.length.toString(),
+                        number: influencerListHostController.totalFavouriteInfluencer.toString() ,
                       ),
                       //Active Influencer
                       CustomContainerCard(
@@ -114,7 +115,7 @@ class HostHomeScreen extends StatelessWidget {
                         title: "Active\nInfluencer",
                         color: AppColors.white,
                         textColor: AppColors.black,
-                        number: influencerListHostController.influencerList.length.toString(),
+                        number: influencerListHostController.totaInfluencer.toString() ,
                       ),
                       SizedBox(width: 16),
                       CustomContainerCard(
