@@ -68,7 +68,7 @@ class AllUserModel {
 
   final bool airbnbAccountLinked;
   final bool isFounderMember;
-  final bool isFavorite;
+  final bool isFavoritedByMe;
   final bool isStripeConnected;
 
   final double averageRating;
@@ -97,7 +97,7 @@ class AllUserModel {
     required this.status,
     required this.airbnbAccountLinked,
     required this.isFounderMember,
-    required this.isFavorite,
+    required this.isFavoritedByMe,
     required this.isStripeConnected,
     required this.averageRating,
     required this.responseRate,
@@ -149,7 +149,7 @@ class AllUserModel {
 
       airbnbAccountLinked: json['airbnbAccountLinked'] ?? false,
       isFounderMember: json['isFounderMember'] ?? false,
-      isFavorite: json['isFavorite'] ?? false,
+      isFavoritedByMe: json['isFavoritedByMe'] ?? false,
       isStripeConnected: json['isStripeConnected'] ?? false,
 
       averageRating: (json['averageRating'] ?? 0).toDouble(),
@@ -187,7 +187,7 @@ class AllUserModel {
     );
   }
   AllUserModel copyWith({
-    bool? isFavorite,
+    bool? isFavoritedByMe,
   }) {
     return AllUserModel(
       id: id,
@@ -210,7 +210,7 @@ class AllUserModel {
       dateOfBirth: dateOfBirth,
       airbnbAccountLinked: airbnbAccountLinked,
       isFounderMember: isFounderMember,
-      isFavorite: isFavorite ?? this.isFavorite,
+      isFavoritedByMe: isFavoritedByMe ?? this.isFavoritedByMe,
       isStripeConnected: isStripeConnected,
       averageRating: averageRating,
       responseRate: responseRate,

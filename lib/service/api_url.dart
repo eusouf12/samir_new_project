@@ -56,7 +56,7 @@ class ApiUrl {
    static String checkChatList({required String id})=> "/api/v1/message/get-message-by-receiverId/$id";
    static  String  influencerList({required String page,required String role})=>"/api/v1/user/all-users?role=$role&page=$page&limit=10";
    static  String  hostList({required String page})=>"/api/v1/user/all-users?role=host&page=$page&limit=10";
-   static  String  favouriteInfluencerList({required String page})=>"/api/v1/auth/my-all-favorites?currentPage=$page&limit=10";
+   static  String  favouriteInfluencerList({required String page})=>"/api/v1/auth/my-favorites?currentPage=$page&limit=10";
    static String influencerSearch({required String query})=> "/api/v1/search/specific?query=users&searchType=$query";
    static  String  singleUserInfo({required String id})=>"/api/v1/user/single-user/$id";
    static  String  acceptOrReject({required String id})=>"/api/v1/collaboration/accept-or-reject-collaboration/$id";
@@ -75,7 +75,10 @@ class ApiUrl {
    static String createReport({required String id}) => "/api/v1/report/create-report/$id";
    static String createGift({required String id}) => "/api/v1/gift/create-redeem/$id";
    static String sendImage({required String id}) => "/api/v1/message/send-message/$id";
-   static String addFavouriteInf({required String infId}) => "/api/v1/auth/toggle-favorite/$infId";
+   static String addFavouriteInf({required String infId}) => "/api/v1/auth/create-favorite/$infId";
+
+
+
    static String addFavouriteListing({required String listingId}) => "/api/v1/listing/toggle-favorite/$listingId";
    static String myFavouriteListing = "/api/v1/listing/my-all-favorites";
    //

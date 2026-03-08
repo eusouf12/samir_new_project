@@ -207,20 +207,20 @@ class InfluencerListHostController extends GetxController {
       final currentUser = influencerList[index];
 
       influencerList[index] = currentUser.copyWith(
-        isFavorite: !currentUser.isFavorite,
+        isFavoritedByMe: !currentUser.isFavoritedByMe,
       );
 
       influencerList.refresh();
     }
 
     try {
-      dynamic response = await ApiClient.patchData(ApiUrl.addFavouriteInf(infId: infId), null,);
+      dynamic response = await ApiClient.postData(ApiUrl.addFavouriteInf(infId: infId), null,);
 
       if (response.statusCode != 200 && response.statusCode != 201) {
         getFavouriteInfluencers();
         if (index != -1) {
           final currentUser = influencerList[index];
-          influencerList[index] = currentUser.copyWith(isFavorite: !currentUser.isFavorite,);
+          influencerList[index] = currentUser.copyWith(isFavoritedByMe: !currentUser.isFavoritedByMe,);
           influencerList.refresh();
         }
         showCustomSnackBar("Failed to update favourite", isError: true);
@@ -230,7 +230,7 @@ class InfluencerListHostController extends GetxController {
 
       if (index != -1) {
         final currentUser = influencerList[index];
-        influencerList[index] = currentUser.copyWith(isFavorite: !currentUser.isFavorite,);
+        influencerList[index] = currentUser.copyWith(isFavoritedByMe: !currentUser.isFavoritedByMe,);
         influencerList.refresh();
       }
 
@@ -252,7 +252,7 @@ class InfluencerListHostController extends GetxController {
 
     try {
 
-      final response = await ApiClient.patchData(ApiUrl.addFavouriteInf(infId: infId), null,);
+      final response = await ApiClient.postData(ApiUrl.addFavouriteInf(infId: infId), null,);
 
       if (response.statusCode != 200 && response.statusCode != 201) {
         String id = await SharePrefsHelper.getString(AppConstants.userId);

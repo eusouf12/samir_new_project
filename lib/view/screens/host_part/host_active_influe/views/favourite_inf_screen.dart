@@ -98,7 +98,7 @@ class FavouriteInfScreen extends StatelessWidget {
                           username: user.userName ?? '',
                           socialMediaLinks: user.socialMediaLinks,
                           imageUrl: (user.image != null && user.image!.isNotEmpty) ? ApiUrl.baseUrl + user.image! : AppConstants.profileImage2 ,
-                          isFavourite: user.isFavorite,
+                          isFavourite: user.isFavoritedByMe,
                           onToggleFavourite: () {
                             influencerListHostController.removeFavouriteFromList(infId: user.id);
                           },
