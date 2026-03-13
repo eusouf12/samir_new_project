@@ -1,6 +1,6 @@
 class ApiUrl {
-   // static const String baseUrl = "http://10.0.2.2:3000";
-   static const String baseUrl = "https://corrections-wednesday-shades-craps.trycloudflare.com";
+  static const String baseUrl = "http://10.0.2.2:3000";
+ //  static const String baseUrl = "https://corrections-wednesday-shades-craps.trycloudflare.com";
   static const String imageUrl = baseUrl;
   static String socketUrl = baseUrl;
 
@@ -36,6 +36,7 @@ class ApiUrl {
    static const String createCollaboration = "/api/v1/collaboration/create-collaboration";
    static String getListing({required String page})=> "/api/v1/listing/my-listings?currentPage=$page&limit=10";
    static String getAllVerifiedListing({required String page})=> "/api/v1/listing/all-listings?currentPage=$page&limit=10&status=verified";
+   static String getFavouriteListings = "/api/v1/listing/my-favorites";
    static String getListingHostProperty({ String? hostId,required String page})=> "/api/v1/listing/user-total-listings/$hostId?currentPage=$page&limit=10";
    static String getVerifiedListings({required String page})=> "/api/v1/listing/user-personal-verify?page=$page&limit=10";
    static String getSingleListing({required String id})=> "/api/v1/listing/single-listing/$id";
@@ -79,7 +80,7 @@ class ApiUrl {
 
 
 
-   static String addFavouriteListing({required String listingId}) => "/api/v1/listing/toggle-favorite/$listingId";
+   static String addFavouriteListing({required String listingId}) => "/api/v1/listing/create-favorite/$listingId";
    static String myFavouriteListing = "/api/v1/listing/my-all-favorites";
    //
    static String singleInfluencerCollaborations({String? filter, required String id,}) {

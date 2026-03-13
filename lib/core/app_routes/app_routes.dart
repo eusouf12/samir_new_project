@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:get/get.dart';
 import '../../view/screens/Influencer_part/inf_explore_listing_screen/inf_explore_listing_screen.dart';
+import '../../view/screens/Influencer_part/inf_explore_listing_screen/inf_favourite_listing.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/inf_earnings_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/views/inf_home_screen.dart';
 import '../../view/screens/Influencer_part/inf_home_screen/inf_night_credits_screen.dart';
@@ -119,6 +120,7 @@ class AppRoutes {
  static const String infActiveHostProfileScreen = "/InfActiveHostProfileScreen";
  static const String infShowListingScreen = "/InfShowListingScreen";
  static const String favouriteInfScreen = "/FavouriteInfScreen";
+ static const String infFavouriteListing = "/InfFavouriteListing";
 
 
   static List<GetPage> routes = [
@@ -171,6 +173,7 @@ class AppRoutes {
     GetPage(name: chatScreen, page: () => ChatScreen()),
     GetPage(name: negotiationScreen, page: () => NegotiationScreen()),
     GetPage(name: favouriteInfScreen, page: () => FavouriteInfScreen()),
+    GetPage(name: infFavouriteListing, page: () => InfFavouriteListing()),
 
 
 

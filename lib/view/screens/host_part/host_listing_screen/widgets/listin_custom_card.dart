@@ -65,32 +65,32 @@ class ListingCard extends StatelessWidget {
                 imageUrl: listing.images.isNotEmpty ? ApiUrl.baseUrl + listing.images.first : "",
                 borderRadius: const BorderRadius.all(Radius.circular(16)),
               ),
-              // Positioned(
-              //   top: 12,
-              //   right: 12,
-              //   child: GestureDetector(
-              //     onTap: onTapFavourite,
-              //     child: Container(
-              //       padding: const EdgeInsets.all(8),
-              //       decoration: BoxDecoration(
-              //         color: Colors.white.withOpacity(0.9), //
-              //         shape: BoxShape.circle,
-              //         boxShadow: [
-              //           BoxShadow(
-              //             color: Colors.black.withOpacity(0.1),
-              //             blurRadius: 4,
-              //             spreadRadius: 1,
-              //           )
-              //         ],
-              //       ),
-              //       child: Icon(
-              //         (isFavourite ?? true) ? Icons.favorite : Icons.favorite_border,
-              //         color: (isFavourite ?? true) ? Colors.red : Colors.grey,
-              //         size: 22.sp,
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              Positioned(
+                top: 12,
+                right: 12,
+                child: GestureDetector(
+                  onTap: onTapFavourite,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9), //
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 4,
+                          spreadRadius: 1,
+                        )
+                      ],
+                    ),
+                    child: Icon(
+                      (isFavourite ?? true) ? Icons.favorite : Icons.favorite_border,
+                      color: (isFavourite ?? true) ? Colors.red : Colors.grey,
+                      size: 22.sp,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 16),

@@ -504,12 +504,12 @@ class ListingController extends GetxController {
     if (index == -1) return;
 
     final originalItem = verifiedAllListingList[index];
-    final bool wasFavorite = originalItem.isFavorite;
-    verifiedAllListingList[index] = originalItem.copyWith(isFavorite: !wasFavorite);
+    final bool wasFavorite = originalItem.isFavoritedByMe;
+    verifiedAllListingList[index] = originalItem.copyWith(isFavoritedByMe: !wasFavorite);
     verifiedAllListingList.refresh();
 
     try {
-      final response = await ApiClient.patchData(ApiUrl.addFavouriteListing(listingId: listingId), null,);
+      final response = await ApiClient.postData(ApiUrl.addFavouriteListing(listingId: listingId), null,);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint("Success toggle favourite for listing");
@@ -518,7 +518,7 @@ class ListingController extends GetxController {
         throw Exception("Failed to update");
       }
     } catch (e) {
-      verifiedAllListingList[index] = originalItem.copyWith(isFavorite: wasFavorite);
+      verifiedAllListingList[index] = originalItem.copyWith(isFavoritedByMe: wasFavorite);
       verifiedAllListingList.refresh();
       showCustomSnackBar("Failed to update favourite", isError: true);
     }
@@ -526,25 +526,57 @@ class ListingController extends GetxController {
 
   // ============  Remove Listing From Favorite List ================
   Future<void> removeHostListingFromFavorite({required String listingId}) async {
-    final index = verifiedAllListingList.indexWhere((e) => e.id == listingId);
+    final index = favouriteListingList.indexWhere((e) => e.id == listingId);
     if (index == -1) return;
 
-    final removedItem = verifiedAllListingList[index];
+    final removedItem = favouriteListingList[index];
 
-    verifiedAllListingList.removeAt(index);
-    verifiedAllListingList.refresh();
+    favouriteListingList.removeAt(index);
+    favouriteListingList.refresh();
 
     try {
-      final response = await ApiClient.patchData(ApiUrl.addFavouriteInf(infId: listingId), null,);
+      final response = await ApiClient.postData(ApiUrl.addFavouriteListing(listingId: listingId), null,);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
       } else {
         throw Exception("Server Error");
       }
     } catch (e) {
-      verifiedAllListingList.insert(index, removedItem);
-      verifiedAllListingList.refresh();
+      favouriteListingList.insert(index, removedItem);
+      favouriteListingList.refresh();
       showCustomSnackBar("Failed to remove from list", isError: true);
+    }
+  }
+
+  //========== FAVOURITE LISTINGS ==========
+  RxList<ListingItem> favouriteListingList = <ListingItem>[].obs;
+  final isFavouriteListingLoading = false.obs;
+  final rxFavouriteListingStatus = Status.loading.obs;
+  void setFavouriteListingStatus(Status status) => rxFavouriteListingStatus.value = status;
+
+  Future<void> getFavouriteListings() async {
+
+    isFavouriteListingLoading.value = true;
+    setFavouriteListingStatus(Status.loading);
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.getFavouriteListings);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+        final ListingsResponse model = ListingsResponse.fromJson(jsonResponse);
+        favouriteListingList.assignAll(model.data.listings);
+        setFavouriteListingStatus(Status.completed);
+      } else {
+        setFavouriteListingStatus(Status.error);
+        showCustomSnackBar("Failed to load favourite listings", isError: true,);
+      }
+    } catch (e) {
+
+      setFavouriteListingStatus(Status.error);
+      showCustomSnackBar("Error: ${e.toString()}", isError: true,);
+
+    } finally {
+      isFavouriteListingLoading.value = false;
     }
   }
 }

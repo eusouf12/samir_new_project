@@ -116,8 +116,16 @@ class InfProfileScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.hostEditProfileScreen,arguments: "inf");
                       },
                     ),
+                    //My Favourite Listing
+                    CustomProfileCard(
+                      nameTitle: "My Favourite Listing",
+                      icons: AppIcons.listingIcon,
+                      color: AppColors.primary2,
+                      onTap: (){
+                        Get.toNamed(AppRoutes.infFavouriteListing);
+                      },
+                    ),
                     //onboarding
-                    //Edit profile
                     CustomProfileCard(
                       nameTitle: "Onboarding",
                       icons: AppIcons.infpaymentIcon,

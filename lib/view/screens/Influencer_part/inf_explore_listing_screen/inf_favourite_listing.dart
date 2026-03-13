@@ -15,33 +15,20 @@ import '../../host_part/host_listing_screen/controller/listing_controller.dart';
 import '../../host_part/host_listing_screen/widgets/listin_custom_card.dart';
 
 
-class InfExploreDealsScreen extends StatelessWidget {
-  InfExploreDealsScreen({super.key});
+class InfFavouriteListing extends StatelessWidget {
+  InfFavouriteListing({super.key});
 
   final ListingController controller = Get.put(ListingController());
-  final ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.getVerifiedAllListings(loadMore: false);
+      controller.getFavouriteListings();
     });
-
-    scrollController.addListener(() {
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 100) {controller.getVerifiedAllListings(loadMore: true);}
-    });
-
     return CustomGradient(
       child: Scaffold(
-        appBar: CustomRoyelAppbar(
-          leftIcon: false,
-          titleName: "Explore Listing",
-          //rightIcon: AppIcons.favourite,
-          rightOnTap: () {
-           // Get.toNamed(AppRoutes.infActiveHostsScreen);
-          },
-        ),
+        appBar: CustomRoyelAppbar(leftIcon: true, titleName: "My Favourite Listing",),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
@@ -71,57 +58,44 @@ class InfExploreDealsScreen extends StatelessWidget {
                 child: Obx(() {
 
                   final bool isSearching = controller.searchQuery.value.isNotEmpty;
-                  if (!isSearching && controller.rxVerifiedAllListingStatus.value == Status.loading) {
+                  if (!isSearching && controller.rxFavouriteListingStatus.value == Status.loading) {
                     return Center(child: CustomLoader(color: AppColors.primary2));
                   }
 
                   if (isSearching && controller.rxSearchListingStatus.value == Status.loading) {
                     return Center(child: CustomLoader(color: AppColors.primary2,));
                   }
-
-                  final listToShow = isSearching ? controller.searchListingList : controller.verifiedAllListingList;
-
-                  if (listToShow.isEmpty) {
-                    return const Center(child: CustomText(text: "No listings found", fontSize: 16,),);
-                  }
+                  final listToShow = isSearching ? controller.searchListingList : controller.favouriteListingList;
+                  if (listToShow.isEmpty) {return const Center(child: CustomText(text: "No listings found", fontSize: 16,),);}
 
                   return ListView.builder(
-                    controller:
-                    isSearching ? null : scrollController,
-                    itemCount: listToShow.length + (!isSearching && controller.isVerifiedAllLoadMoreLoading.value ? 1 : 0),
+                    itemCount: listToShow.length,
                     itemBuilder: (context, index) {
-                      if (index < listToShow.length) {
-                        final listing = listToShow[index];
 
-                        return ListingCard(
-                          listing: listing,
-                          staus: listing.status,
-                          btn: false,
-                          btn2: false,
-                          isFavourite:listing.isFavoritedByMe,
-                          onTapAirbnb: () async {
-                            final link = listing.addAirbnbLink;
-                            if (link.isEmpty) return;
+                      final listing = listToShow[index];
 
-                            final uri = Uri.parse(link.startsWith('http') ? link : 'https://$link');
+                      return ListingCard(
+                        listing: listing,
+                        staus: listing.status,
+                        btn: false,
+                        btn2: false,
+                        isFavourite: listing.isFavoritedByMe,
+                        onTapAirbnb: () async {
+                          final link = listing.addAirbnbLink;
+                          if (link.isEmpty) return;
 
-                            await launchUrl(uri, mode: LaunchMode.externalApplication);
-                          },
-                          onTapEdit: () {
-                            Get.toNamed(AppRoutes.hostUpdateListingScreen, arguments: listing.id,);
-                          },
-                          onTapDelete: () {
-                            controller.deleteListing(id: listing.id);
-                          },
-                          onTapFavourite: (){
-                            controller.toggleHostListingFavourite(listingId: listing.id);
-                          },
-                        );
-                      } else {
-                        return Padding(padding: const EdgeInsets.symmetric(vertical: 16),
-                          child: Center(child: CustomLoader(color: AppColors.primary2)),
-                        );
-                      }
+                          final uri =
+                          Uri.parse(link.startsWith('http') ? link : 'https://$link');
+
+                          await launchUrl(uri, mode: LaunchMode.externalApplication);
+                        },
+                        onTapFavourite: () {
+                          debugPrint("hi");
+                            controller.removeHostListingFromFavorite(
+                            listingId: listing.id,
+                          );
+                        },
+                      );
                     },
                   );
                 }),
@@ -129,7 +103,6 @@ class InfExploreDealsScreen extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: InfNavbar(currentIndex: 2),
       ),
     );
   }

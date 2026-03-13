@@ -32,7 +32,7 @@ class CustomProfileCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    CustomImage(imageSrc: icons?? AppIcons.editIcon),
+                    CustomImage(imageSrc: icons?? AppIcons.editIcon,imageColor: AppColors.black,),
                     CustomText(
                       left: 12,
                       text: nameTitle ?? "",
