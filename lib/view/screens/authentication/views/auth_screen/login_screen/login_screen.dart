@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../../../core/app_routes/app_routes.dart';
@@ -19,7 +21,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   authController.toggleTab(true);
     // });

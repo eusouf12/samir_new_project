@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -178,7 +177,7 @@ class AuthController extends GetxController {
     loginUserLoading.value = true;
 
     Map<String, String> body = {
-      isEmailValidate(loginEmailController.value.text.trim()) ? "email" : "userName": "${loginEmailController.value.text.trim()}",
+      isEmailValidate(loginEmailController.value.text.trim()) ? "email" : "userName": loginEmailController.value.text.trim(),
       "password": loginPasswordController.value.text.trim(),
     };
 
@@ -212,7 +211,7 @@ class AuthController extends GetxController {
         debugPrint("userId==========: $userId");
 
         await SharePrefsHelper.setString(AppConstants.userId, userId);
-        String id = await SharePrefsHelper.getString(AppConstants.userId);
+       // String id = await SharePrefsHelper.getString(AppConstants.userId);
         await SharePrefsHelper.setString(AppConstants.role, userRole);
 
 
@@ -290,15 +289,15 @@ class AuthController extends GetxController {
         final Map<String, dynamic> jsonResponse =
         response.body is String ? jsonDecode(response.body) : response.body;
 
-        final bool success = jsonResponse['success'] ?? false;
+      
         final String mainMessage = jsonResponse['message'] ?? '';
         final String? internalMessage = jsonResponse['data']?['message'];
 
-        print("Main Message: $mainMessage");
-        print("Internal Message: $internalMessage");
+        debugPrint("Main Message: $mainMessage");
+        debugPrint("Internal Message: $internalMessage");
 
         if (internalMessage == "This user is already verified.") {
-          print("User already verified!");
+          debugPrint("User already verified!");
         }
         else {
           startOtpTimer();

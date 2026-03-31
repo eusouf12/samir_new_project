@@ -12,8 +12,6 @@ import '../../host_active_influe/model/review_model.dart';
 import '../model/collaboration_single_model.dart';
 import '../model/single_user_model.dart';
 import '../views/stripe_web_view_create_screen.dart';
-import '../views/stripe_web_view_screen.dart';
-
 
 class CollaborationController extends GetxController {
   RxList<String> collaborationTabList = <String>['All','Pending','Negotiating','Accepted','Ongoing','Declined','Completed'].obs;
@@ -408,8 +406,8 @@ class CollaborationController extends GetxController {
         showCustomSnackBar(jsonResponse['message'] ?? "Update failed", isError: true,);
       }
 
-    } catch (e, stackTrace) {
-      print("UPDATE ERROR: $e");
+    } catch (e) {
+      debugPrint("UPDATE ERROR: $e");
       showCustomSnackBar("Something went wrong", isError: true);
     } finally {
       isUpdateCollLoading.value = false;

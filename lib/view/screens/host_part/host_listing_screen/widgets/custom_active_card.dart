@@ -163,13 +163,13 @@ class CustomActiveCard extends StatelessWidget {
                              SizedBox(width: 4),
 
                             Text(
-                             "${averageRating}",
+                             "$averageRating",
                              style: TextStyle(
                                color: Color(0xFF1A237E),
                                fontSize: 11,
                                fontWeight: FontWeight.bold,
                              ),
-                                                        ),
+                              ),
                           ],
                         ),
                       ),
@@ -188,7 +188,7 @@ class CustomActiveCard extends StatelessWidget {
                             SizedBox(width: 4),
 
                             Text(
-                              "${nightCredits} ",
+                              "$nightCredits",
                               style: TextStyle(
                                 color: Color(0xFF1A237E),
                                 fontSize: 11,

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -186,7 +188,7 @@ class HostCollaborationScreen extends StatelessWidget {
                   if (controller.singleUserCollaborationList.isEmpty) {
                     return Center(child: Text("No collaborations found", style: TextStyle(fontSize: 16.sp),),);
                   }
-                  final userData = controller.singleUserProfile;
+                  //final userData = controller.singleUserProfile;
                   return NotificationListener<ScrollNotification>(
                     // onNotification: (scrollInfo) {
                     //   if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && !controller.isCollaborationLoadMore.value) {

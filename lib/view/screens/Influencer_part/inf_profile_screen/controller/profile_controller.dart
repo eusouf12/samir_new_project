@@ -3,14 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../../../../core/app_routes/app_routes.dart';
-import '../../../../../helper/shared_prefe/shared_prefe.dart';
-import '../../../../../service/api_check.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
-import '../../../../../utils/app_strings/app_strings.dart';
 import '../model/privacy_model.dart';
 import '../model/terms_model.dart';
 import '../model/user_profile_model.dart';
@@ -151,7 +147,7 @@ class ProfileController extends GetxController {
         showCustomSnackBar(
           jsonResponse['message']?.toString() ?? "Change password successfully!", isError: false,
         );
-        String? userRole = await SharePrefsHelper.getString(AppConstants.role);
+        //String? userRole = await SharePrefsHelper.getString(AppConstants.role);
         resetPasswordFields();
         // Get.offAllNamed(AppRoutes.profileScreen);
 
@@ -289,7 +285,7 @@ class ProfileController extends GetxController {
     try {
       setPrivacyPolicyStatus(Status.loading);
 
-      final userId = await SharePrefsHelper.getString(AppConstants.userId);
+     // final userId = await SharePrefsHelper.getString(AppConstants.userId);
 
       final response = await ApiClient.getData(ApiUrl.privacyPolicy);
 

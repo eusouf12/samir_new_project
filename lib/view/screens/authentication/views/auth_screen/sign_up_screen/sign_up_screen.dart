@@ -1,5 +1,4 @@
 import '../../../../../components/custom_gradient/custom_gradient.dart';
-import '../../../../../components/custom_loader/custom_loader.dart';
 import '../../../../../components/custom_text/custom_text.dart';
 import '../../../../../components/custom_text_field/custom_text_field.dart';
 import '../../../../choose_role/view/role_screen.dart';

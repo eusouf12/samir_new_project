@@ -40,7 +40,6 @@ class HostActiveViewProfileScreen extends StatelessWidget {
     final double rating = args['rating']??0.0;
     final String role = args['role'] ;
     final String fullAddress = args['fullAddress'] ;
-    final String date = "2026-12-24T21:43:46.978Z";
 
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -419,7 +418,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                   comment: review.comment,
                                   imageUrl:ApiUrl.baseUrl + review.reviewer.image,
                                   date: review.createdAt,
-                                  rating: review.rating.toDouble() ?? 5.0,
+                                  rating: review.rating.toDouble(),
                                 );
                               },
                             ),

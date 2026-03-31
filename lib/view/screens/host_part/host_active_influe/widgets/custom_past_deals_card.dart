@@ -57,7 +57,7 @@ class CustomPastDealsCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                   CustomText(
-                    text: "By ${hostName }"??"",
+                    text: "By ${hostName ?? ""}",
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textClr,

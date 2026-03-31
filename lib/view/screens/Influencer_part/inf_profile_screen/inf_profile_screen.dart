@@ -17,7 +17,6 @@ import '../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../components/custom_show_popup/custom_show_popup.dart';
 import '../../../components/custom_text/custom_text.dart';
-import '../../authentication/controller/auth_controller.dart';
 import '../../host_part/host_profile_screen/controller/host_profile_controller.dart';
 import '../../host_part/host_profile_screen/widgets/custom_profile_card.dart';
 

@@ -87,7 +87,7 @@ class CustomCollaborationCard extends StatelessWidget {
                               ),
 
                               CustomText(
-                                text: "@${userHandle}" ?? "",
+                                text: userHandle ?? "",
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 bottom: 4,

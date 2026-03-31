@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:samir_flutter_app/service/api_url.dart';
@@ -70,8 +72,8 @@ class HostMessagesListScreen extends StatelessWidget {
                         );
                       },
                       child: CustomMessageCard(
-                        profileImage: ApiUrl.baseUrl + "${user.image}" ?? '',
-                        name: user.name ?? '',
+                        profileImage: ApiUrl.baseUrl + "${user.image}" ,
+                        name: user.name ,
                         lastMessage: conversation.lastMessage?.text ?? '',
                         time: conversation.createdAt,
                         isActive: user.isActive,

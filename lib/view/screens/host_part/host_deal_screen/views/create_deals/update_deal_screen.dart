@@ -239,6 +239,7 @@ class HostUpdateDealScreen extends StatelessWidget {
 
   /// ================= Helpers =================
 
+  // ignore: unused_element
   Widget _sectionTitle(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),

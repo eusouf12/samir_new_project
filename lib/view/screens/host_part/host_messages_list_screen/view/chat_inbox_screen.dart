@@ -26,7 +26,9 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String conversationId = args['conversationId'] ?? "";
+    // ignore: unused_local_variable
     final String userName = args['userName'] ?? "";
+    // ignore: unused_local_variable
     final String? userImage = args['userImage'] as String?;
     final String receiverId = args['receiverId'] ?? "";
     final String role = args['role'] ;

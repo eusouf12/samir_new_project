@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 
 class SocketApi {
   static IO.Socket? socket;
+  // ignore: unused_field
   static bool _isInitialized = false;
 
   static void init(String baseUrl, String userId) {

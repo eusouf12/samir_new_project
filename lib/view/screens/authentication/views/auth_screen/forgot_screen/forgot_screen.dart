@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import '../../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
-import '../../../../../../utils/app_images/app_images.dart';
 import '../../../../../../utils/app_strings/app_strings.dart';
 import '../../../../../components/custom_button/custom_button.dart';
-import '../../../../../components/custom_image/custom_image.dart';
 import '../../../../../components/custom_loader/custom_loader.dart';
 import '../../../../../components/custom_text/custom_text.dart';
 import '../../../../../components/custom_text_field/custom_text_field.dart';

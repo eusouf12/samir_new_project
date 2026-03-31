@@ -84,7 +84,7 @@ class HostDealsScreen extends StatelessWidget {
                       if (index < listToShow.length) {
                         final deal = listToShow[index];
                         final order = ['IG', 'TT', 'FB', 'YT'];
-                        final deliverablesText = deal.deliverables.map((d) => {'platform': getPlatformShort(d.platform ?? ''), 'text': "${d.quantity} ${getPlatformShort(d.platform ?? '')} ${d.contentType}"})
+                        final deliverablesText = deal.deliverables.map((d) => {'platform': getPlatformShort(d.platform ), 'text': "${d.quantity} ${getPlatformShort(d.platform )} ${d.contentType}"})
                             .where((e) => e['platform']!.isNotEmpty).toList()..sort((a, b) => order.indexOf(a['platform']!).compareTo(order.indexOf(b['platform']!)));
                         final text = deliverablesText.map((e) => e['text']).join(', ');
 

@@ -64,6 +64,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
       if (amenities.hotTub) enabledAmenities.add("HotTub");
     }
 
+    // ignore: unused_local_variable
     final List<SingleUserSocialMediaLinks> socialPosts = (args["socialMediaLinks"] as List?)?.map((e)
     {if (e is SingleUserSocialMediaLinks) {return e;
           } else if (e is Map<String, dynamic>) {return SingleUserSocialMediaLinks.fromJson(e);} else {
@@ -159,7 +160,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                     return const SizedBox.shrink();
                   }
 
-                  final collab = controller.collabList.first;
+                  //final collab = controller.collabList.first;
 
                   return  Container(
                     width: double.infinity,

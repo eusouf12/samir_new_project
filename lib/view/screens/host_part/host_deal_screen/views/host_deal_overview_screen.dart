@@ -3,15 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:samir_flutter_app/core/app_routes/app_routes.dart';
 import 'package:samir_flutter_app/utils/app_const/app_const.dart';
-import 'package:samir_flutter_app/utils/app_icons/app_icons.dart';
 import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
-import 'package:samir_flutter_app/view/components/custom_image/custom_image.dart';
-import 'package:samir_flutter_app/view/components/custom_netwrok_image/custom_network_image.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_field.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_assigned_card.dart';
-import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_timeline_status.dart';
 import 'package:samir_flutter_app/view/screens/host_part/host_listing_screen/controller/listing_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -33,6 +28,7 @@ class HostDealOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final dealId = args['dealId'];
     final titleId = args['titleId'];
+    // ignore: unused_local_variable
     final status = args['status'];
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dealsController.singleGetDeal(id: dealId);

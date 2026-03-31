@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/view/components/custom_from_card/custom_from_card.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
 import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
@@ -20,6 +19,7 @@ class NegotiationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String collId = args["collaborationId"] ?? "";
     final String role = args["role"] ?? "";
+    // ignore: unused_local_variable
     final String negotiationMessage = args["negotiationMessage"] ?? "";
     final String influencerId = args["influencerId"] ?? "";
     WidgetsBinding.instance.addPostFrameCallback((_) {

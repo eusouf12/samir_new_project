@@ -232,7 +232,7 @@ class HostProfileController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         showCustomSnackBar(jsonResponse['message']?.toString() ?? "Change password successfully!", isError: false,);
 
-        String? userRole = await SharePrefsHelper.getString(AppConstants.role);
+        //String? userRole = await SharePrefsHelper.getString(AppConstants.role);
         resetPasswordFields();
         Get.back();
 

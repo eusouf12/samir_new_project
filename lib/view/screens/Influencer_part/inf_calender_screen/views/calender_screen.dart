@@ -3,21 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:samir_flutter_app/view/components/custom_button/custom_button.dart';
 import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
-import 'package:samir_flutter_app/view/screens/Influencer_part/inf_home_screen/widgets/custom_inf_home_card.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../../../../../core/app_routes/app_routes.dart';
-import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
-import '../../../../../utils/app_const/app_const.dart';
-import '../../../../../utils/app_icons/app_icons.dart';
-import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_nav_bar/inf_navbar.dart';
 import '../../../../components/custom_text/custom_text.dart';
-import '../../../host_part/collaboration_screen/controller/collabration_controller.dart';
-import '../../../host_part/host_active_influe/controller/influencer_list_host_controller.dart';
-import '../../../host_part/host_home_screen/controller/notification_controller.dart';
-import '../../../host_part/host_home_screen/widgets/custom_activity_card.dart';
 import '../controller/calender_controller.dart';
 
 class CalenderScreen extends StatelessWidget {

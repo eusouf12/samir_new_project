@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/app_images/app_images.dart';
-
 class CustomGradient extends StatelessWidget {
   final Widget child;
   final Color color1;

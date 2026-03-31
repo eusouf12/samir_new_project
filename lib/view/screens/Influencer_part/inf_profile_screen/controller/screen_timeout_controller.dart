@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 class ScreenTimeoutController extends GetxController {
   Timer? _timer;
