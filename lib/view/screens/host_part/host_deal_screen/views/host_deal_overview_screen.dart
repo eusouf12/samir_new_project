@@ -222,7 +222,7 @@ class HostDealOverviewScreen extends StatelessWidget {
                               ],
                             ),
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                   ),
@@ -253,7 +253,7 @@ class HostDealOverviewScreen extends StatelessWidget {
                               fontWeight: FontWeight.w700,
                             ),
                             CustomText(
-                              text: "${totalDeliverables}",
+                              text: "$totalDeliverables",
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
                               color: AppColors.blue,

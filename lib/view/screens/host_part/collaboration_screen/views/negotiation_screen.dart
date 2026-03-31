@@ -168,7 +168,7 @@ class NegotiationScreen extends StatelessWidget {
                       ],
                     ),
                   );
-                }).toList(),
+                }),
                 // ===== write your reason =========
                 const SizedBox(height: 24),
                 const CustomText(text: "Reason for Negotiation", fontSize: 16, fontWeight: FontWeight.w700, bottom: 12),

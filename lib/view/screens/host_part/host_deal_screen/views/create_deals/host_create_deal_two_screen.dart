@@ -181,7 +181,7 @@ class HostCreateDealTwoScreen extends StatelessWidget {
                   CustomButtonTwo(
                     onTap: () {
                       debugPrint("==== SELECTED DELIVERABLES ====");
-                      debugPrint("page == ${page} == id = ${id}");
+                      debugPrint("page == $page == id = $id");
 
                       for (var item in controller.deliverables) {
                         debugPrint(item.toString());

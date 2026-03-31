@@ -57,9 +57,9 @@ class HostMessagesListScreen extends StatelessWidget {
                     return GestureDetector(
                       onTap: (){
                         debugPrint("id con ${conversation.id}");
-                        debugPrint("${user.name}");
+                        debugPrint(user.name);
                         debugPrint("${user.image}");
-                        debugPrint("${user.id}");
+                        debugPrint(user.id);
                         Get.toNamed(AppRoutes.chatScreen,
                           arguments: {
                             'conversationId': conversation.id,
@@ -72,7 +72,7 @@ class HostMessagesListScreen extends StatelessWidget {
                         );
                       },
                       child: CustomMessageCard(
-                        profileImage: ApiUrl.baseUrl + "${user.image}" ,
+                        profileImage: "${ApiUrl.baseUrl}${user.image}" ,
                         name: user.name ,
                         lastMessage: conversation.lastMessage?.text ?? '',
                         time: conversation.createdAt,

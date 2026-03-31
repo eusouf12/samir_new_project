@@ -128,7 +128,7 @@ class HostCreateDealScreen extends StatelessWidget {
                   const SizedBox(height: 50),
                   CustomButtonTwo(
                     onTap: () {
-                      debugPrint("page == ${page} == id = ${id}");
+                      debugPrint("page == $page == id = $id");
                       debugPrint('Selected title: ${dealsController.selectedTitle.value}');
                       debugPrint('Description: ${dealsController.titleDescriptionController.value.text}');
                       debugPrint('Check-in date: ${dealsController.checkInFormattedDate}');

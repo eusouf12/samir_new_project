@@ -102,7 +102,7 @@ class HostAddNewListingScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5,),
                   child: Obx(() => DropdownButtonFormField<String>(
-                    value: listingController.selectedPropertyType.value.isEmpty
+                    initialValue: listingController.selectedPropertyType.value.isEmpty
                         ? null
                         : listingController.selectedPropertyType.value,
                     hint:CustomText(text: 'Select property type ',fontSize: 14.sp, color: Colors.grey,fontWeight: FontWeight.w500),

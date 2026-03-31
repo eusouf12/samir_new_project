@@ -108,7 +108,7 @@ class HostActiveInflue extends StatelessWidget {
 
                               Get.toNamed(AppRoutes.chatScreen,
                                 arguments: {
-                                  'conversationId':conversationId != null ? conversationId : "",
+                                  'conversationId':conversationId ?? "",
                                   'userName': user.name,
                                   'userImage': user.image,
                                   'receiverId': user.id,
@@ -119,7 +119,7 @@ class HostActiveInflue extends StatelessWidget {
                           onViewProfile: () {
                             debugPrint("user.userName, === ${user.image}");
                             debugPrint("user.nightCredits if host=== ${user.nightCredits}");
-                            debugPrint("user.nightCredits if influencer=== ${myNightCredits}");
+                            debugPrint("user.nightCredits if influencer=== $myNightCredits");
                             Get.toNamed(AppRoutes.hostActiveViewProfileScreen,
                               arguments: {
                                 "id": user.id,

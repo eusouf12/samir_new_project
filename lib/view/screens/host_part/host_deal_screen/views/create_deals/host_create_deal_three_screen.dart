@@ -116,7 +116,7 @@ class HostCreateDealThreeScreen extends StatelessWidget {
                 fillColor: role=='host' ? AppColors.primary : AppColors.primary2,
                 title: "Next →",
                 onTap: () {
-                  debugPrint("page == ${page} == id = ${id}");
+                  debugPrint("page == $page == id = $id");
                   debugPrint("Night Credits: ${controller.isNightCredits.value}");
                   debugPrint("Direct Payment: ${controller.isDirectPayment.value}");
                   debugPrint("Total Nights: ${controller.totalNights.value}");

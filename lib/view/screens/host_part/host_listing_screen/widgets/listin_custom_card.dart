@@ -24,7 +24,7 @@ class ListingCard extends StatelessWidget {
   final VoidCallback? onTapFavourite;
 
    ListingCard({
-     Key? key,
+     super.key,
      required this.listing,
      this.onTapAirbnb,
      this.onTapEdit,
@@ -36,7 +36,7 @@ class ListingCard extends StatelessWidget {
      this.isFavourite,
      this.onTapFavourite,
 
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -251,7 +251,7 @@ class CustomActiveCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         CustomText(
-                          text: "${item.followers}",
+                          text: item.followers,
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
                           color: AppColors.black,

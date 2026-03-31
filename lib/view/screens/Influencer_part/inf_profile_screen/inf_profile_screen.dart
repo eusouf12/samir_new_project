@@ -62,7 +62,7 @@ class InfProfileScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CustomText(
-                              text: "${userData.name}",
+                              text: userData.name,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               bottom: 8,

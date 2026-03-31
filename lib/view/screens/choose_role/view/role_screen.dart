@@ -101,7 +101,7 @@ class ChooseRole extends StatelessWidget {
                     onTap: () {
                       StorageService().write("role", roleController.selectedRole.value);
                       final role = StorageService().read<String>("role");
-                      debugPrint("Chose Role host========================================${role}");
+                      debugPrint("Chose Role host========================================$role");
                       authController.signUp();
                     },
                     borderRadius: 12,

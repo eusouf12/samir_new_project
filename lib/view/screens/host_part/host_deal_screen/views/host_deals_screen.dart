@@ -107,7 +107,7 @@ class HostDealsScreen extends StatelessWidget {
                           profileImg: deal.title.images.isNotEmpty ?ApiUrl.baseUrl + deal.title.images.first : AppConstants.profileImage2,
                           userImg:  deal.userId.image.isNotEmpty ? ApiUrl.baseUrl+deal.userId.image : AppConstants.profileImage2,
                           fullName: deal.title.title,
-                          userName: "${deal.userId.name}",
+                          userName: deal.userId.name,
                           status: deal.status,
                           deliverablesText: text,
                           paymentText: paymentText,

@@ -127,7 +127,7 @@ class HostUpdateListingScreen extends StatelessWidget {
   // ================= PROPERTY TYPE =================
   Widget _propertyTypeDropdown() {
     return Obx(() => DropdownButtonFormField<String>(
-      value: listingController.updateSelectedPropertyType.value.isEmpty
+      initialValue: listingController.updateSelectedPropertyType.value.isEmpty
           ? null
           : listingController.updateSelectedPropertyType.value,
       hint: const Text("Select property type"),

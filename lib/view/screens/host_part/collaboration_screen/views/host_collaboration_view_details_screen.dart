@@ -88,7 +88,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(text: name, fontSize: 14, fontWeight: FontWeight.w600),
-                        CustomText(text: "@${userName}", fontSize: 12, fontWeight: FontWeight.w400),
+                        CustomText(text: "@$userName", fontSize: 12, fontWeight: FontWeight.w400),
                         role == "host" ?SizedBox.shrink(): Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -558,7 +558,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
 
               /// Report Type Dropdown
               Obx(() => DropdownButtonFormField<String>(
-                value: controller.selectedReportType.value.isEmpty ? null : controller.selectedReportType.value,
+                initialValue: controller.selectedReportType.value.isEmpty ? null : controller.selectedReportType.value,
                 items: controller.reportTypes.map((type) => DropdownMenuItem(
                   value: type,
                   child: Text(type, style: const TextStyle(fontSize: 14)),

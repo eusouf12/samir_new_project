@@ -9,8 +9,8 @@ class ImagePickerController extends GetxController {
 
   // Pick multiple images from gallery
   Future<void> pickFromGallery() async {
-    final List<XFile>? images = await _picker.pickMultiImage();
-    if (images != null && images.isNotEmpty) {
+    final List<XFile> images = await _picker.pickMultiImage();
+    if (images.isNotEmpty) {
       final listingController = Get.find<ListingController>();
       for (var img in images) {
         listingController.addImage(File(img.path));

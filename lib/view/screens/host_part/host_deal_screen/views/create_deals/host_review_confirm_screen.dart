@@ -364,7 +364,7 @@ class HostReviewConfirmScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 30,),
                   Obx((){
-                    debugPrint("page == ${page} == id = ${id}");
+                    debugPrint("page == $page == id = $id");
                     return dealsController.isCreatingDeal.value
                         ? CustomLoader(color: role=='host' ? AppColors.primary : AppColors.primary2,)
                         : CustomButton(

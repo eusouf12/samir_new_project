@@ -163,17 +163,17 @@ class CalenderScreen extends StatelessWidget {
 
     final controller = Get.find<CalenderController>();
 
-    OutlineInputBorder _border(Color color) => OutlineInputBorder(
+    OutlineInputBorder border(Color color) => OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
       borderSide: BorderSide(color: color, width: 1.5),
     );
 
-    InputDecoration _decoration(String label) {
+    InputDecoration decoration(String label) {
       return InputDecoration(
         labelText: label,
-        focusedBorder: _border(AppColors.primary2),
-        enabledBorder: _border(Colors.grey.shade300),
-        border: _border(Colors.grey.shade300),
+        focusedBorder: border(AppColors.primary2),
+        enabledBorder: border(Colors.grey.shade300),
+        border: border(Colors.grey.shade300),
       );
     }
 
@@ -200,7 +200,7 @@ class CalenderScreen extends StatelessWidget {
                   // START DATE
                   TextField(
                     controller: controller.startDateController,
-                    decoration: _decoration("Start Date (yyyy-MM-dd)"),
+                    decoration: decoration("Start Date (yyyy-MM-dd)"),
                   ),
 
                   const SizedBox(height: 12),
@@ -208,7 +208,7 @@ class CalenderScreen extends StatelessWidget {
                   // END DATE
                   TextField(
                     controller: controller.endDateController,
-                    decoration: _decoration("End Date (yyyy-MM-dd)"),
+                    decoration: decoration("End Date (yyyy-MM-dd)"),
                   ),
 
                   const SizedBox(height: 12),
@@ -216,7 +216,7 @@ class CalenderScreen extends StatelessWidget {
                   // START TIME
                   TextField(
                     controller: controller.startTimeController,
-                    decoration: _decoration("Start Time"),
+                    decoration: decoration("Start Time"),
                   ),
 
                   const SizedBox(height: 12),
@@ -224,7 +224,7 @@ class CalenderScreen extends StatelessWidget {
                   // END TIME
                   TextField(
                     controller: controller.endTimeController,
-                    decoration: _decoration("End Time"),
+                    decoration: decoration("End Time"),
                   ),
 
                   const SizedBox(height: 12),
@@ -232,7 +232,7 @@ class CalenderScreen extends StatelessWidget {
                   // COUNTRY
                   TextField(
                     controller: controller.countryController,
-                    decoration: _decoration("Country"),
+                    decoration: decoration("Country"),
                   ),
 
                   const SizedBox(height: 12),
@@ -240,7 +240,7 @@ class CalenderScreen extends StatelessWidget {
                   // CITY
                   TextField(
                     controller: controller.cityController,
-                    decoration: _decoration("City"),
+                    decoration: decoration("City"),
                   ),
 
                   const SizedBox(height: 12),
@@ -248,7 +248,7 @@ class CalenderScreen extends StatelessWidget {
                   if (!isUpdate)
                     TextField(
                       controller: controller.fullAddressController,
-                      decoration: _decoration("Full Address"),
+                      decoration: decoration("Full Address"),
                     ),
 
                   const SizedBox(height: 20),

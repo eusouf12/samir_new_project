@@ -168,7 +168,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                       SizedBox(width: 4),
         
                                       Text(
-                                        "${rating} Average Rating",
+                                        "$rating Average Rating",
                                         style: TextStyle(
                                           color: Color(0xFF1A237E),
                                           fontSize: 11,
@@ -193,7 +193,7 @@ class HostActiveViewProfileScreen extends StatelessWidget {
                                       SizedBox(width: 4),
         
                                       Text(
-                                        "${nightCredits} Night Credits",
+                                        "$nightCredits Night Credits",
                                         style: TextStyle(
                                           color: Color(0xFF1A237E),
                                           fontSize: 11,
