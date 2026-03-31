@@ -1,10 +1,8 @@
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:flutter/foundation.dart';
 
 class SocketApi {
-  static IO.Socket? socket;
-  // ignore: unused_field
-  static bool _isInitialized = false;
+  static io.Socket? socket;
 
   static void init(String baseUrl, String userId) {
     disconnect();
@@ -12,9 +10,9 @@ class SocketApi {
     try {
       debugPrint('🟡 Connecting to: $baseUrl with user: $userId');
 
-      socket = IO.io(
+      socket = io.io(
         baseUrl,
-        IO.OptionBuilder()
+        io.OptionBuilder()
             .setTransports(['websocket'])
             .setQuery({'id': userId})
             .disableAutoConnect()
@@ -31,7 +29,6 @@ class SocketApi {
       _setupCoreListeners(userId);
       socket!.connect();
 
-      _isInitialized = true;
     } catch (e) {
       debugPrint("⚠xx Socket init failed: $e");
     }
@@ -88,6 +85,5 @@ class SocketApi {
   static void dispose() {
     socket?.dispose();
     socket = null;
-    _isInitialized = false;
   }
 }

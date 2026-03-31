@@ -257,7 +257,7 @@ class HostAddNewListingScreen extends StatelessWidget {
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemCount: images.length + 1, // extra for Add More
-          separatorBuilder: (_, __) => const SizedBox(width: 8),
+          separatorBuilder: (_, _) => const SizedBox(width: 8),
           itemBuilder: (_, index) {
             if (index == images.length) {
               return GestureDetector(
@@ -360,7 +360,7 @@ class HostAddNewListingScreen extends StatelessWidget {
               label: Text(name, style: TextStyle(fontSize: 12.sp)),
               deleteIcon: const Icon(Icons.cancel, size: 16, color: Colors.red),
               onDeleted: () => listingController.customAmenities.remove(name),
-              backgroundColor: AppColors.primary.withOpacity(0.1),
+              backgroundColor: AppColors.primary.withValues(alpha: 0.1),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             );
           }).toList(),

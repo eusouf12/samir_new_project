@@ -117,7 +117,7 @@ class HostProfileScreen extends StatelessWidget {
                   //share
                   CustomProfileCard(
                     nameTitle: "Share your profile",
-                    icons: AppIcons.mdi_share,
+                    icons: AppIcons.mdiShare,
                     color: AppColors.primary,
                     onTap: (){
                       Get.to(ShareProfileScreen(),arguments: "host");

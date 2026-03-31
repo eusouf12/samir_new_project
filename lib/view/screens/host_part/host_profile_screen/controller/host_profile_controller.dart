@@ -12,7 +12,7 @@ import '../../../Influencer_part/inf_profile_screen/model/share_profile_model.da
 import '../../collaboration_screen/views/stripe_web_view_create_screen.dart';
 import '../model/about_us_model.dart';
 import '../model/my_profile_model.dart';
-import '../model/terms _model.dart';
+import '../model/terms_model.dart';
 
 class HostProfileController extends GetxController {
   final Rx<File?> selectedImage = Rx<File?>(null);

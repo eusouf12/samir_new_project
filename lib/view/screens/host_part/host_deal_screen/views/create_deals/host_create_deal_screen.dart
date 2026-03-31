@@ -302,7 +302,7 @@ class HostCreateDealScreen extends StatelessWidget {
                         child: ListView.separated(
                           padding: EdgeInsets.zero,
                           itemCount: listingController.verifiedListingList.length + (listingController.isVerifiedLoadMoreLoading.value ? 1 : 0),
-                          separatorBuilder: (_, __) =>
+                          separatorBuilder: (_, _) =>
                           const Divider(height: 1,color: Colors.white,),
 
                           itemBuilder: (context, index) {

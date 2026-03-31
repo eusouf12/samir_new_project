@@ -58,7 +58,7 @@ class NegotiationScreen extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
-                      BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
+                      BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))
                     ],
                   ),
                   child: Column(
@@ -138,7 +138,7 @@ class NegotiationScreen extends StatelessWidget {
                         // Icon representation based on platform
                         CircleAvatar(
                           radius: 20,
-                          backgroundColor: AppColors.primary.withOpacity(0.1),
+                          backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                           child: Icon(_getPlatformIcon(d.platform ?? ""), size: 20, color: role =='host'? AppColors.primary : AppColors.primary2),
                         ),
                         const SizedBox(width: 12),

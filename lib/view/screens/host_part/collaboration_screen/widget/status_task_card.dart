@@ -18,8 +18,8 @@ class StatusTaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor = isSubmitted ? AppColors.primary.withOpacity(0.1) : Colors.grey.shade200;
-    Color iconBoxColor = isSubmitted ? AppColors.primary.withOpacity(0.1)  : Colors.grey.shade300;
+    Color backgroundColor = isSubmitted ? AppColors.primary.withValues(alpha: 0.1) : Colors.grey.shade200;
+    Color iconBoxColor = isSubmitted ? AppColors.primary.withValues(alpha: 0.1)  : Colors.grey.shade300;
     Color themeColor = isSubmitted ?AppColors.primary: Colors.grey.shade600;
 
     return Container(

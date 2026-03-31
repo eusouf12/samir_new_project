@@ -48,7 +48,7 @@ class CustomCollaborationCard extends StatelessWidget {
           color: AppColors.white,
           boxShadow: [
             BoxShadow(
-              color: AppColors.black.withOpacity(0.1),
+              color: AppColors.black.withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
@@ -115,7 +115,7 @@ class CustomCollaborationCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                     decoration: BoxDecoration(
-                      color: status== "accepted" ? Color(0xFFE8F5E9) : status == "rejected" ? Colors.red.withOpacity(0.1) :status== "ongoing" ? AppColors.primary.withOpacity(0.1):status== "completed"? Colors.purple.withOpacity(0.1) :status == "negotiating" ?AppColors.primary2.withOpacity(0.1)  :Color(0xFFFFF3E0),
+                      color: status== "accepted" ? Color(0xFFE8F5E9) : status == "rejected" ? Colors.red.withValues(alpha: 0.1) :status== "ongoing" ? AppColors.primary.withValues(alpha: 0.1):status== "completed"? Colors.purple.withValues(alpha: 0.1) :status == "negotiating" ?AppColors.primary2.withValues(alpha: 0.1)  :Color(0xFFFFF3E0),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color:status== "accepted"? Colors.green : status== "rejected" ? Colors.red : status== "ongoing" ? AppColors.primary : status== "completed"? Colors.purple : status == "negotiating" ?AppColors.primary2 : Colors.orange, width: 1),
                     ),

@@ -304,7 +304,7 @@ class AuthController extends GetxController {
         }
       }
     } catch (e) {
-      print(e);
+      debugPrint("Resend OTP Error: $e");
     }
   }
 

@@ -54,7 +54,7 @@ class CustomTabSelector extends StatelessWidget {
                 child: Container(
                   padding:  EdgeInsets.symmetric(horizontal: 10,vertical: 5),
                   decoration: BoxDecoration(
-                    color: selectedIndex == index ?  AppColors.primary.withOpacity(0.2) : Colors.transparent,
+                    color: selectedIndex == index ?  AppColors.primary.withValues(alpha: 0.2) : Colors.transparent,
                     borderRadius: BorderRadius.circular(8),
                     //color: AppColors.red,
                     // border: Border(

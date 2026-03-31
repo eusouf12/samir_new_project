@@ -44,7 +44,7 @@ import '../../view/screens/host_part/host_profile_screen/host_referrals_screen.d
 import '../../view/screens/host_part/host_profile_screen/host_privacy_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_profile_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_terms_screen.dart';
-import '../../view/screens/onboarding_screen/account_ready_screen/account_ready _screen.dart';
+import '../../view/screens/onboarding_screen/account_ready_screen/account_ready_screen.dart';
 import '../../view/screens/onboarding_screen/view/onboarding_screen.dart';
 import '../../view/screens/splash_screen/splash_screen.dart';
 class AppRoutes {

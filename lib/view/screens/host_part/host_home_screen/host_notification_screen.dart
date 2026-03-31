@@ -100,7 +100,7 @@ class HostNotificationScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: item.isRead == true ? Colors.white : const Color(0xffF5F9FF),
         borderRadius: BorderRadius.circular(14),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 6,),],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 6,),],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

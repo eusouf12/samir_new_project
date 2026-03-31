@@ -73,7 +73,7 @@ class OtpScreen extends StatelessWidget {
                             : "Resend code in 00:${authController.otpTimer.value
                             .toString().padLeft(2, '0')}",
                         fontWeight: FontWeight.w400,
-                        color: Colors.white.withOpacity(0.5),
+                        color: Colors.white.withValues(alpha: 0.5),
                       ),
                     ],
                   ),

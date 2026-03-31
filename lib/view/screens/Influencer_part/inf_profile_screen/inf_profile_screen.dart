@@ -136,7 +136,7 @@ class InfProfileScreen extends StatelessWidget {
                     //Share your profile
                     CustomProfileCard(
                       nameTitle: "Share your profile",
-                      icons: AppIcons.mdi_share,
+                      icons: AppIcons.mdiShare,
                       color: AppColors.primary2,
                       onTap: (){
                         Get.to(ShareProfileScreen(),arguments: "inf");

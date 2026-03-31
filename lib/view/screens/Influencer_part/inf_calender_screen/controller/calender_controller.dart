@@ -28,7 +28,7 @@ class CalenderController extends GetxController {
     } else {
       selectedTimes.add(time);
     }
-    print("Selected times: $selectedTimes");
+    debugPrint("Selected times: $selectedTimes");
   }
 
   void clearSelection() {

@@ -87,9 +87,12 @@ class _UserNavBarState extends State<InfNavbar> {
                     icons[index],
                     height: 25.h,
                     width: 25.w,
-                    color: index == bottomNavIndex
-                        ? AppColors.white_50
-                        : Color(0xFF9CA3AF),
+                    colorFilter: ColorFilter.mode(
+                      index == bottomNavIndex
+                          ? AppColors.white_50
+                          : const Color(0xFF9CA3AF),
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ],

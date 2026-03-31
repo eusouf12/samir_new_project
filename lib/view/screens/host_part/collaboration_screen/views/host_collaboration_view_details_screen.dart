@@ -385,7 +385,7 @@ class HostCollaborationViewDetailsScreen extends StatelessWidget {
             children: amenities.map((amenity) {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+                decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20)),
                 child: CustomText(text: amenity, fontSize: 12, fontWeight: FontWeight.w700, color: AppColors.primary),
               );
             }).toList(),

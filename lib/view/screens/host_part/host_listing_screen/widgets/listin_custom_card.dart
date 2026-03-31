@@ -49,7 +49,7 @@ class ListingCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withOpacity(0.1),
+            color: AppColors.black.withValues(alpha: 0.1),
             blurRadius: 2,
             offset: const Offset(0, 2),
           ),
@@ -73,11 +73,11 @@ class ListingCard extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9), //
+                      color: Colors.white.withValues(alpha: 0.9), //
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withValues(alpha: 0.1),
                           blurRadius: 4,
                           spreadRadius: 1,
                         )
@@ -115,7 +115,7 @@ class ListingCard extends StatelessWidget {
                     Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          color: staus== "verified" ? Color(0xFFE8F5E9) : staus == "rejected" ? Colors.red.withOpacity(0.1) :Color(0xFFFFF3E0),
+                          color: staus== "verified" ? Color(0xFFE8F5E9) : staus == "rejected" ? Colors.red.withValues(alpha: 0.1) :Color(0xFFFFF3E0),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(color:staus== "verified"? Colors.green : staus== "rejected" ? Colors.red : Colors.orange, width: 1),
                         ),
