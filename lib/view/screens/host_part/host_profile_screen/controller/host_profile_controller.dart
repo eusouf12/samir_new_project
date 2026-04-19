@@ -13,23 +13,28 @@ import '../../collaboration_screen/views/stripe_web_view_create_screen.dart';
 import '../model/about_us_model.dart';
 import '../model/my_profile_model.dart';
 import '../model/terms_model.dart';
+import '../../../../../service/permission.dart';
 
 class HostProfileController extends GetxController {
   final Rx<File?> selectedImage = Rx<File?>(null);
   final ImagePicker _picker = ImagePicker();
 
   Future<void> pickImageFromGallery() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      selectedImage.value = File(image.path);
+    if (await PermissionHelper.checkGalleryPermission()) {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        selectedImage.value = File(image.path);
+      }
     }
   }
 
 // Pick an image using the camera
   Future<void> pickImageFromCamera() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      selectedImage.value = File(image.path);
+    if (await PermissionHelper.checkCameraPermission()) {
+      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        selectedImage.value = File(image.path);
+      }
     }
   }
 

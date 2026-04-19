@@ -10,6 +10,7 @@ import 'package:samir_flutter_app/view/screens/host_part/host_messages_list_scre
 
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
+import '../../../../../service/permission.dart';
 import '../../../../../service/socket_service.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
@@ -77,11 +78,13 @@ class MessageController extends GetxController {
   // ================== PICK IMAGE ==================
   RxList<XFile> selectedImages = <XFile>[].obs;
   Future<void> pickImagesFromGallery() async {
-    final ImagePicker picker = ImagePicker();
-    final List<XFile> pickedImages = await picker.pickMultiImage();
+    if (await PermissionHelper.checkGalleryPermission()) {
+      final ImagePicker picker = ImagePicker();
+      final List<XFile> pickedImages = await picker.pickMultiImage();
 
-    if (pickedImages.isNotEmpty) {
-      selectedImages.addAll(pickedImages);
+      if (pickedImages.isNotEmpty) {
+        selectedImages.addAll(pickedImages);
+      }
     }
   }
   //========== send pic ==================

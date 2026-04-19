@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../service/permission.dart';
 
 class CustomImageAddSendController extends GetxController {
   RxList<XFile> images = <XFile>[].obs; 
@@ -10,14 +11,16 @@ class CustomImageAddSendController extends GetxController {
  
 
   Future<void> pickImage() async {
-    final XFile? pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      images.add(pickedFile);   
-      images.refresh();
-      refresh(); 
-      
-      debugPrint('============Image Length=================>> ${images.length}');// Add image to the Rx List
+    if (await PermissionHelper.checkGalleryPermission()) {
+      final XFile? pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        images.add(pickedFile);   
+        images.refresh();
+        refresh(); 
+        
+        debugPrint('============Image Length=================>> ${images.length}');// Add image to the Rx List
+      }
     }
   } 
 

@@ -10,6 +10,7 @@ import '../../../../../utils/app_const/app_const.dart';
 import '../model/privacy_model.dart';
 import '../model/terms_model.dart';
 import '../model/user_profile_model.dart';
+import '../../../../../service/permission.dart';
 
 
 
@@ -19,18 +20,22 @@ class ProfileController extends GetxController {
 
   /// Pick image from gallery
   Future<void> pickImageFromGallery() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      selectedImage.value = File(image.path);
-      debugPrint("Gallery Image Path: ${image.path}");
+    if (await PermissionHelper.checkGalleryPermission()) {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        selectedImage.value = File(image.path);
+        debugPrint("Gallery Image Path: ${image.path}");
+      }
     }
   }
 
   /// Pick image from camera
   Future<void> pickImageFromCamera() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      selectedImage.value = File(image.path);
+    if (await PermissionHelper.checkCameraPermission()) {
+      final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        selectedImage.value = File(image.path);
+      }
     }
   }
 

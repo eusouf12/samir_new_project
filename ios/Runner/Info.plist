@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to the camera to take profile photos and send images in chat.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to the photo library to upload profile photos and send images in chat.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access to the microphone when recording videos.</string>
 </dict>
 </plist>
