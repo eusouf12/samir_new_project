@@ -1,4 +1,4 @@
-package com.hostinflu.app
+package com.app.hostinflu
 
 import io.flutter.embedding.android.FlutterActivity
 
