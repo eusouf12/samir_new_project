@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/core/app_routes/app_routes.dart';
-import 'package:samir_flutter_app/utils/app_const/app_const.dart';
-import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
-import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
-import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_assigned_card.dart';
-import 'package:samir_flutter_app/view/screens/host_part/host_listing_screen/controller/listing_controller.dart';
+import 'package:Hostinflu/core/app_routes/app_routes.dart';
+import 'package:Hostinflu/utils/app_const/app_const.dart';
+import 'package:Hostinflu/view/components/custom_button/custom_button_two.dart';
+import 'package:Hostinflu/view/components/custom_gradient/custom_gradient.dart';
+import 'package:Hostinflu/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:Hostinflu/view/screens/host_part/host_home_screen/widgets/custom_assigned_card.dart';
+import 'package:Hostinflu/view/screens/host_part/host_listing_screen/controller/listing_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../utils/app_colors/app_colors.dart';

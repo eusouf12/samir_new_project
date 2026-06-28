@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
-import 'package:samir_flutter_app/utils/app_const/app_const.dart';
-import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
-import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_field.dart';
-import 'package:samir_flutter_app/view/screens/host_part/host_deal_screen/controller/deals_controller.dart';
-import 'package:samir_flutter_app/view/screens/host_part/host_home_screen/widgets/custom_deals_container.dart';
+import 'package:Hostinflu/utils/app_colors/app_colors.dart';
+import 'package:Hostinflu/utils/app_const/app_const.dart';
+import 'package:Hostinflu/view/components/custom_loader/custom_loader.dart';
+import 'package:Hostinflu/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:Hostinflu/view/components/custom_text_field/custom_text_field.dart';
+import 'package:Hostinflu/view/screens/host_part/host_deal_screen/controller/deals_controller.dart';
+import 'package:Hostinflu/view/screens/host_part/host_home_screen/widgets/custom_deals_container.dart';
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../service/api_url.dart';
 
