@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
-import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:samir_flutter_app/view/components/custom_text/custom_text.dart';
-import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_field.dart';
+import 'package:Hostinflu/view/components/custom_gradient/custom_gradient.dart';
+import 'package:Hostinflu/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:Hostinflu/view/components/custom_text/custom_text.dart';
+import 'package:Hostinflu/view/components/custom_text_field/custom_text_field.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../components/custom_button/custom_button.dart';
 import '../../../../components/custom_loader/custom_loader.dart';

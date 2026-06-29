@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:Hostinflu/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../../utils/app_const/app_const.dart';
 import '../../../components/custom_button/custom_button_two.dart';

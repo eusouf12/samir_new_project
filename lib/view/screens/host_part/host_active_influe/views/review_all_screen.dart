@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
+import 'package:Hostinflu/utils/app_colors/app_colors.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_royel_appbar/custom_royel_appbar.dart';

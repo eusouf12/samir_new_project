@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
-import 'package:samir_flutter_app/view/screens/Influencer_part/inf_home_screen/widgets/custom_inf_home_card.dart';
+import 'package:Hostinflu/view/components/custom_gradient/custom_gradient.dart';
+import 'package:Hostinflu/view/screens/Influencer_part/inf_home_screen/widgets/custom_inf_home_card.dart';
 
 import '../../../../../core/app_routes/app_routes.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';

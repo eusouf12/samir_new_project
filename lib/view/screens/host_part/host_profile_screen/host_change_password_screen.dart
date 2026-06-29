@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
+import 'package:Hostinflu/view/components/custom_button/custom_button_two.dart';
 import '../../../../utils/app_colors/app_colors.dart';
 import '../../../components/custom_from_card/custom_from_card.dart';
 import '../../../components/custom_loader/custom_loader.dart';

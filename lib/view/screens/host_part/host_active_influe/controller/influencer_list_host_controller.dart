@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/view/screens/host_part/collaboration_screen/controller/collabration_controller.dart';
+import 'package:Hostinflu/view/screens/host_part/collaboration_screen/controller/collabration_controller.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';

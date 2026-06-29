@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
-import 'package:samir_flutter_app/utils/app_const/app_const.dart';
-import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
-import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
-import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
-import 'package:samir_flutter_app/view/components/custom_text_field/custom_text_field.dart';
+import 'package:Hostinflu/utils/app_colors/app_colors.dart';
+import 'package:Hostinflu/utils/app_const/app_const.dart';
+import 'package:Hostinflu/view/components/custom_gradient/custom_gradient.dart';
+import 'package:Hostinflu/view/components/custom_loader/custom_loader.dart';
+import 'package:Hostinflu/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:Hostinflu/view/components/custom_text_field/custom_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../components/custom_text/custom_text.dart';
 import '../../host_part/host_listing_screen/controller/listing_controller.dart';

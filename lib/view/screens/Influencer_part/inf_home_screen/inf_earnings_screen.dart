@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:samir_flutter_app/utils/app_colors/app_colors.dart';
-import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
-import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:Hostinflu/utils/app_colors/app_colors.dart';
+import 'package:Hostinflu/view/components/custom_button/custom_button_two.dart';
+import 'package:Hostinflu/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 
 import '../../../components/custom_text/custom_text.dart';
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:samir_flutter_app/core/app_routes/app_routes.dart';
-import 'package:samir_flutter_app/view/components/custom_button/custom_button_two.dart';
-import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
-import 'package:samir_flutter_app/view/components/custom_loader/custom_loader.dart';
-import 'package:samir_flutter_app/view/components/custom_royel_appbar/custom_royel_appbar.dart';
+import 'package:Hostinflu/core/app_routes/app_routes.dart';
+import 'package:Hostinflu/view/components/custom_button/custom_button_two.dart';
+import 'package:Hostinflu/view/components/custom_gradient/custom_gradient.dart';
+import 'package:Hostinflu/view/components/custom_loader/custom_loader.dart';
+import 'package:Hostinflu/view/components/custom_royel_appbar/custom_royel_appbar.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../utils/app_const/app_const.dart';

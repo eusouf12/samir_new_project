@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:samir_flutter_app/view/components/custom_gradient/custom_gradient.dart';
+import 'package:Hostinflu/view/components/custom_gradient/custom_gradient.dart';
 import '../../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../../utils/app_strings/app_strings.dart';
