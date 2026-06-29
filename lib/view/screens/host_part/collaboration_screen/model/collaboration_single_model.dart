@@ -19,9 +19,11 @@ class SingleUserCollaborationResponse {
       message: json['message'],
       count: json['count'],
       status: json['status'],
-      data: (json['data'] as List?)
-          ?.map((e) => SingleUserCollaborationData.fromJson(e))
-          .toList(),
+      data: json['data'] is List
+          ? (json['data'] as List)
+              .map((e) => SingleUserCollaborationData.fromJson(e))
+              .toList()
+          : null,
     );
   }
 }
@@ -69,7 +71,9 @@ class SingleUserCollaborationData {
       userId: json['userId'] is Map<String, dynamic> ? SingleUserInfo.fromJson(json['userId']) : null,
       selectInfluencerOrHost: json['selectInfluencerOrHost'] != null ? SingleUserInfo.fromJson(json['selectInfluencerOrHost']) : null,
       compensation: json['compensation'] != null ? SingleUserCompensation.fromJson(json['compensation']) : null,
-      deliverables: (json['deliverables'] as List?)?.map((e) => SingleUserDeliverable.fromJson(e)).toList(),
+      deliverables: json['deliverables'] is List
+          ? (json['deliverables'] as List).map((e) => SingleUserDeliverable.fromJson(e)).toList()
+          : null,
       title: json['title'] is Map<String, dynamic> ? SingleUserDealTitle.fromJson(json['title']) : null,
       description: json['description'],
       addAirbnbLink: json['addAirbnbLink'],
@@ -80,7 +84,9 @@ class SingleUserCollaborationData {
       negotiationStatus: json['negotiationStatus'],
       paymentStatus: json['paymentStatus'],
       negotiationMessage: json['negotiationMessage'] ??"",
-      socialMediaLinks: (json['socialMediaLinks'] as List?)?.map((e) => SingleUserSocialMediaLinks.fromJson(e)).toList(),
+      socialMediaLinks: json['socialMediaLinks'] is List
+          ? (json['socialMediaLinks'] as List).map((e) => SingleUserSocialMediaLinks.fromJson(e)).toList()
+          : null,
     );
   }
 }

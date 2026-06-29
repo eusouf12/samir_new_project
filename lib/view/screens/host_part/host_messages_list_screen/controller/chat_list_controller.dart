@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../../../../service/api_client.dart';
@@ -52,12 +53,11 @@ class ChatListController extends GetxController {
       await ApiClient.getData(ApiUrl.checkChatList(id: id));
 
       if (response.statusCode == 200) {
-        final body = response.body;
+        final Map<String, dynamic> body = response.body is String ? jsonDecode(response.body): Map<String, dynamic>.from(response.body);
 
-        final messages = body['data']['messages'];
-
-        if (messages != null && messages.isNotEmpty) {
-          return messages.first['conversationId'];
+        final data = body['data'];
+        if (data != null && data['conversationId'] != null) {
+          return data['conversationId'].toString();
         }
       }
     } catch (e) {

@@ -12,8 +12,8 @@ import '../../../../../utils/app_const/app_const.dart';
 import '../../../../components/custom_loader/custom_loader.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../model/inbox_model.dart';
 import '../../host_profile_screen/controller/host_profile_controller.dart';
-
 
 class ChatScreen extends StatelessWidget {
   ChatScreen({super.key});
@@ -26,14 +26,29 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String conversationId = args['conversationId'] ?? "";
+    final String receiverId = args['receiverId'] ?? "";
+    debugPrint("💬 ChatScreen Args - conversationId: '$conversationId', receiverId: '$receiverId', args: $args");
     // ignore: unused_local_variable
     final String userName = args['userName'] ?? "";
     // ignore: unused_local_variable
     final String? userImage = args['userImage'] as String?;
-    final String receiverId = args['receiverId'] ?? "";
     final String role = args['role'] ;
     WidgetsBinding.instance.addPostFrameCallback((_)async{
-      controller.getChatMessages(id: conversationId);
+      controller.otherParticipant.value = OtherParticipant(
+        id: receiverId,
+        name: userName,
+        email: "",
+        image: userImage,
+        isActive: false,
+      );
+
+      if (conversationId.isNotEmpty) {
+        controller.getChatMessages(id: conversationId);
+      } else {
+        controller.messageList.clear();
+        controller.messages.clear();
+        controller.setStatus(Status.completed);
+      }
       profileController.getUserProfile();
     });
 
