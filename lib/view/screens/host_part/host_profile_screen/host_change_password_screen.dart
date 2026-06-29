@@ -23,16 +23,19 @@ class HostChangePasswordScreen extends StatelessWidget {
               title: "Old Password",
               isPassword: true,
               controller: profileController.oldPasswordController.value,
+              fieldFocusBorderColor: page == "host" ? AppColors.primary : AppColors.primary2,
             ),
             CustomFormCard(
               title: "New Password",
               isPassword: true,
               controller: profileController.newPasswordController.value,
+              fieldFocusBorderColor: page == "host" ? AppColors.primary : AppColors.primary2,
             ),
             CustomFormCard(
               title: "Confirm New Password",
               isPassword: true,
               controller: profileController.confirmPasswordController.value,
+              fieldFocusBorderColor: page == "host" ? AppColors.primary : AppColors.primary2,
             ),
             Spacer(),
             Obx((){

@@ -1,6 +1,6 @@
 class ApiUrl {
-  // static const String baseUrl = "http://10.0.2.2:3000";
-   static const String baseUrl = "https://hostinflu.onrender.com";
+  // static const String baseUrl ="https://hostinflu.onrender.com" //"http://10.0.2.2:3000";
+   static const String baseUrl = "https://api.hostinflu.com";
   static const String imageUrl = baseUrl;
   static String socketUrl = baseUrl;
 
@@ -15,6 +15,7 @@ class ApiUrl {
    ///========================= My Profile =========================
    static const String myProfile = "/api/v1/auth/my-profile";
    static const String shareProfile = "/api/v1/auth/share-profile";
+   static const String refferralLink = "/api/v1/referral/my-referrals";
    static const String updateProfile = "/api/v1/user/update-profile";
    static const String termsCondition = "/api/v1/legalDoc/get-doc/termsAndCondition";
    static const String aboutUs = "/api/v1/legalDoc/get-doc/aboutUs";
@@ -28,7 +29,7 @@ class ApiUrl {
 
 
 
-   ///========================= Host =========================createListing
+   ///========================= Host =========================
    static const String getRedeemStars = "/api/v1/redeem/my-stars";
    static const String createListing = "/api/v1/listing/create-listing";
    static  String sendCollaboration ({required String id})=> "/api/v1/collaboration/create-collaboration-web/$id";
@@ -45,7 +46,7 @@ class ApiUrl {
    static String deleteDeal({required String id})=> "/api/v1/deal/delete-deal/$id";
    static String getDeals({required String page})=> "/api/v1/deal/my-all-deals?currentPage=$page&limit=10";
    static String getAllDeals({required String page})=> "/api/v1/deal/get-all-deals?currentPage=$page&limit=10";
-   ////////
+   ////////================ inf ==================================================
    static String updateDeal({required String id})=> "/api/v1/deal/update-deal/$id";
    static String updateCollabration({required String id})=> "/api/v1/collaboration/create-negotiation/$id";
    static String getSingleDeal({required String id})=> "/api/v1/deal/get-single-deal/$id";

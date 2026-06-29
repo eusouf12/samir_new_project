@@ -13,6 +13,7 @@ import '../../collaboration_screen/views/stripe_web_view_create_screen.dart';
 import '../model/about_us_model.dart';
 import '../model/my_profile_model.dart';
 import '../model/terms_model.dart';
+import '../model/referal.dart';
 import '../../../../../service/permission.dart';
 
 class HostProfileController extends GetxController {
@@ -437,6 +438,40 @@ class HostProfileController extends GetxController {
       showCustomSnackBar("Error, ${e.toString()}", isError: true,);
     } finally {
       isShareProfileLoading.value = false;
+    }
+  }
+
+  // ======== get referral data ==========
+  Rxn<ReferralData> referralData = Rxn<ReferralData>();
+  final isReferralLoading = false.obs;
+  final rxReferralStatus = Status.loading.obs;
+
+  void setReferralStatus(Status status) => rxReferralStatus.value = status;
+
+  Future<void> getReferralData() async {
+    isReferralLoading.value = true;
+    setReferralStatus(Status.loading);
+
+    try {
+      final response = await ApiClient.getData(ApiUrl.refferralLink);
+      final Map<String, dynamic> jsonResponse;
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
+
+        final ReferralResponse model = ReferralResponse.fromJson(jsonResponse);
+        referralData.value = model.data;
+
+        setReferralStatus(Status.completed);
+      } else {
+        setReferralStatus(Status.error);
+        showCustomSnackBar("Error, Failed to load referral data", isError: true,);
+      }
+    } catch (e) {
+      setReferralStatus(Status.error);
+      showCustomSnackBar("Error, ${e.toString()}", isError: true,);
+    } finally {
+      isReferralLoading.value = false;
     }
   }
 
