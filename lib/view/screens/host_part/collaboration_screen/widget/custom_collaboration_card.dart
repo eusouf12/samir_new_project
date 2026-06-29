@@ -135,13 +135,14 @@ class CustomCollaborationCard extends StatelessWidget {
              //inf socialMediaLinks
               const SizedBox(height: 8),
               role == "host"
-              ? Row(
-                children: socialMediaLinks.isEmpty
-                    ? []
-                    : socialMediaLinks.map((item) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 15),
-                    child: Row(
+              ? Wrap(
+                  spacing: 12,
+                  runSpacing: 4,
+                  children: socialMediaLinks.isEmpty
+                      ? []
+                      : socialMediaLinks.map((item) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                           _getPlatformIcon(item.platform ?? ""),
@@ -156,10 +157,9 @@ class CustomCollaborationCard extends StatelessWidget {
                           color: AppColors.black,
                         ),
                       ],
-                    ),
-                  );
-                }).toList(),
-              )
+                    );
+                  }).toList(),
+                )
               : SizedBox.shrink(),
               const SizedBox(height: 8),
 
