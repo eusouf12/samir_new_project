@@ -14,16 +14,27 @@ class SingleUserCollaborationResponse {
   });
 
   factory SingleUserCollaborationResponse.fromJson(Map<String, dynamic> json) {
+    List<SingleUserCollaborationData> parsedData = [];
+    if (json['data'] != null) {
+      if (json['data'] is List) {
+        parsedData = (json['data'] as List)
+            .map((e) => SingleUserCollaborationData.fromJson(e))
+            .toList();
+      } else if (json['data'] is Map) {
+        final collList = json['data']['collaborations'];
+        if (collList is List) {
+          parsedData = collList
+              .map((e) => SingleUserCollaborationData.fromJson(e))
+              .toList();
+        }
+      }
+    }
     return SingleUserCollaborationResponse(
       success: json['success'],
       message: json['message'],
       count: json['count'],
       status: json['status'],
-      data: json['data'] is List
-          ? (json['data'] as List)
-              .map((e) => SingleUserCollaborationData.fromJson(e))
-              .toList()
-          : null,
+      data: parsedData,
     );
   }
 }
