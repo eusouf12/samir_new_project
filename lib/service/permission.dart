@@ -6,12 +6,8 @@ import 'package:permission_handler/permission_handler.dart';
 class PermissionHelper {
   static Future<bool> checkGalleryPermission() async {
     if (Platform.isIOS) {
-      final status = await Permission.photos.request();
-      if (status.isGranted) return true;
-      if (status.isPermanentlyDenied) {
-        _showSettingsDialog("Photo Library");
-      }
-      return false;
+      // On iOS 14+, PHPicker (used by image_picker) runs out-of-process and does not require requesting photo library permission.
+      return true;
     } else {
       // Android
       var statusPhotos = await Permission.photos.status;
