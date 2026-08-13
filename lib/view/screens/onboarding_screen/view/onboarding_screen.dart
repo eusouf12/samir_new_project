@@ -69,9 +69,9 @@ class OnboardingScreen extends StatelessWidget {
               String subtitle = "";
               if (controller.currentPage.value == 0) {
                 title = "Collaborate with ease";
-                subtitle = "Connect hosts and creators for seamless Airbnb collaborations.";
+                subtitle = "Connect hosts and creators for seamless property collaborations.";
               } else if (controller.currentPage.value == 1) {
-                title = "Grow your Airbnb visibility";
+                title = "Grow your listing visibility";
                 subtitle = "Boost your listing reach with the right influencer partnership.";
               } else if (controller.currentPage.value == 2) {
                 title = "Earn with influence";
