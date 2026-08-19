@@ -8,6 +8,7 @@ import '../../../../components/custom_button/custom_button_two.dart';
 import '../../../../components/custom_image/custom_image.dart';
 import '../../../../components/custom_netwrok_image/custom_network_image.dart';
 import '../../../../components/custom_text/custom_text.dart';
+import '../../../../components/ugc_safety/report_dialog.dart';
 import '../model/listing_model.dart';
 
 
@@ -64,6 +65,39 @@ class ListingCard extends StatelessWidget {
               CustomNetworkImage(
                 imageUrl: listing.images.isNotEmpty ? ApiUrl.baseUrl + listing.images.first : "",
                 borderRadius: const BorderRadius.all(Radius.circular(16)),
+              ),
+              Positioned(
+                top: 12,
+                left: 12,
+                child: GestureDetector(
+                  onTap: () {
+                    UgcSafetyHelper.showReportDialog(
+                      context: context,
+                      targetId: listing.id,
+                      targetName: listing.title,
+                      contentType: "Listing",
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 4,
+                          spreadRadius: 1,
+                        )
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.flag_outlined,
+                      color: Colors.orange,
+                      size: 18,
+                    ),
+                  ),
+                ),
               ),
               Positioned(
                 top: 12,

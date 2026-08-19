@@ -15,6 +15,7 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
   final bool? leftIcon;
   final bool? centerTitleEnable;
   final String? customRouteName;
+  final List<Widget>? actions;
 
   const CustomRoyelAppbar({
     super.key,
@@ -27,7 +28,7 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.leftIcon = false,
     this.centerTitleEnable = true,
     this.customRouteName,
-
+    this.actions,
   });
 
   @override
@@ -38,7 +39,7 @@ class CustomRoyelAppbar extends StatelessWidget implements PreferredSizeWidget {
         foregroundColor: Colors.transparent,
         centerTitle: centerTitleEnable,
         scrolledUnderElevation: 0,
-        actions: [
+        actions: actions ?? [
           IconButton(
               onPressed: rightOnTap ?? () {},
               icon: rightIcon == null ?

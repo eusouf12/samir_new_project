@@ -37,6 +37,7 @@ import '../../view/screens/host_part/host_listing_screen/host_listing_screen.dar
 import '../../view/screens/host_part/host_listing_screen/host_update_listing_screen.dart';
 import '../../view/screens/host_part/host_messages_list_screen/view/chat_inbox_screen.dart';
 import '../../view/screens/host_part/host_messages_list_screen/view/host_messages_list_screen.dart';
+import '../../view/screens/host_part/host_profile_screen/blocked_users_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_about_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_change_password_screen.dart';
 import '../../view/screens/host_part/host_profile_screen/host_edit_profile_screen.dart';
@@ -78,6 +79,7 @@ class AppRoutes {
  static const String hostAccountSettings = "/HostAccountSettings";
  static const String hostChangePasswordScreen = "/HostChangePasswordScreen";
  static const String hostPrivacyScreen = "/HostPrivacyScreen";
+ static const String blockedUsersScreen = "/BlockedUsersScreen";
  static const String hostTermsScreen = "/HostTermsScreen";
  static const String hostAboutScreen = "/HostAboutScreen";
  static const String hostDealsScreen = "/HostDealsScreen";
@@ -150,6 +152,7 @@ class AppRoutes {
     GetPage(name: hostEditProfileScreen, page: () => HostEditProfileScreen()),
     GetPage(name: hostChangePasswordScreen, page: () => HostChangePasswordScreen()),
     GetPage(name: hostPrivacyScreen, page: () => HostPrivacyScreen()),
+    GetPage(name: blockedUsersScreen, page: () => const BlockedUsersScreen()),
     GetPage(name: hostTermsScreen, page: () => HostTermsScreen()),
     GetPage(name: hostAboutScreen, page: () => HostAboutScreen()),
     GetPage(name: hostDealsScreen, page: () => HostDealsScreen()),

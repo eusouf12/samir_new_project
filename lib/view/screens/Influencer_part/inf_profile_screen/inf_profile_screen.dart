@@ -160,13 +160,22 @@ class InfProfileScreen extends StatelessWidget {
                         Get.toNamed(AppRoutes.hostChangePasswordScreen,arguments: "inf");
                       },
                     ),
-                    //===== Terms of services =======
+                    //===== Blocked Users =======
                     CustomProfileCard(
-                      nameTitle: "Terms of services",
+                      nameTitle: "Blocked Users",
+                      icons: AppIcons.deleteIcon,
+                      color: AppColors.primary2,
+                      onTap: () {
+                        Get.toNamed(AppRoutes.blockedUsersScreen);
+                      },
+                    ),
+                    //===== Terms of services & EULA =======
+                    CustomProfileCard(
+                      nameTitle: "Terms of Service & EULA",
                       icons: AppIcons.terms,
                       color: AppColors.primary2,
-                      onTap: (){
-                        Get.toNamed(AppRoutes.hostTermsScreen,arguments: "inf");
+                      onTap: () {
+                        Get.toNamed(AppRoutes.hostTermsScreen, arguments: "inf");
                       },
                     ),
                     // === Privacy Policy =======
@@ -174,8 +183,8 @@ class InfProfileScreen extends StatelessWidget {
                       nameTitle: "Privacy Policy",
                       icons: AppIcons.privacyPolicy,
                       color: AppColors.primary2,
-                      onTap: (){
-                        Get.toNamed(AppRoutes.hostPrivacyScreen,arguments: "inf");
+                      onTap: () {
+                        Get.toNamed(AppRoutes.hostPrivacyScreen, arguments: "inf");
                       },
                     ),
                     //==== About us =========

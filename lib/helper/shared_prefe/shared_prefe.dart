@@ -14,10 +14,8 @@ class SharePrefsHelper {
 
   static Future<List<String>> getLisOfString(String key) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-
     var getListData = preferences.getStringList(key);
-
-    return getListData!;
+    return getListData ?? <String>[];
   }
 
   static Future<bool?> getBool(String key) async {

@@ -32,6 +32,7 @@ class AuthController extends GetxController {
   RxString passwordError = "".obs;
   var completePhoneNumber = ''.obs;
   var countryCode = ''.obs;
+  RxBool isEulaAgreed = false.obs;
 
 
   /// ---------- STATES ---------- ///

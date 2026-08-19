@@ -18,6 +18,7 @@ import '../collaboration_screen/controller/collabration_controller.dart';
 import '../host_deal_screen/controller/deals_controller.dart';
 import '../host_listing_screen/controller/listing_controller.dart';
 import '../host_listing_screen/widgets/listin_custom_card.dart';
+import '../../../components/ugc_safety/report_dialog.dart';
 import 'controller/influencer_list_host_controller.dart';
 
 class HostActiveViewProfileScreen extends StatelessWidget {
@@ -50,7 +51,57 @@ class HostActiveViewProfileScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: CustomRoyelAppbar(leftIcon: true, titleName: role == "host" ?  "Influencer Profile" : "Host Profile"),
+      appBar: CustomRoyelAppbar(
+        leftIcon: true,
+        titleName: role == "host" ? "Influencer Profile" : "Host Profile",
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: Colors.black),
+            onSelected: (val) {
+              if (val == 'report') {
+                UgcSafetyHelper.showReportDialog(
+                  context: context,
+                  targetId: userId,
+                  targetName: name,
+                  contentType: "User Profile",
+                );
+              } else if (val == 'block') {
+                UgcSafetyHelper.showBlockConfirmationDialog(
+                  context: context,
+                  userId: userId,
+                  userName: name,
+                  onBlocked: () {
+                    influencerListHostController.getInfluencers();
+                    Get.back();
+                  },
+                );
+              }
+            },
+            itemBuilder: (ctx) => [
+              const PopupMenuItem(
+                value: 'report',
+                child: Row(
+                  children: [
+                    Icon(Icons.flag_outlined, color: Colors.orange, size: 18),
+                    SizedBox(width: 8),
+                    Text('Report Profile', style: TextStyle(fontSize: 13)),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'block',
+                child: Row(
+                  children: [
+                    Icon(Icons.block, color: Colors.red, size: 18),
+                    SizedBox(width: 8),
+                    Text('Block User', style: TextStyle(color: Colors.red, fontSize: 13)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
 
       body: SingleChildScrollView(
         child: Column(

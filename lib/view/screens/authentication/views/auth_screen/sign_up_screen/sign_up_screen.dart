@@ -1,3 +1,5 @@
+import '../../../../../../core/app_routes/app_routes.dart';
+import '../../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../components/custom_gradient/custom_gradient.dart';
 import '../../../../../components/custom_text/custom_text.dart';
 import '../../../../../components/custom_text_field/custom_text_field.dart';
@@ -326,24 +328,111 @@ class SignUpScreen extends StatelessWidget {
 
                   ),
                 ),
-                SizedBox(height: 20),
-                //  Create Account Button
-                 CustomButton(
-                    onTap: () {
-                      if(formKey.currentState!.validate())
-                        {
-                          Get.to(() =>  ChooseRole());
-                        }
-                    },
-                    borderRadius: 12,
-                    textColor: AppColors.white,
-                    title: "Create Account",
-                    fillColor: AppColors.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                // EULA & Terms Checkbox
+                Obx(
+                  () => Container(
+                    margin: const EdgeInsets.only(top: 16),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: authController.isEulaAgreed.value
+                            ? AppColors.primary
+                            : const Color(0xFFE5E7EB),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: Checkbox(
+                            value: authController.isEulaAgreed.value,
+                            activeColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            onChanged: (val) {
+                              authController.isEulaAgreed.value = val ?? false;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              authController.isEulaAgreed.value =
+                                  !authController.isEulaAgreed.value;
+                            },
+                            child: RichText(
+                              text: TextSpan(
+                                text: "I agree to the ",
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black87,
+                                ),
+                                children: [
+                                  WidgetSpan(
+                                    child: GestureDetector(
+                                      onTap: () => Get.toNamed(
+                                        AppRoutes.hostTermsScreen,
+                                      ),
+                                      child: const Text(
+                                        "Terms of Service & EULA",
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.primary,
+                                          decoration:
+                                              TextDecoration.underline,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text:
+                                        ". I understand and accept the zero-tolerance policy for objectionable content and abusive users.",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                ),
+                const SizedBox(height: 20),
+                // Create Account Button
+                CustomButton(
+                  onTap: () {
+                    if (formKey.currentState!.validate()) {
+                      if (!authController.isEulaAgreed.value) {
+                        showCustomSnackBar(
+                          "Please accept the Terms of Service & EULA to create an account.",
+                          isError: true,
+                        );
+                        return;
+                      }
+                      Get.to(() => ChooseRole());
+                    }
+                  },
+                  borderRadius: 12,
+                  textColor: AppColors.white,
+                  title: "Create Account",
+                  fillColor: AppColors.primary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
 
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
               ],
             ),
           ),

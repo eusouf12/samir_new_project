@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:Hostinflu/view/screens/host_part/host_messages_list_screen/controller/chat_list_controller.dart';
 
+import '../../../../../helper/content_filter_helper.dart';
+import '../../../../../service/block_service.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../service/permission.dart';
@@ -36,6 +38,11 @@ class MessageController extends GetxController {
   void listenMessage() {
     SocketApi.on('single-chat-message', (data) {
       debugPrint("📩 New Message Received: $data");
+      final senderId = data['senderId'] ?? data['sender']?['id'] ?? data['sender']?['_id'] ?? "";
+      if (senderId.toString().isNotEmpty && BlockService.to.isBlocked(senderId.toString())) {
+        debugPrint("Blocked message discarded from $senderId");
+        return;
+      }
       Map<String, dynamic> incomingMsg = {
         "isMe": false,
         "text": data['text'] ?? data['message'] ?? "",
@@ -49,31 +56,43 @@ class MessageController extends GetxController {
   // ================== SEND TEXT VIA SOCKET ==================
   Future<void> sendMessage({required String receiverId}) async {
     final text = messageController.text.trim();
+
+    if (BlockService.to.isBlocked(receiverId)) {
+      showCustomSnackBar("You cannot send messages to a blocked user.", isError: true);
+      return;
+    }
+
     if (selectedImages.isNotEmpty) {
       postImageSend(receiverId: receiverId, images: selectedImages);
       selectedImages.clear();
       messageController.clear();
+    } else if (text.isNotEmpty) {
+      if (ContentFilterHelper.containsObjectionableContent(text)) {
+        showCustomSnackBar(
+          "Your message contains objectionable or abusive language which violates our Terms & EULA policy.",
+          isError: true,
+        );
+        return;
+      }
+
+      final body = {
+        "receiverId": receiverId,
+        "text": text,
+      };
+
+      // 1️⃣ socket emit
+      SocketApi.emit('single-chat-send-message', body);
+      chatListController.getConversations();
+
+      // 2️⃣ local message add
+      messages.insert(0, {
+        "isMe": true,
+        "text": text,
+        "imageUrl": <String>[],
+        "createdAt": DateTime.now(),
+      });
+      messageController.clear();
     }
-
-    else if (text.isNotEmpty) {
-    final body = {
-      "receiverId": receiverId,
-      "text": text,
-    };
-
-    // 1️⃣ socket emit
-    SocketApi.emit('single-chat-send-message', body);
-    chatListController.getConversations();
-
-    // 2️⃣ local message add
-    messages.insert(0, {
-      "isMe": true,
-      "text": text,
-      "imageUrl": <String>[],
-      "createdAt": DateTime.now(),
-    });
-    messageController.clear();
-     }
   }
   // ================== PICK IMAGE ==================
   RxList<XFile> selectedImages = <XFile>[].obs;

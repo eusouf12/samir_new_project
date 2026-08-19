@@ -7,6 +7,8 @@ import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
+import '../../../../../helper/content_filter_helper.dart';
+import '../../../../../service/block_service.dart';
 import '../../collaboration_screen/controller/collabration_controller.dart';
 import '../model/listing_model.dart';
 import '../model/verified_listing.dart';
@@ -74,12 +76,24 @@ class ListingController extends GetxController {
 //============== post create Listing Controller===================
   RxBool createListingLoading = false.obs;
   Future<void> createListing() async {
+    final titleText = titleController.value.text.trim();
+    final descText = titleDescriptionController.value.text.trim();
+
+    if (ContentFilterHelper.containsObjectionableContent(titleText) ||
+        ContentFilterHelper.containsObjectionableContent(descText)) {
+      showCustomSnackBar(
+        "Your listing contains objectionable or inappropriate content which violates our Terms & EULA policy.",
+        isError: true,
+      );
+      return;
+    }
+
     createListingLoading.value = true;
     refresh();
     try {
       Map<String, String> body = {
-        "title": titleController.value.text.trim(),
-        "description": titleDescriptionController.value.text.trim(),
+        "title": titleText,
+        "description": descText,
         "location": locationController.value.text.trim(),
         "addAirbnbLink": airbnbController.value.text.trim(),
         "amenities": jsonEncode(amenities.map((k, v) => MapEntry(k, v))),
@@ -212,10 +226,11 @@ class ListingController extends GetxController {
 
         totalPages = model.totalPages;
 
-        // Add new items if not duplicate
+        final blockService = BlockService.to;
+        // Add new items if not duplicate and not blocked
         final existingIds = listingList.map((e) => e.id).toSet();
         for (final item in model.data.listings) {
-          if (!existingIds.contains(item.id)) {
+          if (!existingIds.contains(item.id) && !blockService.isBlocked(item.user.id)) {
             listingList.add(item);
           }
         }
@@ -270,10 +285,11 @@ class ListingController extends GetxController {
 
         verifiedTotalPages = model.data.pagination.totalPages;
 
+        final blockService = BlockService.to;
         final existingIds = verifiedListingList.map((e) => e.id).toSet();
 
         for (final item in model.data.listings) {
-          if (!existingIds.contains(item.id)) {
+          if (!existingIds.contains(item.id) && !blockService.isBlocked(item.userId)) {
             verifiedListingList.add(item);
           }
         }
@@ -564,7 +580,10 @@ class ListingController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> jsonResponse = response.body is String ? jsonDecode(response.body) : Map<String, dynamic>.from(response.body);
         final ListingsResponse model = ListingsResponse.fromJson(jsonResponse);
-        favouriteListingList.assignAll(model.data.listings);
+        final blockService = BlockService.to;
+        favouriteListingList.assignAll(
+          model.data.listings.where((item) => !blockService.isBlocked(item.user.id)),
+        );
         setFavouriteListingStatus(Status.completed);
       } else {
         setFavouriteListingStatus(Status.error);

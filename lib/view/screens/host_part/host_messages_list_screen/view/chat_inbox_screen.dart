@@ -6,6 +6,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:Hostinflu/view/components/custom_gradient/custom_gradient.dart';
 import 'package:Hostinflu/view/screens/host_part/host_messages_list_screen/controller/chat_list_controller.dart';
 import 'package:Hostinflu/view/screens/host_part/host_messages_list_screen/controller/message_controller.dart';
+import '../../../../components/ugc_safety/report_dialog.dart';
 import '../../../../../service/api_url.dart';
 import '../../../../../utils/app_colors/app_colors.dart';
 import '../../../../../utils/app_const/app_const.dart';
@@ -123,25 +124,69 @@ class ChatScreen extends StatelessWidget {
 
           actions: [
             PopupMenuButton<String>(
-              icon: const Icon(Icons.more_horiz,
-                  color: Colors.black),
+              icon: const Icon(Icons.more_horiz, color: Colors.black),
+              onSelected: (value) async {
+                if (value == 'report') {
+                  UgcSafetyHelper.showReportDialog(
+                    context: context,
+                    targetId: receiverId,
+                    targetName: userName,
+                    contentType: "User",
+                  );
+                } else if (value == 'block') {
+                  UgcSafetyHelper.showBlockConfirmationDialog(
+                    context: context,
+                    userId: receiverId,
+                    userName: userName,
+                    onBlocked: () async {
+                      await chatListController.getConversations();
+                      Get.back();
+                    },
+                  );
+                } else if (value == 'delete') {
+                  // Existing delete logic if any
+                }
+              },
               itemBuilder: (_) => [
+                const PopupMenuItem(
+                  value: 'report',
+                  child: Row(
+                    children: [
+                      Icon(Icons.flag_outlined, color: Colors.orange, size: 18),
+                      SizedBox(width: 8),
+                      Text(
+                        'Report User / Content',
+                        style: TextStyle(color: Colors.orange, fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: 'block',
+                  child: Row(
+                    children: [
+                      Icon(Icons.block, color: Colors.red, size: 18),
+                      SizedBox(width: 8),
+                      Text(
+                        'Block User',
+                        style: TextStyle(color: Colors.red, fontSize: 13),
+                      ),
+                    ],
+                  ),
+                ),
                 const PopupMenuItem(
                   value: 'delete',
                   child: Row(
                     children: [
-                      Icon(Icons.delete_outline,
-                          color: Colors.red, size: 15),
-                      SizedBox(width: 5),
+                      Icon(Icons.delete_outline, color: Colors.grey, size: 18),
+                      SizedBox(width: 8),
                       Text(
                         'Delete Conversation',
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 12),
+                        style: TextStyle(color: Colors.grey, fontSize: 13),
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             )
           ],
@@ -318,16 +363,71 @@ class ChatBubble extends StatelessWidget {
         // Bubble
         Align(
           alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            padding: images.isEmpty ? const EdgeInsets.all(10) : const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: isMe ? role == "host" ? AppColors.primary : AppColors.primary2 : Colors.grey[300],
-              borderRadius: BorderRadius.circular(images.isEmpty ? 5 : 23),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          child: GestureDetector(
+            onLongPress: isMe
+                ? null
+                : () {
+                    showModalBottomSheet(
+                      context: context,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                      ),
+                      builder: (ctx) => SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                leading: const Icon(Icons.flag_outlined, color: Colors.orange),
+                                title: const Text("Report this message"),
+                                subtitle: const Text("Flag offensive, abusive or objectionable text"),
+                                onTap: () {
+                                  Navigator.pop(ctx);
+                                  final receiverId = args['receiverId'] ?? "";
+                                  final userName = args['userName'] ?? "User";
+                                  UgcSafetyHelper.showReportDialog(
+                                    context: context,
+                                    targetId: receiverId,
+                                    targetName: userName,
+                                    contentType: "Message",
+                                  );
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.block, color: Colors.red),
+                                title: const Text("Block this user"),
+                                subtitle: const Text("Hide all messages & content from this user"),
+                                onTap: () {
+                                  Navigator.pop(ctx);
+                                  final receiverId = args['receiverId'] ?? "";
+                                  final userName = args['userName'] ?? "User";
+                                  UgcSafetyHelper.showBlockConfirmationDialog(
+                                    context: context,
+                                    userId: receiverId,
+                                    userName: userName,
+                                    onBlocked: () {
+                                      Get.back();
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              padding: images.isEmpty ? const EdgeInsets.all(10) : const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: isMe ? role == "host" ? AppColors.primary : AppColors.primary2 : Colors.grey[300],
+                borderRadius: BorderRadius.circular(images.isEmpty ? 5 : 23),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                 if (images.isNotEmpty)
                   Wrap(
                     spacing: 6,
@@ -373,6 +473,7 @@ class ChatBubble extends StatelessWidget {
             ),
           ),
         ),
+      ),
         // TIME
         if (time != null)
           Padding(

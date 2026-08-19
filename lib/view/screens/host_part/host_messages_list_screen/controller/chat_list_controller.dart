@@ -5,6 +5,8 @@ import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
 import '../model/chat_list_model.dart';
 
+import '../../../../../service/block_service.dart';
+
 class ChatListController extends GetxController {
   RxList<ConversationModel> conversationList = <ConversationModel>[].obs;
 
@@ -32,7 +34,12 @@ class ChatListController extends GetxController {
 
         totalPages = data.data.pagination.totalPages;
 
-        conversationList.addAll(data.data.conversations);
+        final blockService = BlockService.to;
+        final filtered = data.data.conversations.where((conv) {
+          return !conv.participants.any((p) => blockService.isBlocked(p.id));
+        }).toList();
+
+        conversationList.addAll(filtered);
       }
     } catch (e) {
       debugPrint('❌ Conversation API Error: $e');

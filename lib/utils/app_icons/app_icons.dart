@@ -17,6 +17,8 @@ class AppIcons {
   static const String settingIcon = "$basePath/settingIcon.svg";
   static const String subscriptionIcon = "$basePath/subscriptionIcon.svg";
   static const String logoutIcon = "$basePath/logoutIcon.svg";
+  static const String deleteIcon = "$basePath/logoutIcon.svg";
+  static const String blockIcon = "$basePath/settingIcon.svg";
   static const String arrowBakBak = "$basePath/arrow_bak_bak.svg";
   static const String linkIcon = "$basePath/linkIcon.svg";
   static const String cameraIcon = "$basePath/cameraIcon.svg";

@@ -5,6 +5,7 @@ import 'package:Hostinflu/view/screens/host_part/collaboration_screen/controller
 import '../../../../../helper/shared_prefe/shared_prefe.dart';
 import '../../../../../service/api_client.dart';
 import '../../../../../service/api_url.dart';
+import '../../../../../service/block_service.dart';
 import '../../../../../utils/ToastMsg/toast_message.dart';
 import '../../../../../utils/app_const/app_const.dart';
 import '../../host_deal_screen/deal_model/deal_model.dart';
@@ -84,11 +85,12 @@ class InfluencerListHostController extends GetxController {
         totaInfluencer = model.pagination.totalUsers;
         totalPages = model.pagination.totalPages;
 
-        // duplicate avoid
+        final blockService = BlockService.to;
+        // duplicate avoid and filter blocked
         final existingIds = influencerList.map((e) => e.id).toSet();
 
         influencerList.addAll(
-          model.data.where((e) => !existingIds.contains(e.id)),
+          model.data.where((e) => !existingIds.contains(e.id) && !blockService.isBlocked(e.id)),
         );
 
 
@@ -140,9 +142,10 @@ class InfluencerListHostController extends GetxController {
         totalFavouriteInfluencer = model.pagination.totalUsers;
         favouriteTotalPages = model.pagination.totalPages;
 
+        final blockService = BlockService.to;
         final existingIds = influencerList.map((e) => e.id).toSet();
 
-        influencerList.addAll(model.data.where((e) => !existingIds.contains(e.id)),);
+        influencerList.addAll(model.data.where((e) => !existingIds.contains(e.id) && !blockService.isBlocked(e.id)),);
 
         setFavouriteStatus(Status.completed);
 

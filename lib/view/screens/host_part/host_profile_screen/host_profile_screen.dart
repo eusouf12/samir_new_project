@@ -131,20 +131,28 @@ class HostProfileScreen extends StatelessWidget {
                       Get.toNamed(AppRoutes.hostChangePasswordScreen,arguments: "host");
                     },
                   ),
-                  //Terms of services
+                  //Blocked Users
                   CustomProfileCard(
-                    nameTitle: "Terms of services",
+                    nameTitle: "Blocked Users",
+                    icons: AppIcons.deleteIcon,
+                    onTap: () {
+                      Get.toNamed(AppRoutes.blockedUsersScreen);
+                    },
+                  ),
+                  //Terms of services & EULA
+                  CustomProfileCard(
+                    nameTitle: "Terms of Service & EULA",
                     icons: AppIcons.terms,
-                    onTap: (){
-                      Get.toNamed(AppRoutes.hostTermsScreen,arguments: "host");
+                    onTap: () {
+                      Get.toNamed(AppRoutes.hostTermsScreen, arguments: "host");
                     },
                   ),
                   //Privacy Policy
                   CustomProfileCard(
                     nameTitle: "Privacy Policy",
                     icons: AppIcons.privacyPolicy,
-                    onTap: (){
-                      Get.toNamed(AppRoutes.hostPrivacyScreen,arguments: "host");
+                    onTap: () {
+                      Get.toNamed(AppRoutes.hostPrivacyScreen, arguments: "host");
                     },
                   ),
                   //About us

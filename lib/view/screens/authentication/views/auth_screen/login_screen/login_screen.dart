@@ -207,8 +207,8 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 32),
-                //  Login Button
+                SizedBox(height: 24),
+                // Login Button
                 Obx(() {
                   return authController.loginUserLoading.value
                       ? CustomLoader()
@@ -224,7 +224,41 @@ class LoginScreen extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         );
                 }),
-                SizedBox(height: 50),
+                const SizedBox(height: 16),
+                // EULA / Terms Notice
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: "By continuing, you agree to our ",
+                        style: const TextStyle(fontSize: 11, color: Colors.grey),
+                        children: [
+                          WidgetSpan(
+                            child: GestureDetector(
+                              onTap: () => Get.toNamed(AppRoutes.hostTermsScreen),
+                              child: const Text(
+                                "Terms of Service & EULA",
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const TextSpan(
+                            text: " with zero tolerance for objectionable content.",
+                            style: TextStyle(fontSize: 11, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30),
                 // Forgot Password
                 Align(
                   alignment: Alignment.center,
@@ -240,7 +274,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 50),
+                const SizedBox(height: 30),
               ],
             ),
           ),
